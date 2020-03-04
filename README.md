@@ -4,3 +4,5 @@ This project will replicate the non-commercial part of a game store, assisting w
 ## [ZenHub Board](https://app.zenhub.com/workspaces/softwareengineering-5e5ff3fe15a3c76536b185f6/board?repos=244972931)
 
 ## [Mutual Design Document](https://docs.google.com/document/d/1X9VWWmyJ3o-tEwkzBXuTQTLDCLkNZ0nBk00bhe71vaU/edit?usp=sharing)
+
+## [Discord](https://discordapp.com/channels/681605015441375239/681605015441375244)
