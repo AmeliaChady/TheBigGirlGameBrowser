@@ -9,3 +9,6 @@ This project will replicate the non-commercial part of a game store, assisting w
 
 ## [Class Diagram draw.io (editable)](https://drive.google.com/file/d/1aUndweU8eiV2dS4cUEFHkWRQ3EB8nTL2/view?usp=sharing)
 
+
+# Sprints
+Sprint 1 - Developers, Admins, And A Database
