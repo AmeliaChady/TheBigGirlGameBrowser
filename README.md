@@ -6,3 +6,6 @@ This project will replicate the non-commercial part of a game store, assisting w
 ## [Mutual Design Document](https://docs.google.com/document/d/1X9VWWmyJ3o-tEwkzBXuTQTLDCLkNZ0nBk00bhe71vaU/edit?usp=sharing)
 
 ## [Discord](https://discord.gg/QwWkjS2)
+
+## [Class Diagram draw.io (editable)](https://drive.google.com/file/d/1aUndweU8eiV2dS4cUEFHkWRQ3EB8nTL2/view?usp=sharing)
+
