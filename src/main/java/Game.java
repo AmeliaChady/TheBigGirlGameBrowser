@@ -9,6 +9,19 @@ public class Game {
         developer = null;
     }
 
+    public Game(String title, String description, Developer developer){
+        this.title = title;
+        this.description = description;
+        this.developer = developer;
+    }
+
+    public Game(String title, Developer developer){
+        this.title = title;
+        this.developer = developer;
+        this.description = "No Description Given";
+    }
+
+
     public String getTitle() {
         return title;
     }
