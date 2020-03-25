@@ -12,3 +12,4 @@ This project will replicate the non-commercial part of a game store, assisting w
 
 # Sprints
 Sprint 1 - Developers, Admins, And A Database (DAAAD)
+## [Sprint 1 Notes](https://docs.google.com/document/d/1dgWSw5ewKc94H5q6vRfAhVsXABWnshG3-aD9EJMxDLw/edit?usp=sharing)
