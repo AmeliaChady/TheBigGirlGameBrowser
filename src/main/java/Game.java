@@ -21,6 +21,10 @@ public class Game {
         this.description = "No Description Given";
     }
 
+    public void changeDescription(String description){
+        this.description = description;
+    }
+
 
     public String getTitle() {
         return title;
