@@ -22,11 +22,11 @@ public class GameList {
      * @param game - a new game
      */
     public void includeGame(Game game) {
-
+        gameList.add(game);
     }
 
     // ------GETTERS------
     public String getName() { return name; }
 
-    public int getGameCount() { return 0; }
+    public int getGameCount() { return gameList.size(); }
 }
