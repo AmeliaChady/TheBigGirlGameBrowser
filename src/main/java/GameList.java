@@ -44,6 +44,15 @@ public class GameList {
         return gameFound;
     }
 
+    /**
+     * Find a game in this list
+     * @param title - title of desired game
+     * @return Game - Desired game in list
+     */
+    public Game getGame(String title) {
+        return new Game("Not your game", new Developer());
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
