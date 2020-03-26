@@ -50,7 +50,15 @@ public class GameList {
      * @return Game - Desired game in list
      */
     public Game getGame(String title) {
-        return new Game("Not your game", new Developer());
+        Game gameFound = null;
+
+        for (Game game : gameList) {
+            if (game.getTitle() == title) {
+                gameFound = game;
+                break;
+            }
+        }
+        return gameFound;
     }
 
     // ------GETTERS------
