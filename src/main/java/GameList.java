@@ -25,6 +25,42 @@ public class GameList {
         gameList.add(game);
     }
 
+    /**
+     * Remove a game
+     * @param title - title of the game to remove
+     * @return Game - the game removed
+     */
+    public Game removeGame(String title) {
+        Game gameFound = null;
+
+        for (Game game : gameList) {
+            if (game.getTitle() == title) {
+                gameFound = game;
+                break;
+            }
+        }
+        if (gameFound != null) gameList.remove(gameFound);
+
+        return gameFound;
+    }
+
+    /**
+     * Find a game in this list
+     * @param title - title of desired game
+     * @return Game - Desired game in list
+     */
+    public Game getGame(String title) {
+        Game gameFound = null;
+
+        for (Game game : gameList) {
+            if (game.getTitle() == title) {
+                gameFound = game;
+                break;
+            }
+        }
+        return gameFound;
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 

@@ -26,4 +26,39 @@ public class GameListTest {
         gameList.includeGame(new Game("game 2", new Developer()));
         assertEquals(2, gameList.getGameCount());
     }
+
+    @Test
+    public void removeGameTest() {
+        GameList gameList = new GameList("My Game List");
+
+        gameList.includeGame(new Game("game 1", new Developer()));
+        gameList.includeGame(new Game("game 2", new Developer()));
+
+        // Remove existing game
+        Game removedGame = gameList.removeGame("game 1");
+        assertEquals(1, gameList.getGameCount());
+        assertEquals("Game", removedGame.getClass().getName());
+        assertEquals("game 1", removedGame.getTitle());
+
+        // Remove non-existing game (invalid)
+        gameList.removeGame("game 0");
+        assertEquals(1, gameList.getGameCount());
+    }
+
+    @Test
+    public void getGame() {
+        GameList gameList = new GameList("My Game List");
+
+        gameList.includeGame(new Game("game 1", new Developer()));
+        gameList.includeGame(new Game("game 2", new Developer()));
+
+        // Get existing game
+        Game foundGame = gameList.getGame("game 1");
+        assertEquals("Game", foundGame.getClass().getName());
+        assertEquals("game 1", foundGame.getTitle());
+
+        // Get non-existing game (invalid)
+        foundGame = gameList.getGame("game 0");
+        assertEquals(null, foundGame);
+    }
 }

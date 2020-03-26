@@ -7,7 +7,7 @@ This project will replicate the non-commercial part of a game store, assisting w
 
 ## [Discord](https://discord.gg/QwWkjS2)
 
-## [Class Diagram draw.io (editable)](https://drive.google.com/file/d/1aUndweU8eiV2dS4cUEFHkWRQ3EB8nTL2/view?usp=sharing)
+## [Class Diagram draw.io](https://drive.google.com/file/d/1agoIFHWCq6-q52iRUu43jdNgQK72Lq78/view?usp=sharing)
 
 
 # Sprints
