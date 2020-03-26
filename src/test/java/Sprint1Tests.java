@@ -31,8 +31,20 @@ public class Sprint1Tests {
         assertEquals("No Description Given", game.getDescription());
 
         String aDescription = "Hey Fans! Checkout this awesome 'New Game' that I just released on the Big Girls Game Browser!!!";
+
         game.changeDescription(aDescription);
 
         assertEquals(aDescription, game.getDescription());
+    }
+
+    @Test
+    public void changeTitleTest(){
+        Game game = new Game("badTitle", "Bad Description", new Developer());
+
+        assertEquals("badTitle", game.getTitle());
+
+        game.changeTitle("goodTitle");
+
+        assertEquals("goodTitle", game.getTitle());
     }
 }
