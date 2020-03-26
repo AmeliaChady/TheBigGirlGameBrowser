@@ -50,7 +50,7 @@ public class GameTest {
 
     @Test
     public void enumTest(){
-        Game game = new Game("title", "description", new Developer(), Status.ACCEPTED);
+        Game game = new Game("title", "description", new Developer("Jimmy"), Status.ACCEPTED);
         assertEquals(Status.ACCEPTED, game.getStatus()); //checks that the fullfull constructor works
 
         game.changeStatus(Status.PENDING);
@@ -59,7 +59,7 @@ public class GameTest {
         game.changeStatus(Status.REJECTED);
         assertEquals(Status.REJECTED, game.getStatus());//checks assignment
 
-        game = new Game("title", "description", new Developer());
+        game = new Game("title", "description", new Developer("Carter"));
         assertEquals(Status.PENDING, game.getStatus()); //Checks other constructors default assignment
     }
 }
