@@ -19,11 +19,11 @@ public class GameListTest {
         GameList gameList = new GameList("My Game List");
 
         // Add one new game
-        gameList.includeGame(new Game("game 1", new Developer()));
+        gameList.includeGame(new Game("game 1", new Developer("Mikey")));
         assertEquals(1, gameList.getGameCount());
 
         // Add another new game
-        gameList.includeGame(new Game("game 2", new Developer()));
+        gameList.includeGame(new Game("game 2", new Developer("Mary")));
         assertEquals(2, gameList.getGameCount());
     }
 
@@ -31,8 +31,8 @@ public class GameListTest {
     public void removeGameTest() {
         GameList gameList = new GameList("My Game List");
 
-        gameList.includeGame(new Game("game 1", new Developer()));
-        gameList.includeGame(new Game("game 2", new Developer()));
+        gameList.includeGame(new Game("game 1", new Developer("Barney")));
+        gameList.includeGame(new Game("game 2", new Developer("Link")));
 
         // Remove existing game
         Game removedGame = gameList.removeGame("game 1");
@@ -49,8 +49,8 @@ public class GameListTest {
     public void getGame() {
         GameList gameList = new GameList("My Game List");
 
-        gameList.includeGame(new Game("game 1", new Developer()));
-        gameList.includeGame(new Game("game 2", new Developer()));
+        gameList.includeGame(new Game("game 1", new Developer("Roger")));
+        gameList.includeGame(new Game("game 2", new Developer("Wilbur")));
 
         // Get existing game
         Game foundGame = gameList.getGame("game 1");
