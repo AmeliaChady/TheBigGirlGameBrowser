@@ -12,13 +12,13 @@ public class Sprint1Tests {
         assertEquals("This is a test to create a new game object", game.getDescription());
         assertNull(game.getDeveloper());
 
-        Game newGame = new Game("daBears", new Developer());
+        Game newGame = new Game("daBears", new Developer("Sheila"));
 
         assertEquals("daBears", newGame.getTitle());
         assertEquals("No Description Given", newGame.getDescription());
         assertNotNull(newGame.getDeveloper());
 
-        Game describedGame = new Game("badTitle", "Bad Description", new Developer());
+        Game describedGame = new Game("badTitle", "Bad Description", new Developer("Kelly"));
         assertEquals("badTitle", describedGame.getTitle());
         assertEquals("Bad Description", describedGame.getDescription());
         assertNotNull(describedGame.getDeveloper());
@@ -26,7 +26,7 @@ public class Sprint1Tests {
 
     @Test
     public void changeDescriptionTest(){
-        Game game = new Game("daBears", new Developer());
+        Game game = new Game("daBears", new Developer("Wendell"));
 
         assertEquals("No Description Given", game.getDescription());
 
@@ -39,7 +39,7 @@ public class Sprint1Tests {
 
     @Test
     public void changeTitleTest(){
-        Game game = new Game("badTitle", "Bad Description", new Developer());
+        Game game = new Game("badTitle", "Bad Description", new Developer("Winston"));
 
         assertEquals("badTitle", game.getTitle());
 
