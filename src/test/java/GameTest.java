@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Sprint1Tests {
+public class GameTest {
 
     @Test
     public void gameConstructorTest(){
@@ -46,5 +46,20 @@ public class Sprint1Tests {
         game.changeTitle("goodTitle");
 
         assertEquals("goodTitle", game.getTitle());
+    }
+
+    @Test
+    public void enumTest(){
+        Game game = new Game("title", "description", new Developer(), Status.ACCEPTED);
+        assertEquals(Status.ACCEPTED, game.getStatus()); //checks that the fullfull constructor works
+
+        game.changeStatus(Status.PENDING);
+        assertEquals(Status.PENDING, game.getStatus()); //checks assignment
+
+        game.changeStatus(Status.REJECTED);
+        assertEquals(Status.REJECTED, game.getStatus());//checks assignment
+
+        game = new Game("title", "description", new Developer());
+        assertEquals(Status.PENDING, game.getStatus()); //Checks other constructors default assignment
     }
 }

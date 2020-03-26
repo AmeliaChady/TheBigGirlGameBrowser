@@ -1,7 +1,11 @@
+
+enum Status {PENDING, ACCEPTED, REJECTED}
+
 public class Game {
     private String title;
     private String description;
     private Developer developer;
+    private Status status;
 
     /**
      * Default constructor
@@ -10,10 +14,24 @@ public class Game {
         title = "testGame";
         description = "This is a test to create a new game object";
         developer = null;
+        status = Status.PENDING;
     }
 
     /**
-     * Full constructor
+     * FullFull constructor (should only be used for backend tests)
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description, Developer developer, Status status){
+        this.title = title;
+        this.description = description;
+        this.developer = developer;
+        this.status = status;
+    }
+
+    /**
+     *  Full constructor
      * @param title game title
      * @param description descriptor for game
      * @param developer link to developer object
@@ -22,6 +40,7 @@ public class Game {
         this.title = title;
         this.description = description;
         this.developer = developer;
+        this.status = Status.PENDING;
     }
 
     /**
@@ -33,6 +52,7 @@ public class Game {
         this.title = title;
         this.developer = developer;
         this.description = "No Description Given";
+        this.status = Status.PENDING;
     }
 
     /**
@@ -53,6 +73,14 @@ public class Game {
         this.title = title;
     }
 
+    /**
+     * Allows for game status to be updated (should only be used by admin class)
+     * @param status Game status (Approved, Pending, or Rejected)
+     */
+    public void changeStatus(Status status){
+        this.status = status;
+    }
+
     // ------GETTERS------
 
     public String getTitle() {
@@ -65,5 +93,9 @@ public class Game {
 
     public Developer getDeveloper() {
         return developer;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 }
