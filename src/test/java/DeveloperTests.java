@@ -16,7 +16,5 @@ public class DeveloperTests {
         assertNotNull(d2.getGameList());
         assertEquals(0, d2.getGameList().getGameCount());
         assertEquals("Bob (my dad)", d2.getName());
-
-
     }
 }
