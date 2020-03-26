@@ -25,6 +25,14 @@ public class GameList {
         gameList.add(game);
     }
 
+    /**
+     * Remove a game
+     * @param title - title of the game to remove
+     */
+    public Game removeGame(String title) {
+        return null;
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
