@@ -28,9 +28,20 @@ public class GameList {
     /**
      * Remove a game
      * @param title - title of the game to remove
+     * @return Game - the game removed
      */
     public Game removeGame(String title) {
-        return null;
+        Game gameFound = null;
+
+        for (Game game : gameList) {
+            if (game.getTitle() == title) {
+                gameFound = game;
+                break;
+            }
+        }
+        if (gameFound != null) gameList.remove(gameFound);
+
+        return gameFound;
     }
 
     // ------GETTERS------
