@@ -8,10 +8,13 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    public void saveGame(Game game) {
+    public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
 
     }
 
+    /***
+     * @return connection state of sqlite db
+     */
     public boolean isConnected(){
         return false;
     }
