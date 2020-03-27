@@ -20,7 +20,7 @@ public class DataSourceTest {
             fail("Should not throw exception");
         }
 
-        // Resaving does not throw an error
+        // Resaving same game does not throw an error
         try {
             ds.saveGame(new Game("testGame", "This is a test to save a game object", new Developer("Frank")));
         }catch (Exception e){
@@ -28,6 +28,10 @@ public class DataSourceTest {
             fail("Should not throw exception");
         }
 
+        // Updating a saved game works - Description
+        // Updating a saved game works - Status
+
+        // Can't give a null game
         assertThrows(IllegalArgumentException.class, () -> ds.saveGame(null));
     }
 }
