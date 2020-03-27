@@ -5,7 +5,7 @@ public class SQLiteSourceTests {
     public static String CORRECT_PATH = "I'll be honest I don't know yet";
 
     @Test
-    public void SQLiteSourceConstructor(){
+    public void SQLiteSourceConstructor(){ // also
         try {
             SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         }catch (Exception e){
