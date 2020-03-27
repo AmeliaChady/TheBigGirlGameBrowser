@@ -1,9 +1,11 @@
 BEGIN TRANSACTION;
 
 -- Dropping Old --
+DROP TABLE IF EXISTS GameDevelopers;
 DROP TABLE IF EXISTS Games;
 DROP TABLE IF EXISTS Developers;
 DROP TABLE IF EXISTS GameStatuses;
+
 
 -- Tables --
 CREATE TABLE Developers(
@@ -11,19 +13,28 @@ CREATE TABLE Developers(
     name INTEGER UNIQUE NOT NULL
     );
 
+
 CREATE TABLE GameStatuses(
     gsid INTEGER PRIMARY KEY AUTOINCREMENT,
     status TEXT UNIQUE NOT NULL
     );
 
+
 CREATE TABLE Games(
     gid INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT UNIQUE NOT NULL,
-    did INTEGER NOT NULL,
     description TEXT,
     gsid INTEGER NOT NULL,
-    FOREIGN KEY(did) REFERENCES Developers(did),
     FOREIGN KEY(gsid) REFERENCES GameStatuses(gsid)
+    );
+
+
+CREATE TABLE GameDevelopers(
+    gid INTEGER NOT NULL,
+    did INTEGER NOT NULL,
+    FOREIGN KEY(gid) REFERENCES Games(gid),
+    FOREIGN KEY(did) REFERENCES Developers(did),
+    PRIMARY KEY(did, gid)
     );
 
 
