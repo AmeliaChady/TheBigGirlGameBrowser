@@ -19,9 +19,6 @@ public class SQLiteSourceTests {
     @Test
     public void SQLiteSourceSaveGame(){
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
-
-        DataSource ds = s;
-
-
+        DataSourceTest.DataSourceSaveGameTest(s);
     }
 }
