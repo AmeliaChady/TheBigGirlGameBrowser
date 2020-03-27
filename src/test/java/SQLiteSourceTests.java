@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
     // TODO: make universal!!!
-    public static String CORRECT_PATH = "testin.db";
+    public static String CORRECT_PATH = "testing.db";
 
     @Test
     public void SQLiteSourceConstructor() throws SQLException { // also
@@ -24,7 +24,7 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceSaveGame() throws SQLException{
+    public void SQLiteSourceSaveGame() throws SQLException, DataSourceException{
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.DataSourceSaveGameTest(s);
     }

@@ -32,16 +32,17 @@ public class SQLiteSource implements DataSource{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
         }
+
+        String sql = "REPLACE INTO Games(title, developer, description, status) VALUES(" +
+                "\"" + game.getTitle() + "\", " +
+                "\"" + game.getDeveloper().getName() + "\", " +
+                "\"" + game.getDescription() + "\", " +
+                "\"" + game.getStatus() + "\");";
         try {
-            String sql = "INSERT INTO Games(title, developer, description, status) VALUES(" +
-                    "\"" + game.getTitle() + "\", " +
-                    "\"" + game.getDeveloper().getName() + "\", " +
-                    "\"" + game.getDescription() + "\", " +
-                    "\"" + game.getStatus() + "\");";
             Statement s = conn.createStatement();
-            System.out.println(sql);
             s.execute(sql);
         }catch (SQLException e){
+            System.out.println(e);
             throw new DataSourceException(e.getMessage());
         }
     }
