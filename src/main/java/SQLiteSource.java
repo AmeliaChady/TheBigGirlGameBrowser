@@ -1,4 +1,6 @@
+import java.nio.file.Paths;
 import java.sql.*;
+import java.util.HashMap;
 
 public class SQLiteSource implements DataSource{
     String path;
@@ -10,10 +12,19 @@ public class SQLiteSource implements DataSource{
      * @throws IllegalArgumentException if path DNE
      */
     SQLiteSource(String path) throws IllegalArgumentException, SQLException{
+        if(path == null || path.equalsIgnoreCase(""))
+            throw new IllegalArgumentException("Incorrect Path");
+        try {
+            Paths.get(path);
+        }catch (Exception e){
+            throw new IllegalArgumentException("Incorrect Path");
+        }
+
         this.path = "jdbc:sqlite:" + path;
         try {
             conn = DriverManager.getConnection(this.path);
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new IllegalArgumentException("Incorrect Path");
         }
     }

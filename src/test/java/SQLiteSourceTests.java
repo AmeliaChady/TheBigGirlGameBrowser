@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
-    public static String CORRECT_PATH = "/home/amelia/Documents/Coding/TheBigGirlGameBrowser/testin.db";
+    // TODO: make universal!!!
+    public static String CORRECT_PATH = "testin.db";
 
     @Test
     public void SQLiteSourceConstructor() throws SQLException { // also
@@ -17,8 +18,9 @@ public class SQLiteSourceTests {
 
         // Tests for illegal paths
         assertThrows(IllegalArgumentException.class, () -> new SQLiteSource("/looks/like/path"));
-        assertThrows(IllegalArgumentException.class, () -> new SQLiteSource("fuck confusing tests"));
         assertThrows(IllegalArgumentException.class, () -> new SQLiteSource(""));
+        assertThrows(IllegalArgumentException.class, () -> new SQLiteSource(null));
+        assertThrows(IllegalArgumentException.class, () -> new SQLiteSource("fuck confusing tests"));
     }
 
     @Test
