@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Developer {
 
     private String name;
@@ -14,5 +16,13 @@ public class Developer {
 
     public GameList getGameList(){
         return gameList;
+    }
+
+    public void submitGame(Game gameToSubmit){
+        gameList = getGameList();
+
+        //GOING TO ADD HERE TO CHECK AND MAKE SURE GAME NOT ALREADY IN GAME LIST
+
+        gameList.includeGame(gameToSubmit);
     }
 }
