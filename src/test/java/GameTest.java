@@ -1,4 +1,6 @@
 import org.junit.jupiter.api.Test;
+import java.util.List;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,18 +12,18 @@ public class GameTest {
 
         assertEquals("testGame", game.getTitle());
         assertEquals("This is a test to create a new game object", game.getDescription());
-        assertNull(game.getDeveloper());
+        assertNotNull(game.getDevelopers());
 
         Game newGame = new Game("daBears", new Developer("Sheila"));
 
         assertEquals("daBears", newGame.getTitle());
         assertEquals("No Description Given", newGame.getDescription());
-        assertNotNull(newGame.getDeveloper());
+        assertNotNull(newGame.getDevelopers());
 
         Game describedGame = new Game("badTitle", "Bad Description", new Developer("Kelly"));
         assertEquals("badTitle", describedGame.getTitle());
         assertEquals("Bad Description", describedGame.getDescription());
-        assertNotNull(describedGame.getDeveloper());
+        assertNotNull(describedGame.getDevelopers());
     }
 
     @Test
@@ -61,5 +63,24 @@ public class GameTest {
 
         game = new Game("title", "description", new Developer("Carter"));
         assertEquals(Status.PENDING, game.getStatus()); //Checks other constructors default assignment
+    }
+
+    @Test
+    public void addDeveloperTest(){
+        List<Developer> developers = new ArrayList<Developer>();
+        developers.add(new Developer("Fluffy"));
+        developers.add(new Developer("Nut"));
+        developers.add(new Developer("Face"));
+
+        Game multiDevGame = new Game("FlufferNutter",
+                "The adventures of a cat and their Penutbutter", developers, Status.ACCEPTED);
+        assertEquals(developers, multiDevGame.getDevelopers());
+
+        Developer thatGuy = new Developer("Pual");
+
+        multiDevGame.addDeveloper(thatGuy);
+        developers.add(thatGuy);
+
+        assertEquals(developers, multiDevGame.getDevelopers());
     }
 }

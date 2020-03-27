@@ -1,10 +1,12 @@
+import java.util.ArrayList;
+import java.util.List;
 
 enum Status {PENDING, ACCEPTED, REJECTED}
 
 public class Game {
     private String title;
     private String description;
-    private Developer developer;
+    private List<Developer> developers;
     private Status status;
 
     /**
@@ -13,9 +15,48 @@ public class Game {
     public Game(){
         title = "testGame";
         description = "This is a test to create a new game object";
-        developer = null;
+        this.developers = new ArrayList<Developer>();
         status = Status.PENDING;
     }
+
+    /**
+     * FullFull constructor (should only be used for backend tests)
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description, List<Developer> developer, Status status){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<Developer>(developer);
+        this.status = status;
+    }
+
+    /**
+     *  Full constructor
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description,  List<Developer> developer){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<Developer>(developer);
+        this.status = Status.PENDING;
+    }
+
+    /**
+     * Game constructor for when you don't know the description yet
+     * @param title game title
+     * @param developer link to developer object
+     */
+    public Game(String title, List<Developer> developer){
+        this.title = title;
+        this.developers = new ArrayList<Developer>(developer);
+        this.description = "No Description Given";
+        this.status = Status.PENDING;
+    }
+
 
     /**
      * FullFull constructor (should only be used for backend tests)
@@ -26,7 +67,8 @@ public class Game {
     public Game(String title, String description, Developer developer, Status status){
         this.title = title;
         this.description = description;
-        this.developer = developer;
+        this.developers = new ArrayList<Developer>();
+        this.developers.add(developer);
         this.status = status;
     }
 
@@ -39,7 +81,8 @@ public class Game {
     public Game(String title, String description, Developer developer){
         this.title = title;
         this.description = description;
-        this.developer = developer;
+        this.developers = new ArrayList<Developer>();
+        this.developers.add(developer);
         this.status = Status.PENDING;
     }
 
@@ -50,7 +93,8 @@ public class Game {
      */
     public Game(String title, Developer developer){
         this.title = title;
-        this.developer = developer;
+        this.developers = new ArrayList<Developer>();
+        this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
     }
@@ -81,6 +125,12 @@ public class Game {
         this.status = status;
     }
 
+    /**
+     * Allows for the addition of multiple developers
+     * @param developer a user who develops games for general users
+     */
+    public void addDeveloper(Developer developer) {this.developers.add(developer);}
+
     // ------GETTERS------
 
     public String getTitle() {
@@ -91,8 +141,8 @@ public class Game {
         return description;
     }
 
-    public Developer getDeveloper() {
-        return developer;
+    public List<Developer> getDevelopers() {
+        return developers;
     }
 
     public Status getStatus() {
