@@ -1,6 +1,7 @@
 BEGIN TRANSACTION;
 
 -- Dropping Old --
+DROP VIEW IF EXISTS Combined;
 DROP TABLE IF EXISTS GameDevelopers;
 DROP TABLE IF EXISTS Games;
 DROP TABLE IF EXISTS Developers;
@@ -46,9 +47,9 @@ CREATE TABLE GameDevelopers(
 
 -- Inserts --
 INSERT INTO GameStatuses VALUES
-    (0, 'Pending'),
-    (1, 'Accepted'),
-    (2, 'Rejected');
+    (0, 'PENDING'),
+    (1, 'ACCEPTED'),
+    (2, 'REJECTED');
 
 
 COMMIT;
