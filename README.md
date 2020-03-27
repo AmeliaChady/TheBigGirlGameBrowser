@@ -9,9 +9,6 @@ This project will replicate the non-commercial part of a game store, assisting w
 
 ## [Sprint 1 Class Diagram](https://drive.google.com/file/d/1WbfxSb3m6w8zfWdiadFw75o8nKdFNza9/view?usp=sharing)
 
-## [Overall Class Diagram (in progress)](https://drive.google.com/file/d/1agoIFHWCq6-q52iRUu43jdNgQK72Lq78/view?usp=sharing)
-
-
 # Sprints
 Sprint 1 - Developers, Admins, And A Database (DAAAD)
 ## [Sprint 1 Notes](https://docs.google.com/document/d/1dgWSw5ewKc94H5q6vRfAhVsXABWnshG3-aD9EJMxDLw/edit?usp=sharing)
