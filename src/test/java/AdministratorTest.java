@@ -15,11 +15,10 @@ public class AdministratorTest {
     @Test
     public void reviewGameTest() {
         Administrator administrator = new Administrator("the_administrator");
-        GameList gameList = new GameList("A great list of games");
         Game game = new Game("My very first game", new Developer("Some Dev"));
 
-        // Add a new Game
-        administrator.reviewGame(gameList, game);
-        assertEquals(1, gameList.getGameCount());
+        // Allow a game to be be available
+        administrator.reviewGame(game);
+        assertEquals("ACCEPTED", game.getStatus().toString());
     }
 }

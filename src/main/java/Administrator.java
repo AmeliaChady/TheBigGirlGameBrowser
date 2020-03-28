@@ -13,13 +13,10 @@ public class Administrator {
     }
 
     /**
-     * Add or a reject a game from a list
-     * @param gameList - game list to add a game to
-     * @param game - game to be reviewed
+     * Changes a games status to 'accepted'
+     * @param game - game to approve
      */
-    public void reviewGame(GameList gameList, Game game) {
-        gameList.includeGame(game);
-    }
+    public void reviewGame(Game game) { }
 
     // ------GETTERS------
     public String getUsername() { return username; }
