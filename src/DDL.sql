@@ -14,12 +14,10 @@ CREATE TABLE Developers(
     name INTEGER UNIQUE NOT NULL
     );
 
-
 CREATE TABLE GameStatuses(
     gsid INTEGER PRIMARY KEY AUTOINCREMENT,
     status TEXT UNIQUE NOT NULL
     );
-
 
 CREATE TABLE Games(
     gid INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,7 +26,6 @@ CREATE TABLE Games(
     gsid INTEGER NOT NULL,
     FOREIGN KEY(gsid) REFERENCES GameStatuses(gsid)
     );
-
 
 CREATE TABLE GameDevelopers(
     gid INTEGER NOT NULL,

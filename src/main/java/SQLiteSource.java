@@ -35,7 +35,7 @@ public class SQLiteSource implements DataSource{
 
         String sql = "REPLACE INTO Games(title, developer, description, status) VALUES(" +
                 "\"" + game.getTitle() + "\", " +
-                "\"" + game.getDeveloper().getName() + "\", " +
+                "\"" + game.getDevelopers().get(0).getName() + "\", " +
                 "\"" + game.getDescription() + "\", " +
                 "\"" + game.getStatus() + "\");";
         try {

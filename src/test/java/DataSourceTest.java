@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DataSourceTest {
     public static void DataSourceSaveGameTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
+        System.out.println("Warning: Used Combined View to verify");
         Game cooltestgame = new Game("testGame", "This is a test to save a game object", new Developer("Frank"));
 
         // Saving a game
@@ -47,6 +48,18 @@ public class DataSourceTest {
 
         // Handles Games with Multiple Developers
 
+        cooltestgame = new Game("Toot Scooters",
+                      "mario kart hack where all sounds are balloons popping",
+                                new Developer("Ted"));
+        cooltestgame.addDeveloper(new Developer("CorgiLover87"));
+
+        ds.saveGame(cooltestgame);
+        System.out.println("Warning: Requires Manual Check");
+        System.out.println("Values Should Be: " +
+                "\n      title = 'Toot Scooters'" +
+                "\n  developer = 'Ted', 'CorgiLover87'" +
+                "\ndescription = 'mario kart hack where all sounds are balloons popping'" +
+                "\n     status = 'PENDING'");
 
         // Can't give a null game
         assertThrows(IllegalArgumentException.class, () -> ds.saveGame(null));
