@@ -2,6 +2,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class SQLiteSource implements DataSource{
     String path;
@@ -33,16 +34,114 @@ public class SQLiteSource implements DataSource{
             throw new IllegalArgumentException("Game is null");
         }
 
-        String sql = "REPLACE INTO Games(title, developer, description, status) VALUES(" +
-                "\"" + game.getTitle() + "\", " +
-                "\"" + game.getDevelopers().get(0).getName() + "\", " +
-                "\"" + game.getDescription() + "\", " +
-                "\"" + game.getStatus() + "\");";
-        try {
+        try{
+            // Set up statement
             Statement s = conn.createStatement();
+            s.execute("BEGIN TRANSACTION;");
+
+            safeUpsertGame(game, s);
+
+            // Games ID
+            String sql = "SELECT gid FROM Games WHERE title=\""+game.getTitle()+"\";";
+            s.execute(sql);
+            int gid = s.getResultSet().getInt(1);
+
+            // Developers Set Up
+            Iterator<Developer> devs = game.getDevelopers().iterator();
+            int did;
+
+            // Dev Iterator
+            while (devs.hasNext()) {
+                // Developer Set Up
+                Developer d = devs.next();
+                safeUpsertDevelopers(d, s);
+
+                // Getting Developer ID
+                sql = "SELECT did FROM Developers WHERE name=\"" + d.getName() + "\";";
+                s.execute(sql);
+                did = s.getResultSet().getInt(1);
+
+                // Connect to Game
+                safeUpsertGameDevelopers(gid, did, s);
+            }
+
+
+            // Finalize
+            s.execute("COMMIT;");
+            s.close();
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+
+    }
+    private void safeUpsertGame(Game game, Statement s) throws DataSourceException{
+        // Get Game Status ID
+        String sql = "SELECT gsid FROM GameStatuses WHERE "
+                + "status = \"" + game.getStatus() + "\"";
+        int gsid;
+        try {
+            s.execute(sql);
+            gsid = s.getResultSet().getInt(1);
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+
+
+        // Replace Into Game Table
+        try {
+            sql = "SELECT * FROM Games WHERE title=\""+game.getTitle()+"\";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (exists)
+                sql = "UPDATE Games SET " +
+                        "description=\"" + game.getDescription() + "\", " +
+                        "gsid=" + gsid +
+                        " WHERE title=\""+ game.getTitle() + "\";";
+            else {
+                sql = "INSERT INTO Games(title, description, gsid) VALUES(" +
+                        "\"" + game.getTitle() + "\", " +
+                        "\"" + game.getDescription() + "\", " +
+                        gsid + ");";
+            }
             s.execute(sql);
         }catch (SQLException e){
-            System.out.println(e);
+            System.out.println("a " + e);
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+    private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
+        try {
+            String sql = "SELECT * FROM Developers WHERE name =\""+d.getName()+"\";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (!exists){
+                sql = "INSERT INTO Developers(name) VALUES(" +
+                        "\"" + d.getName() + "\");";
+                s.execute(sql);
+            }
+
+        }catch (SQLException e){
+            System.out.println("b " + e);
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+    private void safeUpsertGameDevelopers(int gid, int did, Statement s) throws DataSourceException{
+        try {
+            String sql = "SELECT * FROM GameDevelopers WHERE" +
+                    " gid=" + gid +
+                    " AND did=" + did + ";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (!exists){
+                sql = "INSERT INTO GameDevelopers VALUES ("+gid+", "+did+");";
+                s.execute(sql);
+            }
+
+        }catch (SQLException e){
+            System.out.println("c " +e);
             throw new DataSourceException(e.getMessage());
         }
     }

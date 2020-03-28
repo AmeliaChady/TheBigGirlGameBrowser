@@ -37,7 +37,13 @@ CREATE TABLE GameDevelopers(
 
 
 -- Constraints --
-
+CREATE VIEW Combined AS
+    SELECT title, name, description, status
+    FROM GameDevelopers
+        INNER JOIN Developers D on GameDevelopers.did = D.did
+        INNER JOIN Games G on GameDevelopers.gid = G.gid
+        INNER JOIN GameStatuses GS on G.gsid = GS.gsid
+    ORDER BY title, name;
 
 -- Views --
 
