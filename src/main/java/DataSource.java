@@ -16,12 +16,4 @@ public interface DataSource {
      * @throws DataSourceException if underlying data source throws an exception
      */
     public Game loadGame(String title) throws DataSourceException;
-
-    /**
-     * Searches Data Source for a Game based off its title. Developers are created if needed.
-     * @param title the title to look for
-     * @return Game if the DataSource has a matching title. Otherwise null.
-     * @throws DataSourceException if underlying data source throws an exception
-     */
-    public Game loadGame(String title, List<Developer> developers) throws DataSourceException;
 }
