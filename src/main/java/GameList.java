@@ -61,6 +61,20 @@ public class GameList {
         return gameFound;
     }
 
+    public void displayAllGames(){
+        System.out.println(name + ":\n");
+
+        if (getGameCount()==0){
+            System.out.println("This list is empty");
+        }
+        else {
+            for (int i = 0; i < getGameCount(); i++) {
+                gameList.get(i).displayGame();
+                //System.out.println("\n");
+            }
+        }
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
