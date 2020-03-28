@@ -61,6 +61,10 @@ public class GameList {
         return gameFound;
     }
 
+    public void displayAllGames(){
+
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
