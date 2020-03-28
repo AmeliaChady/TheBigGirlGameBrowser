@@ -1,5 +1,6 @@
 public class Developer {
 
+    private int id;
     private String name;
     private GameList gameList;
 
