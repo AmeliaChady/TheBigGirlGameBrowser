@@ -10,7 +10,7 @@ public class DataSourceTest {
     public static void dataSourceSaveGameTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
-        Game cooltestgame = new Game("testGame", "This is a test to save a game object", new Developer("Frank"));
+        Game cooltestgame = new Game("testGame", "This is a test to save a game object", "Frank");
 
         // Saving a game
         try {
@@ -35,7 +35,7 @@ public class DataSourceTest {
         }
 
         // Updating a saved game works - Description
-        cooltestgame = new Game("Test-zx the Game","ahhhhhhhhh",new Developer("Ted"));
+        cooltestgame = new Game("Test-zx the Game","ahhhhhhhhh","Ted");
         ds.saveGame(cooltestgame);
         cooltestgame.changeDescription("cool robot game");
         ds.saveGame(cooltestgame);
@@ -55,8 +55,8 @@ public class DataSourceTest {
 
         cooltestgame = new Game("Toot Scooters",
                       "mario kart hack where all sounds are balloons popping",
-                                new Developer("Ted"));
-        cooltestgame.addDeveloper(new Developer("CorgiLover87"));
+                                "Ted");
+        cooltestgame.addDeveloper("CorgiLover87");
 
         ds.saveGame(cooltestgame);
         System.out.println("Warning: Requires Manual Check");
@@ -75,10 +75,10 @@ public class DataSourceTest {
 
         // Basic
         // Adding Two Test Games
-        Game g = new Game("LoadGameTest1", "description", new Developer("LGT_A"));
+        Game g = new Game("LoadGameTest1", "description", "LGT_A");
         ds.saveGame(g);
-        g = new Game("LoadGameTest2", "noitpircsed", new Developer("LGT_B"));
-        g.addDeveloper(new Developer("LGT_C"));
+        g = new Game("LoadGameTest2", "noitpircsed","LGT_B");
+        g.addDeveloper("LGT_C");
         g.changeStatus(Status.ACCEPTED);
         ds.saveGame(g);
 
@@ -86,15 +86,15 @@ public class DataSourceTest {
         g = ds.loadGame("LoadGameTest1");
         assertNotNull(g);
         assertEquals("description", g.getDescription());
-        assertEquals("LGT_A", g.getDevelopers().get(0).getName());
+        assertEquals("LGT_A", g.getDevelopers().get(0));
         assertEquals(Status.PENDING, g.getStatus());
 
         // Can Find A Game with Multiple Developers
         g = ds.loadGame("LoadGameTest2");
         assertNotNull(g);
         assertEquals("noitpircsed", g.getDescription());
-        assertEquals("LGT_B", g.getDevelopers().get(0).getName());
-        assertEquals("LGT_C", g.getDevelopers().get(1).getName());
+        assertEquals("LGT_B", g.getDevelopers().get(0));
+        assertEquals("LGT_C", g.getDevelopers().get(1));
         assertEquals(Status.ACCEPTED, g.getStatus());
 
         // Putting null gives null
@@ -105,20 +105,7 @@ public class DataSourceTest {
 
         // Developer has game in gamelist
         g = ds.loadGame("LoadGameTest1");
-        assertEquals(g, g.getDevelopers().get(0).getGameList().getGame("LoadGameTest1"));
+        assertEquals(g, g.getDevelopers().get(0));
 
-        // Advanced
-        // Load Game title and Devlist
-        List<Developer> devlist = new LinkedList<Developer>();
-        devlist.add(new Developer("LGT_A"));
-        devlist.add(new Developer("LGT_B"));
-
-        // Developer from list is used in the Game
-        assertEquals(devlist.get(0), ds.loadGame("LoadGameTest1", devlist).getDevelopers().get(0));
-
-        // Developers are added if not on list and Developers
-
-
-        // Missing Developer Added to
     }
 }
