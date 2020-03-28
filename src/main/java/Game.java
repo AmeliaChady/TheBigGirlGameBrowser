@@ -131,6 +131,21 @@ public class Game {
      */
     public void addDeveloper(Developer developer) {this.developers.add(developer);}
 
+    public void displayGame() {
+        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
+        if (developers.size()==0){
+            display += "None";
+        }
+        else{
+            for(int i = 0; i < developers.size()-1; i++){
+                display += developers.get(i).getName() + ", ";
+            }
+            display += developers.get(developers.size()-1).getName();
+        }
+        display += "\nStatus: "+ status.toString() + "\n";
+        System.out.println(display);
+    }
+
     // ------GETTERS------
 
     public String getTitle() {
@@ -148,4 +163,5 @@ public class Game {
     public Status getStatus() {
         return status;
     }
+
 }
