@@ -106,7 +106,6 @@ public class SQLiteSource implements DataSource{
             }
             s.execute(sql);
         }catch (SQLException e){
-            System.out.println("a " + e);
             throw new DataSourceException(e.getMessage());
         }
     }
@@ -121,9 +120,7 @@ public class SQLiteSource implements DataSource{
                         "\"" + d.getName() + "\");";
                 s.execute(sql);
             }
-
         }catch (SQLException e){
-            System.out.println("b " + e);
             throw new DataSourceException(e.getMessage());
         }
     }
@@ -141,7 +138,6 @@ public class SQLiteSource implements DataSource{
             }
 
         }catch (SQLException e){
-            System.out.println("c " +e);
             throw new DataSourceException(e.getMessage());
         }
     }

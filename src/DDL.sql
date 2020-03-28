@@ -52,7 +52,8 @@ CREATE VIEW Combined AS
 INSERT INTO GameStatuses VALUES
     (0, 'PENDING'),
     (1, 'ACCEPTED'),
-    (2, 'REJECTED');
+    (2, 'REJECTED'),
+    (3, 'LIMBO');
 
 
 COMMIT;
