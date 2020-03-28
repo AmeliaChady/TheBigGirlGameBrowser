@@ -116,8 +116,8 @@ public class DataSourceTest {
         // Developer from list is used in the Game
         assertEquals(devlist.get(0), ds.loadGame("LoadGameTest1", devlist).getDevelopers().get(0));
 
-        // Developers are added if not on list and
-        assertNotNull();
+        // Developers are added if not on list and Developers
+
 
         // Missing Developer Added to
     }
