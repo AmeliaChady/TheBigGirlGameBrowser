@@ -11,4 +11,14 @@ public class AdministratorTest {
         // Username not created (invalid)
         assertThrows(IllegalArgumentException.class, () -> new Administrator(""));
     }
+
+    @Test
+    public void reviewGameTest() {
+        Administrator administrator = new Administrator("the_administrator");
+        Game game = new Game("My very first game", new Developer("Some Dev"));
+
+        // Allow a game to be be available
+        administrator.reviewGame(game);
+        assertEquals("ACCEPTED", game.getStatus().toString());
+    }
 }

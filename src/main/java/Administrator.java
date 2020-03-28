@@ -12,6 +12,14 @@ public class Administrator {
         this.username = username;
     }
 
+    /**
+     * Changes a games status to 'accepted'
+     * @param game - game to approve
+     */
+    public void reviewGame(Game game) {
+        game.changeStatus(Status.ACCEPTED);
+    }
+
     // ------GETTERS------
     public String getUsername() { return username; }
 }
