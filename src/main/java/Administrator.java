@@ -12,6 +12,15 @@ public class Administrator {
         this.username = username;
     }
 
+    /**
+     * Add or a reject a game from a list
+     * @param gameList - game list to add a game to
+     * @param game - game to be reviewed
+     */
+    public void reviewGame(GameList gameList, Game game) {
+        gameList.includeGame(game);
+    }
+
     // ------GETTERS------
     public String getUsername() { return username; }
 }
