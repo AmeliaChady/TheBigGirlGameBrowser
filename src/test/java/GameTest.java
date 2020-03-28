@@ -197,6 +197,7 @@ public class GameTest {
         Game g6 = new Game("cutest dog <3", "she is my dog. I hate her name but she's still cute", developer, Status.REJECTED);
         //--------- end of game creation---------
 
+        //6 games
         GameList gameList = new GameList("coolKidzList");
         gameList.includeGame(g1);
         gameList.includeGame(g2);
@@ -209,8 +210,26 @@ public class GameTest {
         System.setOut(new PrintStream(outContent));
 
         gameList.displayAllGames();
-        assertEquals(5,15);
+        assertEquals(6, gameList.getGameCount());
+        assertEquals("coolKidzList:\n\nTitle: testGame\nDescription: This is a test to create a new game object\nDeveloper(s): None\nStatus: PENDING\n\nTitle: Best game\nDescription: This is the best game ever!\nDeveloper(s): kerry\nStatus: PENDING\n\nTitle: Cooking Mama\nDescription: No Description Given\nDeveloper(s): kerry anne, kelsey\nStatus: PENDING\n\nTitle: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\nStatus: PENDING\n\nTitle: camp rock 4\nDescription: kevin sells real estate now\nDeveloper(s): kevin jonas\nStatus: ACCEPTED\n\nTitle: cutest dog <3\nDescription: she is my dog. I hate her name but she's still cute\nDeveloper(s): bertha\nStatus: REJECTED\n", outContent.toString());
 
+
+        //0 games
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        GameList gameList1 = new GameList("Waldo's List");
+        gameList1.displayAllGames();
+        assertEquals(0, gameList1.getGameCount());
+        assertEquals("Waldo's list:\nThis list is empty", outContent.toString());
+
+        //1 game
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        GameList gameList2 = new GameList("Kerry Anne's List");
+        gameList.includeGame(g4);
+        gameList2.displayAllGames();
+        assertEquals(1, gameList2.getGameCount());
+        assertEquals("Kerry Anne's list:\n\nTitle: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\n", outContent.toString());
         //TODO: finish test with assertEquals for above, as well as test for 0 and 1 game.
     }
 }
