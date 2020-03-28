@@ -16,8 +16,16 @@ public class Administrator {
      * Changes a games status to 'accepted'
      * @param game - game to approve
      */
-    public void reviewGame(Game game) {
+    public void acceptGame(Game game) {
         game.changeStatus(Status.ACCEPTED);
+    }
+
+    /**
+     * Changes a games status to 'rejected'
+     * @param game - game to approve
+     */
+    public void rejectGame(Game game) {
+        game.changeStatus(Status.REJECTED);
     }
 
     // ------GETTERS------
