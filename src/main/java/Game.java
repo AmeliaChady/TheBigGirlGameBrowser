@@ -6,7 +6,7 @@ enum Status {PENDING, ACCEPTED, REJECTED, LIMBO}
 public class Game {
     private String title;
     private String description;
-    private List<Developer> developers;
+    private List<String> developers;
     private Status status;
 
     /**
@@ -15,7 +15,7 @@ public class Game {
     public Game(){
         title = "testGame";
         description = "This is a test to create a new game object";
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         status = Status.PENDING;
     }
 
@@ -25,10 +25,10 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, List<Developer> developer, Status status){
+    public Game(String title, String description, List<String> developer, Status status){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<String>(developer);
         this.status = status;
     }
 
@@ -38,10 +38,10 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description,  List<Developer> developer){
+    public Game(String title, String description,  List<String> developer){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<String>(developer);
         this.status = Status.PENDING;
     }
 
@@ -50,9 +50,9 @@ public class Game {
      * @param title game title
      * @param developer link to developer object
      */
-    public Game(String title, List<Developer> developer){
+    public Game(String title, List<String> developer){
         this.title = title;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<String>(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
     }
@@ -64,10 +64,10 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, Developer developer, Status status){
+    public Game(String title, String description, String developer, Status status){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = status;
     }
@@ -78,10 +78,10 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, Developer developer){
+    public Game(String title, String description, String developer){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = Status.PENDING;
     }
@@ -91,9 +91,9 @@ public class Game {
      * @param title game title
      * @param developer link to developer object
      */
-    public Game(String title, Developer developer){
+    public Game(String title, String developer){
         this.title = title;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
@@ -129,7 +129,7 @@ public class Game {
      * Allows for the addition of multiple developers
      * @param developer a user who develops games for general users
      */
-    public void addDeveloper(Developer developer) {this.developers.add(developer);}
+    public void addDeveloper(String developer) {this.developers.add(developer);}
 
     public void displayGame() {
         String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
@@ -137,10 +137,11 @@ public class Game {
             display += "None";
         }
         else{
+            // TODO: iterator?
             for(int i = 0; i < developers.size()-1; i++){
-                display += developers.get(i).getName() + ", ";
+                display += developers.get(i) + ", ";
             }
-            display += developers.get(developers.size()-1).getName();
+            display += developers.get(developers.size()-1);
         }
         display += "\nStatus: "+ status.toString() + "\n";
         System.out.println(display);
@@ -156,7 +157,7 @@ public class Game {
         return description;
     }
 
-    public List<Developer> getDevelopers() {
+    public List<String> getDevelopers() {
         return developers;
     }
 

@@ -3,6 +3,7 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class SQLiteSource implements DataSource{
     String path;
@@ -13,7 +14,7 @@ public class SQLiteSource implements DataSource{
      * @param path path to sqlite database
      * @throws IllegalArgumentException if path DNE
      */
-    SQLiteSource(String path) throws IllegalArgumentException, SQLException{
+    SQLiteSource(String path) throws IllegalArgumentException{
         if(path == null || path.equalsIgnoreCase(""))
             throw new IllegalArgumentException("Incorrect Path");
         //System.out.println(Files.exists(Paths.get(path)));
@@ -47,17 +48,17 @@ public class SQLiteSource implements DataSource{
             int gid = s.getResultSet().getInt(1);
 
             // Developers Set Up
-            Iterator<Developer> devs = game.getDevelopers().iterator();
+            Iterator<String> devs = game.getDevelopers().iterator();
             int did;
 
             // Dev Iterator
             while (devs.hasNext()) {
                 // Developer Set Up
-                Developer d = devs.next();
+                String d = devs.next();
                 safeUpsertDevelopers(d, s);
 
                 // Getting Developer ID
-                sql = "SELECT did FROM Developers WHERE name=\"" + d.getName() + "\";";
+                sql = "SELECT did FROM Developers WHERE name=\"" + d + "\";";
                 s.execute(sql);
                 did = s.getResultSet().getInt(1);
 
@@ -74,6 +75,34 @@ public class SQLiteSource implements DataSource{
         }
 
     }
+
+    @Override
+    public Game loadGame(String title) throws DataSourceException {
+        if(title==null){
+            return null;
+        }
+
+        try {
+            Statement s = conn.createStatement();
+            String sql = "placeholder";
+
+
+
+            s.close();
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+
+
+
+
+
+
+        return null;
+    }
+
+    // underlying DB calls
+    // Upsert -> Insert/Update depending on existence
     private void safeUpsertGame(Game game, Statement s) throws DataSourceException{
         // Get Game Status ID
         String sql = "SELECT gsid FROM GameStatuses WHERE "
@@ -109,15 +138,15 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-    private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
+    private void safeUpsertDevelopers(String d, Statement s) throws DataSourceException{
         try {
-            String sql = "SELECT * FROM Developers WHERE name =\""+d.getName()+"\";";
+            String sql = "SELECT * FROM Developers WHERE name =\""+ d +"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO Developers(name) VALUES(" +
-                        "\"" + d.getName() + "\");";
+                        "\"" + d + "\");";
                 s.execute(sql);
             }
         }catch (SQLException e){

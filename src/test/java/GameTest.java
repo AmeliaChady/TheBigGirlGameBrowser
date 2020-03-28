@@ -17,13 +17,13 @@ public class GameTest {
         assertEquals("This is a test to create a new game object", game.getDescription());
         assertNotNull(game.getDevelopers());
 
-        Game newGame = new Game("daBears", new Developer("Sheila"));
+        Game newGame = new Game("daBears", "Sheila");
 
         assertEquals("daBears", newGame.getTitle());
         assertEquals("No Description Given", newGame.getDescription());
         assertNotNull(newGame.getDevelopers());
 
-        Game describedGame = new Game("badTitle", "Bad Description", new Developer("Kelly"));
+        Game describedGame = new Game("badTitle", "Bad Description", "Kelly");
         assertEquals("badTitle", describedGame.getTitle());
         assertEquals("Bad Description", describedGame.getDescription());
         assertNotNull(describedGame.getDevelopers());
@@ -31,7 +31,7 @@ public class GameTest {
 
     @Test
     public void changeDescriptionTest(){
-        Game game = new Game("daBears", new Developer("Wendell"));
+        Game game = new Game("daBears", "Wendell");
 
         assertEquals("No Description Given", game.getDescription());
 
@@ -44,7 +44,7 @@ public class GameTest {
 
     @Test
     public void changeTitleTest(){
-        Game game = new Game("badTitle", "Bad Description", new Developer("Winston"));
+        Game game = new Game("badTitle", "Bad Description", "Winston");
 
         assertEquals("badTitle", game.getTitle());
 
@@ -55,7 +55,7 @@ public class GameTest {
 
     @Test
     public void enumTest(){
-        Game game = new Game("title", "description", new Developer("Jimmy"), Status.ACCEPTED);
+        Game game = new Game("title", "description", "Jimmy", Status.ACCEPTED);
         assertEquals(Status.ACCEPTED, game.getStatus()); //checks that the fullfull constructor works
 
         game.changeStatus(Status.PENDING);
@@ -64,7 +64,7 @@ public class GameTest {
         game.changeStatus(Status.REJECTED);
         assertEquals(Status.REJECTED, game.getStatus());//checks assignment
 
-        game = new Game("title", "description", new Developer("Carter"));
+        game = new Game("title", "description","Carter");
         assertEquals(Status.PENDING, game.getStatus()); //Checks other constructors default assignment
 
         game.changeStatus(Status.LIMBO);
@@ -73,19 +73,17 @@ public class GameTest {
 
     @Test
     public void addDeveloperTest(){
-        List<Developer> developers = new ArrayList<Developer>();
-        developers.add(new Developer("Fluffy"));
-        developers.add(new Developer("Nut"));
-        developers.add(new Developer("Face"));
+        List<String> developers = new ArrayList<String>();
+        developers.add("Fluffy");
+        developers.add("Nut");
+        developers.add("Face");
 
         Game multiDevGame = new Game("FlufferNutter",
                 "The adventures of a cat and their Penutbutter", developers, Status.ACCEPTED);
         assertEquals(developers, multiDevGame.getDevelopers());
 
-        Developer thatGuy = new Developer("Pual");
-
-        multiDevGame.addDeveloper(thatGuy);
-        developers.add(thatGuy);
+        multiDevGame.addDeveloper("Pual");
+        developers.add("Pual");
 
         assertEquals(developers, multiDevGame.getDevelopers());
     }
@@ -104,9 +102,8 @@ public class GameTest {
         //1 developer, pending status
         ByteArrayOutputStream outContent2 = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent2));
-        List<Developer> developer = new ArrayList<>();
-        Developer dev = new Developer("kerry");
-        developer.add(dev);
+        List<String> developer = new ArrayList<>();
+        developer.add("kerry");
         Game g2 = new Game("Best game", "This is the best game ever!", developer, Status.PENDING);
         g2.displayGame();
         assertEquals("Title: Best game\nDescription: This is the best game ever!\nDeveloper(s): kerry\nStatus: PENDING\n\n", outContent2.toString());
@@ -114,11 +111,9 @@ public class GameTest {
         //2 developers, pending status, no description
         ByteArrayOutputStream outContent3 = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent3));
-        List<Developer> developers = new ArrayList<>();
-        Developer dev1 = new Developer("kerry anne");
-        developers.add(dev1);
-        Developer dev2 = new Developer("kelsey");
-        developers.add(dev2);
+        List<String> developers = new ArrayList<>();
+        developers.add("kerry anne");
+        developers.add("kelsey");
         Game g3 = new Game("Cooking Mama",  developers);
         g3.displayGame();
         assertEquals("Title: Cooking Mama\nDescription: No Description Given\nDeveloper(s): kerry anne, kelsey\nStatus: PENDING\n\n", outContent3.toString());
@@ -127,13 +122,7 @@ public class GameTest {
         //3 developers, pending status
         ByteArrayOutputStream outContent4 = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent4));
-        developers = new ArrayList<>();
-        dev1 = new Developer("kerry anne");
-        developers.add(dev1);
-        dev2 = new Developer("kelsey");
-        developers.add(dev2);
-        Developer dev3 = new Developer("grace t. dury");
-        developers.add(dev3);
+        developers.add("grace t. dury");
         Game g4 = new Game("Animal Crossing New Horizons", "Live as the only human, sell seashells to survive, and be in constant debt.", developers, Status.PENDING);
         g4.displayGame();
         assertEquals("Title: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\nStatus: PENDING\n\n", outContent4.toString());
@@ -143,8 +132,7 @@ public class GameTest {
         ByteArrayOutputStream outContent5 = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent5));
         developer = new ArrayList<>();
-        dev1 = new Developer("kevin jonas");
-        developer.add(dev1);
+        developer.add("kevin jonas");
         Game g5 = new Game("camp rock 4", "kevin sells real estate now", developer, Status.ACCEPTED);
         g5.displayGame();
         assertEquals("Title: camp rock 4\nDescription: kevin sells real estate now\nDeveloper(s): kevin jonas\nStatus: ACCEPTED\n\n", outContent5.toString());
@@ -154,8 +142,7 @@ public class GameTest {
         ByteArrayOutputStream outContent6 = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent6));
         developer = new ArrayList<>();
-        dev1 = new Developer("bertha");
-        developer.add(dev1);
+        developer.add("bertha");
         Game g6 = new Game("cutest dog <3", "she is my dog. I hate her name but she's still cute", developer, Status.REJECTED);
         g6.displayGame();
         assertEquals("Title: cutest dog <3\nDescription: she is my dog. I hate her name but she's still cute\nDeveloper(s): bertha\nStatus: REJECTED\n\n", outContent6.toString());
