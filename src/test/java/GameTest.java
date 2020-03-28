@@ -63,6 +63,9 @@ public class GameTest {
 
         game = new Game("title", "description", new Developer("Carter"));
         assertEquals(Status.PENDING, game.getStatus()); //Checks other constructors default assignment
+
+        game.changeStatus(Status.LIMBO);
+        assertEquals(Status.LIMBO, game.getStatus());//checks assignment
     }
 
     @Test

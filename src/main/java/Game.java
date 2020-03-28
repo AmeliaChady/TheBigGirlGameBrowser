@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-enum Status {PENDING, ACCEPTED, REJECTED}
+enum Status {PENDING, ACCEPTED, REJECTED, LIMBO}
 
 public class Game {
     private String title;
