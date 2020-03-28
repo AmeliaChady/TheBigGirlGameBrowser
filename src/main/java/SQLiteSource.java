@@ -48,17 +48,17 @@ public class SQLiteSource implements DataSource{
             int gid = s.getResultSet().getInt(1);
 
             // Developers Set Up
-            Iterator<Developer> devs = game.getDevelopers().iterator();
+            Iterator<String> devs = game.getDevelopers().iterator();
             int did;
 
             // Dev Iterator
             while (devs.hasNext()) {
                 // Developer Set Up
-                Developer d = devs.next();
+                String d = devs.next();
                 safeUpsertDevelopers(d, s);
 
                 // Getting Developer ID
-                sql = "SELECT did FROM Developers WHERE name=\"" + d.getName() + "\";";
+                sql = "SELECT did FROM Developers WHERE name=\"" + d + "\";";
                 s.execute(sql);
                 did = s.getResultSet().getInt(1);
 
@@ -101,11 +101,6 @@ public class SQLiteSource implements DataSource{
         return null;
     }
 
-    @Override
-    public Game loadGame(String title, List<Developer> developers) throws DataSourceException {
-        return null;
-    }
-
     // underlying DB calls
     // Upsert -> Insert/Update depending on existence
     private void safeUpsertGame(Game game, Statement s) throws DataSourceException{
@@ -143,15 +138,15 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-    private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
+    private void safeUpsertDevelopers(String d, Statement s) throws DataSourceException{
         try {
-            String sql = "SELECT * FROM Developers WHERE name =\""+d.getName()+"\";";
+            String sql = "SELECT * FROM Developers WHERE name =\""+ d +"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO Developers(name) VALUES(" +
-                        "\"" + d.getName() + "\");";
+                        "\"" + d + "\");";
                 s.execute(sql);
             }
         }catch (SQLException e){

@@ -15,7 +15,7 @@ public class Game {
     public Game(){
         title = "testGame";
         description = "This is a test to create a new game object";
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         status = Status.PENDING;
     }
 
@@ -28,7 +28,7 @@ public class Game {
     public Game(String title, String description, List<String> developer, Status status){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<String>(developer);
         this.status = status;
     }
 
@@ -41,7 +41,7 @@ public class Game {
     public Game(String title, String description,  List<String> developer){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<String>(developer);
         this.status = Status.PENDING;
     }
 
@@ -52,7 +52,7 @@ public class Game {
      */
     public Game(String title, List<String> developer){
         this.title = title;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<String>(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
     }
@@ -67,7 +67,7 @@ public class Game {
     public Game(String title, String description, String developer, Status status){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = status;
     }
@@ -81,7 +81,7 @@ public class Game {
     public Game(String title, String description, String developer){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = Status.PENDING;
     }
@@ -93,7 +93,7 @@ public class Game {
      */
     public Game(String title, String developer){
         this.title = title;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
