@@ -17,7 +17,9 @@ public class Administrator {
      * @param gameList - game list to add a game to
      * @param game - game to be reviewed
      */
-    public void reviewGame(GameList gameList, Game game) {}
+    public void reviewGame(GameList gameList, Game game) {
+        gameList.includeGame(game);
+    }
 
     // ------GETTERS------
     public String getUsername() { return username; }
