@@ -142,7 +142,7 @@ public class Game {
             }
             display += developers.get(developers.size()-1).getName();
         }
-        display += "\nStatus: "+ status.toString();
+        display += "\nStatus: "+ status.toString() + "\n";
         System.out.println(display);
     }
 
