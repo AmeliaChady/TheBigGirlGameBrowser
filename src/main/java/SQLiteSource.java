@@ -3,6 +3,7 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class SQLiteSource implements DataSource{
     String path;
@@ -13,7 +14,7 @@ public class SQLiteSource implements DataSource{
      * @param path path to sqlite database
      * @throws IllegalArgumentException if path DNE
      */
-    SQLiteSource(String path) throws IllegalArgumentException, SQLException{
+    SQLiteSource(String path) throws IllegalArgumentException{
         if(path == null || path.equalsIgnoreCase(""))
             throw new IllegalArgumentException("Incorrect Path");
         //System.out.println(Files.exists(Paths.get(path)));
@@ -77,10 +78,36 @@ public class SQLiteSource implements DataSource{
 
     @Override
     public Game loadGame(String title) throws DataSourceException {
+        if(title==null){
+            return null;
+        }
+
+        try {
+            Statement s = conn.createStatement();
+            String sql = "placeholder";
+
+
+
+            s.close();
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+
+
+
+
+
+
+        return null;
+    }
+
+    @Override
+    public Game loadGame(String title, List<Developer> developers) throws DataSourceException {
         return null;
     }
 
     // underlying DB calls
+    // Upsert -> Insert/Update depending on existence
     private void safeUpsertGame(Game game, Statement s) throws DataSourceException{
         // Get Game Status ID
         String sql = "SELECT gsid FROM GameStatuses WHERE "

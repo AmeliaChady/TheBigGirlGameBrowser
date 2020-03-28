@@ -1,5 +1,9 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DataSourceTest {
@@ -69,6 +73,7 @@ public class DataSourceTest {
     public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
 
+        // Basic
         // Adding Two Test Games
         Game g = new Game("LoadGameTest1", "description", new Developer("LGT_A"));
         ds.saveGame(g);
@@ -97,5 +102,23 @@ public class DataSourceTest {
 
         // Putting bogus gives null
         assertNull(ds.loadGame("LoadGameTest3"));
+
+        // Developer has game in gamelist
+        g = ds.loadGame("LoadGameTest1");
+        assertEquals(g, g.getDevelopers().get(0).getGameList().getGame("LoadGameTest1"));
+
+        // Advanced
+        // Load Game title and Devlist
+        List<Developer> devlist = new LinkedList<Developer>();
+        devlist.add(new Developer("LGT_A"));
+        devlist.add(new Developer("LGT_B"));
+
+        // Developer from list is used in the Game
+        assertEquals(devlist.get(0), ds.loadGame("LoadGameTest1", devlist).getDevelopers().get(0));
+
+        // Developers are added if not on list and
+        assertNotNull();
+
+        // Missing Developer Added to
     }
 }
