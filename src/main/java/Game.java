@@ -148,4 +148,7 @@ public class Game {
     public Status getStatus() {
         return status;
     }
+
+    public void displayGame() {
+    }
 }
