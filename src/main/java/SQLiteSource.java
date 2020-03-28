@@ -74,6 +74,13 @@ public class SQLiteSource implements DataSource{
         }
 
     }
+
+    @Override
+    public Game loadGame(String title) throws DataSourceException {
+        return null;
+    }
+
+    // underlying DB calls
     private void safeUpsertGame(Game game, Statement s) throws DataSourceException{
         // Get Game Status ID
         String sql = "SELECT gsid FROM GameStatuses WHERE "
