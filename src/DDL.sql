@@ -37,7 +37,7 @@ CREATE TABLE GameDevelopers(
 
 CREATE TABLE GameLists(
     glid INTEGER PRIMARY KEY AUTOINCREMENT,
-    listName TEXT UNIQUE NOT NULL
+    name TEXT UNIQUE NOT NULL
     );
 
 CREATE TABLE GameListsGames(

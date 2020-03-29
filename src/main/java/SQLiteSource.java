@@ -96,7 +96,7 @@ public class SQLiteSource implements DataSource{
             safeUpsertGameList(gameList, s);
 
             // GamesList ID
-            String sql = "SELECT glid FROM GameLists WHERE listName=\""+gameList.getName()+"\";";
+            String sql = "SELECT glid FROM GameLists WHERE name=\""+gameList.getName()+"\";";
             s.execute(sql);
             int glid = s.getResultSet().getInt(1);
 
@@ -263,12 +263,12 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertGameList(GameList gameList, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
-            String sql = "SELECT * FROM GameLists WHERE listName=\""+gameList.getName()+"\";";
+            String sql = "SELECT * FROM GameLists WHERE name=\""+gameList.getName()+"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
-                sql = "INSERT INTO GameLists(listName) VALUES(" +
+                sql = "INSERT INTO GameLists(name) VALUES(" +
                         "\"" + gameList.getName()+ "\");";
             }
             s.execute(sql);
