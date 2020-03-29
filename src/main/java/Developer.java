@@ -3,11 +3,11 @@ import java.util.*;
 public class Developer {
 
     private String name;
-    private GameList gameList;
+    private GameList developerGameList;
 
     public Developer(String nameIn){
         name = nameIn;
-        gameList = new GameList(nameIn+"'s Games");
+        developerGameList = new GameList(nameIn+"'s Games");
     }
 
     public String getName(){
@@ -15,14 +15,17 @@ public class Developer {
     }
 
     public GameList getGameList(){
-        return gameList;
+        return developerGameList;
     }
 
-    public void submitGame(Game gameToSubmit){
-        gameList = getGameList();
+    public void submitGame(Game gameToSubmit, GameList completeList){
+        //needs to add game to developer list
+        //needs to add game to gameList
 
-        //GOING TO ADD HERE TO CHECK AND MAKE SURE GAME NOT ALREADY IN GAME LIST
+        //adds to developers list
+        developerGameList.includeGame(gameToSubmit);
 
-        gameList.includeGame(gameToSubmit);
+        //adds to overall gameList
+        completeList.includeGame(gameToSubmit);
     }
 }

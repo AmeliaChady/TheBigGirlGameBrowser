@@ -27,6 +27,9 @@ public class DeveloperTests {
         Developer d3 = new Developer("I just want to go to sleep");
         Developer d4 = new Developer("The Korona Krew");
         Developer d5 = new Developer("Brett Michaels");
+        Developer d6 = new Developer("six");
+        Developer d7 = new Developer("seven");
+        Developer d8 = new Developer("eight");
 
         //make all the games for testing
         Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1, Status.PENDING);
@@ -38,20 +41,60 @@ public class DeveloperTests {
                 d5, Status.REJECTED);
 
         //create test array list
-        List<Game> gameListTest = new ArrayList<Game>();
+        //List<Game> gameListTest = new ArrayList<Game>();
+        //List<Game> developerListTest = new ArrayList<Game>();
+
+        GameList gameListTest = new GameList("all games");
 
         //add games to array list
-        gameListTest.add(g1);
-        gameListTest.add(g2);
-        gameListTest.add(g3);
-        gameListTest.add(g4);
-        gameListTest.add(g5);
+        gameListTest.includeGame(g1);
+        gameListTest.includeGame(g2);
+        gameListTest.includeGame(g3);
+        gameListTest.includeGame(g4);
+        gameListTest.includeGame(g5);
 
         //NOW WE CAN ACTUALLY TEST THE FUNCTION BABIE
 
-        Game g6 = new Game("title6", "description6", d1, Status.PENDING);
+        Game g6 = new Game("title6", "description6", d6, Status.PENDING);
+        Game g7 = new Game("title7", "description7", d7, Status.PENDING);
+        Game g8 = new Game("title8", "description8", d8, Status.PENDING);
+        Game g9 = new Game("title9", "decription9", d6, Status.PENDING);
 
-        
+
+        //all games in gameList, none in developer list
+        assertEquals(5, gameListTest.getGameCount());
+        assertEquals(0, d6.getGameList().getGameCount());
+
+        d6.submitGame(g6, gameListTest);
+
+        //games list with one added in games list and in d1's list
+        assertEquals(6, gameListTest.getGameCount());
+        assertEquals(1, d6.getGameList().getGameCount());
+
+        //add another game with new developer
+        d7.submitGame(g7, gameListTest);
+
+        assertEquals(7, gameListTest.getGameCount());
+        assertEquals(1, d7.getGameList().getGameCount());
+        //developer 6 list should remain unaffected
+        assertEquals(1, d6.getGameList().getGameCount());
+
+        //add another game with new developer
+
+        d8.submitGame(g8, gameListTest);
+
+        assertEquals(8, gameListTest.getGameCount());
+        assertEquals(1, d8.getGameList().getGameCount());
+        //other developer lists should remain unaffected
+        assertEquals(1, d6.getGameList().getGameCount());
+        assertEquals(1, d7.getGameList().getGameCount());
+
+
+        //add another game to an existing developers list
+        d6.submitGame(g9, gameListTest);
+
+        assertEquals(9, gameListTest);
+        assertEquals(2, d6.getGameList().getGameCount());
 
 
     }
