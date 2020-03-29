@@ -78,7 +78,36 @@ public class GameList {
         else {
             for (int i = 0; i < getGameCount(); i++) {
                 gameList.get(i).displayGame();
-                //System.out.println("\n");
+            }
+        }
+    }
+
+    public void displayListNameAndGameTitles() {
+        String display = name + ": ";
+        if(gameList.size()<1){
+            display += "This list is empty";
+        }
+        else{
+            for (int i = 0; i < getGameCount() - 1; i++) {
+                display += gameList.get(i).getTitle() + ", ";
+            }
+            display += gameList.get(gameList.size() - 1).getTitle();
+        }
+        System.out.println(display);
+    }
+
+
+    public void displayGamesGivenStatus(Status status) {
+        System.out.println(name + "(" + status +"):\n");
+
+        if (getGameCount()==0){
+            System.out.println("This list is empty");
+        }
+        else {
+            for (int i = 0; i < getGameCount(); i++) {
+                if (gameList.get(i).getStatus()==status) {
+                    gameList.get(i).displayGame();
+                }
             }
         }
     }

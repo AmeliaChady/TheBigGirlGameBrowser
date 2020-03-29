@@ -8,6 +8,11 @@ public class Developer {
         gameList = new GameList(nameIn+"'s Games");
     }
 
+    public void displayDeveloper() {
+        System.out.println("Name: " + name );
+        gameList.displayListNameAndGameTitles();
+    }
+
     public String getName(){
         return name;
     }
