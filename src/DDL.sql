@@ -67,6 +67,12 @@ CREATE VIEW Combined AS
         INNER JOIN GameStatuses GS on G.gsid = GS.gsid
     ORDER BY title, name;
 
+CREATE VIEW GameListTest AS
+    SELECT name, title
+    FROM GameListsGames
+        INNER JOIN Games
+        INNER JOIN GameLists
+    ORDER BY name, title:
 -- Views --
 
 

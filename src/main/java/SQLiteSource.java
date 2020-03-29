@@ -76,6 +76,57 @@ public class SQLiteSource implements DataSource{
 
     }
 
+    /**
+     * THIS FUNCTIONS ASSUMING THAT GAMES IN LIST HAVE ALREADY BEEN SAVED
+     * @param gameList the gameList to save
+     * @throws IllegalArgumentException
+     * @throws DataSourceException
+     */
+    @Override
+    public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
+        if(gameList == null){
+            throw new IllegalArgumentException("GameList is null");
+        }
+
+        try{
+            // Set up statement
+            Statement s = conn.createStatement();
+            s.execute("BEGIN TRANSACTION;");
+
+            safeUpsertGameList(gameList, s);
+
+            // GamesList ID
+            String sql = "SELECT glid FROM GameLists WHERE title=\""+gameList.getName()+"\";";
+            s.execute(sql);
+            int glid = s.getResultSet().getInt(1);
+
+            // Games Set Up
+            Iterator<String> games = gameList.getGames().iterator();
+            int gid;
+
+            // Game Iterator
+            while (games.hasNext()) {
+                // Developer Set Up
+                String g = games.next();
+
+                // Getting Developer ID
+                sql = "SELECT gid FROM Games WHERE name=\"" + g + "\";";
+                s.execute(sql);
+                gid = s.getResultSet().getInt(1);
+
+                // Connect to Game
+                safeUpsertGameListGames(glid, gid, s);
+            }
+
+            // Finalize
+            s.execute("COMMIT;");
+            s.close();
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+
+    }
+
     @Override
     public Game loadGame(String title) throws DataSourceException {
         if(title==null){
@@ -122,11 +173,12 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
-            if (exists)
+            if (exists){
                 sql = "UPDATE Games SET " +
                         "description=\"" + game.getDescription() + "\", " +
                         "gsid=" + gsid +
                         " WHERE title=\""+ game.getTitle() + "\";";
+            }
             else {
                 sql = "INSERT INTO Games(title, description, gsid) VALUES(" +
                         "\"" + game.getTitle() + "\", " +
@@ -163,6 +215,41 @@ public class SQLiteSource implements DataSource{
 
             if (!exists){
                 sql = "INSERT INTO GameDevelopers VALUES ("+gid+", "+did+");";
+                s.execute(sql);
+            }
+
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
+    private void safeUpsertGameList(GameList gameList, Statement s) throws DataSourceException{
+        // Get gameList Name
+        try{
+            String sql = "SELECT * FROM GameLists WHERE name=\""+gameList.getName()+"\";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (!exists){
+                sql = "INSERT INTO GameLists(name) VALUES(" +
+                        "\"" + gameList.getName()+ "\");";
+            }
+            s.execute(sql);
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
+    private void safeUpsertGameListGames(int glid, int gid, Statement s) throws DataSourceException{
+        try{
+            String sql = "SELECT * FROM GameListGames WHERE" +
+                    " glid=" + glid +
+                    " AND gid=" + gid + ";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if(!exists){
+                sql = "INSERT INTO GameListGames VALUES ("+glid+", "+gid+");";
                 s.execute(sql);
             }
 

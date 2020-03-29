@@ -78,4 +78,8 @@ public class GameList {
     public String getName() { return name; }
 
     public int getGameCount() { return gameList.size(); }
+
+    public List<String> getGames() {
+        return gameList;
+    }
 }

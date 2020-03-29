@@ -70,6 +70,57 @@ public class DataSourceTest {
         assertThrows(IllegalArgumentException.class, () -> ds.saveGame(null));
     }
 
+    public static void dataSourceSaveGameListTest(DataSource ds) throws DataSourceException{
+        System.out.println("Warning: DataSource must be empty for correct testing");
+        System.out.println("Warning: Used Combined View to verify");
+
+        Game game1 = new Game("testGame1", "this Game is a Test game", "Bobby");
+        ds.saveGame(game1);
+        Game game2 = new Game("testGame2", "this Game is a Test game", "Bobby");
+        ds.saveGame(game2);
+        GameList gameList = new GameList("TestList");
+
+        gameList.includeGame(game1.getTitle());
+        gameList.includeGame(game2.getTitle()); // Now gameList has 2 games
+
+        // Saving a gameList
+        try {
+            ds.saveGameList(gameList);
+            System.out.println("Warning: Requires Manual Check");
+            System.out.println("GameValues Should Be: " +
+                    "\n      'TestList' | 'testGame1" +
+                    "\n      'TestList' | 'testGame2");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+
+        // Resaving same gameList does not throw an error
+        try {
+            ds.saveGameList(gameList);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+
+        Game game3 = new Game("testGame3", "this Game is a Test game", "Bobby");
+        ds.saveGame(game3);
+        gameList.includeGame(game3.getTitle());
+
+        // Updating Gamelist works
+        try {
+            ds.saveGameList(gameList);
+            System.out.println("Warning: Requires Manual Check");
+            System.out.println("GameValues Should Be: " +
+                    "\n      'TestList' | 'testGame1" +
+                    "\n      'TestList' | 'testGame2" +
+                    "\n      'TestList' | 'testGame3");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+    }
+
     public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
 
