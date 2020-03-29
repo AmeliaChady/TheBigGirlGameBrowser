@@ -22,9 +22,11 @@ public class Administrator {
 
     /**
      * Changes a games status to 'rejected'
-     * @param game - game to approve
+     * @param game - game to reject
      */
-    public void rejectGame(Game game) {}
+    public void rejectGame(Game game) {
+        game.changeStatus(Status.REJECTED);
+    }
 
     // ------GETTERS------
     public String getUsername() { return username; }
