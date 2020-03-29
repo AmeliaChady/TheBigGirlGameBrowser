@@ -4,19 +4,16 @@ import java.util.List;
 public class Developer {
 
     private String name;
-    private String gameListTitle;
     private GameList gameList;
 
 
     public Developer(String nameIn){
         name = nameIn;
-        gameListTitle = nameIn+"'s Games";
-        gameList = new GameList(gameListTitle);
+        gameList = new GameList(nameIn+"'s Games");
     }
 
-    public Developer(String name, String gameListTitle, GameList gameList){
+    public Developer(String name, GameList gameList){
         this.name = name;
-        this.gameListTitle = gameListTitle;
         this.gameList = gameList;
     }
 
@@ -25,7 +22,7 @@ public class Developer {
     }
 
     public String getGameListTitle(){
-        return gameListTitle;
+        return name+"'s Games";
     }
 
     public GameList getGameList(){

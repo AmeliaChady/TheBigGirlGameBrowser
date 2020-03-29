@@ -1,6 +1,8 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -119,6 +121,26 @@ public class DataSourceTest {
             System.out.println(e.getMessage());
             fail("Should not throw exception");
         }
+    }
+
+    public static void dataSourceSaveDevelopersTest(DataSource ds) throws DataSourceException{
+        System.out.println("Warning: DataSource must be empty for correct testing");
+        System.out.println("Warning: Used Combined View to verify");
+
+        Game game1 = new Game("game1", "bob");
+        Game game2 = new Game("game2", "bob");
+        Game game3 = new Game("game3", "bob");
+
+        // At this point db should be aware of bob and have a relationship between bob and these games
+
+        Developer gef = new Developer("gef");
+        GameList gefsList = new GameList(gef.getGameListTitle());
+        game1.addDeveloper(gef.getName());
+        game3.addDeveloper(gef.getName());
+
+        gefsList.includeGame(game1.getTitle());
+        gefsList.includeGame(game3.getTitle());
+        ds.saveDeveloper(gef);
     }
 
     public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{

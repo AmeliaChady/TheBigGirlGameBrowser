@@ -36,6 +36,12 @@ public class SQLiteSourceTests {
     }
 
     @Test
+    public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceSaveDevelopersTest(s);
+    }
+
+    @Test
     public void SQLiteSourceLoadGame() throws SQLException, DataSourceException{
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceLoadGameTest(s);
