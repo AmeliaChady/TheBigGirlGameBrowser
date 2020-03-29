@@ -37,7 +37,7 @@ CREATE TABLE GameDevelopers(
 
 CREATE TABLE GameLists(
     glid INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL
+    listName TEXT UNIQUE NOT NULL
     );
 
 CREATE TABLE GameListsGames(
@@ -72,7 +72,7 @@ CREATE VIEW GameListTest AS
     FROM GameListsGames
         INNER JOIN Games
         INNER JOIN GameLists
-    ORDER BY name, title:
+    ORDER BY name, title;
 -- Views --
 
 

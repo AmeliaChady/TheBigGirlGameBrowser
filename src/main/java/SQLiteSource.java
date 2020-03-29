@@ -1,7 +1,6 @@
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,7 +96,7 @@ public class SQLiteSource implements DataSource{
             safeUpsertGameList(gameList, s);
 
             // GamesList ID
-            String sql = "SELECT glid FROM GameLists WHERE title=\""+gameList.getName()+"\";";
+            String sql = "SELECT glid FROM GameLists WHERE listName=\""+gameList.getName()+"\";";
             s.execute(sql);
             int glid = s.getResultSet().getInt(1);
 
@@ -111,12 +110,12 @@ public class SQLiteSource implements DataSource{
                 String g = games.next();
 
                 // Getting Developer ID
-                sql = "SELECT gid FROM Games WHERE name=\"" + g + "\";";
+                sql = "SELECT gid FROM Games WHERE title=\"" + g + "\";";
                 s.execute(sql);
                 gid = s.getResultSet().getInt(1);
 
                 // Connect to Game
-                safeUpsertGameListGames(glid, gid, s);
+                safeUpsertGameListsGames(glid, gid, s);
             }
 
             // Finalize
@@ -264,12 +263,12 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertGameList(GameList gameList, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
-            String sql = "SELECT * FROM GameLists WHERE name=\""+gameList.getName()+"\";";
+            String sql = "SELECT * FROM GameLists WHERE listName=\""+gameList.getName()+"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
-                sql = "INSERT INTO GameLists(name) VALUES(" +
+                sql = "INSERT INTO GameLists(listName) VALUES(" +
                         "\"" + gameList.getName()+ "\");";
             }
             s.execute(sql);
@@ -278,16 +277,16 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    private void safeUpsertGameListGames(int glid, int gid, Statement s) throws DataSourceException{
+    private void safeUpsertGameListsGames(int glid, int gid, Statement s) throws DataSourceException{
         try{
-            String sql = "SELECT * FROM GameListGames WHERE" +
+            String sql = "SELECT * FROM GameListsGames WHERE" +
                     " glid=" + glid +
                     " AND gid=" + gid + ";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if(!exists){
-                sql = "INSERT INTO GameListGames VALUES ("+glid+", "+gid+");";
+                sql = "INSERT INTO GameListsGames VALUES ("+glid+", "+gid+");";
                 s.execute(sql);
             }
 
