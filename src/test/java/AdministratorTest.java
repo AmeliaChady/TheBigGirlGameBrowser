@@ -21,4 +21,15 @@ public class AdministratorTest {
         administrator.reviewGame(game);
         assertEquals("ACCEPTED", game.getStatus().toString());
     }
+
+    @Test
+    public void rejectGameTest() { // assumes a passing reviewGameTest
+        Administrator administrator = new Administrator("the_administrator_bob");
+        Game game = new Game("My very second game", new Developer("Some other Dev"));
+        administrator.reviewGame(game);
+
+        // Reject an accepted game
+        administrator.rejectGame(game);
+        assertEquals("REJECTED", game.getStatus().toString());
+    }
 }
