@@ -20,6 +20,12 @@ public class Administrator {
         game.changeStatus(Status.ACCEPTED);
     }
 
+    /**
+     * Changes a games status to 'rejected'
+     * @param game - game to approve
+     */
+    public void rejectGame(Game game) {}
+
     // ------GETTERS------
     public String getUsername() { return username; }
 }
