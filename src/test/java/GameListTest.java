@@ -191,6 +191,26 @@ public class GameListTest {
 
         gameList.displayListNameAndGameTitles();
 
-        assertEquals("coolKidzList: testGame, Best game, Cooking Mama, Animal Crossing New Horizons, camp rock 4, cutest dog <3", outContent.toString());
+
+        assertEquals(6, gameList.getGameCount());
+        assertEquals("coolKidzList: testGame, Best game, Cooking Mama, Animal Crossing New Horizons, camp rock 4, cutest dog <3\n", outContent.toString());
+
+        //0 games
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        GameList gameList1 = new GameList("Waldo's List");
+        gameList1.displayListNameAndGameTitles();
+        assertEquals(0, gameList1.getGameCount());
+        assertEquals("Waldo's List: This list is empty\n", outContent.toString());
+
+        //1 game
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        GameList gameList2 = new GameList("Kerry Anne's List");
+        gameList2.includeGame(g4);
+        gameList2.displayListNameAndGameTitles();
+        assertEquals(1, gameList2.getGameCount());
+        assertEquals("Kerry Anne's List: Animal Crossing New Horizons\n", outContent.toString());
+
     }
 }

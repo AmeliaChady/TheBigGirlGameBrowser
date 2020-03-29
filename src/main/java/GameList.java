@@ -84,6 +84,17 @@ public class GameList {
     }
 
     public void displayListNameAndGameTitles() {
+        String display = name + ": ";
+        if(gameList.size()<1){
+            display += "This list is empty";
+        }
+        else{
+            for (int i = 0; i < getGameCount() - 1; i++) {
+                display += gameList.get(i).getTitle() + ", ";
+            }
+            display += gameList.get(gameList.size() - 1).getTitle();
+        }
+        System.out.println(display);
     }
 
     // ------GETTERS------
