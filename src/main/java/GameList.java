@@ -3,7 +3,7 @@ import java.util.List;
 
 public class GameList {
     private String name;
-    private List<Game> gameList;
+    private List<String> gameList;
 
     /**
      * Default constructor
@@ -14,14 +14,14 @@ public class GameList {
         if (name.length() == 0)
             throw new IllegalArgumentException("Please provide a name for this game list");
         this.name = name;
-        this.gameList = new ArrayList<Game>();
+        this.gameList = new ArrayList<String>();
     }
 
     /**
      * Add a new game
      * @param game - a new game
      */
-    public void includeGame(Game game) {
+    public void includeGame(String game) {
         gameList.add(game);
     }
 
@@ -30,11 +30,11 @@ public class GameList {
      * @param title - title of the game to remove
      * @return Game - the game removed
      */
-    public Game removeGame(String title) {
-        Game gameFound = null;
+    public String removeGame(String title) {
+        String gameFound = null;
 
-        for (Game game : gameList) {
-            if (game.getTitle() == title) {
+        for (String game : gameList) {
+            if (game == title) {
                 gameFound = game;
                 break;
             }
@@ -49,11 +49,11 @@ public class GameList {
      * @param title - title of desired game
      * @return Game - Desired game in list
      */
-    public Game getGame(String title) {
-        Game gameFound = null;
+    public String getGame(String title) {
+        String gameFound = null;
 
-        for (Game game : gameList) {
-            if (game.getTitle() == title) {
+        for (String game : gameList) {
+            if (game == title) {
                 gameFound = game;
                 break;
             }
@@ -69,7 +69,7 @@ public class GameList {
         }
         else {
             for (int i = 0; i < getGameCount(); i++) {
-                gameList.get(i).displayGame();
+                System.out.println(gameList.get(i));
                 //System.out.println("\n");
             }
         }
