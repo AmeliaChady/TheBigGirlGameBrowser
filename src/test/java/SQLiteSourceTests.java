@@ -26,6 +26,24 @@ public class SQLiteSourceTests {
     @Test
     public void SQLiteSourceSaveGame() throws SQLException, DataSourceException{
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
-        DataSourceTest.DataSourceSaveGameTest(s);
+        DataSourceTest.dataSourceSaveGameTest(s);
+    }
+
+    @Test
+    public void SQLiteSourceSaveGameList() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceSaveGameListTest(s);
+    }
+
+    @Test
+    public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceSaveDevelopersTest(s);
+    }
+
+    @Test
+    public void SQLiteSourceLoadGame() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceLoadGameTest(s);
     }
 }

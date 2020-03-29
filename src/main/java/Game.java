@@ -160,6 +160,14 @@ public class Game {
         return developers;
     }
 
+    public List<String> getDeveloperNames() {
+        ArrayList names = new ArrayList<String>();
+        for (int i=0; i<developers.size(); i++){
+            names.add(developers.get(i).getName());
+        }
+        return names;
+    }
+
     public Status getStatus() {
         return status;
     }

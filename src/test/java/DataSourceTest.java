@@ -1,8 +1,15 @@
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DataSourceTest {
-    public static void DataSourceSaveGameTest(DataSource ds) throws DataSourceException{
+    public static void dataSourceSaveGameTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
         Game cooltestgame = new Game("testGame", "This is a test to save a game object", new Developer("Frank"));
@@ -30,7 +37,7 @@ public class DataSourceTest {
         }
 
         // Updating a saved game works - Description
-        cooltestgame = new Game("Test-zx the Game","ahhhhhhhhh",new Developer("Ted"));
+        cooltestgame = new Game("Test-zx the Game","ahhhhhhhhh", new Developer("Ted"));
         ds.saveGame(cooltestgame);
         cooltestgame.changeDescription("cool robot game");
         ds.saveGame(cooltestgame);
@@ -63,5 +70,113 @@ public class DataSourceTest {
 
         // Can't give a null game
         assertThrows(IllegalArgumentException.class, () -> ds.saveGame(null));
+    }
+
+    public static void dataSourceSaveGameListTest(DataSource ds) throws DataSourceException{
+        System.out.println("Warning: DataSource must be empty for correct testing");
+        System.out.println("Warning: Used Combined View to verify");
+
+        Developer bobby = new Developer("Bobby");
+
+        Game game1 = new Game("testGame1", "this Game is a Test game", bobby);
+        ds.saveGame(game1);
+        Game game2 = new Game("testGame2", "this Game is a Test game", bobby);
+        ds.saveGame(game2);
+        GameList gameList = new GameList("TestList");
+
+        gameList.includeGame(game1);
+        gameList.includeGame(game2); // Now gameList has 2 games
+
+        // Saving a gameList
+        try {
+            ds.saveGameList(gameList);
+            System.out.println("Warning: Requires Manual Check");
+            System.out.println("GameValues Should Be: " +
+                    "\n      'TestList' | 'testGame1" +
+                    "\n      'TestList' | 'testGame2");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+
+        // Resaving same gameList does not throw an error
+        try {
+            ds.saveGameList(gameList);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+
+        Game game3 = new Game("testGame3", "this Game is a Test game", bobby);
+        ds.saveGame(game3);
+        gameList.includeGame(game3);
+
+        // Updating Gamelist works
+        try {
+            ds.saveGameList(gameList);
+            System.out.println("Warning: Requires Manual Check");
+            System.out.println("GameValues Should Be: " +
+                    "\n      'TestList' | 'testGame1" +
+                    "\n      'TestList' | 'testGame2" +
+                    "\n      'TestList' | 'testGame3");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+    }
+
+    public static void dataSourceSaveDevelopersTest(DataSource ds) throws DataSourceException{
+        System.out.println("Warning: DataSource must be empty for correct testing");
+        System.out.println("Warning: Used Combined View to verify");
+
+        Developer bobby = new Developer("Bobby");
+
+        Game game1 = new Game("game1", bobby);
+        Game game2 = new Game("game2", bobby);
+        Game game3 = new Game("game3", bobby);
+
+        // At this point db should be aware of bob and have a relationship between bob and these games
+
+        Developer gef = new Developer("gef");
+        game1.addDeveloper(gef);
+        game3.addDeveloper(gef);
+
+        gef.getGameList().includeGame(game1);
+        gef.getGameList().includeGame(game3);
+        ds.saveDeveloper(gef);
+    }
+
+    public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
+        System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
+
+        // Basic
+        // Adding Two Test Games
+        Game g = new Game("LoadGameTest1", "description", new Developer("LGT_A"));
+        ds.saveGame(g);
+        g = new Game("LoadGameTest2", "noitpircsed",new Developer("LGT_B"));
+        g.addDeveloper(new Developer("LGT_C"));
+        g.changeStatus(Status.ACCEPTED);
+        ds.saveGame(g);
+
+        // Can Find A Game
+        g = ds.loadGame("LoadGameTest1");
+        assertNotNull(g);
+        assertEquals("description", g.getDescription());
+        assertEquals("LGT_A", g.getDevelopers().get(0).getName());
+        assertEquals(Status.PENDING, g.getStatus());
+
+        // Can Find A Game with Multiple Developers
+        g = ds.loadGame("LoadGameTest2");
+        assertNotNull(g);
+        assertEquals("noitpircsed", g.getDescription());
+        assertEquals("LGT_B", g.getDevelopers().get(0).getName());
+        assertEquals("LGT_C", g.getDevelopers().get(1).getName());
+        assertEquals(Status.ACCEPTED, g.getStatus());
+
+        // Putting null gives null
+        assertNull(ds.loadGame(null));
+
+        // Putting bogus gives null
+        assertNull(ds.loadGame("LoadGameTest3"));
     }
 }

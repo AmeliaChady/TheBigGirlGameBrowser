@@ -61,6 +61,14 @@ public class GameList {
         return gameFound;
     }
 
+    public List<String> getGameTitles(){
+        ArrayList<String> titles = new ArrayList<String>();
+        for (Game game : gameList){
+            titles.add(game.getTitle());
+        }
+        return titles;
+    }
+
     public void displayAllGames(){
         System.out.println(name + ":\n");
 

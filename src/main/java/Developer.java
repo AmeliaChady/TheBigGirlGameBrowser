@@ -15,4 +15,8 @@ public class Developer {
     public GameList getGameList(){
         return gameList;
     }
+
+    public String getGameListName() {
+        return gameList.getName();
+    }
 }
