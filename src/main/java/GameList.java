@@ -97,6 +97,11 @@ public class GameList {
         System.out.println(display);
     }
 
+
+    public void displayGamesGivenStatus(Status status) {
+
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
