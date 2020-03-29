@@ -20,7 +20,7 @@ public class DeveloperTests {
     }
 
     @Test
-    public void developerSumbitGameTest(){
+    public void developerSubmitGameTest(){
         //make all the developers for testing
         Developer d1 = new Developer("Milk Dad");
         Developer d2 = new Developer("The Sunshine Gang");
@@ -40,10 +40,6 @@ public class DeveloperTests {
         Game g5 = new Game("jeff bezos takes over the world", "oh wait that's already happening",
                 d5, Status.REJECTED);
 
-        //create test array list
-        //List<Game> gameListTest = new ArrayList<Game>();
-        //List<Game> developerListTest = new ArrayList<Game>();
-
         GameList gameListTest = new GameList("all games");
 
         //add games to array list
@@ -58,7 +54,7 @@ public class DeveloperTests {
         Game g6 = new Game("title6", "description6", d6, Status.PENDING);
         Game g7 = new Game("title7", "description7", d7, Status.PENDING);
         Game g8 = new Game("title8", "description8", d8, Status.PENDING);
-        Game g9 = new Game("title9", "decription9", d6, Status.PENDING);
+        Game g9 = new Game("title9", "description9", d6, Status.PENDING);
 
 
         //all games in gameList, none in developer list
@@ -93,9 +89,8 @@ public class DeveloperTests {
         //add another game to an existing developers list
         d6.submitGame(g9, gameListTest);
 
-        assertEquals(9, gameListTest);
+        assertEquals(9, gameListTest.getGameCount());
         assertEquals(2, d6.getGameList().getGameCount());
-
 
     }
 }

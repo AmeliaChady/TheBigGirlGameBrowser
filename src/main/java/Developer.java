@@ -22,10 +22,12 @@ public class Developer {
         //needs to add game to developer list
         //needs to add game to gameList
 
-        //adds to developers list
+        //adds to developer's personal list
         developerGameList.includeGame(gameToSubmit);
-
         //adds to overall gameList
         completeList.includeGame(gameToSubmit);
+
+        //planning on fleshing this out later so the same game can't be added twice?
+        //wasn't specified in card so not planning on addressing this during sprint 1
     }
 }
