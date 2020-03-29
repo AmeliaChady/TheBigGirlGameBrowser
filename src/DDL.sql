@@ -11,7 +11,7 @@ DROP TABLE IF EXISTS GameStatuses;
 -- Tables --
 CREATE TABLE Developers(
     did INTEGER PRIMARY KEY AUTOINCREMENT,
-    name INTEGER UNIQUE NOT NULL
+    name TEXT UNIQUE NOT NULL
     );
 
 CREATE TABLE GameStatuses(
@@ -33,6 +33,19 @@ CREATE TABLE GameDevelopers(
     FOREIGN KEY(gid) REFERENCES Games(gid),
     FOREIGN KEY(did) REFERENCES Developers(did),
     PRIMARY KEY(did, gid)
+    );
+
+CREATE TABLE GameLists(
+    glid INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+    );
+
+CREATE TABLE GameListsGames(
+    glid INTEGER NOT NULL,
+    gid INTEGER NOT NULL,
+    FOREIGN KEY(gid) REFERENCES Games(gid),
+    FOREIGN KEY(glid) REFERENCES GameLists(glid),
+    PRIMARY KEY(glid, gid)
     );
 
 
