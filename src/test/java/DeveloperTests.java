@@ -1,4 +1,8 @@
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DeveloperTests {
@@ -16,5 +20,32 @@ public class DeveloperTests {
         assertNotNull(d2.getGameList());
         assertEquals(0, d2.getGameList().getGameCount());
         assertEquals("Bob (my dad)", d2.getName());
+    }
+
+    @Test
+    public void displayDeveloperTest(){
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        //0 games
+        Developer d1 = new Developer("George Washington");
+        d1.displayDeveloper();
+        assertEquals("Name: George Washington\n\nGames: This developer has not published any games", outContent.toString());
+
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        //1 game
+        Game game = new Game();
+        d1.getGameList().includeGame(game);
+        d1.displayDeveloper();
+        assertEquals("Name: George Washington\n\nGames: testGame\n\n", outContent.toString());
+
+
+        //2 games
+        Game game2 = new Game();
+        d1.getGameList().includeGame(game2);
+
+        assertEquals("Name: George Washington\n\nGames: testGame, testGame\n\n", outContent.toString());
     }
 }

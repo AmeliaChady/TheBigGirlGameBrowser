@@ -138,6 +138,5 @@ public class GameListTest {
         gameList2.displayAllGames();
         assertEquals(1, gameList2.getGameCount());
         assertEquals("Kerry Anne's List:\n\nTitle: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\nStatus: PENDING\n\n", outContent.toString());
-        //TODO: finish test with assertEquals for above, as well as test for 0 and 1 game.
     }
 }
