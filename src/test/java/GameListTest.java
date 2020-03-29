@@ -266,16 +266,16 @@ public class GameListTest {
         gameList.displayGamesGivenStatus(Status.PENDING);
 
         //accepted
-        assertEquals("coolKidzList (pending): \n\nTitle: testGame\nDescription: This is a test to create a new game object\nDeveloper(s): None\nStatus: PENDING\n\nTitle: Best game\nDescription: This is the best game ever!\nDeveloper(s): kerry\nStatus: PENDING\n\nTitle: Cooking Mama\nDescription: No Description Given\nDeveloper(s): kerry anne, kelsey\nStatus: PENDING\n\nTitle: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\nStatus: PENDING\n\n", outContent.toString());
+        assertEquals("coolKidzList(PENDING):\n\nTitle: testGame\nDescription: This is a test to create a new game object\nDeveloper(s): None\nStatus: PENDING\n\nTitle: Best game\nDescription: This is the best game ever!\nDeveloper(s): kerry\nStatus: PENDING\n\nTitle: Cooking Mama\nDescription: No Description Given\nDeveloper(s): kerry anne, kelsey\nStatus: PENDING\n\nTitle: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\nStatus: PENDING\n\n", outContent.toString());
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         gameList.displayGamesGivenStatus(Status.ACCEPTED);
-        assertEquals("coolKidzList (accepted): \n\nTitle: camp rock 4\nDescription: kevin sells real estate now\nDeveloper(s): kevin jonas\nStatus: ACCEPTED\n\n", outContent.toString());
+        assertEquals("coolKidzList(ACCEPTED):\n\nTitle: camp rock 4\nDescription: kevin sells real estate now\nDeveloper(s): kevin jonas\nStatus: ACCEPTED\n\n", outContent.toString());
 
         //rejected
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
         gameList.displayGamesGivenStatus(Status.REJECTED);
-        assertEquals("coolKidzList (accepted): \n\nTitle: cutest dog <3\nDescription: she is my dog. I hate her name but she's still cute\nDeveloper(s): bertha\nStatus: REJECTED\n\n", outContent.toString());
+        assertEquals("coolKidzList(REJECTED):\n\nTitle: cutest dog <3\nDescription: she is my dog. I hate her name but she's still cute\nDeveloper(s): bertha\nStatus: REJECTED\n\n", outContent.toString());
     }
 }

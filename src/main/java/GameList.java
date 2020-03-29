@@ -78,7 +78,6 @@ public class GameList {
         else {
             for (int i = 0; i < getGameCount(); i++) {
                 gameList.get(i).displayGame();
-                //System.out.println("\n");
             }
         }
     }
@@ -99,7 +98,18 @@ public class GameList {
 
 
     public void displayGamesGivenStatus(Status status) {
+        System.out.println(name + "(" + status +"):\n");
 
+        if (getGameCount()==0){
+            System.out.println("This list is empty");
+        }
+        else {
+            for (int i = 0; i < getGameCount(); i++) {
+                if (gameList.get(i).getStatus()==status) {
+                    gameList.get(i).displayGame();
+                }
+            }
+        }
     }
 
     // ------GETTERS------
