@@ -34,7 +34,7 @@ public class GameList {
         String gameFound = null;
 
         for (String game : gameList) {
-            if (game == title) {
+            if (game.equals(title)) {
                 gameFound = game;
                 break;
             }
@@ -53,7 +53,7 @@ public class GameList {
         String gameFound = null;
 
         for (String game : gameList) {
-            if (game == title) {
+            if (game.equals(title)) {
                 gameFound = game;
                 break;
             }
