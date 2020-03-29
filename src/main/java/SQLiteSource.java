@@ -3,6 +3,7 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SQLiteSource implements DataSource{
@@ -84,21 +85,58 @@ public class SQLiteSource implements DataSource{
 
         try {
             Statement s = conn.createStatement();
-            String sql = "placeholder";
 
+            String sql = "SELECT * FROM Games INNER JOIN GameStatuses USING(gsid) WHERE title='" + title + "';";
+            boolean hasResults = s.execute(sql);
 
+            ResultSet gameResult = s.getResultSet();
+            if(!gameResult.next()){
+                return null;
+            }
+
+            int gid = gameResult.getInt("gid");
+            String description = gameResult.getString("description");
+            String status = gameResult.getString("status");
+
+            /*
+            System.out.println("\ngid : "+ gid);
+            System.out.println("title : " + title);
+            System.out.println("description : " + description);
+            System.out.println("status : " + status);
+            */
+
+            sql = "SELECT title, name " +
+                    "FROM GameDevelopers GD " +
+                    "INNER JOIN Games G on GD.gid = G.gid " +
+                    "INNER JOIN Developers D on GD.did = D.did " +
+                    "WHERE title = '"+title+"';";
+            s.execute(sql);
+            List<String> developers = new LinkedList<>();
+            ResultSet d = s.getResultSet();
+            boolean hasNext = !d.isClosed();
+            if(hasNext){
+                d.next();
+                while (hasNext){
+                    developers.add(d.getString("name"));
+                    hasNext = d.next();
+                }
+            }
+
+            /*
+            System.out.print("developers : {" );
+            Iterator<String> ds = developers.iterator();
+            while (ds.hasNext()){
+                System.out.print("'"+ds.next()+"' ");
+            }
+            System.out.println("}");
+            */
 
             s.close();
+            return new Game(title,description,developers,Status.valueOf(status));
         }catch (SQLException e){
+            System.out.println(e.getMessage());
             throw new DataSourceException(e.getMessage());
         }
-
-
-
-
-
-
-        return null;
     }
 
     // underlying DB calls

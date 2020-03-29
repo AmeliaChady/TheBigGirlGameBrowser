@@ -102,10 +102,5 @@ public class DataSourceTest {
 
         // Putting bogus gives null
         assertNull(ds.loadGame("LoadGameTest3"));
-
-        // Developer has game in gamelist
-        g = ds.loadGame("LoadGameTest1");
-        assertEquals(g, g.getDevelopers().get(0));
-
     }
 }
