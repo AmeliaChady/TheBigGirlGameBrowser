@@ -48,6 +48,15 @@ CREATE TABLE GameListsGames(
     PRIMARY KEY(glid, gid)
     );
 
+CREATE TABLE DevelopersGameLists(
+    glid INTEGER NOT NULL,
+    did INTEGER NOT NULL,
+    FOREIGN KEY(did) REFERENCES Developers(did),
+    FOREIGN KEY(glid) REFERENCES GameLists(glid),
+    PRIMARY KEY(glid, did)
+    );
+
+
 
 -- Constraints --
 CREATE VIEW Combined AS
