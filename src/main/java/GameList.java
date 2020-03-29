@@ -83,6 +83,9 @@ public class GameList {
         }
     }
 
+    public void displayListNameAndGameTitles() {
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 

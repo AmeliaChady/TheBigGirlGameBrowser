@@ -139,4 +139,58 @@ public class GameListTest {
         assertEquals(1, gameList2.getGameCount());
         assertEquals("Kerry Anne's List:\n\nTitle: Animal Crossing New Horizons\nDescription: Live as the only human, sell seashells to survive, and be in constant debt.\nDeveloper(s): kerry anne, kelsey, grace t. dury\nStatus: PENDING\n\n", outContent.toString());
     }
+
+    @Test
+    public void displayListNameAndGameTitlesTest(){
+        //---------game creation---------
+        Game g1 = new Game();
+
+        List<Developer> developer = new ArrayList<>();
+        Developer dev = new Developer("kerry");
+        developer.add(dev);
+        Game g2 = new Game("Best game", "This is the best game ever!", developer, Status.PENDING);
+
+        List<Developer> developers = new ArrayList<>();
+        Developer dev1 = new Developer("kerry anne");
+        developers.add(dev1);
+        Developer dev2 = new Developer("kelsey");
+        developers.add(dev2);
+        Game g3 = new Game("Cooking Mama",  developers);
+
+        developers = new ArrayList<>();
+        dev1 = new Developer("kerry anne");
+        developers.add(dev1);
+        dev2 = new Developer("kelsey");
+        developers.add(dev2);
+        Developer dev3 = new Developer("grace t. dury");
+        developers.add(dev3);
+        Game g4 = new Game("Animal Crossing New Horizons", "Live as the only human, sell seashells to survive, and be in constant debt.", developers, Status.PENDING);
+
+        developer = new ArrayList<>();
+        dev1 = new Developer("kevin jonas");
+        developer.add(dev1);
+        Game g5 = new Game("camp rock 4", "kevin sells real estate now", developer, Status.ACCEPTED);
+
+        developer = new ArrayList<>();
+        dev1 = new Developer("bertha");
+        developer.add(dev1);
+        Game g6 = new Game("cutest dog <3", "she is my dog. I hate her name but she's still cute", developer, Status.REJECTED);
+        //--------- end of game creation---------
+
+        //6 games
+        GameList gameList = new GameList("coolKidzList");
+        gameList.includeGame(g1);
+        gameList.includeGame(g2);
+        gameList.includeGame(g3);
+        gameList.includeGame(g4);
+        gameList.includeGame(g5);
+        gameList.includeGame(g6);
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        gameList.displayListNameAndGameTitles();
+
+        assertEquals("coolKidzList: testGame, Best game, Cooking Mama, Animal Crossing New Horizons, camp rock 4, cutest dog <3", outContent.toString());
+    }
 }

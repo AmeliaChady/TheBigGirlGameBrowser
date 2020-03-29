@@ -30,7 +30,7 @@ public class DeveloperTests {
         //0 games
         Developer d1 = new Developer("George Washington");
         d1.displayDeveloper();
-        assertEquals("Name: George Washington\n\nGames: This developer has not published any games", outContent.toString());
+        assertEquals("Name: George Washington\nGeorge Washington's Games: This list is empty", outContent.toString());
 
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -39,13 +39,13 @@ public class DeveloperTests {
         Game game = new Game();
         d1.getGameList().includeGame(game);
         d1.displayDeveloper();
-        assertEquals("Name: George Washington\n\nGames: testGame\n\n", outContent.toString());
+        assertEquals("Name: George Washington\nGames: testGame\n\n", outContent.toString());
 
 
         //2 games
         Game game2 = new Game();
         d1.getGameList().includeGame(game2);
 
-        assertEquals("Name: George Washington\n\nGames: testGame, testGame\n\n", outContent.toString());
+        assertEquals("Name: George Washington\nGames: testGame, testGame\n\n", outContent.toString());
     }
 }

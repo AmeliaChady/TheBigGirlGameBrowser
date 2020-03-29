@@ -9,6 +9,8 @@ public class Developer {
     }
 
     public void displayDeveloper() {
+        System.out.println("Name: " + name );
+        gameList.displayAllGames();
     }
 
     public String getName(){
