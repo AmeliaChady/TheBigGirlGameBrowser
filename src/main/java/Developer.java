@@ -10,7 +10,7 @@ public class Developer {
 
     public void displayDeveloper() {
         System.out.println("Name: " + name );
-        gameList.displayAllGames();
+        gameList.displayListNameAndGameTitles();
     }
 
     public String getName(){
