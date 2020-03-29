@@ -62,15 +62,14 @@ public class GameList {
     }
 
     public void displayAllGames(){
-        System.out.println(name + ":\n");
+        System.out.println(name+":");
 
         if (getGameCount()==0){
-            System.out.println("This list is empty");
+            System.out.println("\nThis list is empty");
         }
         else {
             for (int i = 0; i < getGameCount(); i++) {
                 System.out.println(gameList.get(i));
-                //System.out.println("\n");
             }
         }
     }
