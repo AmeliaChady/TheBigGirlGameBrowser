@@ -111,6 +111,6 @@ public class GameBrowserTest {
         // create another
         gameBrowser.addDeveloper("dev2");
         assertEquals(2, gameBrowser.getDevelopers().size());
-        assertEquals("dev1", gameBrowser.getDevelopers().get(1).getName());
+        assertEquals("dev2", gameBrowser.getDevelopers().get(1).getName());
     }
 }

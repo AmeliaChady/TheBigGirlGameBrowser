@@ -62,7 +62,7 @@ public class GameBrowser {
      * @param username - the username of the developer
      */
     public void addDeveloper(String username) {
-
+        developers.add( new Developer(username) );
     }
 
     // ------GETTERS------
