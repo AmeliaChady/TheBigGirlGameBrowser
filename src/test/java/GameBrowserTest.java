@@ -61,7 +61,7 @@ public class GameBrowserTest {
         assertEquals(10, gb.getGameList().getGameCount());
         assertEquals("Clash of clans", gb.getGameList().getGameList().get(gb.getGameList().getGameCount()-1).getTitle());
         assertEquals("My dad plays a lot of clash of clans", gb.getGameList().getGameList().get(gb.getGameList().getGameCount()-1).getDescription());
-        assertEquals(devList, gb.getGameList().getGameList().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
+        assertEquals(devList.get(0), gb.getGameList().getGameList().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
         assertEquals(Status.PENDING, gb.getGameList().getGameList().get(gb.getGameList().getGameCount()-1).getStatus());
 
     }

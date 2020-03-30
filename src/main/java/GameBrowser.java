@@ -40,11 +40,12 @@ public class GameBrowser {
     }
 
     public void addGame(Game game){
-
+        gameList.includeGame(game);
     }
 
     public void addGame(String title, String description, List<Developer> developer, Status status){
-
+        Game game = new Game(title, description, developer, status);
+        gameList.includeGame(game);
     }
 
     // ------GETTERS------
