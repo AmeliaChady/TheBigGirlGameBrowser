@@ -88,7 +88,7 @@ public class Game {
 
     /**
      * Game constructor for when you don't know the description yet
-     * @param title game title
+    git * @param title game title
      * @param developer link to developer object
      */
     public Game(String title, Developer developer){
