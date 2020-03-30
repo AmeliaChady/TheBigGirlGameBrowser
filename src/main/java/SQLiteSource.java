@@ -184,7 +184,7 @@ public class SQLiteSource implements DataSource{
 
     @Override
     public GameList loadGameList(String name) throws DataSourceException{
-
+        return null;
     }
 
     @Override
