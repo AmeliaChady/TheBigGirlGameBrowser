@@ -194,10 +194,10 @@ public class SQLiteSource implements DataSource{
 
             // Obtain List of Game Names
             String sql = "SELECT title " +
-                            "FROM GameListsGames" +
-                                "INNER JOIN GameLists USING(glid)" +
-                                "INNER JOIN Games USING(gid)" +
-                            "WHERE name=\""+name+"\";";
+                            "FROM GameListsGames " +
+                                "INNER JOIN GameLists USING(glid) " +
+                                "INNER JOIN Games USING(gid) " +
+                            "WHERE name=\""+name+"\"; ";
             s.execute(sql);
 
             // Load Each Game and Add
