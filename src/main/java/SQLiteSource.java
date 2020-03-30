@@ -78,81 +78,6 @@ public class SQLiteSource implements DataSource{
 
     }
 
-    /**
-     * THIS FUNCTIONS ASSUMING THAT GAMES IN LIST HAVE ALREADY BEEN SAVED
-     * @param gameList the gameList to save
-     * @throws IllegalArgumentException
-     * @throws DataSourceException
-     */
-    @Override
-    public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
-        if(gameList == null){
-            throw new IllegalArgumentException("GameList is null");
-        }
-
-        try{
-            // Set up statement
-            Statement s = conn.createStatement();
-            s.execute("BEGIN TRANSACTION;");
-
-            safeUpsertGameList(gameList, s);
-
-            // GamesList ID
-            String sql = "SELECT glid FROM GameLists WHERE name=\""+gameList.getName()+"\";";
-            s.execute(sql);
-            int glid = s.getResultSet().getInt(1);
-
-            // Games Set Up
-            Iterator<String> games = gameList.getGameTitles().iterator();
-            int gid;
-
-            // Game Iterator
-            while (games.hasNext()) {
-                // Developer Set Up
-                String g = games.next();
-
-                // Getting Developer ID
-                sql = "SELECT gid FROM Games WHERE title=\"" + g + "\";";
-                s.execute(sql);
-                gid = s.getResultSet().getInt(1);
-
-                // Connect to Game
-                safeUpsertGameListsGames(glid, gid, s);
-            }
-
-            // Finalize
-            s.execute("COMMIT;");
-            s.close();
-        }catch (SQLException e){
-            throw new DataSourceException(e.getMessage());
-        }
-
-    }
-
-    @Override
-    public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
-        if(dev == null){
-            throw new IllegalArgumentException("Developer is null");
-        }
-
-        try{
-            // Set up statement
-            Statement s = conn.createStatement();
-            s.execute("BEGIN TRANSACTION;");
-
-            safeUpsertDevelopers(dev.getName(), s);
-
-            // Games Set Up
-            safeUpsertDevelopersGameLists(dev, s);
-
-            // Finalize
-            s.execute("COMMIT;");
-            s.close();
-        }catch (SQLException e){
-            throw new DataSourceException(e.getMessage());
-        }
-    }
-
     @Override
     public Game loadGame(String title) throws DataSourceException {
         if(title==null){
@@ -206,10 +131,98 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    /**
+     * THIS FUNCTIONS ASSUMING THAT GAMES IN LIST HAVE ALREADY BEEN SAVED
+     * @param gameList the gameList to save
+     * @throws IllegalArgumentException
+     * @throws DataSourceException
+     */
+    @Override
+    public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
+        if(gameList == null){
+            throw new IllegalArgumentException("GameList is null");
+        }
+
+        try{
+            // Set up statement
+            Statement s = conn.createStatement();
+            s.execute("BEGIN TRANSACTION;");
+
+            safeUpsertGameList(gameList, s);
+
+            // GamesList ID
+            String sql = "SELECT glid FROM GameLists WHERE name=\""+gameList.getName()+"\";";
+            s.execute(sql);
+            int glid = s.getResultSet().getInt(1);
+
+            // Games Set Up
+            Iterator<String> games = gameList.getGameTitles().iterator();
+            int gid;
+
+            // Game Iterator
+            while (games.hasNext()) {
+                // Developer Set Up
+                String g = games.next();
+
+                // Getting Developer ID
+                sql = "SELECT gid FROM Games WHERE title=\"" + g + "\";";
+                s.execute(sql);
+                gid = s.getResultSet().getInt(1);
+
+                // Connect to Game
+                safeUpsertGameListsGames(glid, gid, s);
+            }
+
+            // Finalize
+            s.execute("COMMIT;");
+            s.close();
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public GameList loadGameList(String name) throws DataSourceException{
+
+    }
+
+    @Override
+    public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
+        if(dev == null){
+            throw new IllegalArgumentException("Developer is null");
+        }
+
+        try{
+            // Set up statement
+            Statement s = conn.createStatement();
+            s.execute("BEGIN TRANSACTION;");
+
+            safeUpsertDevelopers(dev.getName(), s);
+
+            // Games Set Up
+            safeUpsertDevelopersGameLists(dev, s);
+
+            // Finalize
+            s.execute("COMMIT;");
+            s.close();
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
+    @Override
     public Developer loadDeveloper(String dev) throws DataSourceException{
-        //TODO
+
+        // Inner Joins to Get GameList name
+
+        // Fill GameList
+
+        // Return Dev Object
         return new Developer(dev);
     }
+
+
 
     // underlying DB calls
     // Upsert -> Insert/Update depending on existence
