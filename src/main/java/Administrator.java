@@ -25,7 +25,12 @@ public class Administrator {
      * @param game - game to reject
      */
     public void rejectGame(Game game) {
-        game.changeStatus(Status.REJECTED);
+        if (game.getStatus() == Status.PENDING) {
+            game.changeStatus(Status.REJECTED);
+        }
+        else if (game.getStatus() == Status.ACCEPTED) {
+            game.changeStatus(Status.LIMBO);
+        }
     }
 
     // ------GETTERS------
