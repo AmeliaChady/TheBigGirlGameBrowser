@@ -98,4 +98,19 @@ public class GameBrowserTest {
         assertNull(g5);
 
     }
+
+    @Test
+    public void addDeveloperTest() {
+        GameBrowser gameBrowser = new GameBrowser("testing.db");
+
+        // create a new developer
+        gameBrowser.addDeveloper("dev1");
+        assertEquals(1, gameBrowser.getDevelopers().size());
+        assertEquals("dev1", gameBrowser.getDevelopers().get(0).getName());
+
+        // create another
+        gameBrowser.addDeveloper("dev2");
+        assertEquals(2, gameBrowser.getDevelopers().size());
+        assertEquals("dev1", gameBrowser.getDevelopers().get(1).getName());
+    }
 }
