@@ -73,24 +73,29 @@ public class GameBrowserTest {
         assertEquals(8, gb.getGameList().getGameList().size());
 
         //non existent
-        gb.removeGame("gcfhvjb");
+        Game g1 = gb.removeGame("gcfhvjb");
         assertEquals(8, gb.getGameList().getGameList().size());
+        assertEquals(null, g1);
 
         //existing game
-        gb.removeGame("Toot Scooters");
+        Game g2 = gb.removeGame("Toot Scooters");
         assertEquals(7, gb.getGameList().getGameList().size());
+        assertEquals("Toot Scooters", g2.getTitle());
 
         //non existent now, just removed
-        gb.removeGame("Toot Scooters");
+        Game g3 = gb.removeGame("Toot Scooters");
         assertEquals(7, gb.getGameList().getGameList().size());
+        assertEquals(null, g3);
 
         //existing game
-        gb.removeGame("testGame3");
+        Game g4 = gb.removeGame("testGame3");
         assertEquals(6, gb.getGameList().getGameList().size());
+        assertEquals("testGame3", g4.getTitle());
 
         //non existent now, removed
-        gb.removeGame("Toot Scooters");
+        Game g5 = gb.removeGame("Toot Scooters");
         assertEquals(6, gb.getGameList().getGameList().size());
+        assertEquals(null, g5);
 
     }
 }
