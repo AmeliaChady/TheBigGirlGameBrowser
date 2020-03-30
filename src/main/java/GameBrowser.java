@@ -39,6 +39,14 @@ public class GameBrowser {
         throw new Exception("Invalid constructor. Supply a data source file.");
     }
 
+    public void addGame(Game game){
+
+    }
+
+    public void addGame(String title, String description, List<Developer> developer, Status status){
+
+    }
+
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
 }
