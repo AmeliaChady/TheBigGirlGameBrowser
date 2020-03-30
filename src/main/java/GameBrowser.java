@@ -48,6 +48,9 @@ public class GameBrowser {
         gameList.includeGame(game);
     }
 
+    public void removeGame(String title) {
+    }
+
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
 }

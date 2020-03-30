@@ -65,4 +65,32 @@ public class GameBrowserTest {
         assertEquals(Status.PENDING, gb.getGameList().getGameList().get(gb.getGameList().getGameCount()-1).getStatus());
 
     }
+
+    @Test
+    public void removeGameTest(){
+        GameBrowser gb = new GameBrowser("testing.db");
+
+        assertEquals(8, gb.getGameList().getGameList().size());
+
+        //non existent
+        gb.removeGame("gcfhvjb");
+        assertEquals(8, gb.getGameList().getGameList().size());
+
+        //existing game
+        gb.removeGame("Toot Scooters");
+        assertEquals(7, gb.getGameList().getGameList().size());
+
+        //non existent now, just removed
+        gb.removeGame("Toot Scooters");
+        assertEquals(7, gb.getGameList().getGameList().size());
+
+        //existing game
+        gb.removeGame("testGame3");
+        assertEquals(6, gb.getGameList().getGameList().size());
+
+        //non existent now, removed
+        gb.removeGame("Toot Scooters");
+        assertEquals(6, gb.getGameList().getGameList().size());
+
+    }
 }
