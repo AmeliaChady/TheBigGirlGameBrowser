@@ -115,5 +115,7 @@ public class GameList {
     // ------GETTERS------
     public String getName() { return name; }
 
+    public List<Game> getGames() { return gameList; }
+
     public int getGameCount() { return gameList.size(); }
 }
