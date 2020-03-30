@@ -72,6 +72,40 @@ public class DataSourceTest {
         assertThrows(IllegalArgumentException.class, () -> ds.saveGame(null));
     }
 
+    public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
+        System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
+
+        // Basic
+        // Adding Two Test Games
+        Game g = new Game("LoadGameTest1", "description", new Developer("LGT_A"));
+        ds.saveGame(g);
+        g = new Game("LoadGameTest2", "noitpircsed",new Developer("LGT_B"));
+        g.addDeveloper(new Developer("LGT_C"));
+        g.changeStatus(Status.ACCEPTED);
+        ds.saveGame(g);
+
+        // Can Find A Game
+        g = ds.loadGame("LoadGameTest1");
+        assertNotNull(g);
+        assertEquals("description", g.getDescription());
+        assertEquals("LGT_A", g.getDevelopers().get(0).getName());
+        assertEquals(Status.PENDING, g.getStatus());
+
+        // Can Find A Game with Multiple Developers
+        g = ds.loadGame("LoadGameTest2");
+        assertNotNull(g);
+        assertEquals("noitpircsed", g.getDescription());
+        assertEquals("LGT_B", g.getDevelopers().get(0).getName());
+        assertEquals("LGT_C", g.getDevelopers().get(1).getName());
+        assertEquals(Status.ACCEPTED, g.getStatus());
+
+        // Putting null gives null
+        assertNull(ds.loadGame(null));
+
+        // Putting bogus gives null
+        assertNull(ds.loadGame("LoadGameTest3"));
+    }
+
     public static void dataSourceSaveGameListTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
@@ -146,37 +180,5 @@ public class DataSourceTest {
         ds.saveDeveloper(gef);
     }
 
-    public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
-        System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
 
-        // Basic
-        // Adding Two Test Games
-        Game g = new Game("LoadGameTest1", "description", new Developer("LGT_A"));
-        ds.saveGame(g);
-        g = new Game("LoadGameTest2", "noitpircsed",new Developer("LGT_B"));
-        g.addDeveloper(new Developer("LGT_C"));
-        g.changeStatus(Status.ACCEPTED);
-        ds.saveGame(g);
-
-        // Can Find A Game
-        g = ds.loadGame("LoadGameTest1");
-        assertNotNull(g);
-        assertEquals("description", g.getDescription());
-        assertEquals("LGT_A", g.getDevelopers().get(0).getName());
-        assertEquals(Status.PENDING, g.getStatus());
-
-        // Can Find A Game with Multiple Developers
-        g = ds.loadGame("LoadGameTest2");
-        assertNotNull(g);
-        assertEquals("noitpircsed", g.getDescription());
-        assertEquals("LGT_B", g.getDevelopers().get(0).getName());
-        assertEquals("LGT_C", g.getDevelopers().get(1).getName());
-        assertEquals(Status.ACCEPTED, g.getStatus());
-
-        // Putting null gives null
-        assertNull(ds.loadGame(null));
-
-        // Putting bogus gives null
-        assertNull(ds.loadGame("LoadGameTest3"));
-    }
 }

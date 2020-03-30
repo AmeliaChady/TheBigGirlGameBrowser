@@ -187,33 +187,18 @@ public class SQLiteSource implements DataSource{
                     "INNER JOIN Developers D on GD.did = D.did " +
                     "WHERE title = '"+title+"';";
             s.execute(sql);
-            List<String> developers = new LinkedList<>();
+            ArrayList<Developer> devs = new ArrayList<Developer>();
             ResultSet d = s.getResultSet();
             boolean hasNext = !d.isClosed();
             if(hasNext){
                 d.next();
                 while (hasNext){
-                    developers.add(d.getString("name"));
+                    devs.add(new Developer(d.getString("name")));
                     hasNext = d.next();
                 }
             }
 
-            /*
-            System.out.print("developers : {" );
-            Iterator<String> ds = developers.iterator();
-            while (ds.hasNext()){
-                System.out.print("'"+ds.next()+"' ");
-            }
-            System.out.println("}");
-            */
-
-            ArrayList<Developer> devs = new ArrayList<Developer>();
-            for (String dev : developers){
-                devs.add(loadDeveloper(dev));
-            }
-
             s.close();
-
             return new Game(title,description,devs,Status.valueOf(status));
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -282,7 +267,6 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-
     private void safeUpsertDevelopersGameLists(Developer dev, Statement s) throws DataSourceException{
         try{
             String sql = "SELECT did FROM Developers WHERE name=\"" + dev.getName() + "\";";
@@ -307,7 +291,6 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-
     private void safeUpsertGameDevelopers(int gid, int did, Statement s) throws DataSourceException{
         try {
             String sql = "SELECT * FROM GameDevelopers WHERE" +
@@ -325,7 +308,6 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-
     private void safeUpsertGameList(GameList gameList, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
@@ -342,7 +324,6 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-
     private void safeUpsertGameList(String listName, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
@@ -359,7 +340,6 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-
     private void safeUpsertGameListsGames(int glid, int gid, Statement s) throws DataSourceException{
         try{
             String sql = "SELECT * FROM GameListsGames WHERE" +
