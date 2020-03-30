@@ -28,8 +28,13 @@ public class AdministratorTest {
         Game game = new Game("My very second game", new Developer("Some other Dev"));
         administrator.reviewGame(game);
 
-        // Reject an accepted game
+        // Send an accepted game to Limbo
         administrator.rejectGame(game);
-        assertEquals("REJECTED", game.getStatus().toString());
+        assertEquals("LIMBO", game.getStatus().toString());
+
+        //Let's pretend that "Some other Dev" re-submits the game
+        game.changeStatus(Status.PENDING);
+        administrator.rejectGame(game);
+        assertEquals(Status.REJECTED, game.getStatus());
     }
 }
