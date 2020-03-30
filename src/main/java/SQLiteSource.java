@@ -184,7 +184,30 @@ public class SQLiteSource implements DataSource{
 
     @Override
     public GameList loadGameList(String name) throws DataSourceException{
-        return null;
+        if(name==null){
+            return null;
+        }
+
+        try {
+            Statement s = conn.createStatement();
+            // Instantiate GameList
+
+            // Obtain List of Game Names
+            String sql = "SELECT title " +
+                            "FROM GameListsGames" +
+                                "INNER JOIN GameLists USING(glid)" +
+                                "INNER JOIN Games USING(gid)" +
+                            "WHERE name=\""+name+"\";";
+            s.execute(sql);
+
+            // Load Each Game and Add
+
+            // Finalize
+            return null;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            throw new DataSourceException(e.getMessage());
+        }
     }
 
     @Override
@@ -214,7 +237,7 @@ public class SQLiteSource implements DataSource{
     @Override
     public Developer loadDeveloper(String dev) throws DataSourceException{
 
-        // Inner Joins to Get GameList name
+        // Get GameList name
 
         // Fill GameList
 
