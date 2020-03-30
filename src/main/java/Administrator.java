@@ -21,7 +21,8 @@ public class Administrator {
     }
 
     /**
-     * Changes a games status to 'rejected'
+     * Changes a games status to 'Rejected' if 'Pending'
+     * Changes a games status to 'Limbo' if already 'Accepted'
      * @param game - game to reject
      */
     public void rejectGame(Game game) {
