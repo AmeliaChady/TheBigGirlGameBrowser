@@ -21,11 +21,17 @@ public class Administrator {
     }
 
     /**
-     * Changes a games status to 'rejected'
+     * Changes a games status to 'Rejected' if 'Pending'
+     * Changes a games status to 'Limbo' if already 'Accepted'
      * @param game - game to reject
      */
     public void rejectGame(Game game) {
-        game.changeStatus(Status.REJECTED);
+        if (game.getStatus() == Status.PENDING) {
+            game.changeStatus(Status.REJECTED);
+        }
+        else if (game.getStatus() == Status.ACCEPTED) {
+            game.changeStatus(Status.LIMBO);
+        }
     }
 
     // ------GETTERS------
