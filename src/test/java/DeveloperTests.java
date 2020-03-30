@@ -1,4 +1,8 @@
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 
@@ -20,7 +24,7 @@ public class DeveloperTests {
     }
 
     @Test
-    public void developerSubmitGameTest(){
+    public void developerSubmitGameTest() {
         //make all the developers for testing
         Developer d1 = new Developer("Milk Dad");
         Developer d2 = new Developer("The Sunshine Gang");
@@ -91,6 +95,34 @@ public class DeveloperTests {
 
         assertEquals(9, gameListTest.getGameCount());
         assertEquals(2, d6.getGameList().getGameCount());
+    }
+
+    public void displayDeveloperTest(){
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        //0 games
+        Developer d1 = new Developer("George Washington");
+        d1.displayDeveloper();
+        assertEquals("Name: George Washington\nGeorge Washington's Games: This list is empty\n", outContent.toString());
+
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        //1 game
+        Game game = new Game();
+        d1.getGameList().includeGame(game);
+        d1.displayDeveloper();
+        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame\n", outContent.toString());
+
+        outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        //2 games
+        Game game2 = new Game();
+        d1.getGameList().includeGame(game2);
+        d1.displayDeveloper();
+
+        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame, testGame\n", outContent.toString());
 
     }
 }

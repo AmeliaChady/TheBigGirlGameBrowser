@@ -10,6 +10,11 @@ public class Developer {
         developerGameList = new GameList(nameIn+"'s Games");
     }
 
+    public void displayDeveloper() {
+        System.out.println("Name: " + name );
+        developerGameList.displayListNameAndGameTitles();
+    }
+
     public String getName(){
         return name;
     }
@@ -29,5 +34,9 @@ public class Developer {
 
         //planning on fleshing this out later so the same game can't be added twice?
         //wasn't specified in card so not planning on addressing this during sprint 1
+    }
+
+    public String getGameListName() {
+        return developerGameList.getName();
     }
 }

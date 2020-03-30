@@ -7,8 +7,7 @@ This project will replicate the non-commercial part of a game store, assisting w
 
 ## [Discord](https://discord.gg/QwWkjS2)
 
-## [Class Diagram draw.io](https://drive.google.com/file/d/1agoIFHWCq6-q52iRUu43jdNgQK72Lq78/view?usp=sharing)
-
+## [Sprint 1 Class Diagram](https://drive.google.com/file/d/1WbfxSb3m6w8zfWdiadFw75o8nKdFNza9/view?usp=sharing)
 
 # Sprints
 Sprint 1 - Developers, Admins, And A Database (DAAAD)
