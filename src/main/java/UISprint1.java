@@ -4,7 +4,10 @@ import java.util.Scanner;
 
 public class UISprint1 {
 
-    public UISprint1(){
+    GameBrowser gameBrowser;
+
+    public UISprint1(String filepath) throws IllegalArgumentException{
+        GameBrowser gameBrowser = new GameBrowser(filepath);
     }
 
     private void login() throws IOException, ParseException {
@@ -100,7 +103,7 @@ public class UISprint1 {
 
     }
     public static void main(String[] args) throws IOException, ParseException {
-        UISprint1 myBGGLTest = new UISprint1();
+        UISprint1 myBGGLTest = new UISprint1("testing.db");
         myBGGLTest.login();
     }
 
