@@ -23,38 +23,47 @@ public class Game {
      * FullFull constructor (should only be used for backend tests)
      * @param title game title
      * @param description descriptor for game
-     * @param developer link to developer object
+     * @param developers link to developer object
      */
-    public Game(String title, String description, List<Developer> developer, Status status){
+    public Game(String title, String description, List<Developer> developers, Status status){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<Developer>(developers);
         this.status = status;
+        for (Developer developer : developers){
+            developer.getGameList().includeGame(this);
+        }
     }
 
     /**
      *  Full constructor
      * @param title game title
      * @param description descriptor for game
-     * @param developer link to developer object
+     * @param developers link to developer object
      */
-    public Game(String title, String description,  List<Developer> developer){
+    public Game(String title, String description,  List<Developer> developers){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<Developer>(developers);
         this.status = Status.PENDING;
+        for (Developer developer : developers){
+            developer.getGameList().includeGame(this);
+        }
     }
 
     /**
      * Game constructor for when you don't know the description yet
      * @param title game title
-     * @param developer link to developer object
+     * @param developers link to developer object
      */
-    public Game(String title, List<Developer> developer){
+    public Game(String title, List<Developer> developers){
         this.title = title;
-        this.developers = new ArrayList<Developer>(developer);
+        this.developers = new ArrayList<Developer>(developers);
         this.description = "No Description Given";
         this.status = Status.PENDING;
+        for (Developer developer : developers){
+            developer.getGameList().includeGame(this);
+        }
     }
 
 
@@ -70,6 +79,7 @@ public class Game {
         this.developers = new ArrayList<Developer>();
         this.developers.add(developer);
         this.status = status;
+        developer.getGameList().includeGame(this);
     }
 
     /**
@@ -84,6 +94,7 @@ public class Game {
         this.developers = new ArrayList<Developer>();
         this.developers.add(developer);
         this.status = Status.PENDING;
+        developer.getGameList().includeGame(this);
     }
 
     /**
@@ -97,6 +108,7 @@ public class Game {
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
+        developer.getGameList().includeGame(this);
     }
 
     /**
@@ -127,9 +139,13 @@ public class Game {
 
     /**
      * Allows for the addition of multiple developers
+     * Adds Game to Developers GameList
      * @param developer a user who develops games for general users
      */
-    public void addDeveloper(Developer developer) {this.developers.add(developer);}
+    public void addDeveloper(Developer developer) {
+        this.developers.add(developer);
+        developer.getGameList().includeGame(this);
+    }
 
     public void displayGame() {
         String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
