@@ -4,6 +4,7 @@ import java.util.List;
 
 public class GameBrowser {
     private DataSource dataSource;
+    private final String gameListName = "Master Game List";
     private GameList gameList;
     private List<Administrator> administrators;
     private List<Developer> developers;
@@ -12,27 +13,13 @@ public class GameBrowser {
      * Constructor (
      * @param dataFilePath - file path to load all data from
      */
-    public GameBrowser(String dataFilePath) throws IllegalArgumentException {
-        // TODO remove after a DataSource.loadGameList has been made
-        String[] gameTitlesInDb = {
-                "LoadGameTest1", "LoadGameTest2", "testGame", "Test-zx the Game",
-                "Toot Scooters", "testGame1", "testGame2", "testGame3"
-        };
-
+    public GameBrowser(String dataFilePath) throws IllegalArgumentException, DataSourceException {
         if (dataFilePath.length() == 0)
             throw new IllegalArgumentException("Please supply a filename.");
 
         dataSource = new SQLiteSource(dataFilePath);
-        gameList = new GameList("Master List");
         developers = new ArrayList<Developer>();
-
-        // load games from data source
-        try {
-            for (int i = 0; i < gameTitlesInDb.length; i++)
-                gameList.includeGame( dataSource.loadGame(gameTitlesInDb[i]) );
-        } catch(DataSourceException dse) {
-            System.out.println(dse.getMessage());
-        }
+        loadAllGames();
     }
 
     /**
@@ -81,6 +68,16 @@ public class GameBrowser {
             }
         }
         return developer;
+    }
+
+    // ------HELPERS------
+    private void loadAllGames() throws DataSourceException {
+        try {
+            gameList = dataSource.loadGameList(gameListName);
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
     }
 
     // ------GETTERS------
