@@ -159,6 +159,50 @@ public class DataSourceTest {
         }
     }
 
+    public static void dataSourceLoadGameListTest(DataSource ds) throws DataSourceException{
+        System.out.println("Note, there cannot be a GameList called 'BogusList', otherwise tests will break");
+
+        Game g1 = new Game("Crossing Mammals", new Developer("HoarderOfBells"));
+        Game g2 = new Game("Confusion Level Increasing", new Developer("Amelia Chady"));
+
+        ds.saveGame(g1);
+        ds.saveGame(g2);
+
+        GameList gl1 = new GameList("Games I Have Time To Play");
+        ds.saveGameList(gl1);
+
+        GameList gl2 = new GameList("Everyone Else is Playing");
+        gl2.includeGame(g1);
+        ds.saveGameList(gl2);
+
+        GameList gl3 = new GameList("The Kerry Anne Experience");
+        gl3.includeGame(g1);
+        gl3.includeGame(g2);
+        ds.saveGameList(gl3);
+
+        // Load Game List with No Games
+        assertEquals(0, ds.loadGameList("Games I Have Time To Play").getGameCount());
+
+        // Load Game List with One Game
+        GameList loaded = ds.loadGameList("Everyone Else is Playing");
+        assertEquals(1, loaded.getGameCount());
+
+        // Load Game List with Two Games
+        assertEquals(2, ds.loadGameList("The Kerry Anne Experience").getGameCount());
+
+        // Games Hold Their Names
+        assertEquals("Crossing Mammals", loaded.getGames().get(0).getTitle());
+
+        // Games Hold Developers (Using loadGame so only need simple connection test)
+        assertEquals("HoarderOfBells", loaded.getGames().get(0).getDeveloperNames().get(0));
+
+        // Sending Null Returns Null
+        assertNull(ds.loadGameList(null));
+
+        // Sending Bogus Returns Null
+        assertNull(ds.loadGameList("BogusList"));
+    }
+
     public static void dataSourceSaveDevelopersTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
@@ -179,6 +223,7 @@ public class DataSourceTest {
         gef.getGameList().includeGame(game3);
         ds.saveDeveloper(gef);
     }
+
 
 
 }
