@@ -108,7 +108,7 @@ public class UISprint1 {
     }
 
     public void displayGamesGivenStatus(GameList gameList, Status status){
-
+        gameList.displayGamesGivenStatus(status);
     }
 
     public void displayListNameAndGameTitles(){
