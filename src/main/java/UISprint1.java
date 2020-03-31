@@ -158,12 +158,12 @@ public class UISprint1 {
         gameList.displayGamesGivenStatus(status);
     }
 
-    public void displayListNameAndGameTitles(){
-
+    public void displayListNameAndGameTitles(GameList gameList){
+        gameList.displayListNameAndGameTitles();
     }
 
-    public void displayAllGames(){
-
+    public void displayAllGames(GameList gameList){
+        gameList.displayAllGames();
     }
 
     public void includeGame(Game game){
