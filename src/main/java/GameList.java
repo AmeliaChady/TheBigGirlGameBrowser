@@ -123,6 +123,24 @@ public class GameList {
         }
     }
 
+    public void displayNumberedListOfGamesGivenStatus(Status status){
+        System.out.println(name + "(" + status +"):\n");
+
+        if (getGameCount()==0){
+            System.out.println("This list is empty");
+        }
+        else {
+            int counter = 1; //tracks the number to be printed
+            for (int i = 0; i < getGameCount(); i++) {
+                if (gameList.get(i).getStatus()==status) {
+                    System.out.println(counter + ":");
+                    gameList.get(i).displayGame();
+                    counter +=1;
+                }
+            }
+        }
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 

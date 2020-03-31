@@ -180,6 +180,11 @@ public class UISprint1 {
         gameList.displayGamesGivenStatus(status);
     }
 
+    public void displayNumberedListOfGamesGivenStatus(GameList gameList, Status status){
+        gameList.displayNumberedListOfGamesGivenStatus(status);
+    }
+
+
     public void displayListNameAndGameTitles(GameList gameList){
         gameList.displayListNameAndGameTitles();
     }
