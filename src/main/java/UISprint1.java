@@ -107,11 +107,14 @@ public class UISprint1 {
 
         else if(devChoice == 3){
             System.out.println("This option currently under construction.");
+            System.out.println("Please check back later.");
+            developerTakeAction(testDev);
         }
 
         else if (devChoice == 4){
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
+
             //login();
         }
 
@@ -119,6 +122,7 @@ public class UISprint1 {
             System.out.println("ERROR: Invalid answer.");
             System.out.println("Please try again.");
             //back to the top of the list
+            developerTakeAction(testDev);
         }
 
     }
@@ -133,19 +137,37 @@ public class UISprint1 {
         int adminChoice = in.nextInt();
 
         if(adminChoice == 1){
-        System.out.println("Please choose which pending game you'd like to review.");
-        //displayGameTitlesNumberedList();
-        //is there a function that displays submitted games?
+            System.out.println("Please choose which pending game you'd like to review.");
+            //display pending games
+            displayGamesGivenStatus(gameBrowser.getGameList(), Status.PENDING);
+            //is there a function that displays submitted games?
         }
 
         else if(adminChoice == 2){
-        //is there a function that displays the library?
+            System.out.println("Approved Games:");
+            //display games with an accepted status
+            displayGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
+            System.out.println("Would you like to remove any games?");
+            System.out.println("1: Yes");
+            System.out.println("2: No");
+            int adminApprovedChoice = in.nextInt();
+            if(adminApprovedChoice == 1){
+
+            }
+            else{
+                adminTakeAction();
+            }
+
         }
 
         else if(adminChoice == 3){
             System.out.println("Thank you for using the Big Girl Game Library.");
             System.out.println("See you soon!");
             //login();
+        }
+
+        else{
+            adminTakeAction();
         }
 
     }
@@ -172,10 +194,6 @@ public class UISprint1 {
 
     public void removeGame(String title){
         gameBrowser.removeGame(title);
-    }
-
-    public void getDeveloperList(){
-        //gameBrowser.getDeveloperList();
     }
 
 
