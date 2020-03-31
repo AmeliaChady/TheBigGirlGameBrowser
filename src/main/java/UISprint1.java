@@ -123,7 +123,7 @@ public class UISprint1 {
     }
 
     public void displayAllGames(GameList gameList){
-
+        gameList.displayAllGames();
     }
 
     public void includeGame(Game game){
