@@ -94,7 +94,7 @@ public class UISprint1 {
 
         if(adminChoice == 1){
         System.out.println("Please choose which pending game you'd like to review.");
-        displayGameTitlesNumberedList();
+        //displayGameTitlesNumberedList();
         //is there a function that displays submitted games?
         }
 
@@ -118,11 +118,11 @@ public class UISprint1 {
         gameList.displayGamesGivenStatus(status);
     }
 
-    public void displayListNameAndGameTitles(){
+    public void displayListNameAndGameTitles(GameList gameList){
 
     }
 
-    public void displayAllGames(){
+    public void displayAllGames(GameList gameList){
 
     }
 
@@ -135,7 +135,7 @@ public class UISprint1 {
     }
 
     public void getDeveloperList(){
-        gameBrowser.getDeveloperList();
+        //gameBrowser.getDeveloperList();
     }
 
 
