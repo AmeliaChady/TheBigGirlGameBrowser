@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class SQLiteSource implements DataSource{
     String path;
     Connection conn;
+    boolean inTransaction;
 
     /***
      * Creates a datasource based off a SQLite Database
@@ -30,6 +31,8 @@ public class SQLiteSource implements DataSource{
         } catch (SQLException e) {
             throw new IllegalArgumentException("Incorrect Path");
         }
+        inTransaction = false;
+
     }
 
     void close(){
@@ -48,7 +51,10 @@ public class SQLiteSource implements DataSource{
         Savepoint sg = null;
         try{
             // Set up statement
-            sg = conn.setSavepoint();
+            if(!inTransaction) {
+                sg = conn.setSavepoint();
+                inTransaction = true;
+            }
             Statement s = conn.createStatement();
 
             safeUpsertGame(game, s);
@@ -79,13 +85,18 @@ public class SQLiteSource implements DataSource{
 
 
             // Finalize
+
             s.close();
-            conn.releaseSavepoint(sg);
+            if(sg != null){
+                conn.commit();
+                inTransaction = false;
+            }
         }catch (SQLException | DataSourceException e){
             try {
                 if(sg != null) {
                     conn.rollback(sg);
                     conn.releaseSavepoint(sg);
+                    inTransaction = false;
                 }
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
@@ -100,7 +111,10 @@ public class SQLiteSource implements DataSource{
 
         Savepoint lg = null;
         try {
-            lg = conn.setSavepoint();
+            if(!inTransaction) {
+                lg = conn.setSavepoint();
+                inTransaction = true;
+            }
             Statement s = conn.createStatement();
 
             String sql = "SELECT * FROM Games INNER JOIN GameStatuses USING(gsid) WHERE title='" + title + "';";
@@ -140,13 +154,17 @@ public class SQLiteSource implements DataSource{
             }
 
             s.close();
-            conn.releaseSavepoint(lg);
+            if(lg != null){
+                conn.commit();
+                inTransaction = false;
+            }
             return new Game(title,description,devs,Status.valueOf(status));
         }catch (SQLException e){
             try {
                 if(lg != null) {
                     conn.rollback(lg);
                     conn.releaseSavepoint(lg);
+                    inTransaction = false;
                 }
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
@@ -162,7 +180,10 @@ public class SQLiteSource implements DataSource{
         Savepoint sgl = null;
         try{
             // Set up statement
-            sgl = conn.setSavepoint();
+            if(!inTransaction) {
+                sgl = conn.setSavepoint();
+                inTransaction = true;
+            }
             Statement s = conn.createStatement();
 
             safeUpsertGameList(gameList, s);
@@ -192,13 +213,18 @@ public class SQLiteSource implements DataSource{
             }
 
             // Finalize
+
             s.close();
-            conn.releaseSavepoint(sgl);
+            if(sgl != null){
+                conn.commit();
+                inTransaction = false;
+            }
         }catch (SQLException | DataSourceException e){
             try {
                 if(sgl != null) {
                     conn.rollback(sgl);
                     conn.releaseSavepoint(sgl);
+                    inTransaction = false;
                 }
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
@@ -214,7 +240,10 @@ public class SQLiteSource implements DataSource{
 
         Savepoint lgl = null;
         try {
-            lgl = conn.setSavepoint();
+            if(!inTransaction) {
+                lgl = conn.setSavepoint();
+                inTransaction = true;
+            }
             Statement s = conn.createStatement();
 
             // See If Saved
@@ -250,13 +279,17 @@ public class SQLiteSource implements DataSource{
 
             // Finalize
             s.close();
-            conn.releaseSavepoint(lgl);
+            if(lgl != null){
+                conn.commit();
+                inTransaction = false;
+            }
             return gl;
         }catch (SQLException | DataSourceException e){
             try {
                 if(lgl != null) {
                     conn.rollback(lgl);
                     conn.releaseSavepoint(lgl);
+                    inTransaction = false;
                 }
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
@@ -272,7 +305,10 @@ public class SQLiteSource implements DataSource{
         Savepoint sd = null;
         try{
             // Set up statement
-            sd = conn.setSavepoint();
+            if(!inTransaction) {
+                sd = conn.setSavepoint();
+                inTransaction = true;
+            }
             Statement s = conn.createStatement();
 
             safeUpsertDevelopers(dev.getName(), s);
@@ -281,13 +317,18 @@ public class SQLiteSource implements DataSource{
             safeUpsertDevelopersGameLists(dev, s);
 
             // Finalize
+
             s.close();
-            conn.releaseSavepoint(sd);
+            if(sd != null){
+                conn.commit();
+                inTransaction = false;
+            }
         }catch (SQLException e){
             try {
                 if(sd != null) {
                     conn.rollback(sd);
                     conn.releaseSavepoint(sd);
+                    inTransaction = false;
                 }
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
@@ -413,7 +454,7 @@ public class SQLiteSource implements DataSource{
 
             if (!exists){
                 sql = "INSERT INTO GameLists(name) VALUES(" +
-                        "\"" + gameList.getName()+ "\");";
+                        "'" + gameList.getName()+ "');";
             }
             s.execute(sql);
         }catch (SQLException e){

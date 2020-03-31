@@ -75,6 +75,7 @@ public class GameBrowser {
         try {
             gameList = dataSource.loadGameList(gameListName);
         } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
             throw new DataSourceException(dse.getMessage());
         }
     }

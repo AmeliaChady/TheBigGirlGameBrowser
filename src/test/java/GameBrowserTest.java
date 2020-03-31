@@ -26,6 +26,7 @@ public class GameBrowserTest {
         }
         try {
             testDataSource.saveGameList(testGameList);
+            System.out.println("A"+testDataSource.loadGame("Master Game List").getTitle());
             testDataSource.close();
             testDataSource = null;
         } catch(DataSourceException dse) {
