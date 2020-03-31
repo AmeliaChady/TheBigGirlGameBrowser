@@ -13,7 +13,7 @@ public class GameBrowserTest {
 
         //-----------load games to a 'Master Game List'-----------------
         //
-        DataSource testDataSource = new SQLiteSource("testing.db");
+        SQLiteSource testDataSource = new SQLiteSource("testing.db");
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
         Developer testDev;
@@ -26,9 +26,10 @@ public class GameBrowserTest {
         }
         try {
             testDataSource.saveGameList(testGameList);
+            testDataSource.close();
+            testDataSource = null;
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
-            return;
         }
         //--------------------------------------------------
 
@@ -52,7 +53,8 @@ public class GameBrowserTest {
             gameBrowser = new GameBrowser("testing.db");
             // Game list was loaded and length of list is as expected
             int expectedGameCount = gameCount;
-            assertNotEquals(null, gameBrowser.getGameList());
+            assertNotNull(gameBrowser.getGameList());
+            System.out.println(gameBrowser.getGameList().getGame("game 1"));
             assertEquals(expectedGameCount, gameBrowser.getGameList().getGameCount());
 
             // check that expected games from the master list were loaded
@@ -62,6 +64,7 @@ public class GameBrowserTest {
             while (i < masterGameList.getGameCount()) {
                 expectedGameTitle = "game "+i+1;
                 assertEquals(expectedGameTitle, masterGameList.getGame(expectedGameTitle).getTitle());
+                i++;
             }
 
             // TODO check developers (once devs can be loaded from db)

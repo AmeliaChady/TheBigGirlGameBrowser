@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GameBrowser {
     private DataSource dataSource;
-    private String gameListName;
+    private final String gameListName = "Master Game List";
     private GameList gameList;
     private List<Administrator> administrators;
     private List<Developer> developers;
@@ -18,11 +18,7 @@ public class GameBrowser {
             throw new IllegalArgumentException("Please supply a filename.");
 
         dataSource = new SQLiteSource(dataFilePath);
-        gameListName = "Master List";
-        gameList = new GameList("Master List");
         developers = new ArrayList<Developer>();
-
-        // load games from data source
         loadAllGames();
     }
 
@@ -76,6 +72,11 @@ public class GameBrowser {
 
     // ------HELPERS------
     private void loadAllGames() throws DataSourceException {
+        try {
+            gameList = dataSource.loadGameList(gameListName);
+        } catch(DataSourceException dse) {
+            throw new DataSourceException(dse.getMessage());
+        }
     }
 
     // ------GETTERS------
