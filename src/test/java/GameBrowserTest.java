@@ -98,4 +98,39 @@ public class GameBrowserTest {
         assertNull(g5);
 
     }
+
+    @Test
+    public void addDeveloperTest() {
+        GameBrowser gameBrowser = new GameBrowser("testing.db");
+
+        // create a new developer
+        gameBrowser.addDeveloper("dev1");
+        assertEquals(1, gameBrowser.getDevelopers().size());
+        assertEquals("dev1", gameBrowser.getDevelopers().get(0).getName());
+
+        // create another
+        gameBrowser.addDeveloper("dev2");
+        assertEquals(2, gameBrowser.getDevelopers().size());
+        assertEquals("dev2", gameBrowser.getDevelopers().get(1).getName());
+    }
+
+    @Test
+    public void removeDeveloperTest() { // assumes a passing addDeveloperTest
+        GameBrowser gameBrowser = new GameBrowser("testing.db");
+
+        // remove one developer from list of only one dev
+        gameBrowser.addDeveloper("dev1");
+        assertEquals("dev1", gameBrowser.removeDeveloper("dev1").getName());
+        assertEquals(0, gameBrowser.getDevelopers().size());
+
+        // remove one developer from dev list > 1
+        gameBrowser.addDeveloper("dev1");
+        gameBrowser.addDeveloper("dev2");
+        assertEquals("dev2", gameBrowser.removeDeveloper("dev2").getName());
+        assertEquals(1, gameBrowser.getDevelopers().size());
+
+        // remove non-existent developer
+        assertNull(gameBrowser.removeDeveloper("dev2"));
+        assertEquals(1, gameBrowser.getDevelopers().size());
+    }
 }

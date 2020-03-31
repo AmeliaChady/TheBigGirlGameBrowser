@@ -1,4 +1,5 @@
 import javax.xml.crypto.Data;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameBrowser {
@@ -23,6 +24,9 @@ public class GameBrowser {
 
         dataSource = new SQLiteSource(dataFilePath);
         gameList = new GameList("Master List");
+        developers = new ArrayList<Developer>();
+
+        // load games from data source
         try {
             for (int i = 0; i < gameTitlesInDb.length; i++)
                 gameList.includeGame( dataSource.loadGame(gameTitlesInDb[i]) );
@@ -52,12 +56,35 @@ public class GameBrowser {
         return gameList.removeGame(title);
     }
 
-    public void displayGameTitlesNumberedList(GameList gameList) {
-        gameList.displayGameTitlesNumberedList();
+
+    /**
+     * A new developer is created and added to the developer list
+     * @param username - the username of the developer
+     */
+    public void addDeveloper(String username) {
+        developers.add( new Developer(username) );
+    }
+
+    /**
+     * Removes a developer from the developer list
+     * @param username - the username of the developer
+     * @return Developer - the developer that was removed
+     */
+    public Developer removeDeveloper(String username) {
+        Developer developer = null;
+
+        for (Developer d : developers) {
+            if (d.getName().equals(username)) {
+                developer = d;
+                developers.remove(developer);
+                break;
+            }
+        }
+        return developer;
     }
 
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
+    public List<Developer> getDevelopers() { return developers; }
 
-    public List<Developer> getDeveloperList() { return developers; }
 }
