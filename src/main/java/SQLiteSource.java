@@ -165,16 +165,17 @@ public class SQLiteSource implements DataSource{
             int glid = s.getResultSet().getInt(1);
 
             // Games Set Up
-            Iterator<String> games = gameList.getGameTitles().iterator();
+            Iterator<Game> games = gameList.getGames().iterator();
             int gid;
 
             // Game Iterator
             while (games.hasNext()) {
-                // Developer Set Up
-                String g = games.next();
+                // Game Set Up
+                Game g = games.next();
+                saveGame(g);
 
-                // Getting Developer ID
-                sql = "SELECT gid FROM Games WHERE title=\"" + g + "\";";
+                // Getting Game ID
+                sql = "SELECT gid FROM Games WHERE title=\"" + g.getTitle() + "\";";
                 s.execute(sql);
                 gid = s.getResultSet().getInt(1);
 
