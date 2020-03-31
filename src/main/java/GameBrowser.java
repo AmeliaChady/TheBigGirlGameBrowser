@@ -13,12 +13,6 @@ public class GameBrowser {
      * @param dataFilePath - file path to load all data from
      */
     public GameBrowser(String dataFilePath) throws IllegalArgumentException {
-        // TODO remove after a DataSource.loadGameList has been made
-        String[] gameTitlesInDb = {
-                "LoadGameTest1", "LoadGameTest2", "testGame", "Test-zx the Game",
-                "Toot Scooters", "testGame1", "testGame2", "testGame3"
-        };
-
         if (dataFilePath.length() == 0)
             throw new IllegalArgumentException("Please supply a filename.");
 
@@ -27,12 +21,7 @@ public class GameBrowser {
         developers = new ArrayList<Developer>();
 
         // load games from data source
-        try {
-            for (int i = 0; i < gameTitlesInDb.length; i++)
-                gameList.includeGame( dataSource.loadGame(gameTitlesInDb[i]) );
-        } catch(DataSourceException dse) {
-            System.out.println(dse.getMessage());
-        }
+        loadAllGames();
     }
 
     /**
@@ -82,6 +71,9 @@ public class GameBrowser {
         }
         return developer;
     }
+
+    // ------HELPERS------
+    private void loadAllGames() {}
 
     // ------GETTERS------
     public GameList getGameList() { return gameList; }

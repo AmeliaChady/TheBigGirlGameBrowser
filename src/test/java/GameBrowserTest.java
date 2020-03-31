@@ -11,6 +11,27 @@ public class GameBrowserTest {
     public void constructorTest() {
         GameBrowser gameBrowser;
 
+        //-----------load games to a 'Master Game List'-----------------
+        //
+        DataSource testDataSource = new SQLiteSource("testing.db");
+        GameList testGameList = new GameList("Master Game List");
+        Game testGame;
+        Developer testDev;
+        int gameCount = 10;
+
+        for (int i = 1; i < gameCount+1; i++) {
+            testDev = new Developer("dev "+i);
+            testGame = new Game("game "+i, testDev);
+            testGameList.includeGame(testGame);
+        }
+        try {
+            testDataSource.saveGameList(testGameList);
+        } catch(DataSourceException dse) {
+            fail(dse.getMessage());
+            return;
+        }
+        //--------------------------------------------------
+
         // Empty constructor use (invalid)
         try {
             gameBrowser = new GameBrowser();
@@ -26,11 +47,22 @@ public class GameBrowserTest {
         // Default constructor with non-existent file path (invalid)
         assertThrows(IllegalArgumentException.class, () -> new GameBrowser("../some_file"));
 
-        // Default constructor with exisiting file path
+        // Default constructor with existing file path
         gameBrowser = new GameBrowser("testing.db");
-        int expectedGameCount = 8;
+        // Game list was loaded and length of list is as expected
+        int expectedGameCount = gameCount;
         assertNotEquals(null, gameBrowser.getGameList());
+        System.out.println(gameBrowser.getGameList().getGame("game 1"));
         assertEquals(expectedGameCount, gameBrowser.getGameList().getGameCount());
+
+        // check that expected games from the master list were loaded
+        int i = 0;
+        GameList masterGameList = gameBrowser.getGameList();
+        String expectedGameTitle;
+        while (i < masterGameList.getGameCount()) {
+            expectedGameTitle = "game "+i+1;
+            assertEquals(expectedGameTitle, masterGameList.getGame(expectedGameTitle).getTitle());
+        }
 
         // TODO check developers (once devs can be loaded from db)
         // TODO check administrators (once admins can be loaded from db)
