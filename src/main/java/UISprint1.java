@@ -24,7 +24,9 @@ public class UISprint1 {
 
         else if(roleChoice == 2){
             System.out.println("Please enter your name:");
-            //Developer devNameEnter = in.nextLine();
+            String devNameEnter = in.nextLine();
+
+
             //developerTakeAction(devNameEnter);
 
         }
@@ -55,6 +57,9 @@ public class UISprint1 {
             Game testGame = new Game(gameName, gameDescription, testDev, Status.PENDING);
             //submitGame(testGame, gamelist);
 
+            includeGame(testGame);
+
+
             System.out.println("Thank you! Your game has been submitted and is under review.");
             System.out.println("Expect a response in your inbox shortly.");
 
@@ -63,7 +68,7 @@ public class UISprint1 {
 
         else if(devChoice == 2){
             System.out.println("Please select the game that you'd like to update:");
-            //how to display developer list????
+            displayGameTitlesNumberedList(testDev.getGameList());
         }
 
         else if(devChoice == 3){
@@ -81,13 +86,15 @@ public class UISprint1 {
     private void adminTakeAction(){
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome. Please choose what action you'd like to take:");
-        System.out.println("1: Review Submitted Games");
+        System.out.println("1: Review Pending Games");
         System.out.println("2: Review Approved Games");
         System.out.println("3: Logout");
 
         int adminChoice = in.nextInt();
 
         if(adminChoice == 1){
+        System.out.println("Please choose which pending game you'd like to review.");
+        displayGameTitlesNumberedList();
         //is there a function that displays submitted games?
         }
 
@@ -115,10 +122,14 @@ public class UISprint1 {
         gameBrowser.removeGame(title);
     }
 
+    public void getDeveloperList(){
+        gameBrowser.getDeveloperList();
+    }
+
+
     public static void main(String[] args) throws IOException, ParseException {
         UISprint1 myBGGLTest = new UISprint1("testing.db");
         myBGGLTest.login();
-        //yeehaw bicth
 
     }
 
