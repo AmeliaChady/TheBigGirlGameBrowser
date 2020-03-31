@@ -191,7 +191,7 @@ public class DataSourceTest {
         assertEquals(2, ds.loadGameList("The Kerry Anne Experience").getGameCount());
 
         // Games Hold Their Names
-        assertEquals("Crossing Mammals", loaded.getGames().get(0));
+        assertEquals("Crossing Mammals", loaded.getGames().get(0).getTitle());
 
         // Games Hold Developers (Using loadGame so only need simple connection test)
         assertEquals("HoarderOfBells", loaded.getGames().get(0).getDeveloperNames().get(0));

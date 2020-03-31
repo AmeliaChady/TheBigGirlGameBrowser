@@ -31,6 +31,13 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    void close(){
+        try {
+            if (this.isConnected())
+                conn.close();
+        }catch (SQLException ignored){}
+    }
+
     @Override
     public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
         if(game == null){
@@ -86,6 +93,7 @@ public class SQLiteSource implements DataSource{
 
         try {
             Statement s = conn.createStatement();
+            s.execute("BEGIN TRANSACTION;");
 
             String sql = "SELECT * FROM Games INNER JOIN GameStatuses USING(gsid) WHERE title='" + title + "';";
             boolean hasResults = s.execute(sql);
@@ -123,6 +131,7 @@ public class SQLiteSource implements DataSource{
                 }
             }
 
+            s.execute("COMMIT;");
             s.close();
             return new Game(title,description,devs,Status.valueOf(status));
         }catch (SQLException e){
@@ -190,20 +199,40 @@ public class SQLiteSource implements DataSource{
 
         try {
             Statement s = conn.createStatement();
+
+            // See If Saved
+            String sql = "SELECT * FROM GameLists WHERE name=\""+name+"\"; ";
+            s.execute(sql);
+
+            ResultSet nameResult = s.getResultSet();
+            if(!nameResult.next()){
+                return null;
+            }
+
             // Instantiate GameList
+            GameList gl = new GameList(name);
 
             // Obtain List of Game Names
-            String sql = "SELECT title " +
-                            "FROM GameListsGames " +
-                                "INNER JOIN GameLists USING(glid) " +
-                                "INNER JOIN Games USING(gid) " +
-                            "WHERE name=\""+name+"\"; ";
+            sql = "SELECT title " +
+                    "FROM GameListsGames " +
+                        "INNER JOIN GameLists USING(glid) " +
+                        "INNER JOIN Games USING(gid) " +
+                    "WHERE name=\""+name+"\"; ";
             s.execute(sql);
 
             // Load Each Game and Add
+            ResultSet gameNames = s.getResultSet();
+            boolean hasNext = !gameNames.isClosed();
+            if(hasNext){
+                gameNames.next();
+                while (hasNext){
+                    gl.includeGame(this.loadGame(gameNames.getString("title")));
+                    hasNext = gameNames.next();
+                }
+            }
 
             // Finalize
-            return null;
+            return gl;
         }catch (SQLException e){
             System.out.println(e.getMessage());
             throw new DataSourceException(e.getMessage());
