@@ -123,6 +123,10 @@ public class GameList {
         }
     }
 
+    public void displayNumberedListOfGamesGivenStatus(){
+
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
