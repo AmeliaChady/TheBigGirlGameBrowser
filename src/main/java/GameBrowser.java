@@ -65,6 +65,8 @@ public class GameBrowser {
         developers.add( new Developer(username) );
     }
 
+    public Developer removeDeveloper(String username) { return null; }
+
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
 
