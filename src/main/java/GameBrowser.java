@@ -65,6 +65,24 @@ public class GameBrowser {
         developers.add( new Developer(username) );
     }
 
+    /**
+     * Removes a developer from the developer list
+     * @param username - the username of the developer
+     * @return Developer - the developer that was removed
+     */
+    public Developer removeDeveloper(String username) {
+        Developer developer = null;
+
+        for (Developer d : developers) {
+            if (d.getName().equals(username)) {
+                developer = d;
+                developers.remove(developer);
+                break;
+            }
+        }
+        return developer;
+    }
+
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
 
