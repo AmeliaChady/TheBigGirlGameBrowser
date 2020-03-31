@@ -111,7 +111,19 @@ public class UISprint1 {
     }
 
     public void displayGameTitlesNumberedList(GameList gameList){
-        gameBrowser.displayGameTitlesNumberedList(gameList);
+        gameList.displayGameTitlesNumberedList();
+    }
+
+    public void displayGamesGivenStatus(GameList gameList, Status status){
+        gameList.displayGamesGivenStatus(status);
+    }
+
+    public void displayListNameAndGameTitles(){
+
+    }
+
+    public void displayAllGames(){
+
     }
 
     public void includeGame(Game game){
