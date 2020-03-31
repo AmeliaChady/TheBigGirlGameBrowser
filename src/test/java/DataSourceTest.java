@@ -213,11 +213,16 @@ public class DataSourceTest {
         Game game2 = new Game("game2", bobby);
         Game game3 = new Game("game3", bobby);
 
+        ds.saveGameList(bobby.getGameList());
+
         // At this point db should be aware of bob and have a relationship between bob and these games
 
-        Developer gef = new Developer("gef");
+        Developer gef = new Developer("jim");
         game1.addDeveloper(gef);
+        ds.saveGame(game1);
+
         game3.addDeveloper(gef);
+        ds.saveGame(game3);
 
         gef.getGameList().includeGame(game1);
         gef.getGameList().includeGame(game3);
