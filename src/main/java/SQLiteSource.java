@@ -26,6 +26,7 @@ public class SQLiteSource implements DataSource{
         this.path = "jdbc:sqlite:" + path;
         try {
             conn = DriverManager.getConnection(this.path);
+            conn.setAutoCommit(false);
         } catch (SQLException e) {
             throw new IllegalArgumentException("Incorrect Path");
         }
@@ -43,11 +44,12 @@ public class SQLiteSource implements DataSource{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
         }
-
+        
+        Savepoint sg = null;
         try{
             // Set up statement
+            sg = conn.setSavepoint();
             Statement s = conn.createStatement();
-            s.execute("BEGIN TRANSACTION;");
 
             safeUpsertGame(game, s);
 
@@ -77,12 +79,17 @@ public class SQLiteSource implements DataSource{
 
 
             // Finalize
-            s.execute("COMMIT;");
             s.close();
-        }catch (SQLException e){
+            conn.releaseSavepoint(sg);
+        }catch (SQLException | DataSourceException e){
+            try {
+                if(sg != null) {
+                    conn.rollback(sg);
+                    conn.releaseSavepoint(sg);
+                }
+            }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
-
     }
 
     @Override
@@ -91,9 +98,10 @@ public class SQLiteSource implements DataSource{
             return null;
         }
 
+        Savepoint lg = null;
         try {
+            lg = conn.setSavepoint();
             Statement s = conn.createStatement();
-            s.execute("BEGIN TRANSACTION;");
 
             String sql = "SELECT * FROM Games INNER JOIN GameStatuses USING(gsid) WHERE title='" + title + "';";
             boolean hasResults = s.execute(sql);
@@ -131,31 +139,31 @@ public class SQLiteSource implements DataSource{
                 }
             }
 
-            s.execute("COMMIT;");
             s.close();
+            conn.releaseSavepoint(lg);
             return new Game(title,description,devs,Status.valueOf(status));
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            try {
+                if(lg != null) {
+                    conn.rollback(lg);
+                    conn.releaseSavepoint(lg);
+                }
+            }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
     }
 
-    /**
-     * THIS FUNCTIONS ASSUMING THAT GAMES IN LIST HAVE ALREADY BEEN SAVED
-     * @param gameList the gameList to save
-     * @throws IllegalArgumentException
-     * @throws DataSourceException
-     */
     @Override
     public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
         if(gameList == null){
             throw new IllegalArgumentException("GameList is null");
         }
 
+        Savepoint sgl = null;
         try{
             // Set up statement
+            sgl = conn.setSavepoint();
             Statement s = conn.createStatement();
-            s.execute("BEGIN TRANSACTION;");
 
             safeUpsertGameList(gameList, s);
 
@@ -184,9 +192,15 @@ public class SQLiteSource implements DataSource{
             }
 
             // Finalize
-            s.execute("COMMIT;");
             s.close();
-        }catch (SQLException e){
+            conn.releaseSavepoint(sgl);
+        }catch (SQLException | DataSourceException e){
+            try {
+                if(sgl != null) {
+                    conn.rollback(sgl);
+                    conn.releaseSavepoint(sgl);
+                }
+            }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
 
@@ -198,7 +212,9 @@ public class SQLiteSource implements DataSource{
             return null;
         }
 
+        Savepoint lgl = null;
         try {
+            lgl = conn.setSavepoint();
             Statement s = conn.createStatement();
 
             // See If Saved
@@ -233,9 +249,16 @@ public class SQLiteSource implements DataSource{
             }
 
             // Finalize
+            s.close();
+            conn.releaseSavepoint(lgl);
             return gl;
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
+        }catch (SQLException | DataSourceException e){
+            try {
+                if(lgl != null) {
+                    conn.rollback(lgl);
+                    conn.releaseSavepoint(lgl);
+                }
+            }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
     }
@@ -246,10 +269,11 @@ public class SQLiteSource implements DataSource{
             throw new IllegalArgumentException("Developer is null");
         }
 
+        Savepoint sd = null;
         try{
             // Set up statement
+            sd = conn.setSavepoint();
             Statement s = conn.createStatement();
-            s.execute("BEGIN TRANSACTION;");
 
             safeUpsertDevelopers(dev.getName(), s);
 
@@ -257,9 +281,15 @@ public class SQLiteSource implements DataSource{
             safeUpsertDevelopersGameLists(dev, s);
 
             // Finalize
-            s.execute("COMMIT;");
             s.close();
+            conn.releaseSavepoint(sd);
         }catch (SQLException e){
+            try {
+                if(sd != null) {
+                    conn.rollback(sd);
+                    conn.releaseSavepoint(sd);
+                }
+            }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
     }
