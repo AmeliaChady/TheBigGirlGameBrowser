@@ -119,7 +119,7 @@ public class UISprint1 {
     }
 
     public void displayListNameAndGameTitles(GameList gameList){
-
+        gameList.displayListNameAndGameTitles();
     }
 
     public void displayAllGames(GameList gameList){
