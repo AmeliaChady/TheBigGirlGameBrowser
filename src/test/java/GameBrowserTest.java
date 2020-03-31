@@ -26,7 +26,6 @@ public class GameBrowserTest {
         }
         try {
             testDataSource.saveGameList(testGameList);
-            System.out.println("A"+testDataSource.loadGame("Master Game List").getTitle());
             testDataSource.close();
             testDataSource = null;
         } catch(DataSourceException dse) {
@@ -63,7 +62,8 @@ public class GameBrowserTest {
             GameList masterGameList = gameBrowser.getGameList();
             String expectedGameTitle;
             while (i < masterGameList.getGameCount()) {
-                expectedGameTitle = "game "+i+1;
+                expectedGameTitle = "game "+(i+1);
+                System.out.println(expectedGameTitle);
                 assertEquals(expectedGameTitle, masterGameList.getGame(expectedGameTitle).getTitle());
                 i++;
             }
