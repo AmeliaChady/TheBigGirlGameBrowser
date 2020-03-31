@@ -85,6 +85,6 @@ public class GameBrowser {
 
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
-
     public List<Developer> getDevelopers() { return developers; }
+
 }
