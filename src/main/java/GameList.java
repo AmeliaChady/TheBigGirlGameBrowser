@@ -34,7 +34,7 @@ public class GameList {
         Game gameFound = null;
 
         for (Game game : gameList) {
-            if (game.getTitle() == title) {
+            if (game.getTitle().equals(title)) {
                 gameFound = game;
                 break;
             }
