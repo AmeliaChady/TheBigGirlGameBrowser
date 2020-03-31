@@ -52,6 +52,10 @@ public class GameBrowser {
         return gameList.removeGame(title);
     }
 
+    public void displayGameTitlesNumberedList(GameList gameList) {
+        gameList.displayGameTitlesNumberedList();
+    }
+
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
 }

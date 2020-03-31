@@ -7,7 +7,7 @@ public class UISprint1 {
     GameBrowser gameBrowser;
 
     public UISprint1(String filepath) throws IllegalArgumentException{
-        GameBrowser gameBrowser = new GameBrowser(filepath);
+        gameBrowser = new GameBrowser(filepath);
     }
 
     private void login() throws IOException, ParseException {
@@ -102,6 +102,19 @@ public class UISprint1 {
         }
 
     }
+
+    public void displayGameTitlesNumberedList(GameList gameList){
+        gameBrowser.displayGameTitlesNumberedList(gameList);
+    }
+
+    public void includeGame(Game game){
+        gameBrowser.addGame(game);
+    }
+
+    public void removeGame(String title){
+        gameBrowser.removeGame(title);
+    }
+
     public static void main(String[] args) throws IOException, ParseException {
         UISprint1 myBGGLTest = new UISprint1("testing.db");
         myBGGLTest.login();
