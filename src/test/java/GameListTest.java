@@ -337,7 +337,7 @@ public class GameListTest {
         System.setOut(new PrintStream(outContent));
 
         gameList2.displayGameTitlesNumberedList();
-        assertEquals("There are no games to display", outContent.toString());
+        assertEquals("There are no games to display\n", outContent.toString());
 
         //1 game
         GameList gameList3 = new GameList("mediocreKidzList");

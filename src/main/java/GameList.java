@@ -113,7 +113,14 @@ public class GameList {
     }
 
     public void displayGameTitlesNumberedList(){
-
+        if(gameList.size()==0){
+            System.out.println("There are no games to display");
+        }
+        else{
+            for(int i = 0; i <gameList.size(); i++){
+                System.out.println((i+1) + ". " + gameList.get(i).getTitle());
+            }
+        }
     }
 
     // ------GETTERS------
