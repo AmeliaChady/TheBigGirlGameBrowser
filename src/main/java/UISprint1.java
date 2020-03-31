@@ -55,30 +55,70 @@ public class UISprint1 {
             String gameDescription = in.nextLine();
 
             Game testGame = new Game(gameName, gameDescription, testDev, Status.PENDING);
-            //submitGame(testGame, gamelist);
 
-            includeGame(testGame);
-
+            testDev.submitGame(testGame, gameBrowser.getGameList());
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
             System.out.println("Expect a response in your inbox shortly.");
 
-            //back to developer selection menu
+            //back to menu screen
+            developerTakeAction(testDev);
         }
 
         else if(devChoice == 2){
-            System.out.println("Please select the game that you'd like to update:");
+            GameList devGameList = testDev.getGameList();
             displayGameTitlesNumberedList(testDev.getGameList());
+            System.out.println("Please select the game that you'd like to update:");
+            int devUpdateChoice = in.nextInt();
+            Game updatingGame = devGameList.getGames().get(devUpdateChoice-1);
+
+            System.out.println("Please select one of the following options:");
+            System.out.println("1: Update Title");
+            System.out.println("2: Update Bio");
+
+            int devModifyChoice = in.nextInt();
+
+            if(devModifyChoice == 1){
+                System.out.println("Please enter the new game title:");
+                String updatedTitle = in.nextLine();
+                updatingGame.changeTitle(updatedTitle);
+
+                System.out.println("Title Updated!");
+                developerTakeAction(testDev);
+            }
+
+            else if(devModifyChoice == 2){
+                System.out.println("Please enter the new game bio:");
+                String updatedBio = in.nextLine();
+                updatingGame.changeDescription(updatedBio);
+
+                System.out.println("Bio updated!");
+                developerTakeAction(testDev);
+            }
+
+            else{
+                System.out.println("ERROR: Invalid answer.");
+                System.out.println("Please try again.");
+
+                developerTakeAction(testDev);
+            }
+
         }
 
         else if(devChoice == 3){
-            //do we even have a function right now for an inbox????
+            System.out.println("This option currently under construction.");
         }
 
         else if (devChoice == 4){
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
             //login();
+        }
+
+        else{
+            System.out.println("ERROR: Invalid answer.");
+            System.out.println("Please try again.");
+            //back to the top of the list
         }
 
     }
@@ -94,7 +134,7 @@ public class UISprint1 {
 
         if(adminChoice == 1){
         System.out.println("Please choose which pending game you'd like to review.");
-        displayGameTitlesNumberedList();
+        //displayGameTitlesNumberedList();
         //is there a function that displays submitted games?
         }
 
@@ -135,7 +175,7 @@ public class UISprint1 {
     }
 
     public void getDeveloperList(){
-        gameBrowser.getDeveloperList();
+        //gameBrowser.getDeveloperList();
     }
 
 
