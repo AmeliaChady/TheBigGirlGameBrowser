@@ -12,6 +12,7 @@ public class SQLiteSourceTests {
     public void SQLiteSourceConstructor() throws SQLException { // also
         try {
             SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+            s.close();
         }catch (Exception e){
             fail("Threw Exception when it shouldn't");
         }
@@ -27,23 +28,36 @@ public class SQLiteSourceTests {
     public void SQLiteSourceSaveGame() throws SQLException, DataSourceException{
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceSaveGameTest(s);
-    }
-
-    @Test
-    public void SQLiteSourceSaveGameList() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
-        DataSourceTest.dataSourceSaveGameListTest(s);
-    }
-
-    @Test
-    public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
-        DataSourceTest.dataSourceSaveDevelopersTest(s);
+        s.close();
     }
 
     @Test
     public void SQLiteSourceLoadGame() throws SQLException, DataSourceException{
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceLoadGameTest(s);
+        s.close();
     }
+
+    @Test
+    public void SQLiteSourceSaveGameList() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceSaveGameListTest(s);
+        s.close();
+    }
+
+    @Test
+    public void SQLiteSourceLoadGameList() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceLoadGameListTest(s);
+        s.close();
+    }
+
+    @Test
+    public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceSaveDevelopersTest(s);
+        s.close();
+    }
+
+
 }
