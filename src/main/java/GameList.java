@@ -112,6 +112,10 @@ public class GameList {
         }
     }
 
+    public void displayGameTitlesNumberedList(){
+
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 
