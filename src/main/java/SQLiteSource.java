@@ -402,6 +402,11 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    @Override
+    public List<Developer> loadDeveloperList() throws DataSourceException{
+        return null;
+    }
+
 
 
     // underlying DB calls

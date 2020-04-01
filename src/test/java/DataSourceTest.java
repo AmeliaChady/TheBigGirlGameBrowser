@@ -247,4 +247,19 @@ public class DataSourceTest {
         assertNull(ds.loadDeveloper("LoadDeveloperBogusTest"));
     }
 
+    public static void dataSourceLoadDeveloperListTest(DataSource ds) throws DataSourceException {
+        // create and save devs
+        for (int i = 0; i < 5; i++)
+            ds.saveDeveloper( new Developer("test dev "+i) );
+        // load them from db
+        List<Developer> developers = ds.loadDeveloperList();
+
+        // Load Works
+        assertNotNull(developers);
+
+        // All developers were loaded
+        for (int i = 0; i < 5; i++)
+            assertEquals("test dev "+i, developers.get(i).getName());
+    }
+
 }
