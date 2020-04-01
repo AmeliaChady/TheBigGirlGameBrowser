@@ -282,7 +282,7 @@ public class UISprint1 {
         else if(adminChoice == 3){
             System.out.println("Thank you for using the Big Girl Game Library.");
             System.out.println("See you soon!");
-            //login();
+            login();
         }
 
     }
