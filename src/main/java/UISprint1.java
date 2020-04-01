@@ -203,7 +203,7 @@ public class UISprint1 {
                 adminTakeAction();
             }
 
-            else if(devReviewGameChoice >= 1 && devReviewGameChoice < 10) {
+            else if(devReviewGameChoice >= 1 && devReviewGameChoice <= 10) {
 
                 Game devReviewGame = keepListOfGamesGivenStatus(Status.PENDING, devReviewGameChoice, gameBrowser.getGameList());
 
