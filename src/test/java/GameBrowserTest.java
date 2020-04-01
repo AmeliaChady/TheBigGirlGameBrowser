@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +21,7 @@ public class GameBrowserTest {
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
         Developer testDev;
-        int gameCount = 10;
+        int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
             testDev = new Developer("dev "+i);
@@ -76,6 +78,7 @@ public class GameBrowserTest {
 
             i = 0;
             List<Developer> developers = gameBrowser.getDevelopers();
+            developers.sort(Comparator.comparing(Developer::getName));
             String expectedDevName;
             while (i < developers.size()) {
                 expectedDevName = "dev "+(i+1);

@@ -20,6 +20,7 @@ public class GameBrowser {
         dataSource = new SQLiteSource(dataFilePath);
         developers = new ArrayList<Developer>();
         loadAllGames();
+        loadAllDevelopers();
     }
 
     /**
@@ -74,6 +75,15 @@ public class GameBrowser {
     private void loadAllGames() throws DataSourceException {
         try {
             gameList = dataSource.loadGameList(gameListName);
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
+    }
+
+    private void loadAllDevelopers() throws DataSourceException {
+        try {
+            developers = dataSource.loadDeveloperList();
         } catch(DataSourceException dse) {
             System.out.println(dse.getMessage());
             throw new DataSourceException(dse.getMessage());
