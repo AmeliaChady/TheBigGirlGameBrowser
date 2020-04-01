@@ -59,5 +59,12 @@ public class SQLiteSourceTests {
         s.close();
     }
 
+    @Test
+    public void SQLiteSourceLoadDeveloper() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceLoadDevelopersTest(s);
+        s.close();
+    }
+
 
 }
