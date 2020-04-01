@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -258,8 +259,18 @@ public class DataSourceTest {
         assertNotNull(developers);
 
         // All developers were loaded
-        for (int i = 0; i < 5; i++)
-            assertEquals("test dev "+i, developers.get(i).getName());
+        for (int i = 0; i < 5; i++){
+            boolean found = false;
+            Iterator<Developer> devs = developers.iterator();
+            while (devs.hasNext() && !found){
+                Developer curr = devs.next();
+                if(curr.getName().equals("test dev "+i))
+                    found = true;
+            }
+            assertTrue(found);
+
+        }
+
     }
 
 }

@@ -94,6 +94,9 @@ public class GameBrowser {
     private void loadAllGames() throws DataSourceException {
         try {
             gameList = dataSource.loadGameList(gameListName);
+            if(gameList==null){
+                gameList = new GameList(gameListName);
+            }
         } catch(DataSourceException dse) {
             System.out.println(dse.getMessage());
             throw new DataSourceException(dse.getMessage());
@@ -108,12 +111,11 @@ public class GameBrowser {
         //TODO WIPE GAME LIST SUCH THAT REMOVALS GET NOTICED
         dataSource.saveGameList(gameList); // Save Master List
         for (Developer developer: developers) {
-            dataSource.setInTransaction(false);
             dataSource.saveDeveloper(developer); // Save Developers
+//            dataSource.setInTransaction(false);
         }
         for (GameList gameList : allGameLists){
             System.out.println(gameList.getName());
-            dataSource.setInTransaction(false);
             dataSource.saveGameList(gameList); // Save additional gameLists
         }
         //TODO save Administrators doesn't exist yet
