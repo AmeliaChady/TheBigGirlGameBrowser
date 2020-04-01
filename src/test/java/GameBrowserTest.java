@@ -54,7 +54,6 @@ public class GameBrowserTest {
             // Game list was loaded and length of list is as expected
             int expectedGameCount = gameCount;
             assertNotNull(gameBrowser.getGameList());
-            System.out.println(gameBrowser.getGameList().getGame("game 1"));
             assertEquals(expectedGameCount, gameBrowser.getGameList().getGameCount());
 
             // check that expected games from the master list were loaded
@@ -62,10 +61,8 @@ public class GameBrowserTest {
             GameList masterGameList = gameBrowser.getGameList();
             String expectedGameTitle;
             while (i < masterGameList.getGameCount()) {
-                expectedGameTitle = "game "+(i+1);
-                System.out.println(expectedGameTitle);
+                expectedGameTitle = "game "+(i+++1);
                 assertEquals(expectedGameTitle, masterGameList.getGame(expectedGameTitle).getTitle());
-                i++;
             }
 
             // TODO check developers (once devs can be loaded from db)
