@@ -359,13 +359,47 @@ public class SQLiteSource implements DataSource{
 
     @Override
     public Developer loadDeveloper(String dev) throws DataSourceException{
+        if(dev == null){
+            return null;
+        }
 
-        // Get GameList name
+        Savepoint ld = null;
+        try{
+            // Setup
+            if(!inTransaction) {
+                ld = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
 
-        // Fill GameList
+            // Get GameList name
+            String sql = "SELECT listName FROM Developers WHERE name='"+dev+"';";
+            s.execute(sql);
+            ResultSet rs = s.getResultSet();
+            if(!rs.next()){
+                return null;
+            }
 
-        // Return Dev Object
-        return new Developer(dev);
+            // Fill GameList
+            GameList g = loadGameList(rs.getString("listName"));
+
+            // Return Dev Object
+            s.close();
+            if(ld != null){
+                conn.commit();
+                inTransaction = false;
+            }
+            return new Developer(dev, g);
+        }catch (SQLException | DataSourceException e){
+            try {
+                if(ld != null) {
+                    conn.rollback(ld);
+                    conn.releaseSavepoint(ld);
+                    inTransaction = false;
+                }
+            }catch (SQLException ignored){}
+            throw new DataSourceException(e.getMessage());
+        }
     }
 
 

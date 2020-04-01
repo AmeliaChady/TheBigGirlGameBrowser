@@ -227,6 +227,24 @@ public class DataSourceTest {
         ds.saveDeveloper(bobby);
     }
 
+    public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
+        System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
+        Developer save = new Developer("LoadDeveloperTest");
+        save.getGameList().includeGame(new Game("LoadDeveloperTestGame", "aa", save));
+        ds.saveDeveloper(save);
 
+        // Load Works
+        Developer d = ds.loadDeveloper("LoadDeveloperTest");
+        assertNotNull(d);
+
+        // Confirm GameList Connection
+        assertEquals(1, d.getGameList().getGameCount());
+
+        // Null Gives Null
+        assertNull(ds.loadDeveloper(null));
+
+        // Bogus Gives Null
+        assertNull(ds.loadDeveloper("LoadDeveloperBogusTest"));
+    }
 
 }
