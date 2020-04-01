@@ -23,7 +23,7 @@ public class GameBrowser {
         allGameLists = new ArrayList<GameList>();
         loadAllGames();
         //TODO loadAllLists helper functions
-        //TODO loadAllDevelopers helper functions
+        loadAllDevelopers();
     }
 
     /**
@@ -117,6 +117,15 @@ public class GameBrowser {
             dataSource.saveGameList(gameList); // Save additional gameLists
         }
         //TODO save Administrators doesn't exist yet
+    }
+  
+    private void loadAllDevelopers() throws DataSourceException {
+        try {
+            developers = dataSource.loadDeveloperList();
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
     }
 
     // ------GETTERS------

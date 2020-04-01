@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,13 +15,13 @@ public class GameBrowserTest {
 
         System.out.println("!!!!---DB Must Be Empty BEFORE TEST---!!!");
 
-        //-----------load games to a 'Master Game List'-----------------
+        //-----------load devs and games to a 'Master Game List'-----------------
         //
         SQLiteSource testDataSource = new SQLiteSource("testing.db");
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
         Developer testDev;
-        int gameCount = 10;
+        int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
             testDev = new Developer("dev "+i);
@@ -68,7 +70,22 @@ public class GameBrowserTest {
                 i++;
             }
 
-            // TODO check developers (once devs can be loaded from db)
+            // Developer list was loaded and length of list is as expected
+            int expectedDevCount = gameCount;
+            assertNotNull(gameBrowser.getDevelopers());
+            assertEquals(expectedDevCount, gameBrowser.getDevelopers().size());
+            // check that expected devs were loaded
+
+            i = 0;
+            List<Developer> developers = gameBrowser.getDevelopers();
+            developers.sort(Comparator.comparing(Developer::getName));
+            String expectedDevName;
+            while (i < developers.size()) {
+                expectedDevName = "dev "+(i+1);
+                assertEquals(expectedDevName, developers.get(i).getName());
+                i++;
+            }
+
             // TODO check administrators (once admins can be loaded from db)
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
