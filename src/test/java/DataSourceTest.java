@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -245,6 +246,31 @@ public class DataSourceTest {
 
         // Bogus Gives Null
         assertNull(ds.loadDeveloper("LoadDeveloperBogusTest"));
+    }
+
+    public static void dataSourceLoadDeveloperListTest(DataSource ds) throws DataSourceException {
+        // create and save devs
+        for (int i = 0; i < 5; i++)
+            ds.saveDeveloper( new Developer("test dev "+i) );
+        // load them from db
+        List<Developer> developers = ds.loadDeveloperList();
+
+        // Load Works
+        assertNotNull(developers);
+
+        // All developers were loaded
+        for (int i = 0; i < 5; i++){
+            boolean found = false;
+            Iterator<Developer> devs = developers.iterator();
+            while (devs.hasNext() && !found){
+                Developer curr = devs.next();
+                if(curr.getName().equals("test dev "+i))
+                    found = true;
+            }
+            assertTrue(found);
+
+        }
+
     }
 
 }

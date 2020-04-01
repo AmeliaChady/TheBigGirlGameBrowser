@@ -49,4 +49,7 @@ public interface DataSource {
      */
     public Developer loadDeveloper(String dev) throws DataSourceException;
 
+    public void setInTransaction(boolean bool);
+
+    public List<Developer> loadDeveloperList() throws DataSourceException;
 }
