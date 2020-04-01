@@ -184,6 +184,7 @@ public class Game {
         return names;
     }
 
+
     public Status getStatus() {
         return status;
     }

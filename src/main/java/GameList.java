@@ -158,6 +158,23 @@ public class GameList {
         return null;
     }
 
+    public GameList keepListOfGamesGivenStatusAndDev(Status status, Developer testDev){
+        GameList devsStatusGames = new GameList("devsStatusGames");
+        if (getGameCount()!=0){
+            int counter = 0; //tracks the number to be printed
+            for (int i = 0; i < getGameCount(); i++) {
+                if(gameList.get(i).getDevelopers() == testDev && gameList.get(i).getStatus()==Status.ACCEPTED ||
+                        gameList.get(i).getDevelopers() == testDev && gameList.get(i).getStatus()==Status.PENDING){
+                    counter += 1;
+                    devsStatusGames.includeGame(gameList.get(i));
+                }
+
+            }
+        }
+        return devsStatusGames;
+
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 

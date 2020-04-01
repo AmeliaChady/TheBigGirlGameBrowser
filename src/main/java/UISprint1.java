@@ -78,7 +78,7 @@ public class UISprint1 {
             in.nextLine();
             String devNameEnter = in.nextLine();
 
-            gameBrowser.getDevelopers().get(0).getGameList().displayAllGames();
+            //gameBrowser.getDevelopers().get(0).getGameList().displayAllGames();
             List<Developer> developersLoginList = gameBrowser.getDevelopers();
             //developersLoginList.get(0).getGameList().displayAllGames();
 
@@ -128,7 +128,7 @@ public class UISprint1 {
             Game testGame = new Game(gameName, gameDescription, testDev, Status.PENDING);
 
             testDev.submitGame(testGame, gameBrowser.getGameList());
-            System.out.println(gameBrowser.getGameList().getGameCount());
+            //System.out.println(gameBrowser.getGameList().getGameCount());
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
             System.out.println("Expect a response in your inbox shortly.");
@@ -185,8 +185,9 @@ public class UISprint1 {
 
         else if (devChoice == 3){
             //displayGameTitlesNumberedList(testDev.getGameList());
+            displayGameTitlesNumberedList(keepListOfGamesGivenStatusAndDev(Status.ACCEPTED, testDev, gameBrowser.getGameList()));
 
-            testDev.displayDeveloper();
+            //testDev.displayDeveloper();
             developerTakeAction(testDev);
 
         }
@@ -331,6 +332,10 @@ public class UISprint1 {
     public Game keepListOfGamesGivenStatus(Status status, int gamePlace, GameList gameList){
         return gameList.keepListOfGamesGivenStatus(status, gamePlace);
 
+    }
+
+    public GameList keepListOfGamesGivenStatusAndDev(Status status, Developer dev, GameList gameList){
+        return gameList.keepListOfGamesGivenStatusAndDev(status, dev);
     }
 
 
