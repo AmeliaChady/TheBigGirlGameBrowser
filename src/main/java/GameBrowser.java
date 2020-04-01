@@ -8,6 +8,7 @@ public class GameBrowser {
     private GameList gameList;
     private List<Administrator> administrators;
     private List<Developer> developers;
+    private List<GameList> allGameLists;
 
     /**
      * Constructor (
@@ -19,7 +20,10 @@ public class GameBrowser {
 
         dataSource = new SQLiteSource(dataFilePath);
         developers = new ArrayList<Developer>();
+        allGameLists = new ArrayList<GameList>();
         loadAllGames();
+        //TODO loadAllLists helper functions
+        //TODO loadAllDevelopers helper functions
     }
 
     /**
@@ -53,6 +57,14 @@ public class GameBrowser {
     }
 
     /**
+     * A new developer is created and added to the developer list
+     * @param developer - a developer object
+     */
+    public void addDeveloper(Developer developer) {
+        developers.add( developer );
+    }
+
+    /**
      * Removes a developer from the developer list
      * @param username - the username of the developer
      * @return Developer - the developer that was removed
@@ -70,6 +82,14 @@ public class GameBrowser {
         return developer;
     }
 
+    /**
+     * Adds a game list to allGameLists
+     * @param gameList
+     */
+    public void addGameList(GameList gameList){ allGameLists.add(gameList);}
+
+    //TODO Remove a GameList
+
     // ------HELPERS------
     private void loadAllGames() throws DataSourceException {
         try {
@@ -78,6 +98,25 @@ public class GameBrowser {
             System.out.println(dse.getMessage());
             throw new DataSourceException(dse.getMessage());
         }
+    }
+
+    /**
+     * Saves all the local contents into the database
+     * @throws DataSourceException
+     */
+    public void save() throws DataSourceException {
+        //TODO WIPE GAME LIST SUCH THAT REMOVALS GET NOTICED
+        dataSource.saveGameList(gameList); // Save Master List
+        for (Developer developer: developers) {
+            dataSource.setInTransaction(false);
+            dataSource.saveDeveloper(developer); // Save Developers
+        }
+        for (GameList gameList : allGameLists){
+            System.out.println(gameList.getName());
+            dataSource.setInTransaction(false);
+            dataSource.saveGameList(gameList); // Save additional gameLists
+        }
+        //TODO save Administrators doesn't exist yet
     }
 
     // ------GETTERS------

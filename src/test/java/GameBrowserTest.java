@@ -197,4 +197,42 @@ public class GameBrowserTest {
             return;
         }
     }
+
+    @Test
+    public void saveTest(){
+        try {
+            GameBrowser gameBrowser = new GameBrowser("testing.db");
+            Developer rob =  new Developer("Rob");
+            gameBrowser.addDeveloper(rob);
+
+            Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob);
+
+            gameBrowser.addGame(game);
+
+            // takes an already existing game and includes it into rob's gameList
+            rob.getGameList().includeGame(gameBrowser.getGameList().getGame("game 1"));
+
+            // makes a new list of games from those already existing in browser
+            // (just like a user might
+            GameList subGameList = new GameList("NEWLIST");
+            List<Game> sublist = gameBrowser.getGameList().getGames().subList(2,7);
+            for(Game aGame : sublist){
+                subGameList.includeGame(aGame);
+            }
+            gameBrowser.addGameList(subGameList);
+
+            //So Now, We have added a new list, dev (with personal gameList), and game to the gameBrowser!
+            //TIME TO SAVE
+
+            gameBrowser.save();
+
+            System.out.println("Visibly Check DB for \"robsGame\", \"rob's Games\", " +
+                    "\nthe gameList \"NEWLIST\", and developer \"rob\"");
+
+
+        }catch (DataSourceException dse){
+            fail(dse.getMessage());
+            return;
+        }
+    }
 }
