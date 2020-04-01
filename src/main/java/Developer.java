@@ -5,6 +5,17 @@ public class Developer {
     private String name;
     private GameList developerGameList;
 
+    public Developer(String nameIn, GameList gameListIn){
+        if (nameIn == null){
+            throw new IllegalArgumentException("Name is null");
+        }
+        name = nameIn;
+        if(gameListIn==null){
+            throw new IllegalArgumentException("GameList is null");
+        }
+        gameList = gameListIn;
+    }
+
     public Developer(String nameIn){
         name = nameIn;
         developerGameList = new GameList(nameIn+"'s Games");

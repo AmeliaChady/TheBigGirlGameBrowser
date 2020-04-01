@@ -14,6 +14,8 @@ public class DataSourceTest {
         System.out.println("Warning: Used Combined View to verify");
         Game cooltestgame = new Game("testGame", "This is a test to save a game object", new Developer("Frank"));
 
+
+
         // Saving a game
         try {
             ds.saveGame(cooltestgame);
@@ -111,13 +113,10 @@ public class DataSourceTest {
         System.out.println("Warning: Used Combined View to verify");
 
         Developer bobby = new Developer("Bobby");
-
         Game game1 = new Game("testGame1", "this Game is a Test game", bobby);
-        ds.saveGame(game1);
         Game game2 = new Game("testGame2", "this Game is a Test game", bobby);
-        ds.saveGame(game2);
-        GameList gameList = new GameList("TestList");
 
+        GameList gameList = new GameList("TestList");
         gameList.includeGame(game1);
         gameList.includeGame(game2); // Now gameList has 2 games
 
@@ -213,22 +212,39 @@ public class DataSourceTest {
         Game game2 = new Game("game2", bobby);
         Game game3 = new Game("game3", bobby);
 
-        ds.saveGameList(bobby.getGameList());
+        //ds.saveGameList(bobby.getGameList());
 
         // At this point db should be aware of bob and have a relationship between bob and these games
 
         Developer gef = new Developer("jim");
         game1.addDeveloper(gef);
-        ds.saveGame(game1);
 
         game3.addDeveloper(gef);
-        ds.saveGame(game3);
 
         gef.getGameList().includeGame(game1);
         gef.getGameList().includeGame(game3);
         ds.saveDeveloper(gef);
+        ds.saveDeveloper(bobby);
     }
 
+    public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
+        System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
+        Developer save = new Developer("LoadDeveloperTest");
+        save.getGameList().includeGame(new Game("LoadDeveloperTestGame", "aa", save));
+        ds.saveDeveloper(save);
 
+        // Load Works
+        Developer d = ds.loadDeveloper("LoadDeveloperTest");
+        assertNotNull(d);
+
+        // Confirm GameList Connection
+        assertEquals(1, d.getGameList().getGameCount());
+
+        // Null Gives Null
+        assertNull(ds.loadDeveloper(null));
+
+        // Bogus Gives Null
+        assertNull(ds.loadDeveloper("LoadDeveloperBogusTest"));
+    }
 
 }
