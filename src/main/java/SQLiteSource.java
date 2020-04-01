@@ -190,6 +190,8 @@ public class SQLiteSource implements DataSource{
 
             safeUpsertGameList(gameList, s);
 
+            purgeGameListGames(gameList, s);
+
             // GamesList ID
             String sql = "SELECT glid FROM GameLists WHERE name=\""+gameList.getName()+"\";";
             s.execute(sql);
@@ -576,6 +578,17 @@ public class SQLiteSource implements DataSource{
             String sql = "SELECT did FROM Games WHERE name=\""+developer.getName()+"\";";
             s.execute(sql);
             return s.getResultSet().getInt(1);
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
+    private void purgeGameListGames(GameList gl, Statement s) throws DataSourceException{
+        int glid = getGlid(gl, s);
+
+        try {
+            String sql = "DELETE FROM GameListsGames WHERE glid="+glid+";";
+            s.execute(sql);
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
