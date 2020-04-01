@@ -17,7 +17,7 @@ public class UISprint1 {
         Scanner in = new Scanner(System.in);
         Developer iteratingDev;
         System.out.println("Welcome to the Big Girl Game Library!");
-        System.out.println("Please enter your role:");
+        System.out.println("Please enter your role (or 0 to cancel):");
         System.out.println("1: Administrator");
         System.out.println("2: Developer");
         int roleChoice = in.nextInt();
@@ -186,6 +186,11 @@ public class UISprint1 {
 
         int adminChoice = in.nextInt();
 
+        while (adminChoice<1 || adminChoice>3){
+            System.out.println("Please enter a valid choice");
+            adminChoice = in.nextInt();
+        }
+
         if(adminChoice == 1){
 
             //display pending games
@@ -240,6 +245,10 @@ public class UISprint1 {
                 System.out.println("1: Yes");
                 System.out.println("2: No");
                 int adminApprovedChoice = in.nextInt();
+                while(adminApprovedChoice<1 || adminApprovedChoice>2){
+                    System.out.println("Please enter a valid choice");
+                    adminApprovedChoice = in.nextInt();
+                }
 
                 if(adminApprovedChoice == 1){
                     System.out.println("Please select the game you would like to remove, or 0 to cancel");
