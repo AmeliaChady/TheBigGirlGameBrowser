@@ -18,8 +18,6 @@ public class UISprint1 {
         Developer d5 = new Developer("Natalie");
 
 
-
-
         gameBrowser.addDeveloper("Tyler");
         gameBrowser.addDeveloper("Frank");
         gameBrowser.addDeveloper("Ted");
@@ -117,12 +115,13 @@ public class UISprint1 {
             in.nextLine();
             String gameName = in.nextLine();
             System.out.println("Please enter the description of your game:");
-            in.nextLine();
+            //in.nextLine();
             String gameDescription = in.nextLine();
 
             Game testGame = new Game(gameName, gameDescription, testDev, Status.PENDING);
 
             testDev.submitGame(testGame, gameBrowser.getGameList());
+            System.out.println(gameBrowser.getGameList().getGameCount());
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
             System.out.println("Expect a response in your inbox shortly.");
