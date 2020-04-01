@@ -591,4 +591,8 @@ public class SQLiteSource implements DataSource{
             return false;
         }
     }
+
+    public static void runScript(String DBPath, String SQLPath){
+
+    }
 }

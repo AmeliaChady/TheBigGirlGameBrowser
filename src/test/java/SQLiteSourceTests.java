@@ -66,5 +66,10 @@ public class SQLiteSourceTests {
         s.close();
     }
 
+    @Test
+    public void SQLiteSourceRunScript(){
+
+    }
+
 
 }

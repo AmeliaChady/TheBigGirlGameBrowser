@@ -2,6 +2,7 @@ BEGIN TRANSACTION;
 
 -- Dropping Old --
 DROP VIEW IF EXISTS Combined;
+DROP VIEW IF EXISTS GameListTest;
 DROP TABLE IF EXISTS GameDevelopers;
 DROP TABLE IF EXISTS Games;
 DROP TABLE IF EXISTS Developers;
@@ -9,7 +10,7 @@ DROP TABLE IF EXISTS GameStatuses;
 DROP TABLE IF EXISTS GameLists;
 DROP TABLE IF EXISTS GameListsGames;
 DROP TABLE IF EXISTS DevelopersGameLists;
-DROP TABLE IF EXISTS GameListTest;
+
 
 
 -- Tables --
