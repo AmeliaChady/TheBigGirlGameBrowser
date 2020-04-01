@@ -112,6 +112,21 @@ public class GameList {
         }
     }
 
+    public List<Game> getGamesGivenStatus(Status status) {
+        if (getGameCount()==0){
+            return new ArrayList<Game>();
+        }
+        else {
+            List list = new ArrayList();
+            for (int i = 0; i < getGameCount(); i++) {
+                if (gameList.get(i).getStatus()==status) {
+                    list.add(gameList.get(i));
+                }
+            }
+            return list;
+        }
+    }
+
     public void displayGameTitlesNumberedList(){
         if(gameList.size()==0){
             System.out.println("There are no games to display");

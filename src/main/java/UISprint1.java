@@ -11,19 +11,6 @@ public class UISprint1 {
     public UISprint1(String filepath) throws IllegalArgumentException, DataSourceException {
         gameBrowser = new GameBrowser(filepath);
 
-        Developer d1 = new Developer("Tyler");
-        Developer d2 = new Developer("Frank");
-        Developer d3 = new Developer("Ted");
-        Developer d4 = new Developer("Zoe");
-        Developer d5 = new Developer("Natalie");
-
-
-        gameBrowser.addDeveloper("Tyler");
-        gameBrowser.addDeveloper("Frank");
-        gameBrowser.addDeveloper("Ted");
-        gameBrowser.addDeveloper("Zoe");
-        gameBrowser.addDeveloper("Natalie");
-
 
 //        testGameList.includeGame(g1);
 //        testGameList.includeGame(g2);
@@ -32,8 +19,6 @@ public class UISprint1 {
 //        testGameList.includeGame(g5);
 //        testGameList.includeGame(g6);
 //        testGameList.includeGame(g7);
-
-        d1.displayDeveloper();
 
 
 
@@ -202,6 +187,11 @@ public class UISprint1 {
             System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
 
             int devReviewGameChoice = in.nextInt();
+            while(devReviewGameChoice < 0 || devReviewGameChoice > gameBrowser.getGameList().getGameCount()){
+                System.out.println("Please enter a valid choice");
+                System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
+                devReviewGameChoice = in.nextInt();
+            }
 
             if(devReviewGameChoice == 0){
                 adminTakeAction();
@@ -217,7 +207,6 @@ public class UISprint1 {
 
             if(devApproveReject == 1){
                 devReviewGame.changeStatus(Status.ACCEPTED);
-                includeGame(devReviewGame);
                 System.out.println("Game has been approved");
                 adminTakeAction();
             }
@@ -240,27 +229,36 @@ public class UISprint1 {
             System.out.println("Approved Games:");
             //display games with an accepted status
             displayGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
-            System.out.println("Would you like to remove any games?");
-            System.out.println("1: Yes");
-            System.out.println("2: No");
-            int adminApprovedChoice = in.nextInt();
+            if (gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).size()>0){
+                System.out.println("Would you like to remove any games?");
+                System.out.println("1: Yes");
+                System.out.println("2: No");
+                int adminApprovedChoice = in.nextInt();
 
-            if(adminApprovedChoice == 1){
-                System.out.println("Please select the game you would like to remove");
-                displayNumberedListOfGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
-                int adminRemoveChoice = in.nextInt();
-                Game adminRemoveGame = keepListOfGamesGivenStatus(Status.ACCEPTED, adminRemoveChoice, gameBrowser.getGameList());
+                if(adminApprovedChoice == 1){
+                    System.out.println("Please select the game you would like to remove, or 0 to cancel");
+                    displayNumberedListOfGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
+                    int adminRemoveChoice = in.nextInt();
+                    while (adminRemoveChoice<0 || adminRemoveChoice>gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).size()){
+                        System.out.println("Please enter a valid choice");
+                        System.out.println("Please select the game you would like to remove, or 0 to cancel");
+                        adminRemoveChoice = in.nextInt();
+                    }
+                    Game adminRemoveGame = keepListOfGamesGivenStatus(Status.ACCEPTED, adminRemoveChoice, gameBrowser.getGameList());
 
-                String removeGameTitle = adminRemoveGame.getTitle();
-                removeGame(removeGameTitle);
+                    String removeGameTitle = adminRemoveGame.getTitle();
+                    if(adminRemoveChoice!=0){
+                        removeGame(removeGameTitle);
+                        System.out.println("The game has been removed.");
+                        System.out.println("Thank you!");
+                    }
 
-                System.out.println("The game has been removed.");
-                System.out.println("Thank you!");
-
+                    adminTakeAction();
+                }
                 adminTakeAction();
-
             }
             else{
+                System.out.println("No approved games\n");
                 adminTakeAction();
             }
 
@@ -270,10 +268,6 @@ public class UISprint1 {
             System.out.println("Thank you for using the Big Girl Game Library.");
             System.out.println("See you soon!");
             //login();
-        }
-
-        else{
-            adminTakeAction();
         }
 
     }
@@ -319,7 +313,6 @@ public class UISprint1 {
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
         UISprint1 myBGGLTest = new UISprint1("testing.db");
-        System.out.println(myBGGLTest.gameBrowser.getGameList().getGames());
         myBGGLTest.login();
 
     }
