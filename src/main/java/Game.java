@@ -99,7 +99,7 @@ public class Game {
 
     /**
      * Game constructor for when you don't know the description yet
-     * @param title game title
+    git * @param title game title
      * @param developer link to developer object
      */
     public Game(String title, Developer developer){
@@ -120,7 +120,7 @@ public class Game {
         this.description = description;
     }
 
-    /**
+    /**git
      * Allows for title to be replaced
      * TODO maybe we want to be able to add or do something other than overwrite a currently existing title?
      * @param title descriptor for game
@@ -183,6 +183,7 @@ public class Game {
         }
         return names;
     }
+
 
     public Status getStatus() {
         return status;

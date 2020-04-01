@@ -132,6 +132,11 @@ public class GameBrowser {
 
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
-
     public List<Developer> getDevelopers() { return developers; }
+
+    // -----SETTERS-----
+    public void setGameList(GameList gameListTurnIn) {
+        this.gameList = gameListTurnIn;
+    }
+
 }
