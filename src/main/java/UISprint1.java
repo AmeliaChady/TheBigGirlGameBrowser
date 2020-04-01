@@ -133,9 +133,13 @@ public class UISprint1 {
         else if(devChoice == 2){
             GameList devGameList = testDev.getGameList();
             displayGameTitlesNumberedList(testDev.getGameList());
-            System.out.println("Please select the game that you'd like to update:");
+            System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
             int devUpdateChoice = in.nextInt();
+            if(devUpdateChoice == 0){
+                developerTakeAction(testDev);
+            }
             Game updatingGame = devGameList.getGames().get(devUpdateChoice-1);
+
 
             System.out.println("Please select one of the following options:");
             System.out.println("1: Update Title");
