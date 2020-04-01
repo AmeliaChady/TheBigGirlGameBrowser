@@ -25,6 +25,7 @@ public class UISprint1 {
             adminTakeAction();
         } else if (roleChoice == 2) {
             System.out.println("Please enter your name:");
+            in.nextLine();
             String devNameEnter = in.nextLine();
 
             List<Developer> developersLoginList = gameBrowser.getDevelopers();
@@ -61,8 +62,10 @@ public class UISprint1 {
 
         if (devChoice == 1){
             System.out.println("Please enter the title of your game:");
+            in.nextLine();
             String gameName = in.nextLine();
             System.out.println("Please enter the description of your game:");
+            in.nextLine();
             String gameDescription = in.nextLine();
 
             Game testGame = new Game(gameName, gameDescription, testDev, Status.PENDING);
@@ -91,6 +94,7 @@ public class UISprint1 {
 
             if(devModifyChoice == 1){
                 System.out.println("Please enter the new game title:");
+                in.nextLine();
                 String updatedTitle = in.nextLine();
                 updatingGame.changeTitle(updatedTitle);
 
@@ -100,6 +104,7 @@ public class UISprint1 {
 
             else if(devModifyChoice == 2){
                 System.out.println("Please enter the new game bio:");
+                in.nextLine();
                 String updatedBio = in.nextLine();
                 updatingGame.changeDescription(updatedBio);
 
@@ -120,7 +125,7 @@ public class UISprint1 {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
-            //login();
+            login();
         }
 
         else{
@@ -142,9 +147,10 @@ public class UISprint1 {
         int adminChoice = in.nextInt();
 
         if(adminChoice == 1){
-            System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
+
             //display pending games
             displayNumberedListOfGamesGivenStatus(gameBrowser.getGameList(), Status.PENDING);
+            System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
 
             int devReviewGameChoice = in.nextInt();
 
@@ -163,12 +169,14 @@ public class UISprint1 {
             if(devApproveReject == 1){
                 includeGame(devReviewGame);
                 System.out.println("Game has been approved");
+                adminTakeAction();
             }
 
             else if(devApproveReject == 2){
                 String removeGameTitle = devReviewGame.getTitle();
                 removeGame(removeGameTitle);
                 System.out.println("Game has been rejected.");
+                adminTakeAction();
             }
             else{
                 System.out.println("ERROR: Invalid Response");
