@@ -11,6 +11,8 @@ public class GameBrowserTest {
     public void constructorTest() {
         GameBrowser gameBrowser;
 
+        System.out.println("!!!!---DB Must Be Empty BEFORE TEST---!!!");
+
         //-----------load games to a 'Master Game List'-----------------
         //
         SQLiteSource testDataSource = new SQLiteSource("testing.db");
@@ -61,8 +63,9 @@ public class GameBrowserTest {
             GameList masterGameList = gameBrowser.getGameList();
             String expectedGameTitle;
             while (i < masterGameList.getGameCount()) {
-                expectedGameTitle = "game "+(i+++1);
-                assertEquals(expectedGameTitle, masterGameList.getGame(expectedGameTitle).getTitle());
+                expectedGameTitle = "game "+(i+1);
+                assertEquals(expectedGameTitle, masterGameList.getGames().get(i).getTitle());
+                i++;
             }
 
             // TODO check developers (once devs can be loaded from db)
@@ -77,13 +80,13 @@ public class GameBrowserTest {
         try {
             GameBrowser gb = new GameBrowser("testing.db");
 
-            assertEquals(8, gb.getGameList().getGameCount());
+            assertEquals(10, gb.getGameList().getGameCount());
 
             //add game
             Developer dev = new Developer("Anita");
             Game gameToAdd = new Game("Candy Crush","My mom plays a lot of candy crush", dev, Status.PENDING);
             gb.addGame(gameToAdd);
-            assertEquals(9, gb.getGameList().getGameCount());
+            assertEquals(11, gb.getGameList().getGameCount());
             assertEquals("Candy Crush", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getTitle());
             assertEquals("My mom plays a lot of candy crush", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDescription());
             assertEquals(dev, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
@@ -95,11 +98,16 @@ public class GameBrowserTest {
             devList.add(dev2);
             gb.addGame("Clash of clans", "My dad plays a lot of clash of clans", devList, Status.PENDING);
 
-            assertEquals(10, gb.getGameList().getGameCount());
+            assertEquals(12, gb.getGameList().getGameCount());
             assertEquals("Clash of clans", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getTitle());
             assertEquals("My dad plays a lot of clash of clans", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDescription());
             assertEquals(devList.get(0), gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
             assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
+
+            // saving Changes to db
+            SQLiteSource ds = new SQLiteSource("testing.db");
+            ds.saveGameList(gb.getGameList());
+
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
         }
@@ -110,32 +118,36 @@ public class GameBrowserTest {
         try {
             GameBrowser gb = new GameBrowser("testing.db");
 
-            assertEquals(8, gb.getGameList().getGames().size());
+            assertEquals(12, gb.getGameList().getGames().size());
 
             //non existent
             Game g1 = gb.removeGame("gcfhvjb");
-            assertEquals(8, gb.getGameList().getGames().size());
+            assertEquals(12, gb.getGameList().getGames().size());
             assertNull(g1);
 
             //existing game
-            Game g2 = gb.removeGame("Toot Scooters");
-            assertEquals(7, gb.getGameList().getGames().size());
-            assertEquals("Toot Scooters", g2.getTitle());
+            Game g2 = gb.removeGame("Candy Crush");
+            assertEquals(11, gb.getGameList().getGameCount());
+            assertEquals("Candy Crush", g2.getTitle());
 
             //non existent now, just removed
-            Game g3 = gb.removeGame("Toot Scooters");
-            assertEquals(7, gb.getGameList().getGames().size());
+            Game g3 = gb.removeGame("Candy Crush");
+            assertEquals(11, gb.getGameList().getGameCount());
             assertNull(g3);
 
             //existing game
-            Game g4 = gb.removeGame("testGame3");
-            assertEquals(6, gb.getGameList().getGames().size());
-            assertEquals("testGame3", g4.getTitle());
+            Game g4 = gb.removeGame("game 3");
+            assertEquals(10, gb.getGameList().getGameCount());
+            assertEquals("game 3", g4.getTitle());
 
             //non existent now, removed
-            Game g5 = gb.removeGame("Toot Scooters");
-            assertEquals(6, gb.getGameList().getGames().size());
+            Game g5 = gb.removeGame("game 3");
+            assertEquals(10, gb.getGameList().getGameCount());
             assertNull(g5);
+
+            // saving Changes to db
+            SQLiteSource ds = new SQLiteSource("testing.db");
+            ds.saveGameList(gb.getGameList());
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
