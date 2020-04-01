@@ -11,17 +11,6 @@ public class UISprint1 {
     public UISprint1(String filepath) throws IllegalArgumentException, DataSourceException {
         gameBrowser = new GameBrowser(filepath);
 
-
-//        testGameList.includeGame(g1);
-//        testGameList.includeGame(g2);
-//        testGameList.includeGame(g3);
-//        testGameList.includeGame(g4);
-//        testGameList.includeGame(g5);
-//        testGameList.includeGame(g6);
-//        testGameList.includeGame(g7);
-
-
-
     }
 
 
@@ -197,30 +186,30 @@ public class UISprint1 {
                 adminTakeAction();
             }
 
-            Game devReviewGame = keepListOfGamesGivenStatus(Status.PENDING, devReviewGameChoice, gameBrowser.getGameList());
+            else if(devReviewGameChoice >= 1 && devReviewGameChoice < 10) {
 
-            System.out.println("Would you like to accept or reject this game?");
-            System.out.println("1: Approve");
-            System.out.println("2: Reject");
+                Game devReviewGame = keepListOfGamesGivenStatus(Status.PENDING, devReviewGameChoice, gameBrowser.getGameList());
 
-            int devApproveReject = in.nextInt();
+                System.out.println("Would you like to accept or reject this game?");
+                System.out.println("1: Approve");
+                System.out.println("2: Reject");
 
-            if(devApproveReject == 1){
-                devReviewGame.changeStatus(Status.ACCEPTED);
-                System.out.println("Game has been approved");
-                adminTakeAction();
-            }
+                int devApproveReject = in.nextInt();
 
-            else if(devApproveReject == 2){
-                String removeGameTitle = devReviewGame.getTitle();
-                devReviewGame.changeStatus(Status.REJECTED);
-                removeGame(removeGameTitle);
-                System.out.println("Game has been rejected.");
-                adminTakeAction();
-            }
-            else{
-                System.out.println("ERROR: Invalid Response");
-                adminTakeAction();
+                if (devApproveReject == 1) {
+                    devReviewGame.changeStatus(Status.ACCEPTED);
+                    System.out.println("Game has been approved");
+                    adminTakeAction();
+                } else if (devApproveReject == 2) {
+                    String removeGameTitle = devReviewGame.getTitle();
+                    devReviewGame.changeStatus(Status.REJECTED);
+                    removeGame(removeGameTitle);
+                    System.out.println("Game has been rejected.");
+                    adminTakeAction();
+                } else {
+                    System.out.println("ERROR: Invalid Response");
+                    adminTakeAction();
+                }
             }
 
         }
