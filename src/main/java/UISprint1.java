@@ -240,6 +240,10 @@ public class UISprint1 {
                 System.out.println("1: Yes");
                 System.out.println("2: No");
                 int adminApprovedChoice = in.nextInt();
+                while(adminApprovedChoice<1 || adminApprovedChoice>2){
+                    System.out.println("Please enter a valid choice");
+                    adminApprovedChoice = in.nextInt();
+                }
 
                 if(adminApprovedChoice == 1){
                     System.out.println("Please select the game you would like to remove, or 0 to cancel");
