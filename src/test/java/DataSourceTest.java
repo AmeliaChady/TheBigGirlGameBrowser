@@ -232,7 +232,6 @@ public class DataSourceTest {
         Developer save = new Developer("LoadDeveloperTest");
         save.getGameList().includeGame(new Game("LoadDeveloperTestGame", "aa", save));
         ds.saveDeveloper(save);
-        ds.saveGameList(save.getGameList());
 
         // Load Works
         Developer d = ds.loadDeveloper("LoadDeveloperTest");
