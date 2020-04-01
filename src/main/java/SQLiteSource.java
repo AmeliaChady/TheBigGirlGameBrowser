@@ -405,6 +405,50 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    @Override
+    public List<Developer> loadDeveloperList() throws DataSourceException{
+        Savepoint lds = null;
+        try{
+            // Setup
+            if(!inTransaction) {
+                lds = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            // Get developers name
+            String sql = "SELECT name FROM Developers";
+            s.execute(sql);
+
+            ResultSet devNames = s.getResultSet();
+            List<Developer> developers = new ArrayList<Developer>();
+            boolean hasNext = !devNames.isClosed();
+
+            if (hasNext) {
+                devNames.next();
+                while (hasNext) {
+                    developers.add(loadDeveloper(devNames.getString("name")));
+                    hasNext = devNames.next();
+                }
+            }
+            s.close();
+            if(lds != null){
+                conn.commit();
+                inTransaction = false;
+            }
+            return developers;
+        }catch (SQLException | DataSourceException e){
+            try {
+                if(lds != null) {
+                    conn.rollback(lds);
+                    conn.releaseSavepoint(lds);
+                    inTransaction = false;
+                }
+            }catch (SQLException ignored){}
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
 
     @Override
     public void setInTransaction(boolean bool){
