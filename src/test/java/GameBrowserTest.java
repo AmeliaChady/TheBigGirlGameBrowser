@@ -13,7 +13,7 @@ public class GameBrowserTest {
 
         System.out.println("!!!!---DB Must Be Empty BEFORE TEST---!!!");
 
-        //-----------load games to a 'Master Game List'-----------------
+        //-----------load devs and games to a 'Master Game List'-----------------
         //
         SQLiteSource testDataSource = new SQLiteSource("testing.db");
         GameList testGameList = new GameList("Master Game List");
@@ -68,7 +68,21 @@ public class GameBrowserTest {
                 i++;
             }
 
-            // TODO check developers (once devs can be loaded from db)
+            // Developer list was loaded and length of list is as expected
+            int expectedDevCount = gameCount;
+            assertNotNull(gameBrowser.getDevelopers());
+            assertEquals(expectedDevCount, gameBrowser.getDevelopers().size());
+            // check that expected devs were loaded
+
+            i = 0;
+            List<Developer> developers = gameBrowser.getDevelopers();
+            String expectedDevName;
+            while (i < developers.size()) {
+                expectedDevName = "dev "+(i+1);
+                assertEquals(expectedDevName, developers.get(i).getName());
+                i++;
+            }
+
             // TODO check administrators (once admins can be loaded from db)
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
