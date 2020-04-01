@@ -141,6 +141,23 @@ public class GameList {
         }
     }
 
+    public Game keepListOfGamesGivenStatus(Status status, int gamePlace){
+        //System.out.println(name + "(" + status +"):\n");
+        if (getGameCount()!=0){
+            int counter = 0; //tracks the number to be printed
+            for (int i = 0; i < getGameCount(); i++) {
+                if (gameList.get(i).getStatus()==status) {
+                    counter +=1;
+                }
+                if(counter == gamePlace){
+                    return gameList.get(i);
+                }
+
+            }
+        }
+        return null;
+    }
+
     // ------GETTERS------
     public String getName() { return name; }
 

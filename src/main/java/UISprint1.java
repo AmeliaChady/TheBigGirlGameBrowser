@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 public class UISprint1 {
@@ -10,41 +12,50 @@ public class UISprint1 {
         gameBrowser = new GameBrowser(filepath);
     }
 
-    private void login() throws IOException, ParseException {
+    private void login(){
         Scanner in = new Scanner(System.in);
+        Developer iteratingDev;
         System.out.println("Welcome to the Big Girl Game Library!");
         System.out.println("Please enter your role:");
         System.out.println("1: Administrator");
         System.out.println("2: Developer");
         int roleChoice = in.nextInt();
 
-        if(roleChoice == 1){
+        if (roleChoice == 1) {
             adminTakeAction();
-        }
-
-        else if(roleChoice == 2){
+        } else if (roleChoice == 2) {
             System.out.println("Please enter your name:");
             String devNameEnter = in.nextLine();
 
+            List<Developer> developersLoginList = gameBrowser.getDevelopers();
 
-            //developerTakeAction(devNameEnter);
+            Iterator<Developer> i = developersLoginList.iterator();
 
-        }
+            while(i.hasNext()){
+                iteratingDev = i.next();
+                if(iteratingDev.getName().equalsIgnoreCase(devNameEnter)){
+                    developerTakeAction(iteratingDev);
+                    return;
+                }
+            }
 
-        else{
+            System.out.println("ERROR: Name Not Recognized");
+
+            login();
+
+        } else {
             System.out.println("ERROR: Invalid choice. Please try again");
-
-            //login();
+            login();
         }
     }
+
 
     private void developerTakeAction(Developer testDev){
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Submit Game");
         System.out.println("2: Update Game");
-        System.out.println("3: Review Statuses");
-        System.out.println("4: Logout");
+        System.out.println("3: Logout");
 
         int devChoice = in.nextInt();
 
@@ -105,13 +116,7 @@ public class UISprint1 {
 
         }
 
-        else if(devChoice == 3){
-            System.out.println("This option currently under construction.");
-            System.out.println("Please check back later.");
-            developerTakeAction(testDev);
-        }
-
-        else if (devChoice == 4){
+        else if (devChoice == 3){
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
@@ -137,10 +142,39 @@ public class UISprint1 {
         int adminChoice = in.nextInt();
 
         if(adminChoice == 1){
-            System.out.println("Please choose which pending game you'd like to review.");
+            System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
             //display pending games
-            displayGamesGivenStatus(gameBrowser.getGameList(), Status.PENDING);
-            //is there a function that displays submitted games?
+            displayNumberedListOfGamesGivenStatus(gameBrowser.getGameList(), Status.PENDING);
+
+            int devReviewGameChoice = in.nextInt();
+
+            if(devReviewGameChoice == 0){
+                adminTakeAction();
+            }
+
+            Game devReviewGame = keepListOfGamesGivenStatus(Status.PENDING, devReviewGameChoice, gameBrowser.getGameList());
+
+            System.out.println("Would you like to accept or reject this game?");
+            System.out.println("1: Approve");
+            System.out.println("2: Reject");
+
+            int devApproveReject = in.nextInt();
+
+            if(devApproveReject == 1){
+                includeGame(devReviewGame);
+                System.out.println("Game has been approved");
+            }
+
+            else if(devApproveReject == 2){
+                String removeGameTitle = devReviewGame.getTitle();
+                removeGame(removeGameTitle);
+                System.out.println("Game has been rejected.");
+            }
+            else{
+                System.out.println("ERROR: Invalid Response");
+                adminTakeAction();
+            }
+
         }
 
         else if(adminChoice == 2){
@@ -151,7 +185,20 @@ public class UISprint1 {
             System.out.println("1: Yes");
             System.out.println("2: No");
             int adminApprovedChoice = in.nextInt();
+
             if(adminApprovedChoice == 1){
+                System.out.println("Please select the game you would like to remove");
+                displayNumberedListOfGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
+                int adminRemoveChoice = in.nextInt();
+                Game adminRemoveGame = keepListOfGamesGivenStatus(Status.ACCEPTED, adminRemoveChoice, gameBrowser.getGameList());
+
+                String removeGameTitle = adminRemoveGame.getTitle();
+                removeGame(removeGameTitle);
+
+                System.out.println("The game has been removed.");
+                System.out.println("Thank you!");
+
+                adminTakeAction();
 
             }
             else{
@@ -199,6 +246,11 @@ public class UISprint1 {
 
     public void removeGame(String title){
         gameBrowser.removeGame(title);
+    }
+
+    public Game keepListOfGamesGivenStatus(Status status, int gamePlace, GameList gameList){
+        return gameList.keepListOfGamesGivenStatus(status, gamePlace);
+
     }
 
 
