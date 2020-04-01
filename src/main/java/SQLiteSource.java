@@ -39,6 +39,7 @@ public class SQLiteSource implements DataSource{
         try {
             if (this.isConnected())
                 conn.close();
+                inTransaction = false;
         }catch (SQLException ignored){}
     }
 
@@ -448,6 +449,11 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+
+    @Override
+    public void setInTransaction(boolean bool){
+        inTransaction = bool;
+    }
 
 
     // underlying DB calls
