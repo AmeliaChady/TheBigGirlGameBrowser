@@ -112,15 +112,15 @@ public class GameList {
         }
     }
 
-    public List<Game> getGamesGivenStatus(Status status) {
+    public GameList getGamesGivenStatus(Status status) {
         if (getGameCount()==0){
-            return new ArrayList<Game>();
+            return new GameList("empty");
         }
         else {
-            List list = new ArrayList();
+            GameList list = new GameList(status.toString());
             for (int i = 0; i < getGameCount(); i++) {
                 if (gameList.get(i).getStatus()==status) {
-                    list.add(gameList.get(i));
+                    list.includeGame(gameList.get(i));
                 }
             }
             return list;

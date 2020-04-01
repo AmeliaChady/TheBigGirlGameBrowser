@@ -10,18 +10,6 @@ public class UISprint1 {
 
     public UISprint1(String filepath) throws IllegalArgumentException, DataSourceException {
         gameBrowser = new GameBrowser(filepath);
-
-
-//        testGameList.includeGame(g1);
-//        testGameList.includeGame(g2);
-//        testGameList.includeGame(g3);
-//        testGameList.includeGame(g4);
-//        testGameList.includeGame(g5);
-//        testGameList.includeGame(g6);
-//        testGameList.includeGame(g7);
-
-
-
     }
 
 
@@ -79,6 +67,10 @@ public class UISprint1 {
         System.out.println("4: Logout");
 
         int devChoice = in.nextInt();
+        while (devChoice<1 || devChoice>4){
+            System.out.println("Please enter a vlid choice");
+            devChoice = in.nextInt();
+        }
 
         if (devChoice == 1){
             System.out.println("Please enter the title of your game:");
@@ -108,6 +100,11 @@ public class UISprint1 {
             if(devUpdateChoice == 0){
                 developerTakeAction(testDev);
             }
+            while (devUpdateChoice<0 || devUpdateChoice>testDev.getGameList().getGameCount()){
+                System.out.println("Please pick a valid choice\n");
+                System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
+                devUpdateChoice = in.nextInt();
+            }
             Game updatingGame = devGameList.getGames().get(devUpdateChoice-1);
 
 
@@ -116,6 +113,14 @@ public class UISprint1 {
             System.out.println("2: Update Bio");
 
             int devModifyChoice = in.nextInt();
+            while (devModifyChoice<1 || devModifyChoice>2){
+                System.out.println("Please pick a valid choice\n");
+                System.out.println("Please select one of the following options:");
+                System.out.println("1: Update Title");
+                System.out.println("2: Update Bio");
+
+                devModifyChoice = in.nextInt();
+            }
 
             if(devModifyChoice == 1){
                 System.out.println("Please enter the new game title:");
@@ -148,7 +153,7 @@ public class UISprint1 {
 
         else if (devChoice == 3){
             //displayGameTitlesNumberedList(testDev.getGameList());
-            displayGameTitlesNumberedList(keepListOfGamesGivenStatusAndDev(Status.ACCEPTED, testDev, gameBrowser.getGameList()));
+            displayGameTitlesNumberedList(gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED));
 
             //testDev.displayDeveloper();
             developerTakeAction(testDev);
@@ -229,7 +234,7 @@ public class UISprint1 {
             System.out.println("Approved Games:");
             //display games with an accepted status
             displayGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
-            if (gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).size()>0){
+            if (gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).getGameCount()>0){
                 System.out.println("Would you like to remove any games?");
                 System.out.println("1: Yes");
                 System.out.println("2: No");
@@ -239,7 +244,7 @@ public class UISprint1 {
                     System.out.println("Please select the game you would like to remove, or 0 to cancel");
                     displayNumberedListOfGamesGivenStatus(gameBrowser.getGameList(), Status.ACCEPTED);
                     int adminRemoveChoice = in.nextInt();
-                    while (adminRemoveChoice<0 || adminRemoveChoice>gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).size()){
+                    while (adminRemoveChoice<0 || adminRemoveChoice>gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
                         System.out.println("Please enter a valid choice");
                         System.out.println("Please select the game you would like to remove, or 0 to cancel");
                         adminRemoveChoice = in.nextInt();
