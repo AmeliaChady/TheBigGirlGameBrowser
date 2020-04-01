@@ -49,4 +49,5 @@ public interface DataSource {
      */
     public Developer loadDeveloper(String dev) throws DataSourceException;
 
+    public List<Developer> loadDeveloperList() throws DataSourceException;
 }
