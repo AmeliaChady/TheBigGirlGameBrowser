@@ -120,7 +120,7 @@ public class Game {
         this.description = description;
     }
 
-    /**
+    /**git
      * Allows for title to be replaced
      * TODO maybe we want to be able to add or do something other than overwrite a currently existing title?
      * @param title descriptor for game

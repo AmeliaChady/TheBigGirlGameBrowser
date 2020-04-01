@@ -8,7 +8,7 @@ public class UISprint1 {
 
     GameBrowser gameBrowser;
 
-    public UISprint1(String filepath) throws IllegalArgumentException{
+    public UISprint1(String filepath) throws IllegalArgumentException {
         gameBrowser = new GameBrowser(filepath);
     }
 

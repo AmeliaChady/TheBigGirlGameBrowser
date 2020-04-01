@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UISprint1Test {
 
     @Test
-    public void displayGameTitlesNumberedListTest(){
+    public void displayGameTitlesNumberedListTest() {
 
         UISprint1 ui = new UISprint1("testing.db");
 

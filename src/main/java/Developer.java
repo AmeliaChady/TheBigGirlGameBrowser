@@ -13,7 +13,7 @@ public class Developer {
         if(gameListIn==null){
             throw new IllegalArgumentException("GameList is null");
         }
-        gameList = gameListIn;
+        developerGameList = gameListIn;
     }
 
     public Developer(String nameIn){
