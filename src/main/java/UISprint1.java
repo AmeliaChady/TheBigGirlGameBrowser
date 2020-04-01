@@ -17,7 +17,7 @@ public class UISprint1 {
         Scanner in = new Scanner(System.in);
         Developer iteratingDev;
         System.out.println("Welcome to the Big Girl Game Library!");
-        System.out.println("Please enter your role:");
+        System.out.println("Please enter your role (or 0 to cancel):");
         System.out.println("1: Administrator");
         System.out.println("2: Developer");
         int roleChoice = in.nextInt();
@@ -185,6 +185,11 @@ public class UISprint1 {
         System.out.println("3: Logout");
 
         int adminChoice = in.nextInt();
+
+        while (adminChoice<1 || adminChoice>3){
+            System.out.println("Please enter a valid choice");
+            adminChoice = in.nextInt();
+        }
 
         if(adminChoice == 1){
 
