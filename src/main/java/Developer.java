@@ -39,7 +39,7 @@ public class Developer {
         //needs to add game to gameList
 
         //adds to developer's personal list
-        developerGameList.includeGame(gameToSubmit);
+        //developerGameList.includeGame(gameToSubmit);
         //adds to overall gameList
         completeList.includeGame(gameToSubmit);
 

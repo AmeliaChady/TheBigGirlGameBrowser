@@ -47,13 +47,17 @@ public class UISprint1 {
         d1.submitGame(g6, testGameList);
         d2.submitGame(g7, testGameList);
 
-        testGameList.includeGame(g1);
-        testGameList.includeGame(g2);
-        testGameList.includeGame(g3);
-        testGameList.includeGame(g4);
-        testGameList.includeGame(g5);
-        testGameList.includeGame(g6);
-        testGameList.includeGame(g7);
+//        testGameList.includeGame(g1);
+//        testGameList.includeGame(g2);
+//        testGameList.includeGame(g3);
+//        testGameList.includeGame(g4);
+//        testGameList.includeGame(g5);
+//        testGameList.includeGame(g6);
+//        testGameList.includeGame(g7);
+
+        d1.displayDeveloper();
+
+
 
     }
 
@@ -74,7 +78,9 @@ public class UISprint1 {
             in.nextLine();
             String devNameEnter = in.nextLine();
 
+            gameBrowser.getDevelopers().get(0).getGameList().displayAllGames();
             List<Developer> developersLoginList = gameBrowser.getDevelopers();
+            //developersLoginList.get(0).getGameList().displayAllGames();
 
             Iterator<Developer> i = developersLoginList.iterator();
 
@@ -106,7 +112,8 @@ public class UISprint1 {
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Submit Game");
         System.out.println("2: Update Game");
-        System.out.println("3: Logout");
+        System.out.println("3: View Your Game List");
+        System.out.println("4: Logout");
 
         int devChoice = in.nextInt();
 
@@ -177,6 +184,14 @@ public class UISprint1 {
         }
 
         else if (devChoice == 3){
+            //displayGameTitlesNumberedList(testDev.getGameList());
+
+            testDev.displayDeveloper();
+            developerTakeAction(testDev);
+
+        }
+
+        else if(devChoice == 4){
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
@@ -222,6 +237,7 @@ public class UISprint1 {
             int devApproveReject = in.nextInt();
 
             if(devApproveReject == 1){
+                devReviewGame.changeStatus(Status.ACCEPTED);
                 includeGame(devReviewGame);
                 System.out.println("Game has been approved");
                 adminTakeAction();
@@ -229,6 +245,7 @@ public class UISprint1 {
 
             else if(devApproveReject == 2){
                 String removeGameTitle = devReviewGame.getTitle();
+                devReviewGame.changeStatus(Status.REJECTED);
                 removeGame(removeGameTitle);
                 System.out.println("Game has been rejected.");
                 adminTakeAction();
@@ -319,6 +336,7 @@ public class UISprint1 {
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
         UISprint1 myBGGLTest = new UISprint1("testing.db");
+        System.out.println(myBGGLTest.gameBrowser.getGameList().getGames());
         myBGGLTest.login();
 
     }
