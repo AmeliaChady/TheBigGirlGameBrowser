@@ -267,7 +267,6 @@ public class UISprint1 {
                         System.out.println("The game has been removed.");
                         System.out.println("Thank you!");
                     }
-
                     adminTakeAction();
                 }
                 adminTakeAction();
