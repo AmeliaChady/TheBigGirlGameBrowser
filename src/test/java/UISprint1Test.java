@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class UISprint1Test {
 
     @Test
-    public void displayGameTitlesNumberedListTest() {
+    public void displayGameTitlesNumberedListTest() throws DataSourceException {
 
         UISprint1 ui = new UISprint1("testing.db");
 
@@ -51,7 +51,7 @@ public class UISprint1Test {
 
     }
 
-    @Test public void displayGamesGivenStatusTest(){
+    @Test public void displayGamesGivenStatusTest() throws DataSourceException {
         UISprint1 ui = new UISprint1("testing.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -113,7 +113,7 @@ public class UISprint1Test {
         assertEquals("Master List(PENDING):\n\nThis list is empty\n", outContent.toString());
     }
 
-    @Test public void displayListNameAndGameTitlesTest(){
+    @Test public void displayListNameAndGameTitlesTest() throws DataSourceException {
         UISprint1 ui = new UISprint1("testing.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -146,7 +146,7 @@ public class UISprint1Test {
     }
 
     @Test
-    public void displayAllGamesTest(){
+    public void displayAllGamesTest() throws DataSourceException {
         UISprint1 ui = new UISprint1("testing.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();

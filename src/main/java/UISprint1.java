@@ -8,9 +8,57 @@ public class UISprint1 {
 
     GameBrowser gameBrowser;
 
-    public UISprint1(String filepath) throws IllegalArgumentException {
+    public UISprint1(String filepath) throws IllegalArgumentException, DataSourceException {
         gameBrowser = new GameBrowser(filepath);
+
+        Developer d1 = new Developer("Tyler");
+        Developer d2 = new Developer("Frank");
+        Developer d3 = new Developer("Ted");
+        Developer d4 = new Developer("Zoe");
+        Developer d5 = new Developer("Natalie");
+
+
+
+
+        gameBrowser.addDeveloper("Tyler");
+        gameBrowser.addDeveloper("Frank");
+        gameBrowser.addDeveloper("Ted");
+        gameBrowser.addDeveloper("Zoe");
+        gameBrowser.addDeveloper("Natalie");
+
+        Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1, Status.PENDING);
+        Game g2 = new Game("Why are there like four different sizes of gatorade", "im so tired",
+                d2, Status.ACCEPTED);
+        Game g3 = new Game("Fight Your Dad Simulator", "u kno what it's about", d3, Status.PENDING);
+        Game g4 = new Game("beep in traffic", "the cars never move", d4, Status.ACCEPTED);
+        Game g5 = new Game("jeff bezos takes over the world", "oh wait that's already happening",
+                d5, Status.REJECTED);
+        Game g6 = new Game("Prisoners in west virginia have to pay five cents a minute to read an ebook",
+                "Prisoners in West virginia make less than a dollar an hour", d1, Status.ACCEPTED);
+        Game g7 = new Game("only one koch brother is dead", "lets change that", d2, Status.PENDING);
+
+        GameList testGameList = new GameList("Test Games");
+
+        gameBrowser.setGameList(testGameList);
+
+        d1.submitGame(g1, testGameList);
+        d2.submitGame(g2, testGameList);
+        d3.submitGame(g3, testGameList);
+        d4.submitGame(g4, testGameList);
+        d5.submitGame(g5, testGameList);
+        d1.submitGame(g6, testGameList);
+        d2.submitGame(g7, testGameList);
+
+        testGameList.includeGame(g1);
+        testGameList.includeGame(g2);
+        testGameList.includeGame(g3);
+        testGameList.includeGame(g4);
+        testGameList.includeGame(g5);
+        testGameList.includeGame(g6);
+        testGameList.includeGame(g7);
+
     }
+
 
     private void login(){
         Scanner in = new Scanner(System.in);
@@ -32,8 +80,12 @@ public class UISprint1 {
 
             Iterator<Developer> i = developersLoginList.iterator();
 
+//            System.out.println(devNameEnter);
+//            System.out.println(i.hasNext());
+//            System.out.println(developersLoginList.size());
             while(i.hasNext()){
                 iteratingDev = i.next();
+                //System.out.println(iteratingDev.getName());
                 if(iteratingDev.getName().equalsIgnoreCase(devNameEnter)){
                     developerTakeAction(iteratingDev);
                     return;
@@ -262,7 +314,7 @@ public class UISprint1 {
     }
 
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException, DataSourceException {
         UISprint1 myBGGLTest = new UISprint1("testing.db");
         myBGGLTest.login();
 
