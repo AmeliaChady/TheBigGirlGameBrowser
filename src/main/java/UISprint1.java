@@ -24,28 +24,6 @@ public class UISprint1 {
         gameBrowser.addDeveloper("Zoe");
         gameBrowser.addDeveloper("Natalie");
 
-        Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1, Status.PENDING);
-        Game g2 = new Game("Why are there like four different sizes of gatorade", "im so tired",
-                d2, Status.ACCEPTED);
-        Game g3 = new Game("Fight Your Dad Simulator", "u kno what it's about", d3, Status.PENDING);
-        Game g4 = new Game("beep in traffic", "the cars never move", d4, Status.ACCEPTED);
-        Game g5 = new Game("jeff bezos takes over the world", "oh wait that's already happening",
-                d5, Status.REJECTED);
-        Game g6 = new Game("Prisoners in west virginia have to pay five cents a minute to read an ebook",
-                "Prisoners in West virginia make less than a dollar an hour", d1, Status.ACCEPTED);
-        Game g7 = new Game("only one koch brother is dead", "lets change that", d2, Status.PENDING);
-
-        GameList testGameList = new GameList("Test Games");
-
-        gameBrowser.setGameList(testGameList);
-
-        d1.submitGame(g1, testGameList);
-        d2.submitGame(g2, testGameList);
-        d3.submitGame(g3, testGameList);
-        d4.submitGame(g4, testGameList);
-        d5.submitGame(g5, testGameList);
-        d1.submitGame(g6, testGameList);
-        d2.submitGame(g7, testGameList);
 
 //        testGameList.includeGame(g1);
 //        testGameList.includeGame(g2);

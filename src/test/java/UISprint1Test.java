@@ -18,31 +18,37 @@ public class UISprint1Test {
         System.setOut(new PrintStream(outContent));
 
         ui.displayGameTitlesNumberedList(ui.gameBrowser.getGameList());
-        assertEquals("1. LoadGameTest1\n" +
-                "2. LoadGameTest2\n" +
-                "3. testGame\n" +
-                "4. Test-zx the Game\n" +
-                "5. Toot Scooters\n" +
-                "6. testGame1\n" +
-                "7. testGame2\n" +
-                "8. testGame3\n", outContent.toString());
+        assertEquals("1. game 1\n" +
+                "2. game 2\n" +
+                "3. game 4\n" +
+                "4. game 5\n" +
+                "5. game 6\n" +
+                "6. game 7\n" +
+                "7. game 8\n" +
+                "8. game 9\n" +
+                "9. Candy Crush\n" +
+                "10. Clash of clans\n", outContent.toString());
 
         //1 game
-        ui.removeGame("LoadGameTest1");
-        ui.removeGame("LoadGameTest2");
-        ui.removeGame("testGame");
-        ui.removeGame("Test-zx the Game");
-        ui.removeGame("Toot Scooters");
-        ui.removeGame("testGame1");
-        ui.removeGame("testGame2");
+        ui.removeGame("game 1");
+        ui.removeGame("game 2");
+        ui.removeGame("game 3");
+        ui.removeGame("game 4");
+        ui.removeGame("game 5");
+        ui.removeGame("game 6");
+        ui.removeGame("game 6");
+        ui.removeGame("game 7");
+        ui.removeGame("game 8");
+        ui.removeGame("game 9");
+        ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayGameTitlesNumberedList(ui.gameBrowser.getGameList());
-        assertEquals("1. testGame3\n", outContent.toString());
+        assertEquals("1. Clash of clans\n", outContent.toString());
 
         //0 games
-        ui.removeGame("testGame3");
+        ui.removeGame("Clash of clans");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
@@ -58,59 +64,84 @@ public class UISprint1Test {
         System.setOut(new PrintStream(outContent));
 
         ui.displayGamesGivenStatus(ui.gameBrowser.getGameList(), Status.PENDING);
-        assertEquals("Master List(PENDING):\n" +
+        assertEquals("Master Game List(PENDING):\n" +
                 "\n" +
-                "Title: LoadGameTest1\n" +
-                "Description: description\n" +
-                "Developer(s): LGT_A\n" +
+                "Title: game 1\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 1\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame\n" +
-                "Description: This is a test to save a game object\n" +
-                "Developer(s): Frank\n" +
+                "Title: game 2\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 2\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: Toot Scooters\n" +
-                "Description: mario kart hack where all sounds are balloons popping\n" +
-                "Developer(s): CorgiLover87, Ted\n" +
+                "Title: game 4\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 4\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame1\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
+                "Title: game 5\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 5\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame2\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
+                "Title: game 6\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 6\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame3\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
-                "Status: PENDING\n\n", outContent.toString());
+                "Title: game 7\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 7\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: game 8\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 8\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: game 9\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 9\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: Candy Crush\n" +
+                "Description: My mom plays a lot of candy crush\n" +
+                "Developer(s): Anita\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: Clash of clans\n" +
+                "Description: My dad plays a lot of clash of clans\n" +
+                "Developer(s): Robert\n" +
+                "Status: PENDING\n" +
+                "\n", outContent.toString());
 
         //1 game
-        ui.removeGame("LoadGameTest1");
-        ui.removeGame("LoadGameTest2");
-        ui.removeGame("testGame");
-        ui.removeGame("Test-zx the Game");
-        ui.removeGame("Toot Scooters");
-        ui.removeGame("testGame1");
-        ui.removeGame("testGame2");
+        ui.removeGame("game 1");
+        ui.removeGame("game 2");
+        ui.removeGame("game 3");
+        ui.removeGame("game 4");
+        ui.removeGame("game 5");
+        ui.removeGame("game 6");
+        ui.removeGame("game 6");
+        ui.removeGame("game 7");
+        ui.removeGame("game 8");
+        ui.removeGame("game 9");
+        ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayGamesGivenStatus(ui.gameBrowser.getGameList(), Status.PENDING);
-        assertEquals("Master List(PENDING):\n\nTitle: testGame3\nDescription: this Game is a Test game\nDeveloper(s): Bobby\nStatus: PENDING\n\n", outContent.toString());
+        assertEquals("Master Game List(PENDING):\n\nTitle: Clash of clans\nDescription: My dad plays a lot of clash of clans\nDeveloper(s): Robert\nStatus: PENDING\n\n", outContent.toString());
 
         //0 games
-        ui.removeGame("testGame3");
+        ui.removeGame("Clash of clans");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayGamesGivenStatus(ui.gameBrowser.getGameList(), Status.PENDING);
-        assertEquals("Master List(PENDING):\n\nThis list is empty\n", outContent.toString());
+        assertEquals("Master Game List(PENDING):\n\nThis list is empty\n", outContent.toString());
     }
 
     @Test public void displayListNameAndGameTitlesTest() throws DataSourceException {
@@ -120,29 +151,33 @@ public class UISprint1Test {
         System.setOut(new PrintStream(outContent));
 
         ui.displayListNameAndGameTitles(ui.gameBrowser.getGameList());
-        assertEquals("Master List: LoadGameTest1, LoadGameTest2, testGame, Test-zx the Game, Toot Scooters, testGame1, testGame2, testGame3\n", outContent.toString());
+        assertEquals("Master Game List: game 1, game 2, game 4, game 5, game 6, game 7, game 8, game 9, Candy Crush, Clash of clans\n", outContent.toString());
 
         //1 game
-        ui.removeGame("LoadGameTest1");
-        ui.removeGame("LoadGameTest2");
-        ui.removeGame("testGame");
-        ui.removeGame("Test-zx the Game");
-        ui.removeGame("Toot Scooters");
-        ui.removeGame("testGame1");
-        ui.removeGame("testGame2");
+        ui.removeGame("game 1");
+        ui.removeGame("game 2");
+        ui.removeGame("game 3");
+        ui.removeGame("game 4");
+        ui.removeGame("game 5");
+        ui.removeGame("game 6");
+        ui.removeGame("game 6");
+        ui.removeGame("game 7");
+        ui.removeGame("game 8");
+        ui.removeGame("game 9");
+        ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayListNameAndGameTitles(ui.gameBrowser.getGameList());
-        assertEquals("Master List: testGame3\n", outContent.toString());
+        assertEquals("Master Game List: Clash of clans\n", outContent.toString());
 
         //0 games
-        ui.removeGame("testGame3");
+        ui.removeGame("Clash of clans");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayListNameAndGameTitles(ui.gameBrowser.getGameList());
-        assertEquals("Master List: This list is empty\n", outContent.toString());
+        assertEquals("Master Game List: This list is empty\n", outContent.toString());
     }
 
     @Test
@@ -153,76 +188,88 @@ public class UISprint1Test {
         System.setOut(new PrintStream(outContent));
 
         ui.displayAllGames(ui.gameBrowser.getGameList());
-        assertEquals("Master List:\n" +
+        assertEquals("Master Game List:\n" +
                 "\n" +
-                "Title: LoadGameTest1\n" +
-                "Description: description\n" +
-                "Developer(s): LGT_A\n" +
+                "Title: game 1\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 1\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: LoadGameTest2\n" +
-                "Description: noitpircsed\n" +
-                "Developer(s): LGT_B, LGT_C\n" +
-                "Status: ACCEPTED\n" +
-                "\n" +
-                "Title: testGame\n" +
-                "Description: This is a test to save a game object\n" +
-                "Developer(s): Frank\n" +
+                "Title: game 2\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 2\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: Test-zx the Game\n" +
-                "Description: cool robot game\n" +
-                "Developer(s): Ted\n" +
-                "Status: ACCEPTED\n" +
-                "\n" +
-                "Title: Toot Scooters\n" +
-                "Description: mario kart hack where all sounds are balloons popping\n" +
-                "Developer(s): CorgiLover87, Ted\n" +
+                "Title: game 4\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 4\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame1\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
+                "Title: game 5\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 5\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame2\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
+                "Title: game 6\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 6\n" +
                 "Status: PENDING\n" +
                 "\n" +
-                "Title: testGame3\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
+                "Title: game 7\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 7\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: game 8\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 8\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: game 9\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): dev 9\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: Candy Crush\n" +
+                "Description: My mom plays a lot of candy crush\n" +
+                "Developer(s): Anita\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "Title: Clash of clans\n" +
+                "Description: My dad plays a lot of clash of clans\n" +
+                "Developer(s): Robert\n" +
                 "Status: PENDING\n" +
                 "\n", outContent.toString());
 
         //1 game
-        ui.removeGame("LoadGameTest1");
-        ui.removeGame("LoadGameTest2");
-        ui.removeGame("testGame");
-        ui.removeGame("Test-zx the Game");
-        ui.removeGame("Toot Scooters");
-        ui.removeGame("testGame1");
-        ui.removeGame("testGame2");
+        ui.removeGame("game 1");
+        ui.removeGame("game 2");
+        ui.removeGame("game 3");
+        ui.removeGame("game 4");
+        ui.removeGame("game 5");
+        ui.removeGame("game 6");
+        ui.removeGame("game 6");
+        ui.removeGame("game 7");
+        ui.removeGame("game 8");
+        ui.removeGame("game 9");
+        ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayAllGames(ui.gameBrowser.getGameList());
-        assertEquals("Master List:\n" +
-                "\n" +
-                "Title: testGame3\n" +
-                "Description: this Game is a Test game\n" +
-                "Developer(s): Bobby\n" +
+        assertEquals("Master Game List:\n\nTitle: Clash of clans\n" +
+        "Description: My dad plays a lot of clash of clans\n" +
+                "Developer(s): Robert\n" +
                 "Status: PENDING\n" +
                 "\n", outContent.toString());
 
         //0 games
-        ui.removeGame("testGame3");
+        ui.removeGame("Clash of clans");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayAllGames(ui.gameBrowser.getGameList());
-        assertEquals("Master List:\n\nThis list is empty\n", outContent.toString());
+        assertEquals("Master Game List:\n\nThis list is empty\n", outContent.toString());
     }
 
 
