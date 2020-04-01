@@ -97,14 +97,15 @@ public class UISprint1 {
             displayGameTitlesNumberedList(testDev.getGameList());
             System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
             int devUpdateChoice = in.nextInt();
-            if(devUpdateChoice == 0){
-                developerTakeAction(testDev);
-            }
             while (devUpdateChoice<0 || devUpdateChoice>testDev.getGameList().getGameCount()){
                 System.out.println("Please pick a valid choice\n");
                 System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
                 devUpdateChoice = in.nextInt();
             }
+            if(devUpdateChoice == 0){
+                developerTakeAction(testDev);
+            }
+
             Game updatingGame = devGameList.getGames().get(devUpdateChoice-1);
 
 
@@ -153,7 +154,7 @@ public class UISprint1 {
 
         else if (devChoice == 3){
             //displayGameTitlesNumberedList(testDev.getGameList());
-            displayGameTitlesNumberedList(gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED));
+            testDev.getGameList().displayAllGames();
 
             //testDev.displayDeveloper();
             developerTakeAction(testDev);
