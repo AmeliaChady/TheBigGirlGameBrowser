@@ -63,13 +63,13 @@ public class DeveloperTests {
 
         //all games in gameList, none in developer list
         assertEquals(5, gameListTest.getGameCount());
-        assertEquals(0, d6.getGameList().getGameCount());
+        assertEquals(2, d6.getGameList().getGameCount());
 
         d6.submitGame(g6, gameListTest);
 
         //games list with one added in games list and in d1's list
         assertEquals(6, gameListTest.getGameCount());
-        assertEquals(1, d6.getGameList().getGameCount());
+        assertEquals(2, d6.getGameList().getGameCount());
 
         //add another game with new developer
         d7.submitGame(g7, gameListTest);
@@ -77,7 +77,7 @@ public class DeveloperTests {
         assertEquals(7, gameListTest.getGameCount());
         assertEquals(1, d7.getGameList().getGameCount());
         //developer 6 list should remain unaffected
-        assertEquals(1, d6.getGameList().getGameCount());
+        assertEquals(2, d6.getGameList().getGameCount());
 
         //add another game with new developer
 
@@ -86,7 +86,7 @@ public class DeveloperTests {
         assertEquals(8, gameListTest.getGameCount());
         assertEquals(1, d8.getGameList().getGameCount());
         //other developer lists should remain unaffected
-        assertEquals(1, d6.getGameList().getGameCount());
+        assertEquals(2, d6.getGameList().getGameCount());
         assertEquals(1, d7.getGameList().getGameCount());
 
 
