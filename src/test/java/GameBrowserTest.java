@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameBrowserTest {
 
+    //rm empty.db && sqlite3 empty.db < src/DDL.sql
     @Test
     public void constructorTest() {
         GameBrowser gameBrowser;
@@ -15,7 +16,7 @@ public class GameBrowserTest {
 
         //-----------load devs and games to a 'Master Game List'-----------------
         //
-        SQLiteSource testDataSource = new SQLiteSource("testing.db");
+        SQLiteSource testDataSource = new SQLiteSource("empty.db");
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
         Developer testDev;
@@ -52,7 +53,7 @@ public class GameBrowserTest {
 
         // Default constructor with existing file path
         try {
-            gameBrowser = new GameBrowser("testing.db");
+            gameBrowser = new GameBrowser("empty.db");
             // Game list was loaded and length of list is as expected
             int expectedGameCount = gameCount;
             assertNotNull(gameBrowser.getGameList());
