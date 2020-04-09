@@ -12,22 +12,23 @@ public class UISprint1Test {
     @Test
     public void displayGameTitlesNumberedListTest() throws DataSourceException {
 
-        UISprint1 ui = new UISprint1("testing.db");
+        UISprint1 ui = new UISprint1("UITests.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayGameTitlesNumberedList(ui.gameBrowser.getGameList());
-        assertEquals("1. game 1\n" +
-                "2. game 2\n" +
-                "3. game 4\n" +
-                "4. game 5\n" +
-                "5. game 6\n" +
-                "6. game 7\n" +
-                "7. game 8\n" +
-                "8. game 9\n" +
-                "9. Candy Crush\n" +
-                "10. Clash of clans\n", outContent.toString());
+        assertEquals("1. robsGame\n" +
+                "2. game 1\n" +
+                "3. game 2\n" +
+                "4. game 4\n" +
+                "5. game 5\n" +
+                "6. game 6\n" +
+                "7. game 7\n" +
+                "8. game 8\n" +
+                "9. game 9\n" +
+                "10. Candy Crush\n" +
+                "11. Clash of clans\n", outContent.toString());
 
         //1 game
         ui.removeGame("game 1");
@@ -40,6 +41,7 @@ public class UISprint1Test {
         ui.removeGame("game 7");
         ui.removeGame("game 8");
         ui.removeGame("game 9");
+        ui.removeGame("robsGame");
         ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -58,13 +60,18 @@ public class UISprint1Test {
     }
 
     @Test public void displayGamesGivenStatusTest() throws DataSourceException {
-        UISprint1 ui = new UISprint1("testing.db");
+        UISprint1 ui = new UISprint1("UITests.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayGamesGivenStatus(ui.gameBrowser.getGameList(), Status.PENDING);
         assertEquals("Master Game List(PENDING):\n" +
+                "\n" +
+                "Title: robsGame\n" +
+                "Description: HEY LOOK IM IN A DataBase\n" +
+                "Developer(s): Rob\n" +
+                "Status: PENDING\n" +
                 "\n" +
                 "Title: game 1\n" +
                 "Description: No Description Given\n" +
@@ -114,8 +121,7 @@ public class UISprint1Test {
                 "Title: Clash of clans\n" +
                 "Description: My dad plays a lot of clash of clans\n" +
                 "Developer(s): Robert\n" +
-                "Status: PENDING\n" +
-                "\n", outContent.toString());
+                "Status: PENDING\n\n", outContent.toString());
 
         //1 game
         ui.removeGame("game 1");
@@ -128,6 +134,7 @@ public class UISprint1Test {
         ui.removeGame("game 7");
         ui.removeGame("game 8");
         ui.removeGame("game 9");
+        ui.removeGame("robsGame");
         ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -145,13 +152,13 @@ public class UISprint1Test {
     }
 
     @Test public void displayListNameAndGameTitlesTest() throws DataSourceException {
-        UISprint1 ui = new UISprint1("testing.db");
+        UISprint1 ui = new UISprint1("UITests.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayListNameAndGameTitles(ui.gameBrowser.getGameList());
-        assertEquals("Master Game List: game 1, game 2, game 4, game 5, game 6, game 7, game 8, game 9, Candy Crush, Clash of clans\n", outContent.toString());
+        assertEquals("Master Game List: robsGame, game 1, game 2, game 4, game 5, game 6, game 7, game 8, game 9, Candy Crush, Clash of clans\n", outContent.toString());
 
         //1 game
         ui.removeGame("game 1");
@@ -164,6 +171,7 @@ public class UISprint1Test {
         ui.removeGame("game 7");
         ui.removeGame("game 8");
         ui.removeGame("game 9");
+        ui.removeGame("robsGame");
         ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -182,13 +190,18 @@ public class UISprint1Test {
 
     @Test
     public void displayAllGamesTest() throws DataSourceException {
-        UISprint1 ui = new UISprint1("testing.db");
+        UISprint1 ui = new UISprint1("UITests.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         ui.displayAllGames(ui.gameBrowser.getGameList());
         assertEquals("Master Game List:\n" +
+                "\n" +
+                "Title: robsGame\n" +
+                "Description: HEY LOOK IM IN A DataBase\n" +
+                "Developer(s): Rob\n" +
+                "Status: PENDING\n" +
                 "\n" +
                 "Title: game 1\n" +
                 "Description: No Description Given\n" +
@@ -252,6 +265,7 @@ public class UISprint1Test {
         ui.removeGame("game 7");
         ui.removeGame("game 8");
         ui.removeGame("game 9");
+        ui.removeGame("robsGame");
         ui.removeGame("Candy Crush");
         outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
