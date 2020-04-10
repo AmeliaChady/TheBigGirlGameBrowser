@@ -34,4 +34,7 @@ public class Account {
     }
     //end getters and setters
 
+    public static boolean isEmailValid(String email){
+        return false;
+    }
 }
