@@ -17,4 +17,4 @@ This project will replicate the non-commercial part of a game store, assisting w
 ### [Sprint 1 UI Manual Test](https://docs.google.com/document/d/1OAP_4UdqX79A6kCBPxl_k07YpVD3TvDmNo1CXhtpZVk/edit?usp=sharing)
 
 ## Sprint 2 - Users, Comments, Reviews, and Database Restructure
-### [Sprint 2 Class Diagram (second tab)](https://drive.google.com/file/d/1WbfxSb3m6w8zfWdiadFw75o8nKdFNza9/view?usp=sharing)
+### [Sprint 2 Class Diagram](https://drive.google.com/file/d/1Bfamu5ryuSE5ZlLHwGXGp08tqSOzOHxB/view?usp=sharing)
