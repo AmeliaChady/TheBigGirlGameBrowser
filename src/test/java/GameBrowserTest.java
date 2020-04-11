@@ -19,7 +19,7 @@ public class GameBrowserTest {
         SQLiteSource testDataSource = new SQLiteSource("empty.db");
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
-        Developer testDev;
+        String testDev;
         int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
@@ -76,7 +76,7 @@ public class GameBrowserTest {
             // check that expected devs were loaded
 
             i = 0;
-            List<Developer> developers = gameBrowser.getDevelopers();
+            List<String> developers = gameBrowser.getDevelopers();
             developers.sort(Comparator.comparing(Developer::getName));
             String expectedDevName;
             while (i < developers.size()) {
@@ -99,7 +99,7 @@ public class GameBrowserTest {
             int baseNumber = gb.getGameList().getGameCount();
 
             //add game
-            Developer dev = new Developer("Anita");
+            String dev = new Developer("Anita");
             Game gameToAdd = new Game("Candy Crush","My mom plays a lot of candy crush", dev, Status.PENDING);
             gb.addGame(gameToAdd);
             assertEquals(baseNumber+1, gb.getGameList().getGameCount());
@@ -186,9 +186,9 @@ public class GameBrowserTest {
             gameBrowser.addDeveloper("dev1");
             assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
             boolean contains = false;
-            Iterator<Developer> devs = gameBrowser.getDevelopers().iterator();
+            Iterator<String> devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                Developer d = devs.next();
+                String d = devs.next();
                 if(d.getName().equals("dev1"))
                     contains = true;
             }
@@ -201,14 +201,14 @@ public class GameBrowserTest {
             contains = false;
             devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                Developer d = devs.next();
+                String d = devs.next();
                 if(d.getName().equals("dev2"))
                     contains = true;
             }
             assertTrue(contains);
 
             System.out.println("Visual Check");
-            for(Developer developer : gameBrowser.getDevelopers()){
+            for(String developer : gameBrowser.getDevelopers()){
                 developer.displayDeveloper();
             }
 
@@ -248,7 +248,7 @@ public class GameBrowserTest {
     public void saveTest(){
         try {
             GameBrowser gameBrowser = new GameBrowser("testing.db");
-            Developer rob =  new Developer("Rob");
+            String rob =  new Developer("Rob");
             gameBrowser.addDeveloper(rob);
 
             Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob);
@@ -262,7 +262,7 @@ public class GameBrowserTest {
             // Setup for below
             if (gameBrowser.getGameList().getGames().size() < 8) {
                 int num = 0;
-                Developer d = new Developer("Amelia's Fix Dude");
+                String d = new Developer("Amelia's Fix Dude");
                 gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
                     Game xtraGame = new Game("xtra"+num, d);

@@ -36,10 +36,11 @@ public class GameBrowser {
 
     public void addGame(Game game){
         gameList.includeGame(game);
+        // TODO Update Database
     }
 
-    public void addGame(String title, String description, List<Developer> developer, Status status){
-        Game game = new Game(title, description, developer, status);
+    public void addGame(String title, String description, List<String> developer, Status status){
+        Game game = new Game(title, description, developer, status, dataSource);
         gameList.includeGame(game);
     }
 
@@ -53,15 +54,7 @@ public class GameBrowser {
      * @param username - the username of the developer
      */
     public void addDeveloper(String username) {
-        developers.add( new Developer(username) );
-    }
-
-    /**
-     * A new developer is created and added to the developer list
-     * @param developer - a developer object
-     */
-    public void addDeveloper(Developer developer) {
-        developers.add( developer );
+        developers.add(new Developer(username));
     }
 
     /**
@@ -69,17 +62,18 @@ public class GameBrowser {
      * @param username - the username of the developer
      * @return Developer - the developer that was removed
      */
-    public Developer removeDeveloper(String username) {
-        Developer developer = null;
+    public String removeDeveloper(String username) {
+        String developer = null;
 
         for (Developer d : developers) {
             if (d.getName().equals(username)) {
-                developer = d;
+                developer = d.getName();
                 developers.remove(developer);
                 break;
             }
         }
         return developer;
+        // TODO: Update Database
     }
 
     /**

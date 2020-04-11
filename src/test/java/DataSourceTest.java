@@ -113,7 +113,7 @@ public class DataSourceTest {
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
 
-        Developer bobby = new Developer("Bobby");
+        String bobby = new Developer("Bobby");
         Game game1 = new Game("testGame1", "this Game is a Test game", bobby);
         Game game2 = new Game("testGame2", "this Game is a Test game", bobby);
 
@@ -207,7 +207,7 @@ public class DataSourceTest {
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
 
-        Developer bobby = new Developer("Bobby");
+        String bobby = new Developer("Bobby");
 
         Game game1 = new Game("game1", bobby);
         Game game2 = new Game("game2", bobby);
@@ -217,7 +217,7 @@ public class DataSourceTest {
 
         // At this point db should be aware of bob and have a relationship between bob and these games
 
-        Developer gef = new Developer("jim");
+        String gef = new Developer("jim");
         game1.addDeveloper(gef);
 
         game3.addDeveloper(gef);
@@ -230,12 +230,12 @@ public class DataSourceTest {
 
     public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
-        Developer save = new Developer("LoadDeveloperTest");
+        String save = new Developer("LoadDeveloperTest");
         save.getGameList().includeGame(new Game("LoadDeveloperTestGame", "aa", save));
         ds.saveDeveloper(save);
 
         // Load Works
-        Developer d = ds.loadDeveloper("LoadDeveloperTest");
+        String d = ds.loadDeveloper("LoadDeveloperTest");
         assertNotNull(d);
 
         // Confirm GameList Connection
@@ -253,7 +253,7 @@ public class DataSourceTest {
         for (int i = 0; i < 5; i++)
             ds.saveDeveloper( new Developer("test dev "+i) );
         // load them from db
-        List<Developer> developers = ds.loadDeveloperList();
+        List<String> developers = ds.loadDeveloperList();
 
         // Load Works
         assertNotNull(developers);
@@ -261,9 +261,9 @@ public class DataSourceTest {
         // All developers were loaded
         for (int i = 0; i < 5; i++){
             boolean found = false;
-            Iterator<Developer> devs = developers.iterator();
+            Iterator<String> devs = developers.iterator();
             while (devs.hasNext() && !found){
-                Developer curr = devs.next();
+                String curr = devs.next();
                 if(curr.getName().equals("test dev "+i))
                     found = true;
             }

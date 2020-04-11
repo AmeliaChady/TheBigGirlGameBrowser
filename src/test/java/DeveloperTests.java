@@ -26,14 +26,14 @@ public class DeveloperTests {
     @Test
     public void developerSubmitGameTest() {
         //make all the developers for testing
-        Developer d1 = new Developer("Milk Dad");
-        Developer d2 = new Developer("The Sunshine Gang");
-        Developer d3 = new Developer("I just want to go to sleep");
-        Developer d4 = new Developer("The Korona Krew");
-        Developer d5 = new Developer("Brett Michaels");
-        Developer d6 = new Developer("six");
-        Developer d7 = new Developer("seven");
-        Developer d8 = new Developer("eight");
+        String d1 = new Developer("Milk Dad");
+        String d2 = new Developer("The Sunshine Gang");
+        String d3 = new Developer("I just want to go to sleep");
+        String d4 = new Developer("The Korona Krew");
+        String d5 = new Developer("Brett Michaels");
+        String d6 = new Developer("six");
+        String d7 = new Developer("seven");
+        String d8 = new Developer("eight");
 
         //make all the games for testing
         Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1, Status.PENDING);

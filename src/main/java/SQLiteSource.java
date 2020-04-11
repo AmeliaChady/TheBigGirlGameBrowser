@@ -44,6 +44,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    // TODO we need to update this for DBR
     public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
@@ -66,19 +67,19 @@ public class SQLiteSource implements DataSource{
             int gid = s.getResultSet().getInt(1);
 
             // Developers Set Up
-            Iterator<Developer> devs = game.getDevelopers().iterator();
+            Iterator<String> devs = game.getDevelopers().iterator();
             int did;
 
             // Dev Iterator
             while (devs.hasNext()) {
                 // Developer Set Up
-                Developer d = devs.next();
-                saveDeveloper(d);
+                String d = devs.next();
+                //saveDeveloper(d);
 
                 //safeUpsertDevelopers(d.getName(), s);
 
                 // Getting Developer ID
-                sql = "SELECT did FROM Developers WHERE name=\"" + d.getName() + "\";";
+                sql = "SELECT did FROM Developers WHERE name=\"" + d + "\";";
                 s.execute(sql);
                 did = s.getResultSet().getInt(1);
 
@@ -107,6 +108,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    // TODO we need to update this for DBR
     public Game loadGame(String title) throws DataSourceException {
         if(title==null){
             return null;
@@ -150,13 +152,13 @@ public class SQLiteSource implements DataSource{
                     "INNER JOIN Developers D on GD.did = D.did " +
                     "WHERE title = '"+title+"';";
             s.execute(sql);
-            ArrayList<Developer> devs = new ArrayList<Developer>();
+            ArrayList<String> devs = new ArrayList<String>();
             ResultSet d = s.getResultSet();
             boolean hasNext = !d.isClosed();
             if(hasNext){
                 d.next();
                 while (hasNext){
-                    devs.add(new Developer(d.getString("name")));
+                    devs.add(d.getString("name"));
                     hasNext = d.next();
                 }
             }
@@ -166,7 +168,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Game(title,description,devs,Status.valueOf(status));
+            return new Game(title,description,devs,Status.valueOf(status), this);
         }catch (SQLException e){
             try {
                 if(lg != null) {
@@ -180,6 +182,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    // TODO we need to update this for DBR
     public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
         if(gameList == null){
             throw new IllegalArgumentException("GameList is null");
@@ -245,6 +248,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    // TODO we need to update this for DBR
     public GameList loadGameList(String name) throws DataSourceException{
         if(name==null){
             return null;
@@ -314,6 +318,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    // TODO we need to update this for DBR
     public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
         if(dev == null){
             throw new IllegalArgumentException("Developer is null");
@@ -380,6 +385,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    // TODO we need to update this for DBR
     public Developer loadDeveloper(String dev) throws DataSourceException{
         if(dev == null){
             return null;
@@ -445,7 +451,7 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
 
             ResultSet devNames = s.getResultSet();
-            List<Developer> developers = new ArrayList<Developer>();
+            List<Developer> developers = new ArrayList<>();
             boolean hasNext = !devNames.isClosed();
 
             if (hasNext) {
