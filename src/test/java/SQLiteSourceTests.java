@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
@@ -7,6 +8,24 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SQLiteSourceTests {
     // TODO: make universal!!!
     public static String CORRECT_PATH = "testing.db";
+
+    @Test
+    public void SQLiteSourceRunSQL(){
+        System.out.println("Requires Manual Check");
+        // Correct Paths
+        SQLiteSource.RunSQL("sqlscriptrunningtest.db", "src/sqlscriptrunningtest.sql");
+
+        System.out.println("Check that sqlscriptrunningtest.db has correct schema and has one entry (woofframe) in the Games table.");
+
+        // Incorrect DB Path
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/sqlscriptrunningtest.sql"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/sqlscriptrunningtest.sql"));
+
+        // Incorrect SQL Path
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("sqlscriptrunningtest.db", "no"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("sqlscriptrunningtest.db", null));
+
+    }
 
     @Test
     public void SQLiteSourceConstructor() throws SQLException { // also
@@ -72,5 +91,7 @@ public class SQLiteSourceTests {
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }
+
+
 
 }
