@@ -12,7 +12,7 @@ public class UISprint1Test {
     @Test
     public void displayGameTitlesNumberedListTest() throws DataSourceException {
 
-        UISprint1 ui = new UISprint1("src/databases/UITests.db");
+        UISprint1 ui = new UISprint1("src/databases/Test_UI.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -60,7 +60,7 @@ public class UISprint1Test {
     }
 
     @Test public void displayGamesGivenStatusTest() throws DataSourceException {
-        UISprint1 ui = new UISprint1("src/databases/UITests.db");
+        UISprint1 ui = new UISprint1("src/databases/Test_UI.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -152,7 +152,7 @@ public class UISprint1Test {
     }
 
     @Test public void displayListNameAndGameTitlesTest() throws DataSourceException {
-        UISprint1 ui = new UISprint1("src/databases/UITests.db");
+        UISprint1 ui = new UISprint1("src/databases/Test_UI.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -190,7 +190,7 @@ public class UISprint1Test {
 
     @Test
     public void displayAllGamesTest() throws DataSourceException {
-        UISprint1 ui = new UISprint1("src/databases/UITests.db");
+        UISprint1 ui = new UISprint1("src/databases/Test_UI.db");
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));

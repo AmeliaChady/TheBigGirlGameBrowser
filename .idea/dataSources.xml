@@ -16,5 +16,11 @@
         <property name="enable_load_extension" value="true" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="empty" uuid="c5939511-f6bc-4ce8-8504-41c6d51a42f2">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/empty.db</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -6,8 +6,9 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameBrowserTest {
+    public static String CORRECT_PATH = "src/databases/Test_GameBrowser.db";
 
-    //rm empty.db && sqlite3 empty.db < src/DDL.sql
+    //rm Test_GameBrowser.db && sqlite3 Test_GameBrowser.db < src/DDL.sql
     @Test
     public void constructorTest() {
         GameBrowser gameBrowser;
@@ -16,7 +17,7 @@ public class GameBrowserTest {
 
         //-----------load devs and games to a 'Master Game List'-----------------
         //
-        SQLiteSource testDataSource = new SQLiteSource("src/databases/empty.db");
+        SQLiteSource testDataSource = new SQLiteSource("src/databases/Test_GameBrowser.db");
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
         Developer testDev;
@@ -53,7 +54,7 @@ public class GameBrowserTest {
 
         // Default constructor with existing file path
         try {
-            gameBrowser = new GameBrowser("src/databases/empty.db");
+            gameBrowser = new GameBrowser("src/databases/Test_GameBrowser.db");
             // Game list was loaded and length of list is as expected
             int expectedGameCount = gameCount;
             assertNotNull(gameBrowser.getGameList());
@@ -94,7 +95,7 @@ public class GameBrowserTest {
     @Test
     public void addGameTest(){
         try {
-            GameBrowser gb = new GameBrowser("src/databases/testing.db");
+            GameBrowser gb = new GameBrowser("src/databases/Test_SQLiteSource.db");
 
             int baseNumber = gb.getGameList().getGameCount();
 
@@ -122,7 +123,7 @@ public class GameBrowserTest {
 
             // saving Changes to db
             // TODO:: Shouldn't this be done in the gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
+            SQLiteSource ds = new SQLiteSource("src/databases/Test_SQLiteSource.db");
             ds.saveGameList(gb.getGameList());
 
         } catch(DataSourceException dse) {
@@ -133,7 +134,7 @@ public class GameBrowserTest {
     @Test
     public void removeGameTest(){
         try {
-            GameBrowser gb = new GameBrowser("src/databases/testing.db");
+            GameBrowser gb = new GameBrowser("src/databases/Test_SQLiteSource.db");
             List<Developer> devs = new LinkedList<>();
             devs.add(new Developer("Something"));
             gb.getGameList().removeGame("Cows V. Aliens");
@@ -170,7 +171,7 @@ public class GameBrowserTest {
 
             // saving Changes to db
             // TODO: Shouldn't this be done in gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
+            SQLiteSource ds = new SQLiteSource("src/databases/Test_SQLiteSource.db");
             ds.saveGameList(gb.getGameList());
 
         } catch(DataSourceException dse) {
@@ -181,7 +182,7 @@ public class GameBrowserTest {
     @Test
     public void addDeveloperTest() {
         try {
-            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/Test_SQLiteSource.db");
 
             int baseNumber = gameBrowser.getDevelopers().size();
             // create a new developer
@@ -222,7 +223,7 @@ public class GameBrowserTest {
     @Test
     public void removeDeveloperTest() { // assumes a passing addDeveloperTest
         try {
-            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/Test_SQLiteSource.db");
 
             int baseNumber = gameBrowser.getDevelopers().size();
 
@@ -249,7 +250,7 @@ public class GameBrowserTest {
     @Test
     public void saveTest(){
         try {
-            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/Test_SQLiteSource.db");
             Developer rob =  new Developer("Rob");
             gameBrowser.addDeveloper(rob);
 

@@ -11,11 +11,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DataSourceTest {
     public static void dataSourceSaveGameTest(DataSource ds) throws DataSourceException{
-        System.out.println("Warning: DataSource must be empty for correct testing");
-        System.out.println("Warning: Used Combined View to verify");
+        System.out.println("Warning: DataSource must be not contain games named 'testGame', 'Test-zx the Game', & 'Toot Scooters' for correct testing");
+        System.out.println("Note: Can use Combined View to verify");
         Game cooltestgame = new Game("testGame", "This is a test to save a game object", new Developer("Frank"));
-
-
 
         // Saving a game
         try {

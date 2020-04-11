@@ -7,29 +7,36 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
-    public static String CORRECT_PATH = "src/databases/testing.db";
+    public static String CORRECT_PATH = "src/databases/Test_SQLiteSource.db";
+    public static String SQL_BASE_PATH = "src/scripts/";
+
+    @BeforeAll
+    public static void setUpDB() throws IOException{
+        System.out.println("SQLiteSourceRunSQL must work for all tests to work!");
+        SQLiteSource.RunSQL(CORRECT_PATH, SQL_BASE_PATH+"DDL.sql");
+    }
 
     @Test
     public void SQLiteSourceRunSQL() throws IOException {
         System.out.println("Requires Manual Check");
         // Correct Paths
-        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/DDL.sql");
-        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/sqlscriptrunningtest.sql");
+        SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "src/scripts/DDL.sql");
+        SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "src/scripts/sqlscriptrunningtest.sql");
 
-        System.out.println("Check that sqlscriptrunningtest.db has correct schema and has one entry (woofframe) in the Games table.");
+        System.out.println("Check that Test_RunSQL.db has correct schema and has one entry (woofframe) in the Games table.");
 
         // Incorrect DB Path
         assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/scripts/sqlscriptrunningtest.sql"));
         assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/scripts/sqlscriptrunningtest.sql"));
 
         // Incorrect SQL Path
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "no"));
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", null));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "no"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", null));
 
     }
 
     @Test
-    public void SQLiteSourceConstructor() throws SQLException { // also
+    public void SQLiteSourceConstructor() { // also
         try {
             SQLiteSource s = new SQLiteSource(CORRECT_PATH);
             s.close();
@@ -45,7 +52,8 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceSaveGame() throws SQLException, DataSourceException{
+    public void SQLiteSourceSaveGame() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(CORRECT_PATH, SQL_BASE_PATH+"Test_SQLiteSource_SaveGame.sql");
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceSaveGameTest(s);
         s.close();
