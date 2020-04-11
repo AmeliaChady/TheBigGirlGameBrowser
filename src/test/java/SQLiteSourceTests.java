@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,9 +11,10 @@ public class SQLiteSourceTests {
     public static String CORRECT_PATH = "testing.db";
 
     @Test
-    public void SQLiteSourceRunSQL(){
+    public void SQLiteSourceRunSQL() throws IOException {
         System.out.println("Requires Manual Check");
         // Correct Paths
+        SQLiteSource.RunSQL("sqlscriptrunningtest.db", "src/DDL.sql");
         SQLiteSource.RunSQL("sqlscriptrunningtest.db", "src/sqlscriptrunningtest.sql");
 
         System.out.println("Check that sqlscriptrunningtest.db has correct schema and has one entry (woofframe) in the Games table.");
