@@ -326,7 +326,7 @@ public class UISprint1 {
 
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
-        UISprint1 myBGGLTest = new UISprint1("testing.db");
+        UISprint1 myBGGLTest = new UISprint1("src/databases/testing.db");
         myBGGLTest.login();
 
     }
