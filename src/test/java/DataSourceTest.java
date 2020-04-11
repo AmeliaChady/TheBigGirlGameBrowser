@@ -273,4 +273,28 @@ public class DataSourceTest {
 
     }
 
+    public static void dataSourceLoadGameTitlesTest(DataSource ds) throws DataSourceException {
+        System.out.println("Warning: DB should consist of only the following game titles \n" +
+                "testGame1\n"+ "testGame2\n"+ "testGame3\n");
+        System.out.println("Warning: DB should not have a game list called BogusTestList \n");
+
+        try {
+            List<String> gameTitles = ds.loadGameTitles("BogusTestList");
+            // no titles loaded from non-existent game list
+            assertNull(gameTitles);
+
+            gameTitles = ds.loadGameTitles("TestList");
+            // Titles loaded
+            assertNotNull(gameTitles);
+            // Expected title count loaded
+            assertEquals(3, gameTitles.size());
+            // Expected titles loaded
+            for (int i = 0; i < gameTitles.size(); i++)
+                assertEquals("testGame"+1,  gameTitles.get(i));
+
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            fail("Should not throw exception");
+        }
+    }
 }

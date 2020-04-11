@@ -473,6 +473,9 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    @Override
+    public List<String> loadGameTitles(String GameListName) throws DataSourceException { return null; }
+
 
     @Override
     public void setInTransaction(boolean bool){

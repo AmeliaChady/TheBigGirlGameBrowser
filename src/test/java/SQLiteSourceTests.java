@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,4 +74,10 @@ public class SQLiteSourceTests {
         s.close();
     }
 
+    @Test
+    public void SQLiteSourceLoadGameTitlesByGameListTest() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceLoadGameTitlesTest(s);
+        s.close();
+    }
 }
