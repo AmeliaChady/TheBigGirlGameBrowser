@@ -281,7 +281,7 @@ public class DataSourceTest {
         try {
             List<String> gameTitles = ds.loadGameTitles("BogusTestList");
             // no titles loaded from non-existent game list
-            assertNull(gameTitles);
+            assertEquals(0, gameTitles.size());
 
             gameTitles = ds.loadGameTitles("TestList");
             // Titles loaded
