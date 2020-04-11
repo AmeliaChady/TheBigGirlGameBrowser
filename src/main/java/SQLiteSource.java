@@ -474,7 +474,44 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    public List<String> loadGameTitles(String GameListName) throws DataSourceException { return null; }
+    public List<String> loadGameTitles(String gameListName) throws DataSourceException {
+        if (gameListName == null) return null;
+
+        Savepoint lgts = null;
+        try {
+            if (!inTransaction) {
+                lgts = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            // Get game titles
+            String sql = "SELECT title FROM GameListsGames INNER JOIN GameLists USING(glid) " +
+                            "INNER JOIN Games USING(gid) WHERE name="+"\""+gameListName+"\";";
+            s.execute(sql);
+
+            ResultSet titlesResult = s.getResultSet();
+            List<String> gameTitles = new ArrayList<String>();
+            boolean hasNext = !titlesResult.isClosed();
+
+            if (hasNext) {
+                titlesResult.next();
+                while (hasNext) {
+                    gameTitles.add( titlesResult.getString("title"));
+                    hasNext = titlesResult.next();
+                }
+            }
+            s.close();
+            if(lgts != null){
+                conn.commit();
+                inTransaction = false;
+            }
+            return gameTitles;
+
+        } catch(SQLException e) {
+            throw new DataSourceException(e.getMessage());
+        }
+    }
 
 
     @Override
