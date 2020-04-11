@@ -7,25 +7,24 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
-    // TODO: make universal!!!
-    public static String CORRECT_PATH = "testing.db";
+    public static String CORRECT_PATH = "src/databases/testing.db";
 
     @Test
     public void SQLiteSourceRunSQL() throws IOException {
         System.out.println("Requires Manual Check");
         // Correct Paths
-        SQLiteSource.RunSQL("sqlscriptrunningtest.db", "src/DDL.sql");
-        SQLiteSource.RunSQL("sqlscriptrunningtest.db", "src/sqlscriptrunningtest.sql");
+        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/DDL.sql");
+        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/sqlscriptrunningtest.sql");
 
         System.out.println("Check that sqlscriptrunningtest.db has correct schema and has one entry (woofframe) in the Games table.");
 
         // Incorrect DB Path
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/sqlscriptrunningtest.sql"));
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/sqlscriptrunningtest.sql"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/scripts/sqlscriptrunningtest.sql"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/scripts/sqlscriptrunningtest.sql"));
 
         // Incorrect SQL Path
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("sqlscriptrunningtest.db", "no"));
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("sqlscriptrunningtest.db", null));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "no"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", null));
 
     }
 
@@ -93,7 +92,5 @@ public class SQLiteSourceTests {
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }
-
-
 
 }
