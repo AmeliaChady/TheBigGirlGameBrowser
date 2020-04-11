@@ -290,7 +290,7 @@ public class DataSourceTest {
             assertEquals(3, gameTitles.size());
             // Expected titles loaded
             for (int i = 0; i < gameTitles.size(); i++)
-                assertEquals("testGame"+1,  gameTitles.get(i));
+                assertEquals("testGame"+(i+1),  gameTitles.get(i));
 
         } catch (Exception e){
             System.out.println(e.getMessage());
