@@ -18,16 +18,16 @@ public class SQLiteSourceTests {
 
     @Test
     public void SQLiteSourceRunSQL() throws IOException {
-        System.out.println("Requires Manual Check");
+        System.out.println("Requires Manual Check (Drop All Tables in DB Before Running)");
         // Correct Paths
         SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "src/scripts/DDL.sql");
-        SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "src/scripts/sqlscriptrunningtest.sql");
+        SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "src/scripts/Test_SQLiteSource_RunSQLScript.sql");
 
         System.out.println("Check that Test_RunSQL.db has correct schema and has one entry (woofframe) in the Games table.");
 
         // Incorrect DB Path
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/scripts/sqlscriptrunningtest.sql"));
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/scripts/sqlscriptrunningtest.sql"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/scripts/Test_SQLiteSource_RunSQLScript.sql"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/scripts/Test_SQLiteSource_RunSQLScript.sql"));
 
         // Incorrect SQL Path
         assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/Test_RunSQL.db", "no"));
@@ -60,7 +60,7 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceLoadGame() throws SQLException, DataSourceException{
+    public void SQLiteSourceLoadGame() throws DataSourceException{
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceLoadGameTest(s);
         s.close();
