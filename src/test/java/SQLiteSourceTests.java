@@ -68,7 +68,9 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceSaveGameList() throws SQLException, DataSourceException{
+    public void SQLiteSourceSaveGameList() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(CORRECT_PATH, SQL_BASE_PATH+"Test_SQLiteSource_SaveGameList.sql");
+        System.out.println("Suggestion: Use Combined View to verify");
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceSaveGameListTest(s);
         s.close();

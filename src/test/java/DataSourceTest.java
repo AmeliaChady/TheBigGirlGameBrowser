@@ -101,8 +101,9 @@ public class DataSourceTest {
     }
 
     public static void dataSourceSaveGameListTest(DataSource ds) throws DataSourceException{
-        System.out.println("Warning: DataSource must be empty for correct testing");
-        System.out.println("Warning: Used Combined View to verify");
+        System.out.println("Source must not contain a Developer named 'Bobby'");
+        System.out.println("Source must not contain GameLists named \"Bobby's Games\" or 'TestList'");
+        System.out.println("Source must not contain Games named 'testGame1', 'testGame2', or 'testGame3'");
 
         Developer bobby = new Developer("Bobby");
         Game game1 = new Game("testGame1", "this Game is a Test game", bobby);
