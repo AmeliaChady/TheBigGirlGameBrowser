@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/src/test/java/AdministratorTest.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/DataSourceTest.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/DeveloperTests.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/GameBrowserTest.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/GameTest.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/SQLiteSourceTests.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/UISprint1Test.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/Administrator.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/DataSource.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/DataSourceException.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/Developer.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/Game.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/GameBrowser.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/SQLiteSource.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/UISprint1.java" />
+    </excludeFromCompile>
     <annotationProcessing>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
