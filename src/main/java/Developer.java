@@ -21,10 +21,11 @@ public class Developer {
         developerGameList = new GameList(nameIn+"'s Games");
     }
 
-    public void displayDeveloper() {
-        System.out.println("Name: " + name );
-        developerGameList.displayListNameAndGameTitles();
-    }
+    //TODO: move to gameBrowser
+//    public void displayDeveloper() {
+//        System.out.println("Name: " + name );
+//        developerGameList.displayListNameAndGameTitles();
+//    }
 
     public String getName(){
         return name;
@@ -34,17 +35,19 @@ public class Developer {
         return developerGameList;
     }
 
-    public void submitGame(Game gameToSubmit, GameList completeList){
+    public void submitGame(String gameToSubmit, GameList completeList){
         //needs to add game to developer list
         //needs to add game to gameList
 
         //adds to developer's personal list
         //developerGameList.includeGame(gameToSubmit);
         //adds to overall gameList
-        completeList.includeGame(gameToSubmit);
 
-        //planning on fleshing this out later so the same game can't be added twice?
-        //wasn't specified in card so not planning on addressing this during sprint 1
+        //if not already in list
+        if (!developerGameList.getGames().contains(gameToSubmit)) {
+            completeList.includeGame(gameToSubmit);
+            developerGameList.includeGame(gameToSubmit);
+        }
     }
 
     public String getGameListName() {

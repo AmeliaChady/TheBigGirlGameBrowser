@@ -31,7 +31,7 @@ public class Game {
         this.developers = new ArrayList<Developer>(developers);
         this.status = status;
         for (Developer developer : developers){
-            developer.getGameList().includeGame(this);
+            developer.getGameList().includeGame(this.title);
         }
     }
 
@@ -47,7 +47,7 @@ public class Game {
         this.developers = new ArrayList<Developer>(developers);
         this.status = Status.PENDING;
         for (Developer developer : developers){
-            developer.getGameList().includeGame(this);
+            developer.getGameList().includeGame(this.title);
         }
     }
 
@@ -62,7 +62,7 @@ public class Game {
         this.description = "No Description Given";
         this.status = Status.PENDING;
         for (Developer developer : developers){
-            developer.getGameList().includeGame(this);
+            developer.getGameList().includeGame(this.title);
         }
     }
 
@@ -79,7 +79,7 @@ public class Game {
         this.developers = new ArrayList<Developer>();
         this.developers.add(developer);
         this.status = status;
-        developer.getGameList().includeGame(this);
+        developer.getGameList().includeGame(this.title);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Game {
         this.developers = new ArrayList<Developer>();
         this.developers.add(developer);
         this.status = Status.PENDING;
-        developer.getGameList().includeGame(this);
+        developer.getGameList().includeGame(this.title);
     }
 
     /**
@@ -108,7 +108,7 @@ public class Game {
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
-        developer.getGameList().includeGame(this);
+        developer.getGameList().includeGame(this.title);
     }
 
     /**
@@ -144,7 +144,7 @@ public class Game {
      */
     public void addDeveloper(Developer developer) {
         this.developers.add(developer);
-        developer.getGameList().includeGame(this);
+        developer.getGameList().includeGame(this.title);
     }
 
     public void displayGame() {
