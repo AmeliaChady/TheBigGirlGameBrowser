@@ -16,10 +16,10 @@ public class GameBrowserTest {
 
         //-----------load devs and games to a 'Master Game List'-----------------
         //
-        SQLiteSource testDataSource = new SQLiteSource("empty.db");
+        SQLiteSource testDataSource = new SQLiteSource("src/databases/empty.db");
         GameList testGameList = new GameList("Master Game List");
         Game testGame;
-        String testDev;
+        Developer testDev;
         int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
@@ -53,7 +53,7 @@ public class GameBrowserTest {
 
         // Default constructor with existing file path
         try {
-            gameBrowser = new GameBrowser("empty.db");
+            gameBrowser = new GameBrowser("src/databases/empty.db");
             // Game list was loaded and length of list is as expected
             int expectedGameCount = gameCount;
             assertNotNull(gameBrowser.getGameList());
@@ -76,7 +76,7 @@ public class GameBrowserTest {
             // check that expected devs were loaded
 
             i = 0;
-            List<String> developers = gameBrowser.getDevelopers();
+            List<Developer> developers = gameBrowser.getDevelopers();
             developers.sort(Comparator.comparing(Developer::getName));
             String expectedDevName;
             while (i < developers.size()) {
@@ -94,12 +94,12 @@ public class GameBrowserTest {
     @Test
     public void addGameTest(){
         try {
-            GameBrowser gb = new GameBrowser("testing.db");
+            GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gb.getGameList().getGameCount();
 
             //add game
-            String dev = new Developer("Anita");
+            Developer dev = new Developer("Anita");
             Game gameToAdd = new Game("Candy Crush","My mom plays a lot of candy crush", dev, Status.PENDING);
             gb.addGame(gameToAdd);
             assertEquals(baseNumber+1, gb.getGameList().getGameCount());
@@ -121,7 +121,8 @@ public class GameBrowserTest {
             assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
             // saving Changes to db
-            SQLiteSource ds = new SQLiteSource("testing.db");
+            // TODO:: Shouldn't this be done in the gamebrowser?
+            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
             ds.saveGameList(gb.getGameList());
 
         } catch(DataSourceException dse) {
@@ -132,7 +133,7 @@ public class GameBrowserTest {
     @Test
     public void removeGameTest(){
         try {
-            GameBrowser gb = new GameBrowser("testing.db");
+            GameBrowser gb = new GameBrowser("src/databases/testing.db");
             List<Developer> devs = new LinkedList<>();
             devs.add(new Developer("Something"));
             gb.getGameList().removeGame("Cows V. Aliens");
@@ -168,7 +169,8 @@ public class GameBrowserTest {
             assertNull(g5);
 
             // saving Changes to db
-            SQLiteSource ds = new SQLiteSource("testing.db");
+            // TODO: Shouldn't this be done in gamebrowser?
+            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
             ds.saveGameList(gb.getGameList());
 
         } catch(DataSourceException dse) {
@@ -179,16 +181,16 @@ public class GameBrowserTest {
     @Test
     public void addDeveloperTest() {
         try {
-            GameBrowser gameBrowser = new GameBrowser("testing.db");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gameBrowser.getDevelopers().size();
             // create a new developer
             gameBrowser.addDeveloper("dev1");
             assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
             boolean contains = false;
-            Iterator<String> devs = gameBrowser.getDevelopers().iterator();
+            Iterator<Developer> devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                String d = devs.next();
+                Developer d = devs.next();
                 if(d.getName().equals("dev1"))
                     contains = true;
             }
@@ -201,14 +203,14 @@ public class GameBrowserTest {
             contains = false;
             devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                String d = devs.next();
+                Developer d = devs.next();
                 if(d.getName().equals("dev2"))
                     contains = true;
             }
             assertTrue(contains);
 
             System.out.println("Visual Check");
-            for(String developer : gameBrowser.getDevelopers()){
+            for(Developer developer : gameBrowser.getDevelopers()){
                 developer.displayDeveloper();
             }
 
@@ -220,7 +222,7 @@ public class GameBrowserTest {
     @Test
     public void removeDeveloperTest() { // assumes a passing addDeveloperTest
         try {
-            GameBrowser gameBrowser = new GameBrowser("testing.db");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gameBrowser.getDevelopers().size();
 
@@ -247,8 +249,8 @@ public class GameBrowserTest {
     @Test
     public void saveTest(){
         try {
-            GameBrowser gameBrowser = new GameBrowser("testing.db");
-            String rob =  new Developer("Rob");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            Developer rob =  new Developer("Rob");
             gameBrowser.addDeveloper(rob);
 
             Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob);
@@ -262,7 +264,7 @@ public class GameBrowserTest {
             // Setup for below
             if (gameBrowser.getGameList().getGames().size() < 8) {
                 int num = 0;
-                String d = new Developer("Amelia's Fix Dude");
+                Developer d = new Developer("Amelia's Fix Dude");
                 gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
                     Game xtraGame = new Game("xtra"+num, d);

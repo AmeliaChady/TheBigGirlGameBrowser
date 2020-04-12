@@ -1,12 +1,32 @@
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
-    // TODO: make universal!!!
-    public static String CORRECT_PATH = "testing.db";
+    public static String CORRECT_PATH = "src/databases/testing.db";
+
+    @Test
+    public void SQLiteSourceRunSQL() throws IOException {
+        System.out.println("Requires Manual Check");
+        // Correct Paths
+        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/DDL.sql");
+        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/sqlscriptrunningtest.sql");
+
+        System.out.println("Check that sqlscriptrunningtest.db has correct schema and has one entry (woofframe) in the Games table.");
+
+        // Incorrect DB Path
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/scripts/sqlscriptrunningtest.sql"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/scripts/sqlscriptrunningtest.sql"));
+
+        // Incorrect SQL Path
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "no"));
+        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", null));
+
+    }
 
     @Test
     public void SQLiteSourceConstructor() throws SQLException { // also
@@ -73,4 +93,10 @@ public class SQLiteSourceTests {
         s.close();
     }
 
+    @Test
+    public void SQLiteSourceLoadGameTitlesByGameListTest() throws SQLException, DataSourceException{
+        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+        DataSourceTest.dataSourceLoadGameTitlesTest(s);
+        s.close();
+    }
 }
