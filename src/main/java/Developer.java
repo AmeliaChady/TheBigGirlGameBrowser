@@ -35,7 +35,7 @@ public class Developer {
         return developerGameList;
     }
 
-    public void submitGame(String gameToSubmit, GameList completeList){
+    public void submitGame(String gameToSubmit){
         //needs to add game to developer list
         //needs to add game to gameList
 
@@ -44,10 +44,8 @@ public class Developer {
         //adds to overall gameList
 
         //if not already in list
-        if (!developerGameList.getGames().contains(gameToSubmit)) {
-            completeList.includeGame(gameToSubmit);
+        if (!developerGameList.getGames().contains(gameToSubmit))
             developerGameList.includeGame(gameToSubmit);
-        }
     }
 
     public String getGameListName() {

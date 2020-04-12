@@ -35,40 +35,33 @@ public class DeveloperTests {
         Developer d7 = new Developer("seven");
         Developer d8 = new Developer("eight");
 
-
-        GameList gameListTest = new GameList("all games");
-
         //add games to array list
-        d6.submitGame("Billy Bob Goes to The Moon", gameListTest);
-        d6.submitGame("Why are there like four different sizes of gatorade", gameListTest);
-        d7.submitGame("Fight Your Dad Simulator", gameListTest);
-        d8.submitGame("beep in traffic", gameListTest);
-        d4.submitGame("jeff bezos takes over the world", gameListTest);
+        d6.submitGame("Billy Bob Goes to The Moon");
+        d6.submitGame("Why are there like four different sizes of gatorade");
+        d7.submitGame("Fight Your Dad Simulator");
+        d8.submitGame("beep in traffic");
+        d4.submitGame("jeff bezos takes over the world");
 
 
-        //all games in gameList, none in developer list
-        assertEquals(5, gameListTest.getGameCount());
+        //in developer list
         assertEquals(2, d6.getGameList().getGameCount());
 
-        d6.submitGame("Billy Bob Goes to The Moon", gameListTest);
+        d6.submitGame("Billy Bob Goes to The Moon");
 
         //games list with one added in games list and in d6's list
-        assertEquals(5, gameListTest.getGameCount());
         assertEquals(2, d6.getGameList().getGameCount());
 
         //add another game with new developer
-        d7.submitGame("title6", gameListTest);
+        d7.submitGame("title6");
 
-        assertEquals(6, gameListTest.getGameCount());
         assertEquals(2, d7.getGameList().getGameCount());
         //developer 6 list should remain unaffected
         assertEquals(2, d6.getGameList().getGameCount());
 
         //add another game with new developer
 
-        d8.submitGame("title7", gameListTest);
+        d8.submitGame("title7");
 
-        assertEquals(7, gameListTest.getGameCount());
         assertEquals(2, d8.getGameList().getGameCount());
         //other developer lists should remain unaffected
         assertEquals(2, d6.getGameList().getGameCount());
@@ -76,9 +69,8 @@ public class DeveloperTests {
 
 
         //add another game to an existing developers list
-        d6.submitGame("title9", gameListTest);
+        d6.submitGame("title9");
 
-        assertEquals(8, gameListTest.getGameCount());
         assertEquals(3, d6.getGameList().getGameCount());
     }
 
