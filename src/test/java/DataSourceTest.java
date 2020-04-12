@@ -74,7 +74,9 @@ public class DataSourceTest {
     }
 
     public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
-        System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
+        System.out.println("source must have a game called 'LoadGameTest1' with developer 'LGT_A'");
+        System.out.println("source must have a game called 'LoadGameTest2' with developers 'LGT_B' & 'LGT_C'");
+        System.out.println("source must not have a game with the title 'LoadGameTest3'");
 
         // Can Find A Game
         Game g = ds.loadGame("LoadGameTest1");
