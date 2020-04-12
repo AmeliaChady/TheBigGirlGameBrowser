@@ -26,39 +26,39 @@ public class DeveloperTests {
     @Test
     public void developerSubmitGameTest() {
         //make all the developers for testing
-        String d1 = new Developer("Milk Dad");
-        String d2 = new Developer("The Sunshine Gang");
-        String d3 = new Developer("I just want to go to sleep");
-        String d4 = new Developer("The Korona Krew");
-        String d5 = new Developer("Brett Michaels");
-        String d6 = new Developer("six");
-        String d7 = new Developer("seven");
-        String d8 = new Developer("eight");
+        Developer d1 = new Developer("Milk Dad");
+        Developer d2 = new Developer("The Sunshine Gang");
+        Developer d3 = new Developer("I just want to go to sleep");
+        Developer d4 = new Developer("The Korona Krew");
+        Developer d5 = new Developer("Brett Michaels");
+        Developer d6 = new Developer("six");
+        Developer d7 = new Developer("seven");
+        Developer d8 = new Developer("eight");
 
         //make all the games for testing
-        Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1, Status.PENDING);
+        Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1.getName(), Status.PENDING);
         Game g2 = new Game("Why are there like four different sizes of gatorade", "im so tired",
-                d2, Status.ACCEPTED);
-        Game g3 = new Game("Fight Your Dad Simulator", "u kno what it's about", d3, Status.PENDING);
-        Game g4 = new Game("beep in traffic", "the cars never move", d4, Status.ACCEPTED);
+                d2.getName(), Status.ACCEPTED);
+        Game g3 = new Game("Fight Your Dad Simulator", "u kno what it's about", d3.getName(), Status.PENDING);
+        Game g4 = new Game("beep in traffic", "the cars never move", d4.getName(), Status.ACCEPTED);
         Game g5 = new Game("jeff bezos takes over the world", "oh wait that's already happening",
-                d5, Status.REJECTED);
+                d5.getName(), Status.REJECTED);
 
         GameList gameListTest = new GameList("all games");
 
         //add games to array list
-        gameListTest.includeGame(g1);
-        gameListTest.includeGame(g2);
-        gameListTest.includeGame(g3);
-        gameListTest.includeGame(g4);
-        gameListTest.includeGame(g5);
+        gameListTest.includeGame(g1.getTitle());
+        gameListTest.includeGame(g2.getTitle());
+        gameListTest.includeGame(g3.getTitle());
+        gameListTest.includeGame(g4.getTitle());
+        gameListTest.includeGame(g5.getTitle());
 
         //NOW WE CAN ACTUALLY TEST THE FUNCTION BABIE
 
-        Game g6 = new Game("title6", "description6", d6, Status.PENDING);
-        Game g7 = new Game("title7", "description7", d7, Status.PENDING);
-        Game g8 = new Game("title8", "description8", d8, Status.PENDING);
-        Game g9 = new Game("title9", "description9", d6, Status.PENDING);
+        Game g6 = new Game("title6", "description6", d6.getName(), Status.PENDING);
+        Game g7 = new Game("title7", "description7", d7.getName(), Status.PENDING);
+        Game g8 = new Game("title8", "description8", d8.getName(), Status.PENDING);
+        Game g9 = new Game("title9", "description9", d6.getName(), Status.PENDING);
 
 
         //all games in gameList, none in developer list
@@ -111,7 +111,7 @@ public class DeveloperTests {
 
         //1 game
         Game game = new Game();
-        d1.getGameList().includeGame(game);
+        d1.getGameList().includeGame(game.getTitle());
         d1.displayDeveloper();
         assertEquals("Name: George Washington\nGeorge Washington's Games: testGame\n", outContent.toString());
 
@@ -119,7 +119,7 @@ public class DeveloperTests {
         System.setOut(new PrintStream(outContent));
         //2 games
         Game game2 = new Game();
-        d1.getGameList().includeGame(game2);
+        d1.getGameList().includeGame(game2.getTitle());
         d1.displayDeveloper();
 
         assertEquals("Name: George Washington\nGeorge Washington's Games: testGame, testGame\n", outContent.toString());

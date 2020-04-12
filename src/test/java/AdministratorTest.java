@@ -15,7 +15,7 @@ public class AdministratorTest {
     @Test
     public void reviewGameTest() {
         Administrator administrator = new Administrator("the_administrator");
-        Game game = new Game("My very first game", new Developer("Some Dev"));
+        Game game = new Game("My very first game", "Some Dev");
 
         // Allow a game to be be available
         administrator.reviewGame(game);
@@ -25,7 +25,7 @@ public class AdministratorTest {
     @Test
     public void rejectGameTest() { // assumes a passing reviewGameTest
         Administrator administrator = new Administrator("the_administrator_bob");
-        Game game = new Game("My very second game", new Developer("Some other Dev"));
+        Game game = new Game("My very second game", "Some other Dev");
         administrator.reviewGame(game);
 
         // Send an accepted game to Limbo

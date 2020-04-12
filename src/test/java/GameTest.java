@@ -9,11 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
 
-    public static String CORRECT_PATH = "testing.db";
-
     @Test
     public void gameConstructorTest(){
-        SQLiteSource source = new SQLiteSource(CORRECT_PATH);
         Game game = new Game();
 
         assertEquals("testGame", game.getTitle());
@@ -34,7 +31,6 @@ public class GameTest {
 
     @Test
     public void changeDescriptionTest(){
-        SQLiteSource source = new SQLiteSource(CORRECT_PATH);
 
         Game game = new Game("daBears", "Wendell");
 
@@ -49,7 +45,6 @@ public class GameTest {
 
     @Test
     public void changeTitleTest(){
-        SQLiteSource source = new SQLiteSource(CORRECT_PATH);
 
         Game game = new Game("badTitle", "Bad Description", "Winston");
 
@@ -62,7 +57,6 @@ public class GameTest {
 
     @Test
     public void enumTest(){
-        SQLiteSource source = new SQLiteSource(CORRECT_PATH);
 
         Game game = new Game("title", "description", "Jimmy", Status.ACCEPTED);
 
@@ -84,7 +78,6 @@ public class GameTest {
 
     @Test
     public void addDeveloperTest(){
-        SQLiteSource source = new SQLiteSource(CORRECT_PATH);
 
         List<String> developers = new ArrayList<>();
         developers.add("Fluffy");
@@ -97,7 +90,7 @@ public class GameTest {
 
         String thatGuy = "Pual";
 
-        multiDevGame.addDeveloper(thatGuy, source);
+        multiDevGame.addDeveloper(thatGuy);
         developers.add(thatGuy);
 
         assertEquals(developers, multiDevGame.getDevelopers());
@@ -105,7 +98,6 @@ public class GameTest {
 
     @Test
     public void displayGameTest(){
-        SQLiteSource source = new SQLiteSource(CORRECT_PATH);
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));

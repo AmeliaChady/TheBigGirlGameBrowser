@@ -35,17 +35,23 @@ public class GameBrowser {
     }
 
     public void addGame(Game game){
-        gameList.includeGame(game);
+        gameList.includeGame(game.getTitle());
         // TODO Update Database
     }
 
-    public void addGame(String title, String description, List<String> developer, Status status){
+    public void addGame(String title, String description, List<String> developer, Status status) throws DataSourceException{
         Game game = new Game(title, description, developer, status);
-        gameList.includeGame(game);
+        dataSource.saveGame(game); // add game to DB
+
+        gameList.includeGame(game.getTitle()); // Don't save master list until end of runtime
     }
 
-    public Game removeGame(String title) {
-        return gameList.removeGame(title);
+    //TODO this will be tough
+    public Game removeGame(String title) throws DataSourceException{
+        gameList.removeGame(title);
+        Game game = dataSource.loadGame(title);
+        // TODO Search for all reference of game and remove...
+        return game;
     }
 
 

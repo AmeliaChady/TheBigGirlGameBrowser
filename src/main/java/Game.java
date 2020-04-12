@@ -130,7 +130,7 @@ public class Game {
      * Adds Game to Developers GameList
      * @param developer a user who develops games for general users
      */
-    public void addDeveloper(String developer, DataSource source) {
+    public void addDeveloper(String developer) {
         this.developers.add(developer);
     }
 

@@ -207,18 +207,17 @@ public class SQLiteSource implements DataSource{
             int glid = s.getResultSet().getInt(1);
 
             // Games Set Up
-            Iterator<Game> games = gameList.getGames().iterator();
+            Iterator<String> games = gameList.getGames().iterator();
             int gid;
 
             // Game Iterator
             while (games.hasNext()) {
                 // Game Set Up
-                Game g = games.next();
+                String g = games.next();
                 if(g!= null) {
-                    saveGame(g);
 
                     // Getting Game ID
-                    sql = "SELECT gid FROM Games WHERE title=\"" + g.getTitle() + "\";";
+                    sql = "SELECT gid FROM Games WHERE title=\"" + g + "\";";
                     s.execute(sql);
                     gid = s.getResultSet().getInt(1);
 
@@ -293,7 +292,7 @@ public class SQLiteSource implements DataSource{
             if(hasNext){
                 gameNames.next();
                 while (hasNext){
-                    gl.includeGame(this.loadGame(gameNames.getString("title")));
+                    gl.includeGame(gameNames.getString("title"));
                     hasNext = gameNames.next();
                 }
             }
@@ -305,7 +304,7 @@ public class SQLiteSource implements DataSource{
                 inTransaction = false;
             }
             return gl;
-        }catch (SQLException | DataSourceException e){
+        }catch (SQLException e){
             try {
                 if(lgl != null) {
                     conn.rollback(lgl);
@@ -343,9 +342,8 @@ public class SQLiteSource implements DataSource{
                 GameList devsGames = dev.getGameList();
                 int glid = getGlid(devsGames, s);
                 int gid;
-                for (Game game : devsGames.getGames()){
+                for (String game : devsGames.getGames()){
                     if(game != null) {
-                        safeUpsertGame(game, s);
                         gid = getGid(game, s);
                         safeUpsertGameListsGames(glid, gid, s);
                     }
@@ -650,12 +648,12 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    private int getGid(Game game, Statement s) throws DataSourceException, IllegalArgumentException{
+    private int getGid(String game, Statement s) throws DataSourceException, IllegalArgumentException{
         if(game==null){
             throw new IllegalArgumentException("game is null");
         }
         try {
-            String sql = "SELECT gid FROM Games WHERE title=\""+game.getTitle()+"\";";
+            String sql = "SELECT gid FROM Games WHERE title=\""+game+"\";";
             s.execute(sql);
             return s.getResultSet().getInt(1);
         }catch (SQLException e){
