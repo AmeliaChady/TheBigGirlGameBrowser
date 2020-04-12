@@ -168,7 +168,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Game(title,description,devs,Status.valueOf(status), this);
+            return new Game(title,description,devs,Status.valueOf(status));
         }catch (SQLException e){
             try {
                 if(lg != null) {

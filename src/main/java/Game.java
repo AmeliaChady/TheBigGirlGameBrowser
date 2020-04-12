@@ -25,30 +25,24 @@ public class Game {
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description, List<String> developers, Status status, DataSource source) {
+    public Game(String title, String description, List<String> developers, Status status) {
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
         this.status = status;
-        for (String developer : developers){
-            linkGameToDev(developer, source);
-        }
     }
 
     /**
-     *  Full constructor
+     *  THIS CONSTRUCTOR IS WHAT
      * @param title game title
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description,  List<String> developers, DataSource source){
+    public Game(String title, String description,  List<String> developers){
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
         this.status = Status.PENDING;
-        for (String developer : developers){
-            linkGameToDev(developer, source);
-        }
     }
 
     /**
@@ -56,14 +50,11 @@ public class Game {
      * @param title game title
      * @param developers link to developer object
      */
-    public Game(String title, List<String> developers, DataSource source){
+    public Game(String title, List<String> developers){
         this.title = title;
         this.developers = new ArrayList<String>(developers);
         this.description = "No Description Given";
         this.status = Status.PENDING;
-        for (String developer : developers){
-            linkGameToDev(developer, source);
-        }
     }
 
 
@@ -73,13 +64,12 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, String developer, Status status, DataSource source){
+    public Game(String title, String description, String developer, Status status){
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = status;
-        linkGameToDev(developer, source);
     }
 
     /**
@@ -88,13 +78,12 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, String developer, DataSource source){
+    public Game(String title, String description, String developer){
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = Status.PENDING;
-        linkGameToDev(developer, source);
     }
 
     /**
@@ -102,13 +91,12 @@ public class Game {
     git * @param title game title
      * @param developer link to developer object
      */
-    public Game(String title, String developer, DataSource source){
+    public Game(String title, String developer){
         this.title = title;
         this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
-        linkGameToDev(developer, source);
     }
 
     /**
@@ -144,7 +132,6 @@ public class Game {
      */
     public void addDeveloper(String developer, DataSource source) {
         this.developers.add(developer);
-        linkGameToDev(developer, source);
     }
 
     public void displayGame() {
@@ -162,11 +149,6 @@ public class Game {
         System.out.println(display);
     }
 
-    // ------HELPERS------
-
-    private void linkGameToDev(String developer, DataSource source){
-        //TODO
-    }
 
     // ------GETTERS------
 

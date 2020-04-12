@@ -40,7 +40,7 @@ public class GameBrowser {
     }
 
     public void addGame(String title, String description, List<String> developer, Status status){
-        Game game = new Game(title, description, developer, status, dataSource);
+        Game game = new Game(title, description, developer, status);
         gameList.includeGame(game);
     }
 
