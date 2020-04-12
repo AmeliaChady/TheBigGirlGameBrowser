@@ -76,17 +76,8 @@ public class DataSourceTest {
     public static void dataSourceLoadGameTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a game with the title 'LoadGameTest3', otherwise tests will break");
 
-        // Basic
-        // Adding Two Test Games
-        Game g = new Game("LoadGameTest1", "description", new Developer("LGT_A"));
-        ds.saveGame(g);
-        g = new Game("LoadGameTest2", "noitpircsed",new Developer("LGT_B"));
-        g.addDeveloper(new Developer("LGT_C"));
-        g.changeStatus(Status.ACCEPTED);
-        ds.saveGame(g);
-
         // Can Find A Game
-        g = ds.loadGame("LoadGameTest1");
+        Game g = ds.loadGame("LoadGameTest1");
         assertNotNull(g);
         assertEquals("description", g.getDescription());
         assertEquals("LGT_A", g.getDevelopers().get(0).getName());
