@@ -60,7 +60,8 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceLoadGame() throws DataSourceException{
+    public void SQLiteSourceLoadGame() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(CORRECT_PATH, SQL_BASE_PATH+"Test_SQLiteSource_LoadGame.sql");
         SQLiteSource s = new SQLiteSource(CORRECT_PATH);
         DataSourceTest.dataSourceLoadGameTest(s);
         s.close();
