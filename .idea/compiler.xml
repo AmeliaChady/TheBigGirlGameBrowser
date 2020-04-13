@@ -2,17 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/src/test/java/UISprint1Test.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/Administrator.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/GameBrowser.java" />
       <file url="file://$PROJECT_DIR$/src/main/java/UISprint1.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/AdministratorTest.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/UISprint1Test.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/GameBrowserTest.java" />
     </excludeFromCompile>
-    <annotationProcessing>
-      <profile name="Maven default annotation processors profile" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="BGGB" />
-        <module name="TheBigGirlGameBrowser" />
-      </profile>
-    </annotationProcessing>
   </component>
 </project>

@@ -35,94 +35,71 @@ public class DeveloperTests {
         Developer d7 = new Developer("seven");
         Developer d8 = new Developer("eight");
 
-        //make all the games for testing
-        Game g1 = new Game("Billy Bob Goes to The Moon", "a fun game yeehaw", d1.getName(), Status.PENDING);
-        Game g2 = new Game("Why are there like four different sizes of gatorade", "im so tired",
-                d2.getName(), Status.ACCEPTED);
-        Game g3 = new Game("Fight Your Dad Simulator", "u kno what it's about", d3.getName(), Status.PENDING);
-        Game g4 = new Game("beep in traffic", "the cars never move", d4.getName(), Status.ACCEPTED);
-        Game g5 = new Game("jeff bezos takes over the world", "oh wait that's already happening",
-                d5.getName(), Status.REJECTED);
-
-        GameList gameListTest = new GameList("all games");
-
         //add games to array list
-        gameListTest.includeGame(g1.getTitle());
-        gameListTest.includeGame(g2.getTitle());
-        gameListTest.includeGame(g3.getTitle());
-        gameListTest.includeGame(g4.getTitle());
-        gameListTest.includeGame(g5.getTitle());
+        d6.submitGame("Billy Bob Goes to The Moon");
+        d6.submitGame("Why are there like four different sizes of gatorade");
+        d7.submitGame("Fight Your Dad Simulator");
+        d8.submitGame("beep in traffic");
+        d4.submitGame("jeff bezos takes over the world");
 
-        //NOW WE CAN ACTUALLY TEST THE FUNCTION BABIE
-
-        Game g6 = new Game("title6", "description6", d6.getName(), Status.PENDING);
-        Game g7 = new Game("title7", "description7", d7.getName(), Status.PENDING);
-        Game g8 = new Game("title8", "description8", d8.getName(), Status.PENDING);
-        Game g9 = new Game("title9", "description9", d6.getName(), Status.PENDING);
-
-
-        //all games in gameList, none in developer list
-        assertEquals(5, gameListTest.getGameCount());
+        //in developer list
         assertEquals(2, d6.getGameList().getGameCount());
 
-        d6.submitGame(g6, gameListTest);
+        d6.submitGame("Billy Bob Goes to The Moon");
 
-        //games list with one added in games list and in d1's list
-        assertEquals(6, gameListTest.getGameCount());
+        //games list with one added in games list and in d6's list
         assertEquals(2, d6.getGameList().getGameCount());
 
         //add another game with new developer
-        d7.submitGame(g7, gameListTest);
+        d7.submitGame("title6");
 
-        assertEquals(7, gameListTest.getGameCount());
-        assertEquals(1, d7.getGameList().getGameCount());
+        assertEquals(2, d7.getGameList().getGameCount());
         //developer 6 list should remain unaffected
         assertEquals(2, d6.getGameList().getGameCount());
 
         //add another game with new developer
 
-        d8.submitGame(g8, gameListTest);
+        d8.submitGame("title7");
 
-        assertEquals(8, gameListTest.getGameCount());
-        assertEquals(1, d8.getGameList().getGameCount());
+        assertEquals(2, d8.getGameList().getGameCount());
         //other developer lists should remain unaffected
         assertEquals(2, d6.getGameList().getGameCount());
-        assertEquals(1, d7.getGameList().getGameCount());
+        assertEquals(2, d7.getGameList().getGameCount());
 
 
         //add another game to an existing developers list
-        d6.submitGame(g9, gameListTest);
+        d6.submitGame("title9");
 
-        assertEquals(9, gameListTest.getGameCount());
-        assertEquals(2, d6.getGameList().getGameCount());
+        assertEquals(3, d6.getGameList().getGameCount());
     }
 
-    public void displayDeveloperTest(){
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        //0 games
-        Developer d1 = new Developer("George Washington");
-        d1.displayDeveloper();
-        assertEquals("Name: George Washington\nGeorge Washington's Games: This list is empty\n", outContent.toString());
-
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        //1 game
-        Game game = new Game();
-        d1.getGameList().includeGame(game.getTitle());
-        d1.displayDeveloper();
-        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame\n", outContent.toString());
-
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-        //2 games
-        Game game2 = new Game();
-        d1.getGameList().includeGame(game2.getTitle());
-        d1.displayDeveloper();
-
-        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame, testGame\n", outContent.toString());
-
-    }
+    //TODO: move to gameBrowser
+//    public void displayDeveloperTest(){
+//        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(outContent));
+//
+//        //0 games
+//        Developer d1 = new Developer("George Washington");
+//        d1.displayDeveloper();
+//        assertEquals("Name: George Washington\nGeorge Washington's Games: This list is empty\n", outContent.toString());
+//
+//        outContent = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(outContent));
+//
+//        //1 game
+//        Game game = new Game();
+//        d1.getGameList().includeGame(game);
+//        d1.displayDeveloper();
+//        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame\n", outContent.toString());
+//
+//        outContent = new ByteArrayOutputStream();
+//        System.setOut(new PrintStream(outContent));
+//        //2 games
+//        Game game2 = new Game();
+//        d1.getGameList().includeGame(game2);
+//        d1.displayDeveloper();
+//
+//        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame, testGame\n", outContent.toString());
+//
+//    }
 }
