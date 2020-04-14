@@ -118,8 +118,8 @@ public class DataSourceTest {
         Game game2 = new Game("testGame2", "this Game is a Test game", bobby);
 
         GameList gameList = new GameList("TestList");
-        gameList.includeGame(game1);
-        gameList.includeGame(game2); // Now gameList has 2 games
+        gameList.includeGame(game1.getTitle());
+        gameList.includeGame(game2.getTitle()); // Now gameList has 2 games
 
         // Saving a gameList
         try {
@@ -143,7 +143,7 @@ public class DataSourceTest {
 
         Game game3 = new Game("testGame3", "this Game is a Test game", bobby);
         ds.saveGame(game3);
-        gameList.includeGame(game3);
+        gameList.includeGame(game3.getTitle());
 
         // Updating Gamelist works
         try {
@@ -172,12 +172,12 @@ public class DataSourceTest {
         ds.saveGameList(gl1);
 
         GameList gl2 = new GameList("Everyone Else is Playing");
-        gl2.includeGame(g1);
+        gl2.includeGame(g1.getTitle());
         ds.saveGameList(gl2);
 
         GameList gl3 = new GameList("The Kerry Anne Experience");
-        gl3.includeGame(g1);
-        gl3.includeGame(g2);
+        gl3.includeGame(g1.getTitle());
+        gl3.includeGame(g2.getTitle());
         ds.saveGameList(gl3);
 
         // Load Game List with No Games
@@ -191,10 +191,7 @@ public class DataSourceTest {
         assertEquals(2, ds.loadGameList("The Kerry Anne Experience").getGameCount());
 
         // Games Hold Their Names
-        assertEquals("Crossing Mammals", loaded.getGames().get(0).getTitle());
-
-        // Games Hold Developers (Using loadGame so only need simple connection test)
-        assertEquals("HoarderOfBells", loaded.getGames().get(0).getDeveloperNames().get(0));
+        assertEquals("Crossing Mammals", loaded.getGames().get(0));
 
         // Sending Null Returns Null
         assertNull(ds.loadGameList(null));
@@ -222,8 +219,8 @@ public class DataSourceTest {
 
         game3.addDeveloper(gef);
 
-        gef.getGameList().includeGame(game1);
-        gef.getGameList().includeGame(game3);
+        gef.getGameList().includeGame(game1.getTitle());
+        gef.getGameList().includeGame(game3.getTitle());
         ds.saveDeveloper(gef);
         ds.saveDeveloper(bobby);
     }
@@ -231,7 +228,8 @@ public class DataSourceTest {
     public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
         Developer save = new Developer("LoadDeveloperTest");
-        save.getGameList().includeGame(new Game("LoadDeveloperTestGame", "aa", save));
+        Game g = new Game("LoadDeveloperTestGame", "aa", save);
+        save.getGameList().includeGame(g.getTitle());
         ds.saveDeveloper(save);
 
         // Load Works
@@ -271,30 +269,5 @@ public class DataSourceTest {
 
         }
 
-    }
-
-    public static void dataSourceLoadGameTitlesTest(DataSource ds) throws DataSourceException {
-        System.out.println("Warning: DB should consist of only the following game titles \n" +
-                "testGame1\n"+ "testGame2\n"+ "testGame3\n");
-        System.out.println("Warning: DB should not have a game list called BogusTestList \n");
-
-        try {
-            List<String> gameTitles = ds.loadGameTitles("BogusTestList");
-            // no titles loaded from non-existent game list
-            assertEquals(0, gameTitles.size());
-
-            gameTitles = ds.loadGameTitles("TestList");
-            // Titles loaded
-            assertNotNull(gameTitles);
-            // Expected title count loaded
-            assertEquals(3, gameTitles.size());
-            // Expected titles loaded
-            for (int i = 0; i < gameTitles.size(); i++)
-                assertEquals("testGame"+(i+1),  gameTitles.get(i));
-
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            fail("Should not throw exception");
-        }
     }
 }
