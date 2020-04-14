@@ -101,4 +101,8 @@ public class Account {
     public static boolean isPasswordValid(String password) {
         return false;
     }
+
+    public static boolean isCharacterValid(char character){
+        return false;
+    }
 }

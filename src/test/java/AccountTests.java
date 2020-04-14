@@ -336,4 +336,31 @@ public class AccountTests {
         //within character limit, all valid characters
         assertEquals(true, Account.isPasswordValid("the_best-Username111"));
     }
+
+    @Test
+    public void isCharacterValidTest(){
+        //# invalid
+        assertEquals(false, Account.isCharacterValid('#'));
+
+        //, invalid
+        assertEquals(false, Account.isCharacterValid(','));
+
+        //' invalid
+        assertEquals(false, Account.isCharacterValid('\''));
+
+        //" invalid
+        assertEquals(false, Account.isCharacterValid('"'));
+
+        //; invalid
+        assertEquals(false, Account.isCharacterValid(';'));
+
+        //lowercase letter valid
+        assertEquals(true, Account.isCharacterValid('a'));
+
+        //uppercase letter valid
+        assertEquals(true, Account.isCharacterValid('K'));
+
+        //number valid
+        assertEquals(true, Account.isCharacterValid('9'));
+    }
 }
