@@ -89,9 +89,7 @@ public class Account {
             return false;
         }
         for (int i = 0; i < username.length(); i++){
-            char currChar = (username.charAt(i));
-            String current = String.valueOf(currChar);
-            if (",'\"#;".contains(current)){
+            if(!isCharacterValid(username.charAt(i))){
                 return false;
             }
         }
