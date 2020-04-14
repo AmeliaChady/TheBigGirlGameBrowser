@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="BGGB" />
         <module name="TheBigGirlGameBrowser" />
+        <module name="TheBigGirlGameBrowser2" />
       </profile>
     </annotationProcessing>
   </component>
