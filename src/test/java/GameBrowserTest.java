@@ -121,10 +121,7 @@ public class GameBrowserTest {
             assertEquals(devList.get(0), gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
             assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
-            // saving Changes to db
-            // TODO:: Shouldn't this be done in the gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/Test_SQLiteSource.db");
-            ds.saveGameList(gb.getGameList());
+            // TODO: Make Database Check Test
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -132,7 +129,7 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void removeGameTest(){
+    public void removeGameTest(){ //NOTE: Game removed from
         try {
             GameBrowser gb = new GameBrowser("src/databases/Test_SQLiteSource.db");
             List<Developer> devs = new LinkedList<>();
@@ -169,10 +166,7 @@ public class GameBrowserTest {
             assertEquals(baseNumber-2, gb.getGameList().getGameCount());
             assertNull(g5);
 
-            // saving Changes to db
-            // TODO: Shouldn't this be done in gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/Test_SQLiteSource.db");
-            ds.saveGameList(gb.getGameList());
+            // TODO: Make Database Check Test
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -220,7 +214,8 @@ public class GameBrowserTest {
         }
     }
 
-    @Test
+    // Unused Function
+    /*@Test
     public void removeDeveloperTest() { // assumes a passing addDeveloperTest
         try {
             GameBrowser gameBrowser = new GameBrowser("src/databases/Test_SQLiteSource.db");
@@ -245,7 +240,7 @@ public class GameBrowserTest {
             fail(dse.getMessage());
             return;
         }
-    }
+    }*/
 
     @Test
     public void saveTest(){
