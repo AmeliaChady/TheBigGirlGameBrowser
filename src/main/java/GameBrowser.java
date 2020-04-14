@@ -36,9 +36,9 @@ public class GameBrowser {
         throw new Exception("Invalid constructor. Supply a data source file.");
     }
 
-    public void addGame(Game game){
+    public void addGame(Game game) throws DataSourceException {
         gameList.includeGame(game.getTitle());
-        // TODO Update Database
+        dataSource.saveGame(game);
     }
 
     public void addGame(String title, String description, List<String> developer, Status status) throws DataSourceException{
@@ -64,7 +64,6 @@ public class GameBrowser {
     public void addDeveloper(Developer dev)  throws IllegalArgumentException, DataSourceException {
         developers.add(dev.getName());
         dataSource.saveDeveloper(dev);
-        // TODO: Update Database
     }
 
     /**
@@ -90,7 +89,6 @@ public class GameBrowser {
             return null;
         }
         return developer;
-        // TODO: Update Database
     }
 
     /**
@@ -123,7 +121,6 @@ public class GameBrowser {
      * @throws DataSourceException
      */
     public void save() throws DataSourceException {
-        //TODO WIPE GAME LIST SUCH THAT REMOVALS GET NOTICED
         dataSource.saveGameList(gameList); // Save Master List
         for (String developer: developers) {
             if(dataSource.loadDeveloper(developer).equals(null)){ //Checks that all devs are saved already
