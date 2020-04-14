@@ -1,17 +1,23 @@
+
+
+enum AccountType {ADMINISTRATOR, MODERATOR, DEVELOPER, TYPICAlUSER, COMBO }
+
 public class Account {
 
     private String username;
     private String email;
     private String password;
+    private AccountType accountType;
 
     public static final String prefix_invalid_endings = "-._";
     public static final String invalid_overall = "!#$%^&*()+=,<>/?;:'\"[{]}\\|";
 
-    public Account(String usernameIn, String emailIn, String passwordIn){
+    public Account(String usernameIn, String emailIn, String passwordIn, AccountType accountTypeIn){
         if (isEmailValid(emailIn)){
             username = usernameIn;
             email = emailIn;
             password = passwordIn;
+            accountType = accountTypeIn;
         }
         else{
             throw new IllegalArgumentException(emailIn + " is not a valid email address");
@@ -22,6 +28,8 @@ public class Account {
     public String getUsername() {
         return username;
     }
+
+    public AccountType getAccountType() {return accountType; }
 
     public void setUsername(String username) {
         this.username = username;
