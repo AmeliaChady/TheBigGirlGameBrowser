@@ -42,7 +42,6 @@ public class DeveloperTests {
         d8.submitGame("beep in traffic");
         d4.submitGame("jeff bezos takes over the world");
 
-
         //in developer list
         assertEquals(2, d6.getGameList().getGameCount());
 

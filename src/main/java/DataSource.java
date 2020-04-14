@@ -51,7 +51,9 @@ public interface DataSource {
 
     public void setInTransaction(boolean bool);
 
-    public List<Developer> loadDeveloperList() throws DataSourceException;
+    public List<String> loadDeveloperList() throws DataSourceException;
 
     public List<String> loadGameTitles(String GameListName) throws DataSourceException;
+
+    void removeDeveloper(Developer developer) throws DataSourceException;
 }

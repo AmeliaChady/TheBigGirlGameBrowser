@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
     public static String CORRECT_PATH = "src/databases/testing.db";
-
+/***
     @Test
     public void SQLiteSourceRunSQL() throws IOException {
         System.out.println("Requires Manual Check");
@@ -27,7 +27,7 @@ public class SQLiteSourceTests {
         assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", null));
 
     }
-
+**/
     @Test
     public void SQLiteSourceConstructor() throws SQLException { // also
         try {
@@ -93,10 +93,11 @@ public class SQLiteSourceTests {
         s.close();
     }
 
-    @Test
-    public void SQLiteSourceLoadGameTitlesByGameListTest() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
-        DataSourceTest.dataSourceLoadGameTitlesTest(s);
-        s.close();
-    }
+    //obselete: TODO this will be integrated to loadGameList; leaving for reference/reminder
+//    @Test
+//    public void SQLiteSourceLoadGameTitlesByGameListTest() throws SQLException, DataSourceException{
+//        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+//        DataSourceTest.dataSourceLoadGameTitlesTest(s);
+//        s.close();
+//    }
 }

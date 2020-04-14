@@ -15,7 +15,7 @@ public class UISprint1 {
 
     private void login(){
         Scanner in = new Scanner(System.in);
-        Developer iteratingDev;
+        String iteratingDev;
         System.out.println("Welcome to the Big Girl Game Library!");
         System.out.println("Please enter your role (or 0 to cancel):");
         System.out.println("1: Administrator");
@@ -30,10 +30,10 @@ public class UISprint1 {
             String devNameEnter = in.nextLine();
 
             //gameBrowser.getDevelopers().get(0).getGameList().displayAllGames();
-            List<Developer> developersLoginList = gameBrowser.getDevelopers();
+            List<String> developersLoginList = gameBrowser.getDevelopers();
             //developersLoginList.get(0).getGameList().displayAllGames();
 
-            Iterator<Developer> i = developersLoginList.iterator();
+
 
 //            System.out.println(devNameEnter);
 //            System.out.println(i.hasNext());
@@ -58,7 +58,7 @@ public class UISprint1 {
     }
 
 
-    private void developerTakeAction(Developer testDev){
+    private void developerTakeAction(String testDev){
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Submit Game");

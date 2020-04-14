@@ -9,8 +9,10 @@ public class GameBrowserTest {
 
     //rm empty.db && sqlite3 empty.db < src/DDL.sql
     @Test
-    public void constructorTest() {
+    public void constructorTest() throws DataSourceException {
         GameBrowser gameBrowser;
+        Game testGame;
+        Developer testDev;
 
         System.out.println("!!!!---DB Must Be Empty BEFORE TEST---!!!");
 
@@ -18,14 +20,15 @@ public class GameBrowserTest {
         //
         SQLiteSource testDataSource = new SQLiteSource("src/databases/empty.db");
         GameList testGameList = new GameList("Master Game List");
-        Game testGame;
-        Developer testDev;
+
         int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
             testDev = new Developer("dev "+i);
-            testGame = new Game("game "+i, testDev);
-            testGameList.includeGame(testGame);
+            testDataSource.saveDeveloper(testDev);
+            testGame = new Game("game "+i, testDev.getName());
+            testDataSource.saveGame(testGame);
+            testGameList.includeGame(testGame.getTitle());
         }
         try {
             testDataSource.saveGameList(testGameList);
@@ -65,7 +68,7 @@ public class GameBrowserTest {
             String expectedGameTitle;
             while (i < masterGameList.getGameCount()) {
                 expectedGameTitle = "game "+(i+1);
-                assertEquals(expectedGameTitle, masterGameList.getGames().get(i).getTitle());
+                assertEquals(expectedGameTitle, masterGameList.getGames().get(i));
                 i++;
             }
 
@@ -76,12 +79,11 @@ public class GameBrowserTest {
             // check that expected devs were loaded
 
             i = 0;
-            List<Developer> developers = gameBrowser.getDevelopers();
-            developers.sort(Comparator.comparing(Developer::getName));
+            List<String> developers = gameBrowser.getDevelopers();
             String expectedDevName;
             while (i < developers.size()) {
                 expectedDevName = "dev "+(i+1);
-                assertEquals(expectedDevName, developers.get(i).getName());
+                assertEquals(expectedDevName, developers.get(i));
                 i++;
             }
 
@@ -100,25 +102,25 @@ public class GameBrowserTest {
 
             //add game
             Developer dev = new Developer("Anita");
-            Game gameToAdd = new Game("Candy Crush","My mom plays a lot of candy crush", dev, Status.PENDING);
+            Game gameToAdd = new Game("Candy Crush","My mom plays a lot of candy crush", dev.getName(), Status.PENDING);
             gb.addGame(gameToAdd);
             assertEquals(baseNumber+1, gb.getGameList().getGameCount());
-            assertEquals("Candy Crush", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getTitle());
-            assertEquals("My mom plays a lot of candy crush", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDescription());
-            assertEquals(dev, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
-            assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
+            assertEquals("Candy Crush", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1));
+            //assertEquals("My mom plays a lot of candy crush", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDescription());
+            //assertEquals(dev, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
+            //assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
             //pass game properties
             Developer dev2 = new Developer("Robert");
-            List<Developer> devList = new ArrayList<Developer>();
-            devList.add(dev2);
+            List<String> devList = new ArrayList<String>();
+            devList.add(dev2.getName());
             gb.addGame("Clash of clans", "My dad plays a lot of clash of clans", devList, Status.PENDING);
 
             assertEquals(baseNumber+2, gb.getGameList().getGameCount());
-            assertEquals("Clash of clans", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getTitle());
-            assertEquals("My dad plays a lot of clash of clans", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDescription());
-            assertEquals(devList.get(0), gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
-            assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
+            assertEquals("Clash of clans", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1));
+            //assertEquals("My dad plays a lot of clash of clans", gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDescription());
+            //assertEquals(devList.get(0), gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
+            //assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
             // saving Changes to db
             // TODO:: Shouldn't this be done in the gamebrowser?
@@ -134,10 +136,14 @@ public class GameBrowserTest {
     public void removeGameTest(){
         try {
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
-            List<Developer> devs = new LinkedList<>();
-            devs.add(new Developer("Something"));
+            gb.addDeveloper(new Developer("Something"));
+
+            List<String> devs = new LinkedList<>();
+            devs.add("Something");
+
             gb.getGameList().removeGame("Cows V. Aliens");
             gb.getGameList().removeGame("game 3");
+
             gb.addGame("Cows V. Aliens","", devs, Status.REJECTED);
             gb.addGame("game 3","", devs, Status.REJECTED);
 
@@ -156,7 +162,7 @@ public class GameBrowserTest {
             //non existent now, just removed
             Game g3 = gb.removeGame("Cows V. Aliens");
             assertEquals(baseNumber-1, gb.getGameList().getGameCount());
-            assertNull(g3);
+            assertEquals("Cows V. Aliens", g3.getTitle());
 
             //existing game
             Game g4 = gb.removeGame("game 3");
@@ -166,12 +172,7 @@ public class GameBrowserTest {
             //non existent now, removed
             Game g5 = gb.removeGame("game 3");
             assertEquals(baseNumber-2, gb.getGameList().getGameCount());
-            assertNull(g5);
-
-            // saving Changes to db
-            // TODO: Shouldn't this be done in gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
-            ds.saveGameList(gb.getGameList());
+            assertNotNull(g5);
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -185,33 +186,35 @@ public class GameBrowserTest {
 
             int baseNumber = gameBrowser.getDevelopers().size();
             // create a new developer
-            gameBrowser.addDeveloper("dev1");
+            Developer dev = new Developer("dev1");
+            gameBrowser.addDeveloper(dev);
             assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
             boolean contains = false;
-            Iterator<Developer> devs = gameBrowser.getDevelopers().iterator();
+            Iterator<String> devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                Developer d = devs.next();
-                if(d.getName().equals("dev1"))
+                String d = devs.next();
+                if(d.equals("dev1"))
                     contains = true;
             }
             assertTrue(contains);
 
 
             // create another
-            gameBrowser.addDeveloper("dev2");
+            dev = new Developer("dev2");
+            gameBrowser.addDeveloper(dev);
             assertEquals(baseNumber+2, gameBrowser.getDevelopers().size());
             contains = false;
             devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                Developer d = devs.next();
-                if(d.getName().equals("dev2"))
+                String d = devs.next();
+                if(d.equals("dev2"))
                     contains = true;
             }
             assertTrue(contains);
 
             System.out.println("Visual Check");
-            for(Developer developer : gameBrowser.getDevelopers()){
-                developer.displayDeveloper();
+            for(String developer : gameBrowser.getDevelopers()){
+                //developer.displayDeveloper();
             }
 
         } catch(DataSourceException dse) {
@@ -222,24 +225,33 @@ public class GameBrowserTest {
     @Test
     public void removeDeveloperTest() { // assumes a passing addDeveloperTest
         try {
-            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
-            int baseNumber = gameBrowser.getDevelopers().size();
+            gb.removeDeveloper("dev1");
+            gb.removeDeveloper("dev2");
+            gb.removeDeveloper("dev1");
+            gb.removeDeveloper("dev2");
 
+            int baseNumber = gb.getDevelopers().size();
+
+            System.out.println(gb.getDevelopers());
             // remove one developer from list of only one dev
-            gameBrowser.addDeveloper("dev1");
-            assertEquals("dev1", gameBrowser.removeDeveloper("dev1").getName());
-            assertEquals(baseNumber, gameBrowser.getDevelopers().size());
+            Developer dev = new Developer("dev1");
+            gb.addDeveloper(dev);
+
+            assertEquals("dev1", gb.removeDeveloper("dev1"));
+            System.out.println(gb.getDevelopers());
+            assertEquals(baseNumber, gb.getDevelopers().size());
 
             // remove one developer from dev list > 1
-            gameBrowser.addDeveloper("dev1");
-            gameBrowser.addDeveloper("dev2");
-            assertEquals("dev2", gameBrowser.removeDeveloper("dev2").getName());
-            assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
+            gb.addDeveloper(dev);
+            gb.addDeveloper(new Developer("dev2"));
+            assertEquals("dev2", gb.removeDeveloper("dev2"));
+            assertEquals(baseNumber+1, gb.getDevelopers().size());
 
             // remove non-existent developer
-            assertNull(gameBrowser.removeDeveloper("dev2"));
-            assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
+            assertNull(gb.removeDeveloper("dev2"));
+            assertEquals(baseNumber+1, gb.getDevelopers().size());
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
             return;
@@ -253,7 +265,7 @@ public class GameBrowserTest {
             Developer rob =  new Developer("Rob");
             gameBrowser.addDeveloper(rob);
 
-            Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob);
+            Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob.getName());
 
             gameBrowser.addGame(game);
 
@@ -267,7 +279,7 @@ public class GameBrowserTest {
                 Developer d = new Developer("Amelia's Fix Dude");
                 gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
-                    Game xtraGame = new Game("xtra"+num, d);
+                    Game xtraGame = new Game("xtra"+num, d.getName());
                     gameBrowser.addGame(xtraGame);
                     num++;
                 }
@@ -276,8 +288,8 @@ public class GameBrowserTest {
             // makes a new list of games from those already existing in browser
             // (just like a user might
             GameList subGameList = new GameList("Rob's Games NEWLIST");
-            List<Game> sublist = gameBrowser.getGameList().getGames().subList(2,7);
-            for(Game aGame : sublist){
+            List<String> sublist = gameBrowser.getGameList().getGames().subList(2,7);
+            for(String aGame : sublist){
                 subGameList.includeGame(aGame);
             }
             gameBrowser.addGameList(subGameList);
