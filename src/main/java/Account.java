@@ -103,6 +103,10 @@ public class Account {
     }
 
     public static boolean isCharacterValid(char character){
-        return false;
+        String current = String.valueOf(character);
+        if (",'\"#;".contains(current)){
+            return false;
+        }
+        return true;
     }
 }
