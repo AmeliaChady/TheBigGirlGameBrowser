@@ -97,7 +97,15 @@ public class Account {
     }
 
     public static boolean isPasswordValid(String password) {
-        return false;
+        if (password.length()<1 || password.length()>128){
+            return false;
+        }
+        for (int i = 0; i < password.length(); i++){
+            if(!isCharacterValid(password.charAt(i))){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isCharacterValid(char character){
