@@ -85,16 +85,20 @@ public class Account {
     }
 
     public static boolean isUsernameValid(String username){
-        if (username.length()<1 || username.length()>128){
+        if (username.length()<1 || username.length()>32){
             return false;
         }
         for (int i = 0; i < username.length(); i++){
             char currChar = (username.charAt(i));
             String current = String.valueOf(currChar);
-            if (",'\"#".contains(current)){
+            if (",'\"#;".contains(current)){
                 return false;
             }
         }
         return true;
+    }
+
+    public static boolean isPasswordValid(String password) {
+        return false;
     }
 }

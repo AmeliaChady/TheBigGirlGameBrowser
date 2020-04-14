@@ -244,13 +244,16 @@ public class AccountTests {
         assertEquals(true, Account.isUsernameValid("k"));
 
         //1 more than max characters
-        assertEquals(false, Account.isUsernameValid("T1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+        assertEquals(false, Account.isUsernameValid("123456789012345678901234567890123"));
 
         //more than max characters
-        assertEquals(false, Account.isUsernameValid("Two1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+        assertEquals(false, Account.isUsernameValid("12345678901234567890123456789012345"));
 
         //exact amount of max characters, 128
-        assertEquals(true, Account.isUsernameValid("1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+        assertEquals(true, Account.isUsernameValid("12345678901234567890123456789012"));
+
+        //valid number of characters
+        assertEquals(true, Account.isUsernameValid("user123"));
 
         //has an invalid character in middle
         assertEquals(false, Account.isUsernameValid("abcd'ef"));
@@ -264,7 +267,73 @@ public class AccountTests {
         //has multiple invalid characters
         assertEquals(false, Account.isUsernameValid("a#b'c\"d.e,f"));
 
+        //has multiple invalid characters
+        assertEquals(false, Account.isUsernameValid("a#b'c\"d.e,f23;"));
+
+        //#
+        assertEquals(false, Account.isUsernameValid("abcd#ef3"));
+
+        //,
+        assertEquals(false, Account.isUsernameValid("abcd,ef3"));
+
+        //'
+        assertEquals(false, Account.isUsernameValid("abcd'ef3"));
+
+        //"
+        assertEquals(false, Account.isUsernameValid("abcd\"ef3"));
+
+        //;
+        assertEquals(false, Account.isUsernameValid("abcd;ef3"));
+
         //within character limit, all valid characters
         assertEquals(true, Account.isUsernameValid("the_best-Username111"));
+    }
+
+    @Test
+    public void isPasswordValidTest(){
+        //less than minimum characters
+        assertEquals(false, Account.isPasswordValid(""));
+
+        //exact amount of minimum characters, 1
+        assertEquals(true, Account.isPasswordValid("k"));
+
+        //1 more than max characters
+        assertEquals(false, Account.isPasswordValid("T1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+
+        //more than max characters
+        assertEquals(false, Account.isPasswordValid("Two1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+
+        //exact amount of max characters, 128
+        assertEquals(true, Account.isPasswordValid("1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+
+        //has an invalid character in middle
+        assertEquals(false, Account.isPasswordValid("abcd'ef3"));
+
+        //invalid character at the beginning
+        assertEquals(false, Account.isPasswordValid("'abcdef56"));
+
+        //invalid character at the end
+        assertEquals(false, Account.isPasswordValid("abcd4t4ef'"));
+
+        //has multiple invalid characters
+        assertEquals(false, Account.isPasswordValid("a#b'c\"d.e,f23;"));
+
+        //#
+        assertEquals(false, Account.isPasswordValid("abcd#ef3"));
+
+        //,
+        assertEquals(false, Account.isPasswordValid("abcd,ef3"));
+
+        //'
+        assertEquals(false, Account.isPasswordValid("abcd'ef3"));
+
+        //"
+        assertEquals(false, Account.isPasswordValid("abcd\"ef3"));
+
+        //;
+        assertEquals(false, Account.isPasswordValid("abcd;ef3"));
+
+        //within character limit, all valid characters
+        assertEquals(true, Account.isPasswordValid("the_best-Username111"));
     }
 }
