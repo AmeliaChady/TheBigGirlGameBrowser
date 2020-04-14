@@ -318,10 +318,12 @@ public class SQLiteSource implements DataSource{
 
     @Override
     // TODO we need to update this for DBR
-    public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
-        if(dev == null){
+    public void saveDeveloper(String developer) throws IllegalArgumentException, DataSourceException{
+        if(developer == null){
             throw new IllegalArgumentException("Developer is null");
         }
+
+        Developer dev = loadDeveloper(developer);
 
         Savepoint sd = null;
         try{
@@ -434,7 +436,7 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    public List<Developer> loadDeveloperList() throws DataSourceException{
+    public List<String> loadDeveloperList() throws DataSourceException{
         Savepoint lds = null;
         try{
             // Setup
@@ -449,13 +451,13 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
 
             ResultSet devNames = s.getResultSet();
-            List<Developer> developers = new ArrayList<>();
+            List<String> developers = new ArrayList<>();
             boolean hasNext = !devNames.isClosed();
 
             if (hasNext) {
                 devNames.next();
                 while (hasNext) {
-                    developers.add(loadDeveloper(devNames.getString("name")));
+                    developers.add(devNames.getString("name"));
                     hasNext = devNames.next();
                 }
             }
@@ -465,7 +467,7 @@ public class SQLiteSource implements DataSource{
                 inTransaction = false;
             }
             return developers;
-        }catch (SQLException | DataSourceException e){
+        }catch (SQLException e){
             try {
                 if(lds != null) {
                     conn.rollback(lds);
@@ -486,6 +488,45 @@ public class SQLiteSource implements DataSource{
     @Override
     public void setInTransaction(boolean bool){
         inTransaction = bool;
+    }
+
+    @Override
+    public void removeDeveloper(Developer developer) throws DataSourceException{
+        if(developer == null){
+            throw new IllegalArgumentException("Developer is null");
+        }
+        Savepoint sd = null;
+        try{
+            // Set up statement
+            if(!inTransaction) {
+                sd = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            int did = getDid(developer, s);
+            GameList devsGL = loadGameList(developer.getGameListName());
+            int glid = getGlid(devsGL, s);
+
+            // remove DevsGamelist from Gamelists
+            String sql = "DELETE FROM GameListsGames WHERE glid="+glid+";";
+            s.execute(sql);
+
+            // remove DevsGameList from DevelopersGameLists
+            sql = "DELETE FROM DevelopersGameLists WHERE glid="+glid+";";
+            s.execute(sql);
+
+            // remove Developer from Developers
+            sql = "DELETE FROM Developers WHERE did="+did+";";
+            s.execute(sql);
+
+            // TODO: We need to think about what happens to games whos devs are deleted
+            // maybe we have an error handler that says something like, the dev of this game
+            //      no longer has an account with us.
+
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
     }
 
 

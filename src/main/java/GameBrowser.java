@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameBrowser {
-    private DataSource dataSource;
-    private final String gameListName = "Master Game List";
-    private GameList gameList;
-    private List<Administrator> administrators;
-    private List<Developer> developers;
-    private List<GameList> allGameLists;
+    private DataSource dataSource; // the connection to the database
+    private final String gameListName = "Master Game List"; // is this necessary?
+    private GameList gameList; // The local master game list!
+    private List<String> administrators; // list of keys to administrator
+    private List<String> developers; // list of keys to devs
+    private List<String> allGameLists; // list of keys to gameLists
 
     /**
      * Constructor (
@@ -19,11 +19,13 @@ public class GameBrowser {
             throw new IllegalArgumentException("Please supply a filename.");
 
         dataSource = new SQLiteSource(dataFilePath);
-        developers = new ArrayList<Developer>();
-        allGameLists = new ArrayList<GameList>();
-        loadAllGames();
-        //TODO loadAllLists helper functions
-        loadAllDevelopers();
+        loadAllGames(); // loads master gameList into memory
+        developers = new ArrayList<String>();
+        loadAllDevelopers(); // loads developers keys from db
+        allGameLists = new ArrayList<String>();
+        // TODO loadAllLists helper functions
+        // TODO loadAllAdministrators // loads administrators keys from db
+
     }
 
     /**
@@ -59,8 +61,10 @@ public class GameBrowser {
      * A new developer is created and added to the developer list
      * @param username - the username of the developer
      */
-    public void addDeveloper(String username) {
-        developers.add(new Developer(username));
+    public void addDeveloper(String username)  throws IllegalArgumentException, DataSourceException {
+        developers.add(username);
+        dataSource.saveDeveloper(username);
+        // TODO: Update Database
     }
 
     /**
@@ -68,16 +72,18 @@ public class GameBrowser {
      * @param username - the username of the developer
      * @return Developer - the developer that was removed
      */
-    public String removeDeveloper(String username) {
+    public String removeDeveloper(String username) throws DataSourceException {
         String developer = null;
 
-        for (Developer d : developers) {
-            if (d.getName().equals(username)) {
-                developer = d.getName();
-                developers.remove(developer);
+        for (String d : developers) {
+            if (d.equals(username)) {
+                developer = d;
+                System.out.println("we here");
+                developers.remove(d);
                 break;
             }
         }
+        dataSource.removeDeveloper(dataSource.loadDeveloper(developer));
         return developer;
         // TODO: Update Database
     }
@@ -86,7 +92,11 @@ public class GameBrowser {
      * Adds a game list to allGameLists
      * @param gameList
      */
-    public void addGameList(GameList gameList){ allGameLists.add(gameList);}
+    public void addGameList(GameList gameList) throws DataSourceException {
+        allGameLists.add(gameList.getName());
+        dataSource.saveGameList(gameList);
+        // Do we need to check that the games in gameList are saved too?
+    }
 
     //TODO Remove a GameList
 
@@ -110,13 +120,12 @@ public class GameBrowser {
     public void save() throws DataSourceException {
         //TODO WIPE GAME LIST SUCH THAT REMOVALS GET NOTICED
         dataSource.saveGameList(gameList); // Save Master List
-        for (Developer developer: developers) {
+        for (String developer: developers) {
             dataSource.saveDeveloper(developer); // Save Developers
 //            dataSource.setInTransaction(false);
         }
-        for (GameList gameList : allGameLists){
-            System.out.println(gameList.getName());
-            dataSource.saveGameList(gameList); // Save additional gameLists
+        for (String gameList : allGameLists){
+            dataSource.saveGameList(dataSource.loadGameList(gameList)); // Save additional gameLists
         }
         //TODO save Administrators doesn't exist yet
     }
@@ -132,7 +141,7 @@ public class GameBrowser {
 
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
-    public List<Developer> getDevelopers() { return developers; }
+    public List<String> getDevelopers() { return developers; }
 
     // -----SETTERS-----
     public void setGameList(GameList gameListTurnIn) {

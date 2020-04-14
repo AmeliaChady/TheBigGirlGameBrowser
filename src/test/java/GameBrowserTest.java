@@ -76,12 +76,11 @@ public class GameBrowserTest {
             // check that expected devs were loaded
 
             i = 0;
-            List<Developer> developers = gameBrowser.getDevelopers();
-            developers.sort(Comparator.comparing(Developer::getName));
+            List<String> developers = gameBrowser.getDevelopers();
             String expectedDevName;
             while (i < developers.size()) {
                 expectedDevName = "dev "+(i+1);
-                assertEquals(expectedDevName, developers.get(i).getName());
+                assertEquals(expectedDevName, developers.get(i));
                 i++;
             }
 
@@ -188,10 +187,10 @@ public class GameBrowserTest {
             gameBrowser.addDeveloper("dev1");
             assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
             boolean contains = false;
-            Iterator<Developer> devs = gameBrowser.getDevelopers().iterator();
+            Iterator<String> devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                Developer d = devs.next();
-                if(d.getName().equals("dev1"))
+                String d = devs.next();
+                if(d.equals("dev1"))
                     contains = true;
             }
             assertTrue(contains);
@@ -203,15 +202,15 @@ public class GameBrowserTest {
             contains = false;
             devs = gameBrowser.getDevelopers().iterator();
             while (devs.hasNext() && !contains){
-                Developer d = devs.next();
-                if(d.getName().equals("dev2"))
+                String d = devs.next();
+                if(d.equals("dev2"))
                     contains = true;
             }
             assertTrue(contains);
 
             System.out.println("Visual Check");
-            for(Developer developer : gameBrowser.getDevelopers()){
-                developer.displayDeveloper();
+            for(String developer : gameBrowser.getDevelopers()){
+                //developer.displayDeveloper();
             }
 
         } catch(DataSourceException dse) {
@@ -226,9 +225,12 @@ public class GameBrowserTest {
 
             int baseNumber = gameBrowser.getDevelopers().size();
 
+            System.out.println(gameBrowser.getDevelopers());
             // remove one developer from list of only one dev
             gameBrowser.addDeveloper("dev1");
+
             assertEquals("dev1", gameBrowser.removeDeveloper("dev1"));
+            System.out.println(gameBrowser.getDevelopers());
             assertEquals(baseNumber, gameBrowser.getDevelopers().size());
 
             // remove one developer from dev list > 1

@@ -2,12 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/src/main/java/Administrator.java" />
-      <file url="file://$PROJECT_DIR$/src/main/java/GameBrowser.java" />
       <file url="file://$PROJECT_DIR$/src/main/java/UISprint1.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/AdministratorTest.java" />
       <file url="file://$PROJECT_DIR$/src/test/java/UISprint1Test.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/GameBrowserTest.java" />
     </excludeFromCompile>
   </component>
 </project>
