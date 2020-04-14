@@ -83,4 +83,36 @@ public class Account {
 
         return true;
     }
+
+    public static boolean isUsernameValid(String username){
+        if (username.length()<1 || username.length()>32){
+            return false;
+        }
+        for (int i = 0; i < username.length(); i++){
+            if(!isCharacterValid(username.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPasswordValid(String password) {
+        if (password.length()<1 || password.length()>128){
+            return false;
+        }
+        for (int i = 0; i < password.length(); i++){
+            if(!isCharacterValid(password.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isCharacterValid(char character){
+        String current = String.valueOf(character);
+        if (",'\"#;".contains(current)){
+            return false;
+        }
+        return true;
+    }
 }
