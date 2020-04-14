@@ -318,12 +318,10 @@ public class SQLiteSource implements DataSource{
 
     @Override
     // TODO we need to update this for DBR
-    public void saveDeveloper(String developer) throws IllegalArgumentException, DataSourceException{
-        if(developer == null){
+    public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
+        if(dev == null){
             throw new IllegalArgumentException("Developer is null");
         }
-
-        Developer dev = loadDeveloper(developer);
 
         Savepoint sd = null;
         try{
@@ -414,7 +412,7 @@ public class SQLiteSource implements DataSource{
             }
 
             // Fill GameList
-            GameList g = loadGameList(rs.getString("listName"));
+            //GameList g = loadGameList(rs.getString("listName"));
 
             // Return Dev Object
             s.close();
@@ -422,8 +420,9 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Developer(dev, g);
-        }catch (SQLException | DataSourceException e){
+            //return new Developer(dev, g);
+            return new Developer(dev);
+        }catch (SQLException e){
             try {
                 if(ld != null) {
                     conn.rollback(ld);
@@ -704,7 +703,7 @@ public class SQLiteSource implements DataSource{
 
     private int getDid(Developer developer, Statement s) throws DataSourceException{
         try {
-            String sql = "SELECT did FROM Games WHERE name=\""+developer.getName()+"\";";
+            String sql = "SELECT did FROM Developers WHERE name=\""+developer.getName()+"\";";
             s.execute(sql);
             return s.getResultSet().getInt(1);
         }catch (SQLException e){

@@ -9,8 +9,10 @@ public class GameBrowserTest {
 
     //rm empty.db && sqlite3 empty.db < src/DDL.sql
     @Test
-    public void constructorTest() {
+    public void constructorTest() throws DataSourceException {
         GameBrowser gameBrowser;
+        Game testGame;
+        Developer testDev;
 
         System.out.println("!!!!---DB Must Be Empty BEFORE TEST---!!!");
 
@@ -18,13 +20,14 @@ public class GameBrowserTest {
         //
         SQLiteSource testDataSource = new SQLiteSource("src/databases/empty.db");
         GameList testGameList = new GameList("Master Game List");
-        Game testGame;
-        Developer testDev;
+
         int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
             testDev = new Developer("dev "+i);
+            testDataSource.saveDeveloper(testDev);
             testGame = new Game("game "+i, testDev.getName());
+            testDataSource.saveGame(testGame);
             testGameList.includeGame(testGame.getTitle());
         }
         try {
@@ -133,10 +136,14 @@ public class GameBrowserTest {
     public void removeGameTest(){
         try {
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
+            gb.addDeveloper(new Developer("Something"));
+
             List<String> devs = new LinkedList<>();
             devs.add("Something");
+
             gb.getGameList().removeGame("Cows V. Aliens");
             gb.getGameList().removeGame("game 3");
+
             gb.addGame("Cows V. Aliens","", devs, Status.REJECTED);
             gb.addGame("game 3","", devs, Status.REJECTED);
 
@@ -155,7 +162,7 @@ public class GameBrowserTest {
             //non existent now, just removed
             Game g3 = gb.removeGame("Cows V. Aliens");
             assertEquals(baseNumber-1, gb.getGameList().getGameCount());
-            assertNull(g3);
+            assertEquals("Cows V. Aliens", g3.getTitle());
 
             //existing game
             Game g4 = gb.removeGame("game 3");
@@ -165,12 +172,7 @@ public class GameBrowserTest {
             //non existent now, removed
             Game g5 = gb.removeGame("game 3");
             assertEquals(baseNumber-2, gb.getGameList().getGameCount());
-            assertNull(g5);
-
-            // saving Changes to db
-            // TODO: Shouldn't this be done in gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
-            ds.saveGameList(gb.getGameList());
+            assertNotNull(g5);
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -184,7 +186,8 @@ public class GameBrowserTest {
 
             int baseNumber = gameBrowser.getDevelopers().size();
             // create a new developer
-            gameBrowser.addDeveloper("dev1");
+            Developer dev = new Developer("dev1");
+            gameBrowser.addDeveloper(dev);
             assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
             boolean contains = false;
             Iterator<String> devs = gameBrowser.getDevelopers().iterator();
@@ -197,7 +200,8 @@ public class GameBrowserTest {
 
 
             // create another
-            gameBrowser.addDeveloper("dev2");
+            dev = new Developer("dev2");
+            gameBrowser.addDeveloper(dev);
             assertEquals(baseNumber+2, gameBrowser.getDevelopers().size());
             contains = false;
             devs = gameBrowser.getDevelopers().iterator();
@@ -221,27 +225,33 @@ public class GameBrowserTest {
     @Test
     public void removeDeveloperTest() { // assumes a passing addDeveloperTest
         try {
-            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
-            int baseNumber = gameBrowser.getDevelopers().size();
+            gb.removeDeveloper("dev1");
+            gb.removeDeveloper("dev2");
+            gb.removeDeveloper("dev1");
+            gb.removeDeveloper("dev2");
 
-            System.out.println(gameBrowser.getDevelopers());
+            int baseNumber = gb.getDevelopers().size();
+
+            System.out.println(gb.getDevelopers());
             // remove one developer from list of only one dev
-            gameBrowser.addDeveloper("dev1");
+            Developer dev = new Developer("dev1");
+            gb.addDeveloper(dev);
 
-            assertEquals("dev1", gameBrowser.removeDeveloper("dev1"));
-            System.out.println(gameBrowser.getDevelopers());
-            assertEquals(baseNumber, gameBrowser.getDevelopers().size());
+            assertEquals("dev1", gb.removeDeveloper("dev1"));
+            System.out.println(gb.getDevelopers());
+            assertEquals(baseNumber, gb.getDevelopers().size());
 
             // remove one developer from dev list > 1
-            gameBrowser.addDeveloper("dev1");
-            gameBrowser.addDeveloper("dev2");
-            assertEquals("dev2", gameBrowser.removeDeveloper("dev2"));
-            assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
+            gb.addDeveloper(dev);
+            gb.addDeveloper(new Developer("dev2"));
+            assertEquals("dev2", gb.removeDeveloper("dev2"));
+            assertEquals(baseNumber+1, gb.getDevelopers().size());
 
             // remove non-existent developer
-            assertNull(gameBrowser.removeDeveloper("dev2"));
-            assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
+            assertNull(gb.removeDeveloper("dev2"));
+            assertEquals(baseNumber+1, gb.getDevelopers().size());
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
             return;
@@ -253,7 +263,7 @@ public class GameBrowserTest {
         try {
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
             Developer rob =  new Developer("Rob");
-            gameBrowser.addDeveloper(rob.getName());
+            gameBrowser.addDeveloper(rob);
 
             Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob.getName());
 
@@ -267,7 +277,7 @@ public class GameBrowserTest {
             if (gameBrowser.getGameList().getGames().size() < 8) {
                 int num = 0;
                 Developer d = new Developer("Amelia's Fix Dude");
-                gameBrowser.addDeveloper(d.getName());
+                gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
                     Game xtraGame = new Game("xtra"+num, d.getName());
                     gameBrowser.addGame(xtraGame);

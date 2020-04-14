@@ -39,7 +39,7 @@ public interface DataSource {
      * @throws IllegalArgumentException if game is null
      * @throws DataSourceException if underlying data source throws an exception
      */
-    public void saveDeveloper(String dev) throws IllegalArgumentException, DataSourceException;
+    public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException;
 
     /**
      * Searches Data Source for a Developer based off their name. A GameList is created.

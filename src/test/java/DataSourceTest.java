@@ -255,7 +255,7 @@ public class DataSourceTest {
         for (int i = 0; i < 5; i++)
             ds.saveDeveloper( new Developer("test dev "+i) );
         // load them from db
-        List<Developer> developers = ds.loadDeveloperList();
+        List<String> developers = ds.loadDeveloperList();
 
         // Load Works
         assertNotNull(developers);
@@ -263,10 +263,10 @@ public class DataSourceTest {
         // All developers were loaded
         for (int i = 0; i < 5; i++){
             boolean found = false;
-            Iterator<Developer> devs = developers.iterator();
+            Iterator<String> devs = developers.iterator();
             while (devs.hasNext() && !found){
-                Developer curr = devs.next();
-                if(curr.getName().equals("test dev "+i))
+                String curr = devs.next();
+                if(curr.equals("test dev "+i))
                     found = true;
             }
             assertTrue(found);

@@ -59,11 +59,11 @@ public class GameBrowser {
 
     /**
      * A new developer is created and added to the developer list
-     * @param username - the username of the developer
+     * @param dev - the developer
      */
-    public void addDeveloper(String username)  throws IllegalArgumentException, DataSourceException {
-        developers.add(username);
-        dataSource.saveDeveloper(username);
+    public void addDeveloper(Developer dev)  throws IllegalArgumentException, DataSourceException {
+        developers.add(dev.getName());
+        dataSource.saveDeveloper(dev);
         // TODO: Update Database
     }
 
@@ -83,7 +83,12 @@ public class GameBrowser {
                 break;
             }
         }
-        dataSource.removeDeveloper(dataSource.loadDeveloper(developer));
+        try {
+            dataSource.removeDeveloper(dataSource.loadDeveloper(developer));
+        }catch (IllegalArgumentException e){
+            System.out.println(e);
+            return null;
+        }
         return developer;
         // TODO: Update Database
     }
@@ -121,13 +126,20 @@ public class GameBrowser {
         //TODO WIPE GAME LIST SUCH THAT REMOVALS GET NOTICED
         dataSource.saveGameList(gameList); // Save Master List
         for (String developer: developers) {
-            dataSource.saveDeveloper(developer); // Save Developers
-//            dataSource.setInTransaction(false);
+            if(dataSource.loadDeveloper(developer).equals(null)){ //Checks that all devs are saved already
+                throw new  DataSourceException("Developer "+ developer+" not saved correctly");
+            }
         }
         for (String gameList : allGameLists){
-            dataSource.saveGameList(dataSource.loadGameList(gameList)); // Save additional gameLists
+            if(dataSource.loadGameList(gameList).equals(null)){ //Checks that all gameLists are saved already
+                throw new  DataSourceException("GameList "+ gameList+" not saved correctly");
+            }
         }
-        //TODO save Administrators doesn't exist yet
+        for (String game : gameList.getGames()){
+            if(dataSource.loadGame(game).equals(null)){
+                throw new  DataSourceException("Game "+ game+" not saved correctly");
+            }
+        }
     }
   
     private void loadAllDevelopers() throws DataSourceException {
