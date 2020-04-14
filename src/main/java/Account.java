@@ -83,4 +83,8 @@ public class Account {
 
         return true;
     }
+
+    public static boolean isUsernameValid(String username){
+        return false;
+    }
 }

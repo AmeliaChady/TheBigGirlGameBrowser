@@ -233,7 +233,38 @@ public class AccountTests {
 
         // A lot of border cases missing
         // Not sure about equivalence classes missing
+    }
 
+    @Test
+    public void isUsernameValidTest(){
+        //less than minimum characters
+        assertEquals(false, Account.isUsernameValid(""));
 
+        //exact amount of minimum characters, 1
+        assertEquals(true, Account.isUsernameValid("k"));
+
+        //1 more than max characters
+        assertEquals(false, Account.isUsernameValid("T1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+
+        //more than max characters
+        assertEquals(false, Account.isUsernameValid("Two1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+
+        //exact amount of max characters, 128
+        assertEquals(true, Account.isUsernameValid("1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklzxcvbnm1234567890qwertyuiopasdfghjklZxcvbnm1234567890qwertyuiop"));
+
+        //has an invalid character in middle
+        assertEquals(false, Account.isUsernameValid("abcd'ef"));
+
+        //invalid character at the beginning
+        assertEquals(false, Account.isUsernameValid("'abcdef"));
+
+        //invalid character at the end
+        assertEquals(false, Account.isUsernameValid("abcdef'"));
+
+        //has multiple invalid characters
+        assertEquals(false, Account.isUsernameValid("a#b'c\"d.e,f"));
+
+        //within character limit, all valid characters
+        assertEquals(true, Account.isUsernameValid("the_best-Username111"));
     }
 }
