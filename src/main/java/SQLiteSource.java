@@ -412,7 +412,7 @@ public class SQLiteSource implements DataSource{
             }
 
             // Fill GameList
-            //GameList g = loadGameList(rs.getString("listName"));
+            GameList g = loadGameList(rs.getString("listName"));
 
             // Return Dev Object
             s.close();
@@ -420,8 +420,8 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            //return new Developer(dev, g);
-            return new Developer(dev);
+            return new Developer(dev, g);
+            //return new Developer(dev);
         }catch (SQLException e){
             try {
                 if(ld != null) {
