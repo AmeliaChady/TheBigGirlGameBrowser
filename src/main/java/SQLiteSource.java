@@ -340,14 +340,7 @@ public class SQLiteSource implements DataSource{
             if (exists){
                 //safeUpsertDevelopersGameLists(dev, s);
                 GameList devsGames = dev.getGameList();
-                int glid = getGlid(devsGames, s);
-                int gid;
-                for (String game : devsGames.getGames()){
-                    if(game != null) {
-                        gid = getGid(game, s);
-                        safeUpsertGameListsGames(glid, gid, s);
-                    }
-                }
+                saveGameList(devsGames);
                 s.close();
                 if(sd != null){
                     conn.commit();
