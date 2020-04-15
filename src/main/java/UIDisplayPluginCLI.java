@@ -31,19 +31,20 @@ public class UIDisplayPluginCLI implements UIDisplayPluginBase{
     }
 
     public String displayGame() {
-//        String display = "Title: " + g.getTitle() + "\nDescription: " + g.getDescription() + "\nDeveloper(s): ";
-//        if (g.getDevelopers().size()==0){
-//            display += "None";
-//        }
-//        else{
-//            for(int i = 0; i < g.getDevelopers().size()-1; i++){
-//                display += g.getDevelopers().get(i) + ", ";
-//            }
-//            display += g.getDevelopers().get(g.getDevelopers().size()-1);
-//        }
-//        display += "\nStatus: "+ g.getStatus().toString() + "\n";
-//        System.out.println(display);
-        return null;
+        String gameString = "Title: " + g.getTitle() + "\n";
+        gameString += "Description: " + g.getDescription() + "\n";
+        if(g.getDevelopers().isEmpty()) {
+            gameString += "Developer(s): " + "None" + "\n";
+        }
+        else{
+            StringBuffer devs = new StringBuffer();
+            for(String d : g.getDevelopers()){
+                devs.append(d).append(", ");
+            }
+            gameString += "Developer(s): " + devs.substring(0, devs.length()-2)+ "\n";
+        }
+        gameString += "Status: " + g.getStatus() + "\n\n";
+        return gameString;
     }
 
     public String displayDeveloper() {
