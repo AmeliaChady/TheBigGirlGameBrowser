@@ -72,34 +72,4 @@ public class DeveloperTests {
 
         assertEquals(3, d6.getGameList().getGameCount());
     }
-
-    //TODO: move to gameBrowser
-//    public void displayDeveloperTest(){
-//        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outContent));
-//
-//        //0 games
-//        Developer d1 = new Developer("George Washington");
-//        d1.displayDeveloper();
-//        assertEquals("Name: George Washington\nGeorge Washington's Games: This list is empty\n", outContent.toString());
-//
-//        outContent = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outContent));
-//
-//        //1 game
-//        Game game = new Game();
-//        d1.getGameList().includeGame(game);
-//        d1.displayDeveloper();
-//        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame\n", outContent.toString());
-//
-//        outContent = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outContent));
-//        //2 games
-//        Game game2 = new Game();
-//        d1.getGameList().includeGame(game2);
-//        d1.displayDeveloper();
-//
-//        assertEquals("Name: George Washington\nGeorge Washington's Games: testGame, testGame\n", outContent.toString());
-//
-//    }
 }
