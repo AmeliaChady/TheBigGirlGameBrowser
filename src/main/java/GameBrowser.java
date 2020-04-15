@@ -157,4 +157,9 @@ public class GameBrowser {
         this.gameList = gameListTurnIn;
     }
 
+    // -----DB HELPFUL-----
+    public void close(){
+        dataSource.close();
+    }
+
 }
