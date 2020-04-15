@@ -35,7 +35,8 @@ public class SQLiteSource implements DataSource{
 
     }
 
-    void close(){
+    @Override
+    public void close(){
         try {
             if (this.isConnected())
                 conn.close();

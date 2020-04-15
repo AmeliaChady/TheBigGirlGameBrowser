@@ -252,6 +252,8 @@ public class GameBrowserTest {
             // remove non-existent developer
             assertNull(gb.removeDeveloper("dev2"));
             assertEquals(baseNumber+1, gb.getDevelopers().size());
+
+            gb.close();
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
             return;
