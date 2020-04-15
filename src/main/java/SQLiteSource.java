@@ -45,7 +45,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
@@ -109,7 +108,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public Game loadGame(String title) throws DataSourceException {
         if(title==null){
             return null;
@@ -183,7 +181,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
         if(gameList == null){
             throw new IllegalArgumentException("GameList is null");
@@ -208,17 +205,20 @@ public class SQLiteSource implements DataSource{
             int glid = s.getResultSet().getInt(1);
 
             // Games Set Up
-            Iterator<String> games = gameList.getGames().iterator();
+            Iterator<String> gameTitles = gameList.getGames().iterator();
             int gid;
 
             // Game Iterator
-            while (games.hasNext()) {
+            while (gameTitles.hasNext()) {
                 // Game Set Up
-                String g = games.next();
-                if(g!= null) {
+                String gameTitle = gameTitles.next();
+                Game game;
+                if (gameTitle != null) {
+                    game = loadGame(gameTitle);
+                    saveGame(game);
 
                     // Getting Game ID
-                    sql = "SELECT gid FROM Games WHERE title=\"" + g + "\";";
+                    sql = "SELECT gid FROM Games WHERE title=\"" + game.getTitle() + "\";";
                     s.execute(sql);
                     gid = s.getResultSet().getInt(1);
 
@@ -248,13 +248,10 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
-    public GameList loadGameList(String name) throws DataSourceException{
-        if(name==null){
-            return null;
-        }
+    public GameList loadGameList(String gameListName) throws DataSourceException {
+        if (gameListName == null) return null;
 
-        Savepoint lgl = null;
+        Savepoint lgl = null, lgts  = null;
         try {
             if(!inTransaction) {
                 lgl = conn.setSavepoint();
@@ -263,11 +260,11 @@ public class SQLiteSource implements DataSource{
             Statement s = conn.createStatement();
 
             // See If Saved
-            String sql = "SELECT * FROM GameLists WHERE name=\""+name+"\"; ";
+            String sql = "SELECT * FROM GameLists WHERE name=\""+gameListName+"\"; ";
             s.execute(sql);
 
             ResultSet nameResult = s.getResultSet();
-            if(!nameResult.next()){
+            if(!nameResult.next()) {
                 if(lgl!=null) {
                     conn.releaseSavepoint(lgl);
                     inTransaction = false;
@@ -276,40 +273,39 @@ public class SQLiteSource implements DataSource{
                 return null;
             }
 
-            // Instantiate GameList
-            GameList gl = new GameList(name);
-
-            // Obtain List of Game Names
-            sql = "SELECT title " +
-                    "FROM GameListsGames " +
-                        "INNER JOIN GameLists USING(glid) " +
-                        "INNER JOIN Games USING(gid) " +
-                    "WHERE name=\""+name+"\"; ";
-            s.execute(sql);
-
-            // Load Each Game and Add
-            ResultSet gameNames = s.getResultSet();
-            boolean hasNext = !gameNames.isClosed();
-            if(hasNext){
-                gameNames.next();
-                while (hasNext){
-                    gl.includeGame(gameNames.getString("title"));
-                    hasNext = gameNames.next();
-                }
+            if (!inTransaction) {
+                lgts = conn.setSavepoint();
+                inTransaction = true;
             }
 
-            // Finalize
+            // Get game titles
+            sql = "SELECT title FROM GameListsGames INNER JOIN GameLists USING(glid) " +
+                    "INNER JOIN Games USING(gid) WHERE name="+"\""+gameListName+"\";";
+            s.execute(sql);
+
+            ResultSet titlesResult = s.getResultSet();
+            List<String> gameTitles = new ArrayList<String>();
+            boolean hasNext = !titlesResult.isClosed();
+
+            if (hasNext) {
+                titlesResult.next();
+                while (hasNext) {
+                    gameTitles.add( titlesResult.getString("title"));
+                    hasNext = titlesResult.next();
+                }
+            }
             s.close();
-            if(lgl != null){
+            if(lgts != null){
                 conn.commit();
                 inTransaction = false;
             }
-            return gl;
-        }catch (SQLException e){
+            return new GameList(gameListName, gameTitles);
+
+        } catch(SQLException e) {
             try {
-                if(lgl != null) {
-                    conn.rollback(lgl);
-                    conn.releaseSavepoint(lgl);
+                if (lgts != null) {
+                    conn.rollback(lgts);
+                    conn.releaseSavepoint(lgts);
                     inTransaction = false;
                 }
             }catch (SQLException ignored){}
@@ -318,7 +314,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
         if(dev == null){
             throw new IllegalArgumentException("Developer is null");
@@ -377,7 +372,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public Developer loadDeveloper(String dev) throws DataSourceException{
         if(dev == null){
             return null;
@@ -472,13 +466,6 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    @Override
-    public List<String> loadGameTitles(String GameListName) throws DataSourceException {
-        return null;
-    }
-
-
-    @Override
     public void setInTransaction(boolean bool){
         inTransaction = bool;
     }
@@ -521,7 +508,6 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-
 
     // underlying DB calls
     // Upsert -> Insert/Update depending on existence
