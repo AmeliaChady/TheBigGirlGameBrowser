@@ -45,7 +45,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
@@ -109,7 +108,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public Game loadGame(String title) throws DataSourceException {
         if(title==null){
             return null;
@@ -183,7 +181,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public void saveGameList(GameList gameList) throws IllegalArgumentException, DataSourceException{
         if(gameList == null){
             throw new IllegalArgumentException("GameList is null");
@@ -317,7 +314,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public void saveDeveloper(Developer dev) throws IllegalArgumentException, DataSourceException{
         if(dev == null){
             throw new IllegalArgumentException("Developer is null");
@@ -376,7 +372,6 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    // TODO we need to update this for DBR
     public Developer loadDeveloper(String dev) throws DataSourceException{
         if(dev == null){
             return null;
@@ -469,10 +464,6 @@ public class SQLiteSource implements DataSource{
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
-    }
-
-    public List<String> loadGameTitles(String GameListName) throws DataSourceException {
-        return null;
     }
 
     public void setInTransaction(boolean bool){
