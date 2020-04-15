@@ -31,6 +31,7 @@ public class UISprint1 {
 
             //gameBrowser.getDevelopers().get(0).getGameList().displayAllGames();
             List<String> developersLoginList = gameBrowser.getDevelopers();
+            Iterator<String> i = developersLoginList.iterator();
             //developersLoginList.get(0).getGameList().displayAllGames();
 
 
@@ -38,10 +39,11 @@ public class UISprint1 {
 //            System.out.println(devNameEnter);
 //            System.out.println(i.hasNext());
 //            System.out.println(developersLoginList.size());
+
             while(i.hasNext()){
                 iteratingDev = i.next();
                 //System.out.println(iteratingDev.getName());
-                if(iteratingDev.getName().equalsIgnoreCase(devNameEnter)){
+                if(iteratingDev.equalsIgnoreCase(devNameEnter)){
                     developerTakeAction(iteratingDev);
                     return;
                 }
