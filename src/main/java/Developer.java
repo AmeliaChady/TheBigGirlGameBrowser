@@ -20,7 +20,6 @@ public class Developer {
         name = nameIn;
         developerGameList = new GameList(nameIn+"'s Games");
     }
-
     //TODO: move to gameBrowser
 //    public void displayDeveloper() {
 //        System.out.println("Name: " + name );
@@ -42,7 +41,6 @@ public class Developer {
         //adds to developer's personal list
         //developerGameList.includeGame(gameToSubmit);
         //adds to overall gameList
-
         //if not already in list
         if (!developerGameList.getGames().contains(gameToSubmit))
             developerGameList.includeGame(gameToSubmit);
