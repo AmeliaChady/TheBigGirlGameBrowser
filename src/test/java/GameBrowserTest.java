@@ -123,13 +123,8 @@ public class GameBrowserTest {
             //assertEquals(devList.get(0), gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
             //assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
-            // saving Changes to db
-            // TODO:: Shouldn't this be done in the gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
-            ds.saveGameList(gb.getGameList());
 
             gb.close();
-            ds.close();
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
