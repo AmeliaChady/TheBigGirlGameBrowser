@@ -87,6 +87,7 @@ public class GameBrowserTest {
                 i++;
             }
 
+            gameBrowser.close();
             // TODO check administrators (once admins can be loaded from db)
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -126,6 +127,9 @@ public class GameBrowserTest {
             // TODO:: Shouldn't this be done in the gamebrowser?
             SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
             ds.saveGameList(gb.getGameList());
+
+            gb.close();
+            ds.close();
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -174,6 +178,8 @@ public class GameBrowserTest {
             assertEquals(baseNumber-2, gb.getGameList().getGameCount());
             assertNotNull(g5);
 
+            gb.close();
+
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
         }
@@ -216,6 +222,8 @@ public class GameBrowserTest {
             for(String developer : gameBrowser.getDevelopers()){
                 //developer.displayDeveloper();
             }
+
+            gameBrowser.close();
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -303,6 +311,8 @@ public class GameBrowserTest {
 
             System.out.println("Visibly Check DB for \"robsGame\", \"rob's Games\", " +
                     "\nthe gameList \"Rob's Games NEWLIST\", and developer \"Rob\"");
+
+            gameBrowser.close();
 
 
         }catch (DataSourceException dse){
