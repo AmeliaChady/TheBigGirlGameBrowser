@@ -92,8 +92,15 @@ public class UIPluginCLI implements UIPlugin {
 
     // TODO: Throw error if gamelist or gamebrowser is null
     public String displayAllGames(){
-
-
+        if(gl == null && gb == null){
+            throw new IllegalStateException("no pulled gamelist & no pulled gamebrowser");
+        }
+        else if(gl == null){
+            throw new IllegalStateException("no pulled gamelist");
+        }
+        else if(gb == null){
+            throw new IllegalStateException("no pulled gamebrowser");
+        }
 
         String allGames = gl.getName() + ":\n\n";
 
