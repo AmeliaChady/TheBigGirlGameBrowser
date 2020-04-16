@@ -165,9 +165,28 @@ public class GameBrowser {
         }
     }
 
+
     // ------GETTERS------
     public GameList getGameList() { return gameList; }
     public List<String> getDevelopers() { return developers; }
+
+    public Developer loadDeveloper(String dev) throws DataSourceException {
+        try {
+            Developer developer = dataSource.loadDeveloper(dev);
+            return developer;
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
+    }
+
+    public Game loadGame(String title) throws DataSourceException{
+        return dataSource.loadGame(title);
+    }
+
+    public GameList loadGameList(String name) throws DataSourceException{
+        return dataSource.loadGameList(name);
+    }
 
     // -----SETTERS-----
     public void setGameList(GameList gameListTurnIn) {
@@ -185,5 +204,9 @@ public class GameBrowser {
         return false;
     }
 
+    // -----DB HELPFUL-----
+    public void close(){
+        dataSource.close();
+    }
 
 }

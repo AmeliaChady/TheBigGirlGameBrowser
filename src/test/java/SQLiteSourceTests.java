@@ -92,12 +92,4 @@ public class SQLiteSourceTests {
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }
-
-    //obselete: TODO this will be integrated to loadGameList; leaving for reference/reminder
-//    @Test
-//    public void SQLiteSourceLoadGameTitlesByGameListTest() throws SQLException, DataSourceException{
-//        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
-//        DataSourceTest.dataSourceLoadGameTitlesTest(s);
-//        s.close();
-//    }
 }

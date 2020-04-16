@@ -87,6 +87,7 @@ public class GameBrowserTest {
                 i++;
             }
 
+            gameBrowser.close();
             // TODO check administrators (once admins can be loaded from db)
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -122,10 +123,8 @@ public class GameBrowserTest {
             //assertEquals(devList.get(0), gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getDevelopers().get(0));
             //assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
-            // saving Changes to db
-            // TODO:: Shouldn't this be done in the gamebrowser?
-            SQLiteSource ds = new SQLiteSource("src/databases/testing.db");
-            ds.saveGameList(gb.getGameList());
+
+            gb.close();
 
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
@@ -174,6 +173,8 @@ public class GameBrowserTest {
             assertEquals(baseNumber-2, gb.getGameList().getGameCount());
             assertNotNull(g5);
 
+            gb.close();
+
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
         }
@@ -217,6 +218,8 @@ public class GameBrowserTest {
                 //developer.displayDeveloper();
             }
 
+            gameBrowser.close();
+
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
         }
@@ -252,6 +255,8 @@ public class GameBrowserTest {
             // remove non-existent developer
             assertNull(gb.removeDeveloper("dev2"));
             assertEquals(baseNumber+1, gb.getDevelopers().size());
+
+            gb.close();
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
             return;
@@ -301,6 +306,8 @@ public class GameBrowserTest {
 
             System.out.println("Visibly Check DB for \"robsGame\", \"rob's Games\", " +
                     "\nthe gameList \"Rob's Games NEWLIST\", and developer \"Rob\"");
+
+            gameBrowser.close();
 
 
         }catch (DataSourceException dse){
