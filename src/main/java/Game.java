@@ -8,6 +8,7 @@ public class Game {
     private String description;
     private List<Developer> developers;
     private Status status;
+    private int ownedCount;
 
     /**
      * Default constructor
@@ -147,6 +148,10 @@ public class Game {
         developer.getGameList().includeGame(this);
     }
 
+    public void increaseOwnedCount(){
+        ownedCount = ownedCount + 1;
+    }
+
     public void displayGame() {
         String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
         if (developers.size()==0){
@@ -188,5 +193,7 @@ public class Game {
     public Status getStatus() {
         return status;
     }
+
+    public int getOwnedCount(){return ownedCount;}
 
 }

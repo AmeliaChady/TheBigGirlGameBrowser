@@ -8,6 +8,7 @@ public class User {
     private List<String> reviews;
     private List<String> comments;
 
+
     public User(GameList ownedGamesIn, GameList wishListIn){
         ownedGames = ownedGamesIn;
         wishList = wishListIn;
@@ -20,6 +21,7 @@ public class User {
         comments = commentsIn;
     }
 
+
     //
     public void viewGames(){
         //just displaying all approved games? right?
@@ -31,6 +33,8 @@ public class User {
 
     public void addToOwnedGames(Game gameToAdd){
         ownedGames.includeGame(gameToAdd);
+        gameToAdd.increaseOwnedCount();
+
     }
 
     //WRITE REVIEW
