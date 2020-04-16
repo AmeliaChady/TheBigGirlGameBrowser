@@ -19,21 +19,37 @@ public class GameBrowserUIPluginTest {
         // Game Exists
         assertTrue(gb.pullGame("phgame"));
         assertTrue(uiplug.hasGame());
-        //assertEquals(,);
+        assertEquals("Title: phgame\n" +
+                "Description: PullAndHasGameTest\n" +
+                "Developer(s): amelia\n" +
+                "Status: ACCEPTED\n\n", uiplug.displayGame());
 
         // Game Exists Overwriting Old Game
-        assertTrue(gb.pullGame("phgame"));
+        assertTrue(gb.pullGame("oogame"));
         assertTrue(uiplug.hasGame());
-        //assertEquals(,);
+        assertEquals("Title: oogame\n" +
+                "Description: PullAndHasGameTest\n" +
+                "Developer(s): amelia\n" +
+                "Status: PENDING\n\n", uiplug.displayGame());
 
         // Game Doesn't Exist
         assertFalse(gb.pullGame("phnegame"));
-        //assertEquals(,);
+        assertEquals("Title: oogame\n" +
+                "Description: PullAndHasGameTest\n" +
+                "Developer(s): amelia\n" +
+                "Status: PENDING\n\n", uiplug.displayGame());
 
         // String is null
         assertFalse(gb.pullGame(null));
+        assertEquals("Title: oogame\n" +
+                "Description: PullAndHasGameTest\n" +
+                "Developer(s): amelia\n" +
+                "Status: PENDING\n\n", uiplug.displayGame());
 
+        gb.close();
         // throw exception if uiplug is null
+        GameBrowser gbn = new GameBrowser(DATABASE, null);
+        assertThrows(IllegalAccessError.class, () -> gbn.pullGame("phgame"));
     }
 
     @Test
