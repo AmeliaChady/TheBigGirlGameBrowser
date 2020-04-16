@@ -3,9 +3,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class UIDisplayPluginCLITest {
+public class UIPluginCLITest {
     public static final String DATABASE = "src/databases/Test_UIPluginCLI.db";
 
     @Test
@@ -70,6 +70,10 @@ public class UIDisplayPluginCLITest {
                      "Developer(s): bertha\n" +
                      "Status: REJECTED\n\n", uiplug.displayGame());
 
+        // null game
+        uiplug.pullGame(null);
+        assertThrows(IllegalStateException.class, uiplug::displayGame);
+
     }
 
     @Test
@@ -94,6 +98,9 @@ public class UIDisplayPluginCLITest {
         assertEquals("Name: George Washington\n" +
                      "George Washington's Games: testGame, testGame2\n", uiplug.displayDeveloper());
 
+        uiplug.pullDeveloper(null);
+        assertThrows(IllegalStateException.class, uiplug::displayDeveloper);
+
     }
 
     @Test
@@ -112,6 +119,9 @@ public class UIDisplayPluginCLITest {
         //2 games
         gl.includeGame("Adventurer Amelia");
         assertEquals("1. Adventurer Kelsey\n2. Adventurer Amelia\n", uiplug.displayGameTitlesNumberedList());
+
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, uiplug::displayGameTitlesNumberedList);
     }
 
     @Test
@@ -130,6 +140,9 @@ public class UIDisplayPluginCLITest {
         // 2 Games
         gl.includeGame("testGame2");
         assertEquals("testList: testGame1, testGame2\n", uiplug.displayListNameAndGameTitles());
+
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, uiplug::displayListNameAndGameTitles);
     }
 
     @Test
@@ -186,6 +199,9 @@ public class UIDisplayPluginCLITest {
                         "Developer(s): amelia\n" +
                         "Status: ACCEPTED\n\n",
                 uiplug.displayGamesGivenStatus(Status.ACCEPTED));
+
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, () -> uiplug.displayGamesGivenStatus(Status.PENDING));
     }
 
     @Test
@@ -228,91 +244,7 @@ public class UIDisplayPluginCLITest {
                 "Status: PENDING\n\n",
                 uiplug.displayAllGames());
 
-        /*
-        UISprint1 ui = new UISprint1("src/databases/UITests.db");
-
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        ui.displayAllGames(ui.gameBrowser.getGameList());
-        assertEquals(
-                "Title: game 2\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 2\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: game 4\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 4\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: game 5\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 5\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: game 6\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 6\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: game 7\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 7\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: game 8\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 8\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: game 9\n" +
-                "Description: No Description Given\n" +
-                "Developer(s): dev 9\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: Candy Crush\n" +
-                "Description: My mom plays a lot of candy crush\n" +
-                "Developer(s): Anita\n" +
-                "Status: PENDING\n" +
-                "\n" +
-                "Title: Clash of clans\n" +
-                "Description: My dad plays a lot of clash of clans\n" +
-                "Developer(s): Robert\n" +
-                "Status: PENDING\n" +
-                "\n", outContent.toString());
-
-        //1 game
-        ui.removeGame("game 1");
-        ui.removeGame("game 2");
-        ui.removeGame("game 3");
-        ui.removeGame("game 4");
-        ui.removeGame("game 5");
-        ui.removeGame("game 6");
-        ui.removeGame("game 6");
-        ui.removeGame("game 7");
-        ui.removeGame("game 8");
-        ui.removeGame("game 9");
-        ui.removeGame("robsGame");
-        ui.removeGame("Candy Crush");
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        ui.displayAllGames(ui.gameBrowser.getGameList());
-        assertEquals("Master Game List:\n\nTitle: Clash of clans\n" +
-                "Description: My dad plays a lot of clash of clans\n" +
-                "Developer(s): Robert\n" +
-                "Status: PENDING\n" +
-                "\n", outContent.toString());
-
-        //0 games
-        ui.removeGame("Clash of clans");
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
-        ui.displayAllGames(ui.gameBrowser.getGameList());
-        assertEquals("Master Game List:\n\nThis list is empty\n", outContent.toString());
-
-         */
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, uiplug::displayAllGames);
     }
 }
