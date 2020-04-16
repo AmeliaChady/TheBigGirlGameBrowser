@@ -51,8 +51,11 @@ public class UIPluginCLI implements UIPlugin {
         return gb!=null;
     }
 
-    //TODO: Throw error if game is null
+
     public String displayGame() {
+        if(g == null){
+            throw new IllegalStateException("no game pulled");
+        }
         String gameString = "Title: " + g.getTitle() + "\n";
         gameString += "Description: " + g.getDescription() + "\n";
         if(g.getDevelopers().isEmpty()) {
