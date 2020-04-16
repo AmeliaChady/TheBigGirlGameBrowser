@@ -9,6 +9,7 @@ public class GameBrowser {
     private List<String> administrators; // list of keys to administrator
     private List<String> developers; // list of keys to devs
     private List<String> allGameLists; // list of keys to gameLists
+    private UIDisplayPluginBase uiplug;
 
     /**
      * Constructor (
@@ -26,6 +27,22 @@ public class GameBrowser {
         // TODO loadAllLists helper functions
         // TODO loadAllAdministrators // loads administrators keys from db
 
+        uiplug = null;
+    }
+
+    public GameBrowser(String dataFilePath, UIDisplayPluginBase uiplugin) throws IllegalArgumentException, DataSourceException {
+        if (dataFilePath.length() == 0)
+            throw new IllegalArgumentException("Please supply a filename.");
+
+        dataSource = new SQLiteSource(dataFilePath);
+        loadAllGames(); // loads master gameList into memory
+        developers = new ArrayList<String>();
+        loadAllDevelopers(); // loads developers keys from db
+        allGameLists = new ArrayList<String>();
+        // TODO loadAllLists helper functions
+        // TODO loadAllAdministrators // loads administrators keys from db
+
+        uiplug = uiplugin;
     }
 
     /**
@@ -158,5 +175,15 @@ public class GameBrowser {
     }
 
     // -----Pulls-----
+    public boolean pullGame(String title){
+        return false;
+    }
+    public boolean pullGameList(String name){
+        return false;
+    }
+    public boolean pullDeveloper(String name){
+        return false;
+    }
+
 
 }

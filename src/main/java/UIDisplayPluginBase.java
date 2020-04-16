@@ -3,4 +3,8 @@ public interface UIDisplayPluginBase {
     void pullGameList(GameList gl);
     void pullDeveloper(Developer dev);
     void pullGameBrowser(GameBrowser gb);
+    boolean hasGame();
+    boolean hasGameList();
+    boolean hasDeveloper();
+    boolean hasGameBrowser();
 }

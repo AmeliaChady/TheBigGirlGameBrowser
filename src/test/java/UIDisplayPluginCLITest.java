@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UIDisplayPluginCLITest {
-    public static final String DATABASE = "src/databases/testing.db";
+    public static final String DATABASE = "src/databases/Test_UIPluginCLI.db";
 
     @Test
     public void displayGameTest(){
@@ -144,7 +144,7 @@ public class UIDisplayPluginCLITest {
                 "ggstgp1 | amelia | displayGamesGivenStatusTest | PENDING\n" +
                 "ggstgp2 | amelia | displayGamesGivenStatusTest | PENDING\n");
         UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
-        GameBrowser gb = new GameBrowser(DATABASE);
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
         GameList gl = new GameList("testList-ggst");
 
         uiplug.pullGameList(gl);
@@ -199,7 +199,7 @@ public class UIDisplayPluginCLITest {
                 "agtg1 | amelia | displayAllGamesTest | ACCEPTED\n" +
                 "agtg2 | amelia | displayAllGamesTest | PENDING\n");
         UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
-        GameBrowser gb = new GameBrowser(DATABASE);
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
         GameList gl = new GameList("testList-agt");
 
         uiplug.pullGameList(gl);
