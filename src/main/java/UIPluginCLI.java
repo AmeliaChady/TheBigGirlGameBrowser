@@ -90,7 +90,7 @@ public class UIPluginCLI implements UIPlugin {
         return devString;
     }
 
-    // TODO: Throw error if gamelist or gamebrowser is null
+
     public String displayAllGames(){
         if(gl == null && gb == null){
             throw new IllegalStateException("no pulled gamelist & no pulled gamebrowser");
@@ -120,6 +120,7 @@ public class UIPluginCLI implements UIPlugin {
         return allGames;
     }
 
+
     public String displayListNameAndGameTitles() {
         if(gl == null){
             throw new IllegalStateException("no gamelist pulled");
@@ -138,21 +139,39 @@ public class UIPluginCLI implements UIPlugin {
         return display;
     }
 
-    // TODO: Throw error if gamelist or gamebrowser is null
+
     public String displayGamesGivenStatus(Status status) {
-//        System.out.println(name + "(" + status +"):\n");
-//
-//        if (getGameCount()==0){
-//            System.out.println("This list is empty");
-//        }
-//        else {
-//            for (int i = 0; i < getGameCount(); i++) {
-//                if (gameList.get(i).getStatus()==status) {
-//                    gameList.get(i).displayGame();
-//                }
-//            }
-//        }
-        return null;
+        if(gl == null && gb == null){
+            throw new IllegalStateException("no pulled gamelist & no pulled gamebrowser");
+        }
+        else if(gl == null){
+            throw new IllegalStateException("no pulled gamelist");
+        }
+        else if(gb == null){
+            throw new IllegalStateException("no pulled gamebrowser");
+        }
+
+        String gamestatus = gl.getName() + "(" + status +"):\n\n";
+        if (gl.getGameCount()==0){
+            return gamestatus + "This list is empty\n";
+        }
+
+        Game temp = g;
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> games = gl.getGames().iterator();
+        while (games.hasNext()){
+            gb.pullGame(games.next());
+            if(g.getStatus() == status)
+                sb.append(this.displayGame());
+        }
+
+
+        g = temp;
+
+        if(sb.length() == 0){
+            return gamestatus + "This list is empty\n";
+        }
+        return gamestatus + sb;
     }
 
 
