@@ -97,7 +97,7 @@ public class UIDisplayPluginCLITest {
     }
 
     @Test
-    public void displayGameTitlesNumberedListTest() throws DataSourceException {
+    public void displayGameTitlesNumberedListTest() {
         UIPluginCLI uiplug = new UIPluginCLI();
         GameList gl = new GameList("test");
 
@@ -115,7 +115,7 @@ public class UIDisplayPluginCLITest {
     }
 
     @Test
-    public void displayListNameAndGameTitlesTest() throws DataSourceException {
+    public void displayListNameAndGameTitlesTest() {
         UIPluginCLI uiplug = new UIPluginCLI();
         GameList gl = new GameList("testList");
 
