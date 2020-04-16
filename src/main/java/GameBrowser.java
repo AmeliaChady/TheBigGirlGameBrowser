@@ -193,13 +193,26 @@ public class GameBrowser {
         this.gameList = gameListTurnIn;
     }
 
-    // -----Pulls-----
+    // -----UIPlugin-----
     public boolean hasUIPlugin(){
         return uiplug!=null;
     }
+    public void setUIPlugin(UIPlugin uiplugin){
+        uiplug = uiplugin;
+    }
 
     public boolean pullGame(String title){
-        return false;
+        if(uiplug==null){
+            throw new IllegalStateException("no UIPlugin");
+        }
+        try {
+            Game g = loadGame(title);
+
+            return false;
+        }catch (DataSourceException e){
+            uiplug.pullGame(null);
+            return false;
+        }
     }
     public boolean pullGameList(String name){
         return false;

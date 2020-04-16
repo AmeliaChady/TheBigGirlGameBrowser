@@ -32,7 +32,7 @@ public class GameBrowserUIPluginTest {
         gb.close();
         // throw exception if uiplug is null
         GameBrowser gbn = new GameBrowser(DATABASE, null);
-        assertThrows(IllegalAccessError.class, () -> gbn.pullGame("phgame"));
+        assertThrows(IllegalStateException.class, () -> gbn.pullGame("phgame"));
         gbn.close();
     }
 
@@ -64,7 +64,7 @@ public class GameBrowserUIPluginTest {
         gb.close();
         // throw exception if uiplug is null
         GameBrowser gbn = new GameBrowser(DATABASE, null);
-        assertThrows(IllegalAccessError.class, () -> gbn.pullGameList("phgl"));
+        assertThrows(IllegalStateException.class, () -> gbn.pullGameList("phgl"));
         gbn.close();
     }
 
@@ -96,7 +96,7 @@ public class GameBrowserUIPluginTest {
         gb.close();
         // throw exception if uiplug is null
         GameBrowser gbn = new GameBrowser(DATABASE, null);
-        assertThrows(IllegalAccessError.class, () -> gbn.pullDeveloper("phd"));
+        assertThrows(IllegalStateException.class, () -> gbn.pullDeveloper("phd"));
         gbn.close();
     }
 
@@ -104,6 +104,12 @@ public class GameBrowserUIPluginTest {
     public void ConstructorGameBrowserUIPlugin() throws DataSourceException{
         UIPlugin uiplug = new UIPluginCLI();
         GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+        assertTrue(uiplug.hasGameBrowser());
+        assertTrue(gb.hasUIPlugin());
+        gb.close();
+
+        gb = new GameBrowser(DATABASE);
+        gb.setUIPlugin(uiplug);
         assertTrue(uiplug.hasGameBrowser());
         assertTrue(gb.hasUIPlugin());
         gb.close();
