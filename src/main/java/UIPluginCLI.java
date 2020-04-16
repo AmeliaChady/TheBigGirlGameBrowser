@@ -92,27 +92,31 @@ public class UIPluginCLI implements UIPlugin {
 
     // TODO: Throw error if gamelist or gamebrowser is null
     public String displayAllGames(){
-        /*String allGames = gl.getName() + ":\n";
+
+
+
+        String allGames = gl.getName() + ":\n\n";
 
         if (gl.getGameCount()==0){
-            System.out.println("This list is empty");
+            return allGames+"This list is empty\n";
+         }
+        Game temp = g;
+
+        Iterator<String> games = gl.getGames().iterator();
+        while (games.hasNext()){
+            String gameName = games.next();
+            gb.pullGame(gameName);
+            allGames += this.displayGame();
         }
-        else {
-            Game temp = g;
 
-            Iterator<String> games = gl.getGames().iterator();
-            while (games.hasNext()){
-                String gameName = games.next();
-                g = gb.
-            }
-
-            g = temp;
-        }*/
-        return null;
+        g = temp;
+        return allGames;
     }
 
-    // TODO: Throw error if gamelist
     public String displayListNameAndGameTitles() {
+        if(gl == null){
+            throw new IllegalStateException("no gamelist pulled");
+        }
         String display = gl.getName() + ": ";
         if(gl.getGameCount()<1){
             display += "This list is empty";

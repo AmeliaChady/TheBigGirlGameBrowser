@@ -200,7 +200,14 @@ public class UIPluginCLITest {
                         "Status: ACCEPTED\n\n",
                 uiplug.displayGamesGivenStatus(Status.ACCEPTED));
 
+        // Null Game List.
         uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, () -> uiplug.displayGamesGivenStatus(Status.PENDING));
+
+        gb.close();
+        // Null GameBrowser
+        uiplug.pullGameBrowser(null);
+        uiplug.pullGameList(gl);
         assertThrows(IllegalStateException.class, () -> uiplug.displayGamesGivenStatus(Status.PENDING));
     }
 
@@ -244,7 +251,14 @@ public class UIPluginCLITest {
                 "Status: PENDING\n\n",
                 uiplug.displayAllGames());
 
+        // Null Game List.
         uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, uiplug::displayAllGames);
+
+        gb.close();
+        // Null GameBrowser
+        uiplug.pullGameBrowser(null);
+        uiplug.pullGameList(gl);
         assertThrows(IllegalStateException.class, uiplug::displayAllGames);
     }
 }
