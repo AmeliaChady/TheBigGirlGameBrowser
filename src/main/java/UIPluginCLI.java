@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public class UIPluginCLI implements UIPlugin {
     Game g;
     GameList gl;
@@ -72,7 +74,7 @@ public class UIPluginCLI implements UIPlugin {
         return gameString;
     }
 
-    //TODO: Throw error if developer is null
+
     public String displayDeveloper() {
         if(d == null){
             throw new IllegalStateException("no developer pulled");
@@ -142,17 +144,25 @@ public class UIPluginCLI implements UIPlugin {
         return null;
     }
 
-    // TODO: Throw error if gamelist
+
     public String displayGameTitlesNumberedList(){
-//        if(gameList.size()==0){
-//            System.out.println("There are no games to display");
-//        }
-//        else{
-//            for(int i = 0; i <gameList.size(); i++){
-//                System.out.println((i+1) + ". " + gameList.get(i).getTitle());
-//            }
-//        }
-        return null;
+        if(gl == null){
+            throw new IllegalStateException("no gamelist pulled");
+        }
+        if(gl.getGameCount()==0){
+            return "There are no games to display\n";
+        }
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> games = gl.getGames().iterator();
+        int count = 1;
+        while (games.hasNext()){
+            sb.append(count);
+            sb.append(". ");
+            sb.append(games.next());
+            sb.append("\n");
+            count++;
+        }
+        return  sb.toString();
     }
 
 
