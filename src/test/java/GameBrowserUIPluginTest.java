@@ -3,15 +3,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameBrowserUIPluginTest {
-    public static final String DATABASE = "src/databases/Test_UIPluginCLI.db";
+    public static final String DATABASE = "src/databases/Test_GameBrowserUIPlugin.db";
 
     @Test
     public static void PullAndHasGame() throws DataSourceException{
         System.out.println("NEEDS SETUP!");
-        System.out.println("Games:\n" +
-                "Title | Developer | Description | Status\n" +
-                "phgame | amelia | PullAndHasGameTest | ACCEPTED\n" +
-                "oogame | amelia | PullAndHasGameTest | PENDING\n" +
+        System.out.println("Games: phgame, oogame\n" +
                 "and no game called phnegame");
         UIPluginCLI uiplug = new UIPluginCLI();
         GameBrowser gb = new GameBrowser(DATABASE, uiplug);
