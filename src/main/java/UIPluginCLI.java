@@ -74,6 +74,9 @@ public class UIPluginCLI implements UIPlugin {
 
     //TODO: Throw error if developer is null
     public String displayDeveloper() {
+        if(d == null){
+            throw new IllegalStateException("no developer pulled");
+        }
         String devString = "Name: " + d.getName() + "\n";
 
         // allows use of GameList displaying while keeping current GameList
