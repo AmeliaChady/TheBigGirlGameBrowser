@@ -42,6 +42,7 @@ public class GameBrowser {
         // TODO loadAllAdministrators // loads administrators keys from db
 
         uiplug = uiplugin;
+        uiplug.pullGameBrowser(this);
     }
 
     /**

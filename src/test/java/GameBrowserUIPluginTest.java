@@ -6,7 +6,7 @@ public class GameBrowserUIPluginTest {
     public static final String DATABASE = "src/databases/Test_GameBrowserUIPlugin.db";
 
     @Test
-    public static void PullAndHasGame() throws DataSourceException{
+    public void PullAndHasGame() throws DataSourceException{
         System.out.println("NEEDS SETUP!");
         System.out.println("Games: phgame, oogame\n" +
                 "and no game called phnegame");
@@ -33,10 +33,11 @@ public class GameBrowserUIPluginTest {
         // throw exception if uiplug is null
         GameBrowser gbn = new GameBrowser(DATABASE, null);
         assertThrows(IllegalAccessError.class, () -> gbn.pullGame("phgame"));
+        gbn.close();
     }
 
     @Test
-    public static void PullAndHasGameList() throws DataSourceException{
+    public void PullAndHasGameList() throws DataSourceException{
         System.out.println("NEEDS SETUP!");
         System.out.println("GameLists:\n" +
                 "GameLists: phgl, oogl\n" +
@@ -64,10 +65,11 @@ public class GameBrowserUIPluginTest {
         // throw exception if uiplug is null
         GameBrowser gbn = new GameBrowser(DATABASE, null);
         assertThrows(IllegalAccessError.class, () -> gbn.pullGameList("phgl"));
+        gbn.close();
     }
 
     @Test
-    public static void PullAndHasDeveloper() throws DataSourceException{
+    public void PullAndHasDeveloper() throws DataSourceException{
         System.out.println("NEEDS SETUP!");
         System.out.println("Developers:\n" +
                 "Developers: phd, ood\n" +
@@ -95,10 +97,11 @@ public class GameBrowserUIPluginTest {
         // throw exception if uiplug is null
         GameBrowser gbn = new GameBrowser(DATABASE, null);
         assertThrows(IllegalAccessError.class, () -> gbn.pullDeveloper("phd"));
+        gbn.close();
     }
 
     @Test
-    public static void ConstructorGameBrowserUIPlugin() throws DataSourceException{
+    public void ConstructorGameBrowserUIPlugin() throws DataSourceException{
         UIPlugin uiplug = new UIPluginCLI();
         GameBrowser gb = new GameBrowser(DATABASE, uiplug);
         assertTrue(uiplug.hasGameBrowser());
