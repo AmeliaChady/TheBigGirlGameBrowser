@@ -216,10 +216,30 @@ public class GameBrowser {
         }
     }
     public boolean pullGameList(String name){
-        return false;
+        if(uiplug==null){
+            throw new IllegalStateException("no UIPlugin");
+        }
+        try {
+            GameList gl = loadGameList(name);
+            uiplug.pullGameList(gl);
+            return gl != null;
+        }catch (DataSourceException e){
+            uiplug.pullGameList(null);
+            return false;
+        }
     }
     public boolean pullDeveloper(String name){
-        return false;
+        if(uiplug==null){
+            throw new IllegalStateException("no UIPlugin");
+        }
+        try {
+            Developer d = loadDeveloper(name);
+            uiplug.pullDeveloper(d);
+            return d != null;
+        }catch (DataSourceException e){
+            uiplug.pullDeveloper(null);
+            return false;
+        }
     }
 
     // -----DB HELPFUL-----
