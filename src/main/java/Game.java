@@ -6,7 +6,7 @@ enum Status {PENDING, ACCEPTED, REJECTED, LIMBO}
 public class Game {
     private String title;
     private String description;
-    private List<Developer> developers;
+    private List<String> developers;
     private Status status;
 
     /**
@@ -15,7 +15,7 @@ public class Game {
     public Game(){
         title = "testGame";
         description = "This is a test to create a new game object";
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         status = Status.PENDING;
     }
 
@@ -25,30 +25,24 @@ public class Game {
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description, List<Developer> developers, Status status){
+    public Game(String title, String description, List<String> developers, Status status) {
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developers);
+        this.developers = new ArrayList<String>(developers);
         this.status = status;
-        for (Developer developer : developers){
-            developer.getGameList().includeGame(this);
-        }
     }
 
     /**
-     *  Full constructor
+     *  THIS CONSTRUCTOR IS WHAT
      * @param title game title
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description,  List<Developer> developers){
+    public Game(String title, String description,  List<String> developers){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>(developers);
+        this.developers = new ArrayList<String>(developers);
         this.status = Status.PENDING;
-        for (Developer developer : developers){
-            developer.getGameList().includeGame(this);
-        }
     }
 
     /**
@@ -56,14 +50,11 @@ public class Game {
      * @param title game title
      * @param developers link to developer object
      */
-    public Game(String title, List<Developer> developers){
+    public Game(String title, List<String> developers){
         this.title = title;
-        this.developers = new ArrayList<Developer>(developers);
+        this.developers = new ArrayList<String>(developers);
         this.description = "No Description Given";
         this.status = Status.PENDING;
-        for (Developer developer : developers){
-            developer.getGameList().includeGame(this);
-        }
     }
 
 
@@ -73,13 +64,12 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, Developer developer, Status status){
+    public Game(String title, String description, String developer, Status status){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = status;
-        developer.getGameList().includeGame(this);
     }
 
     /**
@@ -88,13 +78,12 @@ public class Game {
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, Developer developer){
+    public Game(String title, String description, String developer){
         this.title = title;
         this.description = description;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.status = Status.PENDING;
-        developer.getGameList().includeGame(this);
     }
 
     /**
@@ -102,13 +91,12 @@ public class Game {
     git * @param title game title
      * @param developer link to developer object
      */
-    public Game(String title, Developer developer){
+    public Game(String title, String developer){
         this.title = title;
-        this.developers = new ArrayList<Developer>();
+        this.developers = new ArrayList<String>();
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
-        developer.getGameList().includeGame(this);
     }
 
     /**
@@ -142,25 +130,25 @@ public class Game {
      * Adds Game to Developers GameList
      * @param developer a user who develops games for general users
      */
-    public void addDeveloper(Developer developer) {
+    public void addDeveloper(String developer) {
         this.developers.add(developer);
-        developer.getGameList().includeGame(this);
     }
+    // TODO: move to GameBrowserDisplay
+//    public void displayGame() {
+//        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
+//        if (developers.size()==0){
+//            display += "None";
+//        }
+//        else{
+//            for(int i = 0; i < developers.size()-1; i++){
+//                display += developers.get(i) + ", ";
+//            }
+//            display += developers.get(developers.size()-1);
+//        }
+//        display += "\nStatus: "+ status.toString() + "\n";
+//        System.out.println(display);
+//    }
 
-    public void displayGame() {
-        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
-        if (developers.size()==0){
-            display += "None";
-        }
-        else{
-            for(int i = 0; i < developers.size()-1; i++){
-                display += developers.get(i).getName() + ", ";
-            }
-            display += developers.get(developers.size()-1).getName();
-        }
-        display += "\nStatus: "+ status.toString() + "\n";
-        System.out.println(display);
-    }
 
     // ------GETTERS------
 
@@ -172,18 +160,9 @@ public class Game {
         return description;
     }
 
-    public List<Developer> getDevelopers() {
+    public List<String> getDevelopers() {
         return developers;
     }
-
-    public List<String> getDeveloperNames() {
-        ArrayList names = new ArrayList<String>();
-        for (int i=0; i<developers.size(); i++){
-            names.add(developers.get(i).getName());
-        }
-        return names;
-    }
-
 
     public Status getStatus() {
         return status;
