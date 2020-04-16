@@ -42,7 +42,8 @@ public class GameBrowser {
         // TODO loadAllAdministrators // loads administrators keys from db
 
         uiplug = uiplugin;
-        uiplug.pullGameBrowser(this);
+        if(uiplug != null)
+            uiplug.pullGameBrowser(this);
     }
 
     /**
@@ -207,8 +208,8 @@ public class GameBrowser {
         }
         try {
             Game g = loadGame(title);
-
-            return false;
+            uiplug.pullGame(g);
+            return g != null;
         }catch (DataSourceException e){
             uiplug.pullGame(null);
             return false;
