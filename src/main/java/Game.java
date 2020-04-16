@@ -134,7 +134,7 @@ public class Game {
         this.developers.add(developer);
     }
     // TODO: move to GameBrowserDisplay
-//    public void displayGame() {
+//    public void displayableGame() {
 //        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
 //        if (developers.size()==0){
 //            display += "None";

@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +8,7 @@ public class GameBrowser {
     private List<String> administrators; // list of keys to administrator
     private List<String> developers; // list of keys to devs
     private List<String> allGameLists; // list of keys to gameLists
+    private UIPlugin uiplug;
 
     /**
      * Constructor (
@@ -26,6 +26,24 @@ public class GameBrowser {
         // TODO loadAllLists helper functions
         // TODO loadAllAdministrators // loads administrators keys from db
 
+        uiplug = null;
+    }
+
+    public GameBrowser(String dataFilePath, UIPlugin uiplugin) throws IllegalArgumentException, DataSourceException {
+        if (dataFilePath.length() == 0)
+            throw new IllegalArgumentException("Please supply a filename.");
+
+        dataSource = new SQLiteSource(dataFilePath);
+        loadAllGames(); // loads master gameList into memory
+        developers = new ArrayList<String>();
+        loadAllDevelopers(); // loads developers keys from db
+        allGameLists = new ArrayList<String>();
+        // TODO loadAllLists helper functions
+        // TODO loadAllAdministrators // loads administrators keys from db
+
+        uiplug = uiplugin;
+        if(uiplug != null)
+            uiplug.pullGameBrowser(this);
     }
 
     /**
@@ -174,6 +192,74 @@ public class GameBrowser {
     // -----SETTERS-----
     public void setGameList(GameList gameListTurnIn) {
         this.gameList = gameListTurnIn;
+    }
+
+    // -----UIPlugin-----
+    /**
+     * @return false if uiplug is null. Otherwise true.
+     */
+    public boolean hasUIPlugin(){
+        return uiplug!=null;
+    }
+    public void setUIPlugin(UIPlugin uiplugin){
+        uiplug = uiplugin;
+    }
+
+    /**
+     * loads game and passes it to UIPlugin
+     * @param title title of game
+     * @return false if pulls a null. true otherwise.
+     */
+    public boolean pullGame(String title){
+        if(uiplug==null){
+            throw new IllegalStateException("no UIPlugin");
+        }
+        try {
+            Game g = loadGame(title);
+            uiplug.pullGame(g);
+            return g != null;
+        }catch (DataSourceException e){
+            uiplug.pullGame(null);
+            return false;
+        }
+    }
+
+    /**
+     * loads gamelist and passes it to UIPlugin
+     * @param name name of gamelist
+     * @return false if pulls a null. true otherwise.
+     */
+    public boolean pullGameList(String name){
+        if(uiplug==null){
+            throw new IllegalStateException("no UIPlugin");
+        }
+        try {
+            GameList gl = loadGameList(name);
+            uiplug.pullGameList(gl);
+            return gl != null;
+        }catch (DataSourceException e){
+            uiplug.pullGameList(null);
+            return false;
+        }
+    }
+
+    /**
+     * loads developer and passes it to UIPlugin
+     * @param name name of developer
+     * @return false if pulls a null. true otherwise.
+     */
+    public boolean pullDeveloper(String name){
+        if(uiplug==null){
+            throw new IllegalStateException("no UIPlugin");
+        }
+        try {
+            Developer d = loadDeveloper(name);
+            uiplug.pullDeveloper(d);
+            return d != null;
+        }catch (DataSourceException e){
+            uiplug.pullDeveloper(null);
+            return false;
+        }
     }
 
     // -----DB HELPFUL-----
