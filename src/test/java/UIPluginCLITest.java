@@ -18,7 +18,7 @@ public class UIPluginCLITest {
         assertEquals("Title: testGame\n" +
                      "Description: This is a test to create a new game object\n" +
                      "Developer(s): None\n" +
-                     "Status: PENDING\n\n", uiplug.displayGame());
+                     "Status: PENDING\n\n", uiplug.displayableGame());
 
 
         //1 developer, pending status
@@ -27,7 +27,7 @@ public class UIPluginCLITest {
         assertEquals("Title: Best game\n" +
                      "Description: This is the best game ever!\n" +
                      "Developer(s): kerry\n" +
-                     "Status: PENDING\n\n", uiplug.displayGame());
+                     "Status: PENDING\n\n", uiplug.displayableGame());
 
         //2 developers, pending status, no description
         List<String> developers = new ArrayList<>();
@@ -38,7 +38,7 @@ public class UIPluginCLITest {
         assertEquals("Title: Cooking Mama\n" +
                      "Description: No Description Given\n" +
                      "Developer(s): kerry anne, kelsey\n" +
-                     "Status: PENDING\n\n", uiplug.displayGame());
+                     "Status: PENDING\n\n", uiplug.displayableGame());
 
         //3 developers, pending status=
         // keeps devs from before + 1
@@ -50,7 +50,7 @@ public class UIPluginCLITest {
         assertEquals("Title: Animal Crossing New Horizons\n" +
                      "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                      "Developer(s): kerry anne, kelsey, grace t. dury\n" +
-                     "Status: PENDING\n\n", uiplug.displayGame());
+                     "Status: PENDING\n\n", uiplug.displayableGame());
 
         //1 developer, accepted
         g = new Game("camp rock 4", "kevin sells real estate now", "kevin jonas", Status.ACCEPTED);
@@ -58,7 +58,7 @@ public class UIPluginCLITest {
         assertEquals("Title: camp rock 4\n" +
                      "Description: kevin sells real estate now\n" +
                      "Developer(s): kevin jonas\n" +
-                     "Status: ACCEPTED\n\n", uiplug.displayGame());
+                     "Status: ACCEPTED\n\n", uiplug.displayableGame());
 
         //1 developer, rejected
         g = new Game("cutest dog <3",
@@ -68,11 +68,11 @@ public class UIPluginCLITest {
         assertEquals("Title: cutest dog <3\n" +
                      "Description: she is my dog. I hate her name but she's still cute\n" +
                      "Developer(s): bertha\n" +
-                     "Status: REJECTED\n\n", uiplug.displayGame());
+                     "Status: REJECTED\n\n", uiplug.displayableGame());
 
         // null game
         uiplug.pullGame(null);
-        assertThrows(IllegalStateException.class, uiplug::displayGame);
+        assertThrows(IllegalStateException.class, uiplug::displayableGame);
 
     }
 

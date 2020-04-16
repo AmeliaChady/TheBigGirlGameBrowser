@@ -54,7 +54,11 @@ public class UIPluginCLI implements UIPlugin {
     }
 
 
-    public String displayGame() {
+    /**
+     * @return a string with the games information
+     * @throws IllegalStateException if no pulled game
+     */
+    public String displayableGame() {
         if(g == null){
             throw new IllegalStateException("no game pulled");
         }
@@ -74,7 +78,10 @@ public class UIPluginCLI implements UIPlugin {
         return gameString;
     }
 
-
+    /**
+     * @return a string with the developers information
+     * @throws IllegalStateException if no pulled developers
+     */
     public String displayDeveloper() {
         if(d == null){
             throw new IllegalStateException("no developer pulled");
@@ -90,7 +97,10 @@ public class UIPluginCLI implements UIPlugin {
         return devString;
     }
 
-
+    /**
+     * @return each games information in the gamelist
+     * @throws IllegalStateException if no pulled gamelist and/or gamebrowser
+     */
     public String displayAllGames(){
         if(gl == null && gb == null){
             throw new IllegalStateException("no pulled gamelist & no pulled gamebrowser");
@@ -113,14 +123,17 @@ public class UIPluginCLI implements UIPlugin {
         while (games.hasNext()){
             String gameName = games.next();
             gb.pullGame(gameName);
-            allGames += this.displayGame();
+            allGames += this.displayableGame();
         }
 
         g = temp;
         return allGames;
     }
 
-
+    /**
+     * @return gamelist name and all game titles
+     * @throws IllegalStateException if no pulled gamelist and/or gamebrowser
+     */
     public String displayListNameAndGameTitles() {
         if(gl == null){
             throw new IllegalStateException("no gamelist pulled");
@@ -139,7 +152,11 @@ public class UIPluginCLI implements UIPlugin {
         return display;
     }
 
-
+    /**
+     * @param status game status to filter by
+     * @return each games information in the gamelist where their status matches passed in status
+     * @throws IllegalStateException if no pulled gamelist and/or gamebrowser
+     */
     public String displayGamesGivenStatus(Status status) {
         if(gl == null && gb == null){
             throw new IllegalStateException("no pulled gamelist & no pulled gamebrowser");
@@ -162,7 +179,7 @@ public class UIPluginCLI implements UIPlugin {
         while (games.hasNext()){
             gb.pullGame(games.next());
             if(g.getStatus() == status)
-                sb.append(this.displayGame());
+                sb.append(this.displayableGame());
         }
 
 
@@ -174,7 +191,10 @@ public class UIPluginCLI implements UIPlugin {
         return gamestatus + sb;
     }
 
-
+    /**
+     * @return game titles in a numbered list
+     * @throws IllegalStateException if no pulled gamelist
+     */
     public String displayGameTitlesNumberedList(){
         if(gl == null){
             throw new IllegalStateException("no gamelist pulled");
@@ -207,12 +227,11 @@ public class UIPluginCLI implements UIPlugin {
 ////            for (int i = 0; i < getGameCount(); i++) {
 ////                if (gameList.get(i).getStatus()==status) {
 ////                    System.out.println(counter + ":");
-////                    gameList.get(i).displayGame();
+////                    gameList.get(i).displayableGame();
 ////                    counter +=1;
 ////                }
 ////            }
 ////        }
 //        return null;
 //    }
-
 }

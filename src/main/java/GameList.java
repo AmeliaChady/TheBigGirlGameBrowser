@@ -81,7 +81,7 @@ public class GameList {
 //        }
 //        else {
 //            for (int i = 0; i < getGameCount(); i++) {
-//                gameList.get(i).displayGame();
+//                gameList.get(i).displayableGame();
 //            }
 //        }
 //    }
@@ -110,7 +110,7 @@ public class GameList {
 //        else {
 //            for (int i = 0; i < getGameCount(); i++) {
 //                if (gameList.get(i).getStatus()==status) {
-//                    gameList.get(i).displayGame();
+//                    gameList.get(i).displayableGame();
 //                }
 //            }
 //        }
@@ -153,7 +153,7 @@ public class GameList {
 //            for (int i = 0; i < getGameCount(); i++) {
 //                if (gameList.get(i).getStatus()==status) {
 //                    System.out.println(counter + ":");
-//                    gameList.get(i).displayGame();
+//                    gameList.get(i).displayableGame();
 //                    counter +=1;
 //                }
 //            }

@@ -195,6 +195,9 @@ public class GameBrowser {
     }
 
     // -----UIPlugin-----
+    /**
+     * @return false if uiplug is null. Otherwise true.
+     */
     public boolean hasUIPlugin(){
         return uiplug!=null;
     }
@@ -202,6 +205,11 @@ public class GameBrowser {
         uiplug = uiplugin;
     }
 
+    /**
+     * loads game and passes it to UIPlugin
+     * @param title title of game
+     * @return false if pulls a null. true otherwise.
+     */
     public boolean pullGame(String title){
         if(uiplug==null){
             throw new IllegalStateException("no UIPlugin");
@@ -215,6 +223,12 @@ public class GameBrowser {
             return false;
         }
     }
+
+    /**
+     * loads gamelist and passes it to UIPlugin
+     * @param name name of gamelist
+     * @return false if pulls a null. true otherwise.
+     */
     public boolean pullGameList(String name){
         if(uiplug==null){
             throw new IllegalStateException("no UIPlugin");
@@ -228,6 +242,12 @@ public class GameBrowser {
             return false;
         }
     }
+
+    /**
+     * loads developer and passes it to UIPlugin
+     * @param name name of developer
+     * @return false if pulls a null. true otherwise.
+     */
     public boolean pullDeveloper(String name){
         if(uiplug==null){
             throw new IllegalStateException("no UIPlugin");
