@@ -13,38 +13,24 @@ public class GameBrowserUIPluginTest {
                 "phgame | amelia | PullAndHasGameTest | ACCEPTED\n" +
                 "oogame | amelia | PullAndHasGameTest | PENDING\n" +
                 "and no game called phnegame");
-        UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
+        UIPluginCLI uiplug = new UIPluginCLI();
         GameBrowser gb = new GameBrowser(DATABASE, uiplug);
 
         // Game Exists
         assertTrue(gb.pullGame("phgame"));
         assertTrue(uiplug.hasGame());
-        assertEquals("Title: phgame\n" +
-                "Description: PullAndHasGameTest\n" +
-                "Developer(s): amelia\n" +
-                "Status: ACCEPTED\n\n", uiplug.displayGame());
 
         // Game Exists Overwriting Old Game
         assertTrue(gb.pullGame("oogame"));
         assertTrue(uiplug.hasGame());
-        assertEquals("Title: oogame\n" +
-                "Description: PullAndHasGameTest\n" +
-                "Developer(s): amelia\n" +
-                "Status: PENDING\n\n", uiplug.displayGame());
 
         // Game Doesn't Exist
         assertFalse(gb.pullGame("phnegame"));
-        assertEquals("Title: oogame\n" +
-                "Description: PullAndHasGameTest\n" +
-                "Developer(s): amelia\n" +
-                "Status: PENDING\n\n", uiplug.displayGame());
+        assertFalse(uiplug.hasGame());
 
         // String is null
         assertFalse(gb.pullGame(null));
-        assertEquals("Title: oogame\n" +
-                "Description: PullAndHasGameTest\n" +
-                "Developer(s): amelia\n" +
-                "Status: PENDING\n\n", uiplug.displayGame());
+        assertFalse(uiplug.hasGame());
 
         gb.close();
         // throw exception if uiplug is null
@@ -53,31 +39,73 @@ public class GameBrowserUIPluginTest {
     }
 
     @Test
-    public static void PullAndHasGameList(){
+    public static void PullAndHasGameList() throws DataSourceException{
+        System.out.println("NEEDS SETUP!");
+        System.out.println("GameLists:\n" +
+                "GameLists: phgl, oogl\n" +
+                "and no GameList called phnegl");
+        UIPlugin uiplug = new UIPluginCLI();
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+
         // GameList Exists
+        assertTrue(gb.pullGameList("phgl"));
+        assertTrue(uiplug.hasGameList());
 
         // GameList Exists Overwriting Old GameList
+        assertTrue(gb.pullGameList("oogl"));
+        assertTrue(uiplug.hasGameList());
 
         // GameList Doesn't Exist
+        assertFalse(gb.pullGameList("phnegl"));
+        assertFalse(uiplug.hasGameList());
 
+        // String is null
+        assertFalse(gb.pullGameList(null));
+        assertFalse(uiplug.hasGameList());
 
+        gb.close();
         // throw exception if uiplug is null
+        GameBrowser gbn = new GameBrowser(DATABASE, null);
+        assertThrows(IllegalAccessError.class, () -> gbn.pullGameList("phgl"));
     }
 
     @Test
-    public static void PullAndHasDeveloper(){
+    public static void PullAndHasDeveloper() throws DataSourceException{
+        System.out.println("NEEDS SETUP!");
+        System.out.println("Developers:\n" +
+                "Developers: phd, ood\n" +
+                "and no Developer called phned");
+        UIPlugin uiplug = new UIPluginCLI();
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+
         // Developer Exists
+        assertTrue(gb.pullDeveloper("phd"));
+        assertTrue(uiplug.hasDeveloper());
 
         // Developer Exists Overwriting Old Developer
+        assertTrue(gb.pullDeveloper("ood"));
+        assertTrue(uiplug.hasDeveloper());
 
         // Developer Doesn't Exist
+        assertFalse(gb.pullDeveloper("phned"));
+        assertFalse(uiplug.hasDeveloper());
 
+        // String is null
+        assertFalse(gb.pullDeveloper(null));
+        assertFalse(uiplug.hasDeveloper());
 
+        gb.close();
         // throw exception if uiplug is null
+        GameBrowser gbn = new GameBrowser(DATABASE, null);
+        assertThrows(IllegalAccessError.class, () -> gbn.pullDeveloper("phd"));
     }
 
     @Test
-    public static void ConstructorPullAndHasGameBrowser(){
-
+    public static void ConstructorGameBrowserUIPlugin() throws DataSourceException{
+        UIPlugin uiplug = new UIPluginCLI();
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+        assertTrue(uiplug.hasGameBrowser());
+        assertTrue(gb.hasUIPlugin());
+        gb.close();
     }
 }

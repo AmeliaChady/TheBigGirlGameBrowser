@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ public class GameBrowser {
     private List<String> administrators; // list of keys to administrator
     private List<String> developers; // list of keys to devs
     private List<String> allGameLists; // list of keys to gameLists
-    private UIDisplayPluginBase uiplug;
+    private UIPlugin uiplug;
 
     /**
      * Constructor (
@@ -30,7 +29,7 @@ public class GameBrowser {
         uiplug = null;
     }
 
-    public GameBrowser(String dataFilePath, UIDisplayPluginBase uiplugin) throws IllegalArgumentException, DataSourceException {
+    public GameBrowser(String dataFilePath, UIPlugin uiplugin) throws IllegalArgumentException, DataSourceException {
         if (dataFilePath.length() == 0)
             throw new IllegalArgumentException("Please supply a filename.");
 
@@ -194,6 +193,10 @@ public class GameBrowser {
     }
 
     // -----Pulls-----
+    public boolean hasUIPlugin(){
+        return uiplug!=null;
+    }
+
     public boolean pullGame(String title){
         return false;
     }

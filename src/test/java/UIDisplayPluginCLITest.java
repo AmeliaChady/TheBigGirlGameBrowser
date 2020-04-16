@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,7 @@ public class UIDisplayPluginCLITest {
 
     @Test
     public void displayGameTest(){
-        UIDisplayPluginCLI uiplug= new UIDisplayPluginCLI();
+        UIPluginCLI uiplug= new UIPluginCLI();
 
         //0 developers, pending status
         Game g = new Game();
@@ -76,7 +74,7 @@ public class UIDisplayPluginCLITest {
 
     @Test
     public void displayDeveloperTest(){
-        UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
+        UIPluginCLI uiplug = new UIPluginCLI();
 
         //0 games
         Developer d = new Developer("George Washington");
@@ -100,7 +98,7 @@ public class UIDisplayPluginCLITest {
 
     @Test
     public void displayGameTitlesNumberedListTest() throws DataSourceException {
-        UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
+        UIPluginCLI uiplug = new UIPluginCLI();
         GameList gl = new GameList("test");
 
         //0 games
@@ -118,7 +116,7 @@ public class UIDisplayPluginCLITest {
 
     @Test
     public void displayListNameAndGameTitlesTest() throws DataSourceException {
-        UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
+        UIPluginCLI uiplug = new UIPluginCLI();
         GameList gl = new GameList("testList");
 
         // 0 Games
@@ -143,7 +141,7 @@ public class UIDisplayPluginCLITest {
                 "ggstga | amelia | displayGamesGivenStatusTest | ACCEPTED\n" +
                 "ggstgp1 | amelia | displayGamesGivenStatusTest | PENDING\n" +
                 "ggstgp2 | amelia | displayGamesGivenStatusTest | PENDING\n");
-        UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
+        UIPluginCLI uiplug = new UIPluginCLI();
         GameBrowser gb = new GameBrowser(DATABASE, uiplug);
         GameList gl = new GameList("testList-ggst");
 
@@ -198,7 +196,7 @@ public class UIDisplayPluginCLITest {
                 "Title | Developer | Description | Status\n" +
                 "agtg1 | amelia | displayAllGamesTest | ACCEPTED\n" +
                 "agtg2 | amelia | displayAllGamesTest | PENDING\n");
-        UIDisplayPluginCLI uiplug = new UIDisplayPluginCLI();
+        UIPluginCLI uiplug = new UIPluginCLI();
         GameBrowser gb = new GameBrowser(DATABASE, uiplug);
         GameList gl = new GameList("testList-agt");
 

@@ -1,12 +1,10 @@
-import java.util.Iterator;
-
-public class UIDisplayPluginCLI implements UIDisplayPluginBase{
+public class UIPluginCLI implements UIPlugin {
     Game g;
     GameList gl;
     Developer d;
     GameBrowser gb;
 
-    UIDisplayPluginCLI(){
+    UIPluginCLI(){
         g = null;
         gl = null;
         d = null;
@@ -31,6 +29,26 @@ public class UIDisplayPluginCLI implements UIDisplayPluginBase{
     @Override
     public void pullGameBrowser(GameBrowser gb){
         this.gb = gb;
+    }
+
+    @Override
+    public boolean hasGame() {
+        return g!=null;
+    }
+
+    @Override
+    public boolean hasGameList() {
+        return gl!=null;
+    }
+
+    @Override
+    public boolean hasDeveloper() {
+        return d!=null;
+    }
+
+    @Override
+    public boolean hasGameBrowser() {
+        return gb!=null;
     }
 
     //TODO: Throw error if game is null
