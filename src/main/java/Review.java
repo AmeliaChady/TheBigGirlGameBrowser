@@ -1,16 +1,16 @@
 public class Review {
     private int rating;
-    private String comment;
+    private String summary;
 
     public Review(int rateIn, String commentIn){
         if (!(rateIn >= 1 && rateIn <= 5)){
             throw new IllegalArgumentException("Invalid rating");
         }
         else if(!(commentIn.length() >= 1 && commentIn.length() <= 10000)){
-            throw new IllegalArgumentException("Invalid comment");
+            throw new IllegalArgumentException("Invalid summary");
         }
         rating = rateIn;
-        comment = commentIn;
+        summary = commentIn;
     }
 
     public int getRating() {
@@ -21,11 +21,11 @@ public class Review {
         this.rating = rating;
     }
 
-    public String getComment() {
-        return comment;
+    public String getSummary() {
+        return summary;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 }
