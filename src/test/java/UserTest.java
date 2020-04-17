@@ -64,7 +64,11 @@ public class UserTest {
 
     @Test
     public void userAddToOwnedGamesTest(){
+        Game countGameTest = new Game("test game", "test game description",
+                new ArrayList<>() , Status.ACCEPTED, 0);
         User user4 = new User(new GameList("ownedGames"), new GameList("wishList"));
+        User user5 = new User(new GameList("ownedGames"), new GameList("wishList"));
+        User user6 = new User(new GameList("ownedGames"), new GameList("wishList"));
         assertEquals(user4.getOwnedGames().getGameCount(), 0);
         user4.addToOwnedGames(game1);
         assertNotNull(user4.getOwnedGames());
@@ -75,5 +79,19 @@ public class UserTest {
         user4.addToOwnedGames(game3);
 
         assertEquals(user4.getOwnedGames().getGameCount(), 3);
+
+        assertEquals(countGameTest.getOwnedCount(), 0);
+
+        user4.addToOwnedGames(countGameTest);
+
+        assertEquals(countGameTest.getOwnedCount(), 1);
+
+        user5.addToOwnedGames(countGameTest);
+        user6.addToOwnedGames(countGameTest);
+
+        assertEquals(countGameTest.getOwnedCount(), 3);
+
+
+
     }
 }

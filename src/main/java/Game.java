@@ -37,6 +37,24 @@ public class Game {
     }
 
     /**
+     * FullFull constructor (should only be used for backend tests)
+     * @param title game title
+     * @param description descriptor for game
+     * @param developers link to developer object
+     * @param ownedCount number of users who have the game in their owned list
+     */
+    public Game(String title, String description, List<Developer> developers, Status status, int ownedCount){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<Developer>(developers);
+        this.status = status;
+        this.ownedCount = ownedCount;
+        for (Developer developer : developers){
+            developer.getGameList().includeGame(this);
+        }
+    }
+
+    /**
      *  Full constructor
      * @param title game title
      * @param description descriptor for game
