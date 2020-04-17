@@ -31,6 +31,10 @@ public class User {
         wishList.includeGame(gameToAdd);
     }
 
+    public void removeFromWishList(Game gameToRemove){
+        wishList.removeGame(gameToRemove.getTitle());
+    }
+
     public void addToOwnedGames(Game gameToAdd){
         ownedGames.includeGame(gameToAdd);
         gameToAdd.increaseOwnedCount();
@@ -54,9 +58,7 @@ public class User {
         return reviews;
     }
 
-    public List<String> getComments(){
-        return comments;
-    }
+    public List<String> getComments(){ return comments; }
 
     //end getters
 

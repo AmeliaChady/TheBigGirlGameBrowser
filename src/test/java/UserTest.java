@@ -21,20 +21,59 @@ public class UserTest {
     @Test
     public void userConstructorTest(){
         User user = new User(new GameList("ownedGames"), new GameList("wishList"));
-        assertNull(user.getOwnedGames());
-        assertNull(user.getWishList());
+        assertEquals(user.getOwnedGames().getGameCount(), 0);
+        assertEquals(user.getWishList().getGameCount(),0);
 
     }
 
     @Test
-    public void userAddToWishlistTest(){
+    public void userAddToWishListTest(){
         User user2 = new User(new GameList("ownedGames"), new GameList("wishList"));
-        assertNull(user2.getWishList());
+        assertEquals(user2.getWishList().getGameCount(), 0);
         user2.addToWishList(game1);
         assertNotNull(user2.getWishList());
 
         assertEquals(user2.getWishList().getGameCount(), 1);
 
+        user2.addToWishList(game2);
+        user2.addToWishList(game3);
 
+        assertEquals(user2.getWishList().getGameCount(), 3);
+
+
+    }
+
+    @Test
+    public void userRemoveFromWishListTest(){
+        User user3 = new User(new GameList("ownedGames"), new GameList("wishList"));
+        assertEquals(user3.getWishList().getGameCount(), 0);
+        user3.addToWishList(game1);
+        user3.addToWishList(game2);
+        user3.addToWishList(game3);
+
+        assertEquals(user3.getWishList().getGameCount(), 3);
+
+        user3.removeFromWishList(game2);
+        assertEquals(user3.getWishList().getGameCount(), 2);
+
+        user3.removeFromWishList(game1);
+        user3.removeFromWishList(game3);
+
+        assertEquals(user3.getWishList().getGameCount(), 0);
+    }
+
+    @Test
+    public void userAddToOwnedGamesTest(){
+        User user4 = new User(new GameList("ownedGames"), new GameList("wishList"));
+        assertEquals(user4.getOwnedGames().getGameCount(), 0);
+        user4.addToOwnedGames(game1);
+        assertNotNull(user4.getOwnedGames());
+
+        assertEquals(user4.getOwnedGames().getGameCount(), 1);
+
+        user4.addToOwnedGames(game2);
+        user4.addToOwnedGames(game3);
+
+        assertEquals(user4.getOwnedGames().getGameCount(), 3);
     }
 }
