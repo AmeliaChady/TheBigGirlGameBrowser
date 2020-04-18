@@ -7,7 +7,7 @@ public class Game {
     private String title;
     private String description;
     private List<String> developers;
-    private List<String> reviews;
+    private ReviewList reviews;
     private Status status;
 
     /**
@@ -21,6 +21,35 @@ public class Game {
     }
 
     /**
+     * THIS CONSTRUCTOR IS WHAT THE Loader SHOULD USE
+     * @param title game title
+     * @param description descriptor for game
+     * @param developers link to developer object
+     */
+    public Game(String title, String description, ReviewList reviews, List<String> developers, Status status){
+        this.title = title;
+        this.description = description;
+        this.developers = developers;
+        this.reviews = reviews;
+        this.status = status;
+    }
+
+    /**
+     * THIS Constructor is for UI
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description, String developer) {
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>();
+        developers.add(developer);
+        this.reviews = new ReviewList(title + "'s Reviews");
+        this.status = Status.PENDING;
+    }
+
+    /**
      * FullFull constructor (should only be used for backend tests)
      * @param title game title
      * @param description descriptor for game
@@ -30,38 +59,25 @@ public class Game {
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
-        this.reviews = new ArrayList<>();
+        this.reviews = new ReviewList(title + "'s Reviews");
         this.status = status;
     }
 
     /**
-     * THIS CONSTRUCTOR IS WHAT THE UI SHOULD USE
-     * @param title game title
-     * @param description descriptor for game
-     * @param developers link to developer object
-     */
-    public Game(String title, String description, List<String> reviews, List<String> developers){
-        this.title = title;
-        this.description = description;
-        this.developers = new ArrayList<String>(developers);
-        this.reviews = new ArrayList<>(reviews);
-        this.status = Status.PENDING;
-    }
-
-    /**
-     * THIS CONSTRUCTOR IS WHAT THE UI SHOULD USE
+     * FullFull constructor (should only be used for backend tests)
      * @param title game title
      * @param description descriptor for game
      * @param developer link to developer object
      */
-    public Game(String title, String description, List<String> reviews, String developer){
+    public Game(String title, String description, String developer, Status status) {
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>();
         developers.add(developer);
-        this.reviews = new ArrayList<>(reviews);
-        this.status = Status.PENDING;
+        this.reviews = new ReviewList(title + "'s Reviews");
+        this.status = status;
     }
+
 
     /**
      * Deprecated Constructor
@@ -85,35 +101,6 @@ public class Game {
         this.title = title;
         this.developers = new ArrayList<String>(developers);
         this.description = "No Description Given";
-        this.status = Status.PENDING;
-    }
-
-
-    /**
-     * FullFull constructor (should only be used for backend tests)
-     * @param title game title
-     * @param description descriptor for game
-     * @param developer link to developer object
-     */
-    public Game(String title, String description, String developer, Status status){
-        this.title = title;
-        this.description = description;
-        this.developers = new ArrayList<String>();
-        this.developers.add(developer);
-        this.status = status;
-    }
-
-    /**
-     *  Full constructor
-     * @param title game title
-     * @param description descriptor for game
-     * @param developer link to developer object
-     */
-    public Game(String title, String description, String developer){
-        this.title = title;
-        this.description = description;
-        this.developers = new ArrayList<String>();
-        this.developers.add(developer);
         this.status = Status.PENDING;
     }
 
@@ -166,7 +153,7 @@ public class Game {
     }
 
     public void addReview(String review){
-        this.reviews.add(review);
+        this.reviews.addReview(review);
     }
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
@@ -204,7 +191,7 @@ public class Game {
     }
 
     public List<String> getReviews() {
-        return reviews;
+        return reviews.getReviews();
     }
 
 }

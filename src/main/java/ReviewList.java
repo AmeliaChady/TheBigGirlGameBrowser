@@ -15,6 +15,9 @@ public class ReviewList {
      * @param ID
      */
     public void addReview(String ID){
+        if(reviews.contains(ID)){
+            throw new IllegalArgumentException("This review already exists");
+        }
         reviews.add(ID);
     }
 

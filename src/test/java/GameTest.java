@@ -58,7 +58,9 @@ public class GameTest {
     @Test
     public void enumTest(){
 
-        Game game = new Game("title", "description", "Jimmy", Status.ACCEPTED);
+        ArrayList<String> devNames = new ArrayList<>();
+        devNames.add("Jimmy");
+        Game game = new Game("title", "description", devNames, Status.ACCEPTED);
 
         assertEquals(Status.ACCEPTED, game.getStatus()); //checks that the fullfull constructor works
 
@@ -98,24 +100,32 @@ public class GameTest {
 
     @Test
     public void gameHoldsReviewsTest(){
-        List<String> reviews = new ArrayList<>();
+        ReviewList reviews = new ReviewList("Bogardt");
 
         Review r1 = new Review(1, "Bad Game!", "Kerry", "Animal Crossing New Horizons");
+        r1.setID("a");
         Review r2 = new Review(2, "Boring Game", "kb", "acnh");
+        r2.setID("b");
         Review r3 = new Review(3, "It's a Game...", "kab", "Animal Crossing");
+        r3.setID("c");
         Review r4 = new Review(4, "Yeah I liked this game", "Kerry Anne", "Animal Horizons");
+        r4.setID("d");
         Review r5 = new Review(5,"WOW Best Game ever", "kerby", "Crossing Horizons");
+        r5.setID("e");
 
-        reviews.add(r1.getID());
-        reviews.add(r2.getID());
-        reviews.add(r3.getID());
-        reviews.add(r4.getID());
-        reviews.add(r5.getID());
+        reviews.addReview(r1.getID());
+        reviews.addReview(r2.getID());
+        reviews.addReview(r3.getID());
+        reviews.addReview(r4.getID());
+        reviews.addReview(r5.getID());
 
-        Game game = new Game("testGame", "a game for Tests", reviews, "Robert");
+        ArrayList<String> devNames = new ArrayList<>();
+        devNames.add("Jimmy");
 
-        assertEquals(reviews, game.getReviews());
-        assertEquals("ID01", game.getReviews().get(0));
+        Game game = new Game("testGame", "a game for Tests", reviews, devNames, Status.PENDING);
+
+        assertEquals(reviews.getReviews(), game.getReviews());
+        assertEquals("a", game.getReviews().get(0));
 
         Review r6 = new Review(3, "I kinda liked this but I didn't either", "coolGuy", "coolGame");
         game.addReview(r6.getID());

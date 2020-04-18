@@ -17,6 +17,8 @@ public class ReviewListTests {
         String fakeID = "P90X";
         robsReviews.addReview(fakeID);
         assertEquals(1,robsReviews.getReviews().size());
+
+        assertThrows(IllegalArgumentException.class, ()->robsReviews.addReview(fakeID));
     }
 
     @Test
