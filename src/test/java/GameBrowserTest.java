@@ -322,7 +322,7 @@ public class GameBrowserTest {
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
             User user1 = new User(new GameList("user1"), null),
                  user2 = new User(new GameList("user2"), null);
-            Game game = new Game("game", "some dev");
+            Game game = new Game("Crossing Mammals", "Amelia Chady");
 
             // unowned game
             assertEquals(0, game.getOwnedCount());
@@ -335,6 +335,7 @@ public class GameBrowserTest {
             gameBrowser.addGameToUserGameListTest(user2, game);
             assertEquals(2, game.getOwnedCount());
 
+            gameBrowser.close();
         } catch (DataSourceException dse) {
             fail(dse.getMessage());
         }
