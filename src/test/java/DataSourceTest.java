@@ -79,12 +79,7 @@ public class DataSourceTest {
 
         // Basic
         // Adding Two Test Games
-        Game g = new Game("LoadGameTest1", "description", "LGT_A");
-        ds.saveGame(g);
-        g = new Game("LoadGameTest2", "noitpircsed","LGT_B");
-        g.addDeveloper("LGT_C");
-        g.changeStatus(Status.ACCEPTED);
-        ds.saveGame(g);
+        Game g;
 
         // Can Find A Game
         g = ds.loadGame("LoadGameTest1");
