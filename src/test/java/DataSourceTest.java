@@ -190,7 +190,6 @@ public class DataSourceTest {
         bobby.getGameList().includeGame("game1");
         bobby.getGameList().includeGame("game2");
         bobby.getGameList().includeGame("game3");
-        //ds.saveGameList(bobby.getGameList());
 
         // At this point db should be aware of bob and have a relationship between bob and these games
 

@@ -101,7 +101,13 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
+    public void SQLiteSourceSaveDeveloper() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveDevelopers.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveDevelopers.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/SaveDeveloper.sql");
         SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"SaveDevelopers.db");
         DataSourceTest.dataSourceSaveDevelopersTest(s);
         s.close();
