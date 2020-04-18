@@ -411,7 +411,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Developer(dev, g);
+            return new Developer(dev, g, -1);
             //return new Developer(dev);
         }catch (SQLException e){
             try {

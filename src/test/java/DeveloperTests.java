@@ -10,30 +10,32 @@ public class DeveloperTests {
 
     @Test
     public void developerConstructorTest(){
-        Developer d1 = new Developer("Bob (the cat)");
+        Developer d1 = new Developer("Bob (the cat)", 0);
         assertNotNull(d1.getName());
         assertNotNull(d1.getGameList());
         assertEquals(0, d1.getGameList().getGameCount());
         assertEquals("Bob (the cat)", d1.getName());
+        assertEquals( 0, d1.getAid());
 
-        Developer d2 = new Developer("Bob (my dad)");
+        Developer d2 = new Developer("Bob (my dad)", 1 );
         assertNotNull(d2.getName());
         assertNotNull(d2.getGameList());
         assertEquals(0, d2.getGameList().getGameCount());
         assertEquals("Bob (my dad)", d2.getName());
+        assertEquals( 1, d2.getAid());
     }
 
     @Test
     public void developerSubmitGameTest() {
         //make all the developers for testing
-        Developer d1 = new Developer("Milk Dad");
-        Developer d2 = new Developer("The Sunshine Gang");
-        Developer d3 = new Developer("I just want to go to sleep");
-        Developer d4 = new Developer("The Korona Krew");
-        Developer d5 = new Developer("Brett Michaels");
-        Developer d6 = new Developer("six");
-        Developer d7 = new Developer("seven");
-        Developer d8 = new Developer("eight");
+        Developer d1 = new Developer("Milk Dad", 1);
+        Developer d2 = new Developer("The Sunshine Gang", 2);
+        Developer d3 = new Developer("I just want to go to sleep", 3);
+        Developer d4 = new Developer("The Korona Krew", 4);
+        Developer d5 = new Developer("Brett Michaels", 5 );
+        Developer d6 = new Developer("six", 6);
+        Developer d7 = new Developer("seven", 7);
+        Developer d8 = new Developer("eight",8);
 
         //add games to array list
         d6.submitGame("Billy Bob Goes to The Moon");

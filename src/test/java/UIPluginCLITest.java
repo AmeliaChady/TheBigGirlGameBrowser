@@ -81,7 +81,7 @@ public class UIPluginCLITest {
         UIPluginCLI uiplug = new UIPluginCLI();
 
         //0 games
-        Developer d = new Developer("George Washington");
+        Developer d = new Developer("George Washington", 1);
         uiplug.pullDeveloper(d);
         assertEquals("Name: George Washington\n" +
                      "George Washington's Games: This list is empty\n", uiplug.displayDeveloper());

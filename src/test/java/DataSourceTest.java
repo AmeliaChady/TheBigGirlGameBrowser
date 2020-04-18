@@ -184,7 +184,7 @@ public class DataSourceTest {
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
 
-        Developer bobby = new Developer("Bobby");
+        Developer bobby = new Developer("Bobby", 1);
 
         Game game1 = new Game("game1", bobby.getName());
         Game game2 = new Game("game2", bobby.getName());
@@ -194,7 +194,7 @@ public class DataSourceTest {
 
         // At this point db should be aware of bob and have a relationship between bob and these games
 
-        Developer gef = new Developer("jim");
+        Developer gef = new Developer("jim", 2);
         game1.addDeveloper(gef.getName());
 
         game3.addDeveloper(gef.getName());
@@ -207,7 +207,7 @@ public class DataSourceTest {
 
     public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
-        Developer save = new Developer("LoadDeveloperTest");
+        Developer save = new Developer("LoadDeveloperTest", 1);
         Game aGame = new Game("LoadDeveloperTestGame", "aa", save.getName());
         ds.saveGame(aGame);
         save.getGameList().includeGame(aGame.getTitle());
@@ -230,8 +230,9 @@ public class DataSourceTest {
 
     public static void dataSourceLoadDeveloperListTest(DataSource ds) throws DataSourceException {
         // create and save devs
-        for (int i = 0; i < 5; i++)
-            ds.saveDeveloper( new Developer("test dev "+i) );
+        //todo do in a script
+        //for (int i = 0; i < 5; i++)
+        //    ds.saveDeveloper( new Developer("test dev "+i) );
         // load them from db
         List<String> developers = ds.loadDeveloperList();
 
