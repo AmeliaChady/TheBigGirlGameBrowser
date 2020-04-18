@@ -2,8 +2,11 @@ public class Review {
     private int rating;
     private String summary;
     private String ID;
+    private String author;
+    private String gameTitle;
 
-    public Review(int rateIn, String commentIn){
+
+    public Review(int rateIn, String commentIn, String authorIn, String gameTitleIn){
         if (!(rateIn >= 1 && rateIn <= 5)){
             throw new IllegalArgumentException("Invalid rating");
         }
@@ -13,6 +16,8 @@ public class Review {
         rating = rateIn;
         summary = commentIn;
         ID = "ID01"; //TODO: make this update based on number of reviews in DB
+        author = authorIn;
+        gameTitle = gameTitleIn;
     }
 
     public int getRating() {
@@ -37,5 +42,13 @@ public class Review {
 
     public void setID(String ID) {
         this.ID = ID;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getGameTitle() {
+        return gameTitle;
     }
 }
