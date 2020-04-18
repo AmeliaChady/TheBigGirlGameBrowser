@@ -114,7 +114,7 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceLoadDeveloper() throws IOException, DataSourceException{
+    public void SQLiteSourceLoadDeveloper() throws IOException , DataSourceException{
         SQLiteSource.RunSQL(
                 DB_BASE_PATH + "LoadDevelopers.db",
                 SCRIPT_BASE_PATH + "DDL.sql");

@@ -394,7 +394,7 @@ public class SQLiteSource implements DataSource{
             Statement s = conn.createStatement();
 
             // Get GameList name
-            String sql = "SELECT listName FROM Developers WHERE name=\""+dev+"\";";
+            String sql = "SELECT glid FROM Developers WHERE name=\""+dev+"\";";
             s.execute(sql);
             ResultSet rs = s.getResultSet();
             if(!rs.next()){
@@ -407,7 +407,7 @@ public class SQLiteSource implements DataSource{
             }
 
             // Fill GameList
-            GameList g = loadGameList(rs.getString("listName"));
+            GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
 
             // Return Dev Object
             s.close();
@@ -639,6 +639,14 @@ public class SQLiteSource implements DataSource{
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
+    }
+    private String getGameListName(int glid, Statement s) throws SQLException{
+        String sql = "SELECT name FROM GameLists WHERE glid="+glid+";";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(!rs.next())
+            return null;
+        return rs.getString("name");
     }
 
     private int getGid(String game, Statement s) throws DataSourceException, IllegalArgumentException{
