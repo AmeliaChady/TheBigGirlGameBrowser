@@ -92,5 +92,4 @@ public class SQLiteSourceTests {
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }
-
 }
