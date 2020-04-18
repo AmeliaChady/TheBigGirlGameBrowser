@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameBrowserUIPluginTest {
-    public static final String DATABASE = "src/databases/Test_GameBrowserUIPlugin.db";
+    public static final String DATABASE = "src/databases/Test_UIPlugin/Test_GameBrowserUIPlugin.db";
 
     @Test
     public void PullAndHasGame() throws DataSourceException{
