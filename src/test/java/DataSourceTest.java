@@ -224,10 +224,6 @@ public class DataSourceTest {
     }
 
     public static void dataSourceLoadDeveloperListTest(DataSource ds) throws DataSourceException {
-        // create and save devs
-        //todo do in a script
-        //for (int i = 0; i < 5; i++)
-        //    ds.saveDeveloper( new Developer("test dev "+i) );
         // load them from db
         List<String> developers = ds.loadDeveloperList();
 

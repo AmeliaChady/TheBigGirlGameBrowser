@@ -127,8 +127,14 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceLoadDeveloperList() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(DB_BASE_PATH);
+    public void SQLiteSourceLoadDeveloperList() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadDeveloperList.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadDeveloperList.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadDeveloperList.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"LoadDeveloperList.db");
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }
