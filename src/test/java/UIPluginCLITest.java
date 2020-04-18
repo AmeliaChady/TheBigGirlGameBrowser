@@ -6,7 +6,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UIPluginCLITest {
-    public static final String DATABASE = "src/databases/Test_UIPluginCLI.db";
+    public static final String DATABASE = "src/databases/Test_UIPlugin/UIPluginCLI.db";
 
     @Test
     public void displayGameTest(){

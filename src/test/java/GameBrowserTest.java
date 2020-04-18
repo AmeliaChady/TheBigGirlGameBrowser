@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +25,7 @@ public class GameBrowserTest {
         int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
-            testDev = new Developer("dev "+i, 1);
+            testDev = new Developer("dev "+i, i);
             testDataSource.saveDeveloper(testDev);
             testGame = new Game("game "+i, testDev.getName());
             testDataSource.saveGame(testGame);
@@ -95,8 +96,9 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void addGameTest(){
+    public void addGameTest() throws IOException{
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gb.getGameList().getGameCount();
@@ -132,8 +134,9 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void removeGameTest(){
+    public void removeGameTest() throws IOException{
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
             gb.addDeveloper(new Developer("Something",1 ));
 
@@ -181,8 +184,9 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void addDeveloperTest() {
+    public void addDeveloperTest() throws IOException {
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gameBrowser.getDevelopers().size();
@@ -226,8 +230,9 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void removeDeveloperTest() { // assumes a passing addDeveloperTest
+    public void removeDeveloperTest() throws IOException{ // assumes a passing addDeveloperTest
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
             gb.removeDeveloper("dev1");
@@ -264,8 +269,9 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void saveTest(){
+    public void saveTest() throws IOException{
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
             Developer rob =  new Developer("Rob", 1);
             gameBrowser.addDeveloper(rob);
