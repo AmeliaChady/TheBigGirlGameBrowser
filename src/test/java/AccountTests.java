@@ -5,18 +5,18 @@ public class AccountTests {
 
     @Test
     public void AccountConstructorTest(){
-        Account acc1 = new Account("berthaIsMyDog", "welovebertha@gmail.com", "berthaberthaberthabertha");
+        Account acc1 = new Account("berthaIsMyDog", "welovebertha@gmail.com", "berthaberthaberthabertha", AccountType.DEVELOPER);
         assertEquals("berthaIsMyDog", acc1.getUsername());
         assertEquals("welovebertha@gmail.com", acc1.getEmail());
         assertEquals("berthaberthaberthabertha", acc1.getPassword());
 
-        Account acc2 = new Account("realHousewivesFan", "realHousewivesFan@yahoo.com", "EleganceFlairAndSavoirfaire");
+        Account acc2 = new Account("realHousewivesFan", "realHousewivesFan@yahoo.com", "EleganceFlairAndSavoirfaire", AccountType.DEVELOPER);
         assertEquals("realHousewivesFan", acc2.getUsername());
         assertEquals("realHousewivesFan@yahoo.com", acc2.getEmail());
         assertEquals("EleganceFlairAndSavoirfaire", acc2.getPassword());
 
         //invalid email
-        assertThrows(IllegalArgumentException.class, ()-> new Account("uhOh", "not an email", "blooooop"));
+        assertThrows(IllegalArgumentException.class, ()-> new Account("uhOh", "not an email", "blooooop", AccountType.ADMINISTRATOR));
     }
 
     @Test
