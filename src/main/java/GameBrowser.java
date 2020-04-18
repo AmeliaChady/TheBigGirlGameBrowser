@@ -124,7 +124,7 @@ public class GameBrowser {
      * @param user - user of owned game
      * @param game - owned game to add to user's game list
      */
-    public void addGameToUserGameListTest(User user, Game game) throws DataSourceException {
+    public void addGameToUserGameList(User user, Game game) throws DataSourceException {
         user.addToOwnedGames(game.getTitle());
         addToGameCount(game);
         dataSource.saveGameList(user.getOwnedGames());

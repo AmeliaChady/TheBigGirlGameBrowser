@@ -328,11 +328,11 @@ public class GameBrowserTest {
             assertEquals(0, game.getOwnedCount());
 
             // owned game by one user
-            gameBrowser.addGameToUserGameListTest(user1, game);
+            gameBrowser.addGameToUserGameList(user1, game);
             assertEquals(1, game.getOwnedCount());
 
             // owned game by more than one user;
-            gameBrowser.addGameToUserGameListTest(user2, game);
+            gameBrowser.addGameToUserGameList(user2, game);
             assertEquals(2, game.getOwnedCount());
 
             gameBrowser.close();
