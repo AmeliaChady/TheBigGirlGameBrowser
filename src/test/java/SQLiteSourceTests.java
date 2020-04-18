@@ -102,7 +102,7 @@ public class SQLiteSourceTests {
 
     @Test
     public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(DB_BASE_PATH);
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"SaveDevelopers.db");
         DataSourceTest.dataSourceSaveDevelopersTest(s);
         s.close();
     }

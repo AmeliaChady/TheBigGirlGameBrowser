@@ -184,28 +184,26 @@ public class DataSourceTest {
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
 
+        // todo  set up w/ scripts
         Developer bobby = new Developer("Bobby", 1);
 
-        Game game1 = new Game("game1", bobby.getName());
-        Game game2 = new Game("game2", bobby.getName());
-        Game game3 = new Game("game3", bobby.getName());
-
+        bobby.getGameList().includeGame("game1");
+        bobby.getGameList().includeGame("game2");
+        bobby.getGameList().includeGame("game3");
         //ds.saveGameList(bobby.getGameList());
 
         // At this point db should be aware of bob and have a relationship between bob and these games
 
         Developer gef = new Developer("jim", 2);
-        game1.addDeveloper(gef.getName());
 
-        game3.addDeveloper(gef.getName());
-
-        gef.getGameList().includeGame(game1.getTitle());
-        gef.getGameList().includeGame(game3.getTitle());
-        ds.saveDeveloper(gef);
+        gef.getGameList().includeGame("game1");
+        gef.getGameList().includeGame("game3");
         ds.saveDeveloper(bobby);
+        ds.saveDeveloper(gef);
     }
 
     public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
+        //todo  add checks for correct aid
         System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
         Developer save = new Developer("LoadDeveloperTest", 1);
         Game aGame = new Game("LoadDeveloperTestGame", "aa", save.getName());
