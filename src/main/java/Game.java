@@ -8,6 +8,7 @@ public class Game {
     private String description;
     private List<String> developers;
     private Status status;
+    private int ownedCount;
 
     /**
      * Default constructor
@@ -33,16 +34,22 @@ public class Game {
     }
 
     /**
+     *  Full constructor
+
      *  THIS CONSTRUCTOR IS WHAT
+
      * @param title game title
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description,  List<String> developers){
+    public Game(String title, String description,  List<String> developers, Status status, int ownedCount){
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
         this.status = Status.PENDING;
+        this.ownedCount = ownedCount;
+        this.status = status;
+
     }
 
     /**
@@ -133,21 +140,10 @@ public class Game {
     public void addDeveloper(String developer) {
         this.developers.add(developer);
     }
-    // TODO: move to GameBrowserDisplay
-//    public void displayableGame() {
-//        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
-//        if (developers.size()==0){
-//            display += "None";
-//        }
-//        else{
-//            for(int i = 0; i < developers.size()-1; i++){
-//                display += developers.get(i) + ", ";
-//            }
-//            display += developers.get(developers.size()-1);
-//        }
-//        display += "\nStatus: "+ status.toString() + "\n";
-//        System.out.println(display);
-//    }
+
+    public void increaseOwnedCount(){
+        ownedCount = ownedCount + 1;
+    }
 
 
     // ------GETTERS------
@@ -167,5 +163,7 @@ public class Game {
     public Status getStatus() {
         return status;
     }
+
+    public int getOwnedCount(){return ownedCount;}
 
 }
