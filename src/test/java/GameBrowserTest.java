@@ -99,6 +99,7 @@ public class GameBrowserTest {
     public void addGameTest() throws IOException{
         try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/GameBrowserAddGame.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gb.getGameList().getGameCount();

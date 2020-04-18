@@ -63,10 +63,9 @@ public class SQLiteSource implements DataSource{
             safeUpsertGame(game, s);
 
             // Games ID
-            String sql = "SELECT gid FROM Games WHERE title=\""+game.getTitle()+"\";";
-            s.execute(sql);
+            String sql;
             // TODO: Hard Coded not accounting closed.
-            int gid = s.getResultSet().getInt(1);
+            int gid = getGid(game.getTitle(), s);
 
             // Developers Set Up
             Iterator<String> devs = game.getDevelopers().iterator();
@@ -76,16 +75,8 @@ public class SQLiteSource implements DataSource{
             while (devs.hasNext()) {
                 // Developer Set Up
                 String d = devs.next();
-                //saveDeveloper(d);
 
-                //safeUpsertDevelopers(d.getName(), s);
-
-                // Getting Developer ID
-                sql = "SELECT did FROM Developers WHERE name=\"" + d + "\";";
-                s.execute(sql);
-                // TODO: Hard Coded not accounting closed.
-                did = s.getResultSet().getInt(1);
-
+                did = getDid(d, s);
                 // Connect Game to Dev
                 safeUpsertGameDevelopers(gid, did, s);
             }
