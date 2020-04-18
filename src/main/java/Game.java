@@ -7,6 +7,7 @@ public class Game {
     private String title;
     private String description;
     private List<String> developers;
+    private List<String> reviews;
     private Status status;
 
     /**
@@ -29,11 +30,41 @@ public class Game {
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
+        this.reviews = new ArrayList<>();
         this.status = status;
     }
 
     /**
-     *  THIS CONSTRUCTOR IS WHAT
+     * THIS CONSTRUCTOR IS WHAT THE UI SHOULD USE
+     * @param title game title
+     * @param description descriptor for game
+     * @param developers link to developer object
+     */
+    public Game(String title, String description, List<String> reviews, List<String> developers){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>(developers);
+        this.reviews = new ArrayList<>(reviews);
+        this.status = Status.PENDING;
+    }
+
+    /**
+     * THIS CONSTRUCTOR IS WHAT THE UI SHOULD USE
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description, List<String> reviews, String developer){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>();
+        developers.add(developer);
+        this.reviews = new ArrayList<>(reviews);
+        this.status = Status.PENDING;
+    }
+
+    /**
+     * Deprecated Constructor
      * @param title game title
      * @param description descriptor for game
      * @param developers link to developer object
@@ -133,6 +164,10 @@ public class Game {
     public void addDeveloper(String developer) {
         this.developers.add(developer);
     }
+
+    public void addReview(String review){
+        this.reviews.add(review);
+    }
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
 //        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
@@ -166,6 +201,10 @@ public class Game {
 
     public Status getStatus() {
         return status;
+    }
+
+    public List<String> getReviews() {
+        return reviews;
     }
 
 }

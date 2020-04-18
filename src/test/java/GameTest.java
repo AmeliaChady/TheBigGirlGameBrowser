@@ -95,4 +95,31 @@ public class GameTest {
 
         assertEquals(developers, multiDevGame.getDevelopers());
     }
+
+    @Test
+    public void gameHoldsReviewsTest(){
+        List<String> reviews = new ArrayList<>();
+
+        Review r1 = new Review(1, "Bad Game!");
+        Review r2 = new Review(2, "Boring Game");
+        Review r3 = new Review(3, "It's a Game...");
+        Review r4 = new Review(4, "Yeah I liked this game");
+        Review r5 = new Review(5,"WOW Best Game ever");
+
+        reviews.add(r1.getID());
+        reviews.add(r2.getID());
+        reviews.add(r3.getID());
+        reviews.add(r4.getID());
+        reviews.add(r5.getID());
+
+        Game game = new Game("testGame", "a game for Tests", reviews, "Robert");
+
+        assertEquals(reviews, game.getReviews());
+        assertEquals("ID01", game.getReviews().get(0));
+
+        Review r6 = new Review(3, "I kinda liked this but I didn't either");
+        game.addReview(r6.getID());
+
+        assertEquals(6, game.getReviews().size());
+    }
 }
