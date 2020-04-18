@@ -11,9 +11,9 @@ public class UserTest {
 
 
 
-    Game game1 = new Game("game1", "game1 description", new Developer("Jack"),Status.ACCEPTED);
-    Game game2 = new Game("game2", "game2 description", new Developer ("Marcy"), Status.ACCEPTED);
-    Game game3 = new Game("game3", "game3 description", new Developer("Henry"), Status.ACCEPTED);
+    Game game1 = new Game("game1", "game1 description","Jack",Status.ACCEPTED);
+    Game game2 = new Game("game2", "game2 description","Marcy", Status.ACCEPTED);
+    Game game3 = new Game("game3", "game3 description", "Henry", Status.ACCEPTED);
 
 
 
@@ -30,13 +30,13 @@ public class UserTest {
     public void userAddToWishListTest(){
         User user2 = new User(new GameList("ownedGames"), new GameList("wishList"));
         assertEquals(user2.getWishList().getGameCount(), 0);
-        user2.addToWishList(game1);
+        user2.addToWishList(game1.getTitle());
         assertNotNull(user2.getWishList());
 
         assertEquals(user2.getWishList().getGameCount(), 1);
 
-        user2.addToWishList(game2);
-        user2.addToWishList(game3);
+        user2.addToWishList(game2.getTitle());
+        user2.addToWishList(game3.getTitle());
 
         assertEquals(user2.getWishList().getGameCount(), 3);
 
@@ -47,17 +47,17 @@ public class UserTest {
     public void userRemoveFromWishListTest(){
         User user3 = new User(new GameList("ownedGames"), new GameList("wishList"));
         assertEquals(user3.getWishList().getGameCount(), 0);
-        user3.addToWishList(game1);
-        user3.addToWishList(game2);
-        user3.addToWishList(game3);
+        user3.addToWishList(game1.getTitle());
+        user3.addToWishList(game2.getTitle());
+        user3.addToWishList(game3.getTitle());
 
         assertEquals(user3.getWishList().getGameCount(), 3);
 
-        user3.removeFromWishList(game2);
+        user3.removeFromWishList(game2.getTitle());
         assertEquals(user3.getWishList().getGameCount(), 2);
 
-        user3.removeFromWishList(game1);
-        user3.removeFromWishList(game3);
+        user3.removeFromWishList(game1.getTitle());
+        user3.removeFromWishList(game3.getTitle());
 
         assertEquals(user3.getWishList().getGameCount(), 0);
     }
@@ -70,26 +70,24 @@ public class UserTest {
         User user5 = new User(new GameList("ownedGames"), new GameList("wishList"));
         User user6 = new User(new GameList("ownedGames"), new GameList("wishList"));
         assertEquals(user4.getOwnedGames().getGameCount(), 0);
-        user4.addToOwnedGames(game1);
+        user4.addToOwnedGames(game1.getTitle());
         assertNotNull(user4.getOwnedGames());
 
         assertEquals(user4.getOwnedGames().getGameCount(), 1);
 
-        user4.addToOwnedGames(game2);
-        user4.addToOwnedGames(game3);
+        user4.addToOwnedGames(game2.getTitle());
+        user4.addToOwnedGames(game3.getTitle());
 
         assertEquals(user4.getOwnedGames().getGameCount(), 3);
 
-        assertEquals(countGameTest.getOwnedCount(), 0);
+        assertEquals(0, countGameTest.getOwnedCount());
 
-        user4.addToOwnedGames(countGameTest);
+        user4.addToOwnedGames(countGameTest.getTitle());
 
-        assertEquals(countGameTest.getOwnedCount(), 1);
-
-        user5.addToOwnedGames(countGameTest);
-        user6.addToOwnedGames(countGameTest);
-
-        assertEquals(countGameTest.getOwnedCount(), 3);
+        user5.addToOwnedGames(countGameTest.getTitle());
+        user6.addToOwnedGames(countGameTest.getTitle());
+        //TODO: gameBroswer should handle calling increaseOwnedCount for a game.
+        //TODO: gameBrowser test for above
 
 
 

@@ -21,17 +21,16 @@ public class User {
         comments = commentsIn;
     }
 
-    public void addToWishList(Game gameToAdd){
+    public void addToWishList(String gameToAdd){
         wishList.includeGame(gameToAdd);
     }
 
-    public void removeFromWishList(Game gameToRemove){
-        wishList.removeGame(gameToRemove.getTitle());
+    public void removeFromWishList(String gameToRemove){
+        wishList.removeGame(gameToRemove);
     }
 
-    public void addToOwnedGames(Game gameToAdd){
+    public void addToOwnedGames(String gameToAdd){
         ownedGames.includeGame(gameToAdd);
-        gameToAdd.increaseOwnedCount();
 
     }
 
