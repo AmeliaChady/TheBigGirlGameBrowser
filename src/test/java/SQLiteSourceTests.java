@@ -7,8 +7,8 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
-    public static String CORRECT_PATH = "src/databases/testing.db";
-/***
+    public static String CORRECT_PATH = "src/databases/Test_SQLiteSource.db";
+
     @Test
     public void SQLiteSourceRunSQL() throws IOException {
         System.out.println("Requires Manual Check");
@@ -27,7 +27,7 @@ public class SQLiteSourceTests {
         assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", null));
 
     }
-**/
+
     @Test
     public void SQLiteSourceConstructor() throws SQLException { // also
         try {
