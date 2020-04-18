@@ -483,15 +483,10 @@ public class SQLiteSource implements DataSource{
             Statement s = conn.createStatement();
 
             int did = getDid(developer, s);
-            GameList devsGL = loadGameList(developer.getGameListName());
-            int glid = getGlid(devsGL, s);
+            int glid = getGlid(developer.getGameListName(), s);
 
             // remove DevsGamelist from Gamelists
             String sql = "DELETE FROM GameListsGames WHERE glid="+glid+";";
-            s.execute(sql);
-
-            // remove DevsGameList from DevelopersGameLists
-            sql = "DELETE FROM DevelopersGameLists WHERE glid="+glid+";";
             s.execute(sql);
 
             // remove Developer from Developers
