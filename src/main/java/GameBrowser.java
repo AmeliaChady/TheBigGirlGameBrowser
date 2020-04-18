@@ -119,6 +119,13 @@ public class GameBrowser {
         // Do we need to check that the games in gameList are saved too?
     }
 
+    /**
+     * Add a game to a users game list
+     * @param user
+     * @param game
+     */
+    public void addGameToUserGameListTest(User user, Game game) {}
+
     //TODO Remove a GameList
 
     // ------HELPERS------
