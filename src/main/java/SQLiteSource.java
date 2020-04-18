@@ -1,4 +1,5 @@
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
@@ -64,6 +65,7 @@ public class SQLiteSource implements DataSource{
             // Games ID
             String sql = "SELECT gid FROM Games WHERE title=\""+game.getTitle()+"\";";
             s.execute(sql);
+            // TODO: Hard Coded not accounting closed.
             int gid = s.getResultSet().getInt(1);
 
             // Developers Set Up
@@ -81,6 +83,7 @@ public class SQLiteSource implements DataSource{
                 // Getting Developer ID
                 sql = "SELECT did FROM Developers WHERE name=\"" + d + "\";";
                 s.execute(sql);
+                // TODO: Hard Coded not accounting closed.
                 did = s.getResultSet().getInt(1);
 
                 // Connect Game to Dev
@@ -700,6 +703,24 @@ public class SQLiteSource implements DataSource{
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
+    }
+
+    public static void RunSQL(String databasePath, String sqlPath) throws IOException{
+        String absPath = System.getProperty("user.dir");
+
+        if (databasePath == null || databasePath.equalsIgnoreCase(""))
+            throw new IllegalArgumentException("Incorrect Database Path");
+        if (Files.notExists(Paths.get(absPath+"/"+databasePath)))
+            throw new IllegalArgumentException("Incorrect Database Path");
+        if (sqlPath == null || sqlPath.equalsIgnoreCase(""))
+            throw new IllegalArgumentException("Incorrect SQL Path");
+        if (Files.notExists(Paths.get(absPath+"/"+sqlPath)))
+            throw new IllegalArgumentException("Incorrect SQL Path");
+
+        System.out.println(absPath);
+        ProcessBuilder pb = new ProcessBuilder("sqlite3", absPath+"/"+databasePath, ".read " + absPath+"/"+sqlPath + "");
+        Process pr = pb.start();
+        System.out.println(new String(pr.getErrorStream().readAllBytes()));
     }
 
     /***
