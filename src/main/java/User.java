@@ -21,12 +21,6 @@ public class User {
         comments = commentsIn;
     }
 
-
-    //
-    public void viewGames(){
-        //just displaying all approved games? right?
-    }
-
     public void addToWishList(Game gameToAdd){
         wishList.includeGame(gameToAdd);
     }
