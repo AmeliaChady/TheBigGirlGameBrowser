@@ -156,24 +156,6 @@ public class DataSourceTest {
     public static void dataSourceLoadGameListTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a GameList called 'BogusList', otherwise tests will break");
 
-        Game g1 = new Game("Crossing Mammals", "HoarderOfBells");
-        Game g2 = new Game("Confusion Level Increasing", "Amelia Chady");
-
-        ds.saveGame(g1);
-        ds.saveGame(g2);
-
-        GameList gl1 = new GameList("Games I Have Time To Play");
-        ds.saveGameList(gl1);
-
-        GameList gl2 = new GameList("Everyone Else is Playing");
-        gl2.includeGame(g1.getTitle());
-        ds.saveGameList(gl2);
-
-        GameList gl3 = new GameList("The Kerry Anne Experience");
-        gl3.includeGame(g1.getTitle());
-        gl3.includeGame(g2.getTitle());
-        ds.saveGameList(gl3);
-
         // Load Game List with No Games
         assertEquals(0, ds.loadGameList("Games I Have Time To Play").getGameCount());
 
