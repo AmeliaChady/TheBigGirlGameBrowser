@@ -3,6 +3,8 @@ BEGIN TRANSACTION;
 --- Dropping Old ---
 DROP VIEW IF EXISTS Combined;
 DROP VIEW IF EXISTS GameListTest;
+DROP VIEW IF EXISTS DevelopersWithListName;
+DROP VIEW IF EXISTS UsersWithListName;
 -- connecting tables
 DROP TABLE IF EXISTS GameDevelopers;
 DROP TABLE IF EXISTS GameListsGames;
@@ -97,7 +99,7 @@ FROM GameListsGames
          INNER JOIN GameLists
 ORDER BY name, title;
 
-CREATE VIEW DevlopersWithListName AS
+CREATE VIEW DevelopersWithListName AS
 SELECT * FROM Developers INNER JOIN GameLists USING(glid);
 
 CREATE VIEW UsersWithListName AS
