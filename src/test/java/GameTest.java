@@ -100,11 +100,11 @@ public class GameTest {
     public void gameHoldsReviewsTest(){
         List<String> reviews = new ArrayList<>();
 
-        Review r1 = new Review(1, "Bad Game!");
-        Review r2 = new Review(2, "Boring Game");
-        Review r3 = new Review(3, "It's a Game...");
-        Review r4 = new Review(4, "Yeah I liked this game");
-        Review r5 = new Review(5,"WOW Best Game ever");
+        Review r1 = new Review(1, "Bad Game!", "Kerry", "Animal Crossing New Horizons");
+        Review r2 = new Review(2, "Boring Game", "kb", "acnh");
+        Review r3 = new Review(3, "It's a Game...", "kab", "Animal Crossing");
+        Review r4 = new Review(4, "Yeah I liked this game", "Kerry Anne", "Animal Horizons");
+        Review r5 = new Review(5,"WOW Best Game ever", "kerby", "Crossing Horizons");
 
         reviews.add(r1.getID());
         reviews.add(r2.getID());
@@ -117,7 +117,7 @@ public class GameTest {
         assertEquals(reviews, game.getReviews());
         assertEquals("ID01", game.getReviews().get(0));
 
-        Review r6 = new Review(3, "I kinda liked this but I didn't either");
+        Review r6 = new Review(3, "I kinda liked this but I didn't either", "coolGuy", "coolGame");
         game.addReview(r6.getID());
 
         assertEquals(6, game.getReviews().size());
