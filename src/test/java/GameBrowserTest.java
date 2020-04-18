@@ -315,4 +315,29 @@ public class GameBrowserTest {
             return;
         }
     }
+
+    @Test
+    public void addGameToUserGameListTest() {
+        try {
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            User user1 = new User(new GameList("user1"), null),
+                 user2 = new User(new GameList("user2"), null);
+            Game game = new Game("Crossing Mammals", "Amelia Chady");
+
+            // unowned game
+            assertEquals(0, game.getOwnedCount());
+
+            // owned game by one user
+            gameBrowser.addGameToUserGameList(user1, game);
+            assertEquals(1, game.getOwnedCount());
+
+            // owned game by more than one user;
+            gameBrowser.addGameToUserGameList(user2, game);
+            assertEquals(2, game.getOwnedCount());
+
+            gameBrowser.close();
+        } catch (DataSourceException dse) {
+            fail(dse.getMessage());
+        }
+    }
 }
