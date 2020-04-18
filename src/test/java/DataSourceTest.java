@@ -183,8 +183,6 @@ public class DataSourceTest {
     public static void dataSourceSaveDevelopersTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
-
-        // todo  set up w/ scripts
         Developer bobby = new Developer("Bobby", 1);
 
         bobby.getGameList().includeGame("game1");
@@ -204,12 +202,12 @@ public class DataSourceTest {
     public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
         //todo  add checks for correct aid
         System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
-        Developer save = new Developer("LoadDeveloperTest", 1);
-        Game aGame = new Game("LoadDeveloperTestGame", "aa", save.getName());
-        ds.saveGame(aGame);
-        save.getGameList().includeGame(aGame.getTitle());
-        ds.saveDeveloper(save);
-        ds.saveGameList(save.getGameList());
+//        Developer save = new Developer("LoadDeveloperTest", 1);
+//        Game aGame = new Game("LoadDeveloperTestGame", "aa", save.getName());
+//        ds.  saveGame(aGame);
+//        save.getGameList().includeGame(aGame.getTitle());
+//        ds.saveDeveloper(save);
+//        ds.saveGameList(save.getGameList());
 
         // Load Works
         Developer d = ds.loadDeveloper("LoadDeveloperTest");
