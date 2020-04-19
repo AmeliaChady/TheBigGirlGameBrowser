@@ -126,7 +126,7 @@ public class GameBrowser {
      */
     public void addGameToUserGameList(User user, Game game) throws DataSourceException {
         user.addToOwnedGames(game.getTitle());
-        addToGameCount(game);
+        increaseOwnedGameCount(game);
         dataSource.saveGameList(user.getOwnedGames());
     }
 
@@ -136,7 +136,14 @@ public class GameBrowser {
      * @param game - owned game to remove from user's game list
      * @return
      */
-    public String removeGameFromUserGameList(User user, Game game) { return ""; }
+    public String removeGameFromUserGameList(User user, Game game) throws DataSourceException {
+        String gameTitle = user.removeFromOwnedGames(game.getTitle());
+        if (gameTitle != null) {
+            decreaseOwnedGameCount(game);
+            dataSource.saveGameList(user.getOwnedGames());
+        }
+        return gameTitle;
+    }
 
     public Accounts login(String username, String password) throws DataSourceException{
         return dataSource.login(username, password);
@@ -157,7 +164,9 @@ public class GameBrowser {
         }
     }
 
-    private void addToGameCount(Game game) { game.increaseOwnedCount(); }
+    private void increaseOwnedGameCount(Game game) { game.increaseOwnedCount(); }
+
+    private void decreaseOwnedGameCount(Game game) { game.decreaseOwnedCount(); }
 
     /**
      * Saves all the local contents into the database
