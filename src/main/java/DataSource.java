@@ -55,5 +55,7 @@ public interface DataSource {
 
     void removeDeveloper(Developer developer) throws DataSourceException;
 
+    Accounts login(String username, String password);
+
     void close();
 }

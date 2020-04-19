@@ -502,6 +502,10 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    public Accounts login(String username, String password){
+        return new Accounts();
+    }
+
     // underlying DB calls
     // Upsert -> Insert/Update depending on existence
     private void safeUpsertGame(Game game, Statement s) throws DataSourceException{

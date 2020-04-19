@@ -130,6 +130,10 @@ public class GameBrowser {
         dataSource.saveGameList(user.getOwnedGames());
     }
 
+    public Accounts login(String username, String password){
+        return dataSource.login(username, password);
+    }
+
     //TODO Remove a GameList
 
     // ------HELPERS------
