@@ -324,12 +324,17 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void addGameToUserGameListTest() {
+    public void addGameToUserGameListTest() throws IOException {
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
             User user1 = new User(new GameList("user1"), null),
                  user2 = new User(new GameList("user2"), null);
-            Game game = new Game("Crossing Mammals", "Amelia Chady");
+            Developer dev = new Developer("Amelia Chady", 0);
+            Game game = new Game("Crossing Mammals", dev.getName());
+
+            gameBrowser.addDeveloper(dev);
+            gameBrowser.addGame(game);
 
             // unowned game
             assertEquals(0, game.getOwnedCount());
