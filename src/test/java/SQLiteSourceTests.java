@@ -138,4 +138,17 @@ public class SQLiteSourceTests {
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }
+
+    @Test
+    public void SQLiteSourceLogin() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "Login.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "Login.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/Login.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"Login.db");
+        DataSourceTest.dataSourceLoginTest(s);
+        s.close();
+    }
 }

@@ -33,7 +33,9 @@ CREATE TABLE Accounts(
 
 CREATE TABLE Administrators(
     amid INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE
+    aid INTEGER UNIQUE NOT NULL,
+    name TEXT UNIQUE,
+    FOREIGN KEY(aid) REFERENCES Accounts(aid)
     );
 
 CREATE TABLE Users(

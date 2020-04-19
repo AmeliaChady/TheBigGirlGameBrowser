@@ -1,6 +1,7 @@
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.awt.geom.IllegalPathStateException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -260,9 +261,37 @@ public class DataSourceTest {
                         "\n    Account(usernameFail, passwordFail)");
 
         // Correct (returns)
+        Accounts userAccounts = ds.login("userTest", "user");
+        assertNotNull(userAccounts.user);
+        assertNull(userAccounts.admin);
+        assertNull(userAccounts.dev);
 
+        Accounts devAccounts = ds.login("devTest", "dev");
+        assertNotNull(devAccounts.dev);
+        assertNull(devAccounts.user);
+        assertNull(devAccounts.admin);
 
+        Accounts adminAccounts = ds.login("adminTest", "admin");
+        assertNotNull(adminAccounts.admin);
+        assertNull(adminAccounts.user);
+        assertNull(adminAccounts.dev);
+
+        Accounts doubleAccounts = ds.login("doubleTest", "double");
+        assertNotNull(doubleAccounts.user);
+        assertNotNull(doubleAccounts.dev);
+        assertNull(doubleAccounts.admin);
+
+        Accounts nothingAccounts = ds.login("nothingTest", "nothing");
+        assertNull(nothingAccounts.admin);
+        assertNull(nothingAccounts.dev);
+        assertNull(nothingAccounts.user);
 
         // Incorrect (exception)
+        assertThrows(IllegalArgumentException.class, () -> ds.login("usernameFail", "failure"));
+        assertThrows(IllegalArgumentException.class, () -> ds.login("fails", "passwordFail"));
+        assertThrows(IllegalArgumentException.class, () -> ds.login("usernameFail", "passwordFail"));
+        assertThrows(IllegalArgumentException.class, () -> ds.login(null, "failure"));
+        assertThrows(IllegalArgumentException.class, () -> ds.login("fails", null));
+        assertThrows(IllegalArgumentException.class, () -> ds.login(null, null));
     }
 }
