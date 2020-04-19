@@ -130,6 +130,14 @@ public class GameBrowser {
         dataSource.saveGameList(user.getOwnedGames());
     }
 
+    /**
+     *
+     * @param user - user of owned game
+     * @param game - owned game to remove from user's game list
+     * @return
+     */
+    public String removeGameFromUserGameList(User user, Game game) { return ""; }
+
     public Accounts login(String username, String password) throws DataSourceException{
         return dataSource.login(username, password);
     }

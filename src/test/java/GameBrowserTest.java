@@ -352,4 +352,37 @@ public class GameBrowserTest {
             fail(dse.getMessage());
         }
     }
+
+    @Test
+    public void removeGameFromUserGameListTest() throws IOException {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            User user1 = new User(new GameList("user1"), null),
+                 user2 = new User(new GameList("user2"), null);
+            Developer dev = new Developer("Amelia Chady", 0);
+            Game game = new Game("Crossing Mammals", dev.getName());
+
+            gameBrowser.addDeveloper(dev);
+            gameBrowser.addGame(game);
+
+            // removal of non-owned game is null
+            assertNull(gameBrowser.removeGameFromUserGameList(user1, game));
+
+            // owned game removed by one user
+            gameBrowser.addGameToUserGameList(user1, game);
+            assertEquals("Crossing Mammals", gameBrowser.removeGameFromUserGameList(user1, game));
+            assertEquals(0, game.getOwnedCount());
+
+            // owned game by more than one user removed once;
+            gameBrowser.addGameToUserGameList(user1, game);
+            gameBrowser.addGameToUserGameList(user2, game);
+            gameBrowser.removeGameFromUserGameList(user1, game);
+            assertEquals(1, game.getOwnedCount());
+
+            gameBrowser.close();
+        } catch(DataSourceException dse) {
+            fail(dse.getMessage());
+        }
+    }
 }
