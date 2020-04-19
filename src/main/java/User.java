@@ -33,7 +33,9 @@ public class User {
         ownedGames.includeGame(gameToAdd);
     }
 
-    public String removeFromOwnedGames(String gameToRemove) { return ""; }
+    public String removeFromOwnedGames(String gameToRemove) {
+        return ownedGames.removeGame(gameToRemove);
+    }
 
     //WRITE REVIEW
 
