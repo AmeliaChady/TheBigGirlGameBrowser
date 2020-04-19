@@ -244,4 +244,25 @@ public class DataSourceTest {
         }
 
     }
+
+    public static void dataSourceLoginTest(DataSource ds) throws DataSourceException{
+        System.out.println("NEEDS SETUP!:" +
+                        "\n  Source Has: Account(username, password) w/ account types" +
+                        "\n    Account(userTest, user) w/ User" +
+                        "\n    Account(devTest, dev) w/ Developer" +
+                        "\n    Account(adminTest, admin) w/ Administrator" +
+                        "\n    Account(doubleTest, double) w/ User & Developer" +
+                        "\n    Account(nothingTest, nothing) w/ nothing" +
+                        "\n    Account(fails, failure)" +
+                        "\n Source Doesnt Have:" +
+                        "\n    Account(usernameFail, failure)" +
+                        "\n    Account(fails, passwordFail)" +
+                        "\n    Account(usernameFail, passwordFail)");
+
+        // Correct (returns)
+
+
+
+        // Incorrect (exception)
+    }
 }

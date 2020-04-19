@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS Games;
 DROP TABLE IF EXISTS GameStatuses;
 DROP TABLE IF EXISTS Developers;
 DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Administrators;
 DROP TABLE IF EXISTS Accounts;
 DROP TABLE IF EXISTS GameLists;
 
@@ -28,6 +29,11 @@ CREATE TABLE Accounts(
     username TEXT UNIQUE,
     email TEXT UNIQUE,
     password TEXT
+    );
+
+CREATE TABLE Administrators(
+    amid INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE
     );
 
 CREATE TABLE Users(
