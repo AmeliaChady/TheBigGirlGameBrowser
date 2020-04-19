@@ -123,6 +123,7 @@ public class GameBrowser {
      * Add a game to a users game list
      * @param user - user of owned game
      * @param game - owned game to add to user's game list
+     * @throws DataSourceException
      */
     public void addGameToUserGameList(User user, Game game) throws DataSourceException {
         user.addToOwnedGames(game.getTitle());
@@ -131,10 +132,12 @@ public class GameBrowser {
     }
 
     /**
-     *
-     * @param user - user of owned game
-     * @param game - owned game to remove from user's game list
-     * @return
+     * Removes a game from a user's game list
+     * @param user
+     * @param game
+     * @return the game title of the removed game, or
+     *         null if not found in user's game list
+     * @throws DataSourceException
      */
     public String removeGameFromUserGameList(User user, Game game) throws DataSourceException {
         String gameTitle = user.removeFromOwnedGames(game.getTitle());
