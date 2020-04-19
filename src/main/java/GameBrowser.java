@@ -130,7 +130,7 @@ public class GameBrowser {
         dataSource.saveGameList(user.getOwnedGames());
     }
 
-    public Accounts login(String username, String password){
+    public Accounts login(String username, String password) throws DataSourceException{
         return dataSource.login(username, password);
     }
 

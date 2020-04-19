@@ -502,8 +502,86 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    public Accounts login(String username, String password){
-        return new Accounts();
+    public Accounts login(String username, String password) throws DataSourceException{
+        if(username == null){
+            if(password == null){
+                throw new IllegalArgumentException("username & password null");
+            }
+            throw new IllegalArgumentException("username is null");
+        }
+        if(password == null){
+            throw new IllegalArgumentException("password is null");
+        }
+
+        Developer dev = null;
+        User user = null;
+        Administrator admin = null;
+        String sql;
+        ResultSet rs;
+
+        Savepoint l = null;
+        try{
+            // Setup
+            if(!inTransaction) {
+                l = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            // Get Account ID
+            Integer aid = getAid(username, password, s);
+            if(aid == null){
+                s.close();
+                if(l != null){
+                    conn.commit();
+                    inTransaction = false;
+                }
+                throw new IllegalArgumentException("username & password combination do not exist.");
+            }
+
+            // Try User
+            sql = "SELECT * FROM Users WHERE aid=" + aid + ";";
+            s.execute(sql);
+            rs = s.getResultSet();
+            if(rs.next()){
+                user = new User(loadGameList(getGameListName(rs.getInt("glid"),s)), null);
+            }
+
+            // Try Dev
+            sql = "SELECT * FROM Developers WHERE aid=" + aid + ";";
+            s.execute(sql);
+            rs = s.getResultSet();
+            if(rs.next()){
+                dev = new Developer(rs.getString("name"),
+                        loadGameList(getGameListName(rs.getInt("glid"),s)),
+                        aid);
+            }
+
+            // Try Admin
+            sql = "SELECT * FROM Administrators WHERE aid=" + aid + ";";
+            s.execute(sql);
+            rs = s.getResultSet();
+            if(rs.next()){
+                admin = new Administrator(rs.getString("name"));
+            }
+
+            // Return Dev Object
+            s.close();
+            if(l != null){
+                conn.commit();
+                inTransaction = false;
+            }
+            return new Accounts(dev, user, admin);
+        }catch (SQLException e){
+            try {
+                if(l != null) {
+                    conn.rollback(l);
+                    conn.releaseSavepoint(l);
+                    inTransaction = false;
+                }
+            }catch (SQLException ignored){}
+            throw new DataSourceException(e.getMessage());
+        }
     }
 
     // underlying DB calls
@@ -616,6 +694,16 @@ public class SQLiteSource implements DataSource{
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
+    }
+
+    private Integer getAid(String username, String password, Statement s) throws SQLException{
+        String sql = "SELECT aid FROM Accounts WHERE username='"+username+"' AND password='"+password+"';";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(rs.next()){
+            return rs.getInt("aid");
+        }
+        return null;
     }
 
     private int getGlid(GameList list, Statement s) throws DataSourceException{
