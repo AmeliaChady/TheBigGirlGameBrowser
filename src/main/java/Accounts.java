@@ -3,6 +3,12 @@ public class Accounts {
     public User user;
     public Administrator admin;
 
+    Accounts(Developer dev, User user, Administrator admin){
+        this.dev = dev;
+        this.admin = admin;
+        this.user = user;
+    }
+
     Accounts(Developer dev, User user){
         this.dev = dev;
         this.user = user;

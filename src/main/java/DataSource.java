@@ -62,7 +62,7 @@ public interface DataSource {
      * @return the accounts in an Accounts object
      * @throws IllegalArgumentException if overall account doesn't exist
      */
-    Accounts login(String username, String password) throws IllegalArgumentException;
+    Accounts login(String username, String password) throws DataSourceException, IllegalArgumentException;
 
     void close();
 }
