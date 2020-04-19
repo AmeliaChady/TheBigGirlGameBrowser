@@ -86,10 +86,26 @@ public class UserTest {
 
         user5.addToOwnedGames(countGameTest.getTitle());
         user6.addToOwnedGames(countGameTest.getTitle());
-        //TODO: gameBroswer should handle calling increaseOwnedCount for a game.
-        //TODO: gameBrowser test for above
+    }
 
+    @Test
+    public void userRemoveFromOwnedGamesTest() {
+        User user = new User(new GameList("ownedGames"), null);
+        user.addToOwnedGames("Cows V. Aliens");
 
+        //non existent
+        String g1 = user.removeFromOwnedGames("gcfhvjb");
+        assertEquals(1, user.getOwnedGames().getGameCount());
+        assertNull(g1);
 
+        //existing game
+        String g2 = user.removeFromOwnedGames("Cows V. Aliens");
+        assertEquals(0, user.getOwnedGames().getGameCount());
+        assertEquals("Cows V. Aliens", g2);
+
+        //non existent now, just removed
+        String g3 = user.removeFromOwnedGames("Cows V. Aliens");
+        assertEquals(0, user.getOwnedGames().getGameCount());
+        assertNull(g3);
     }
 }
