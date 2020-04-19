@@ -79,12 +79,7 @@ public class DataSourceTest {
 
         // Basic
         // Adding Two Test Games
-        Game g = new Game("LoadGameTest1", "description", "LGT_A");
-        ds.saveGame(g);
-        g = new Game("LoadGameTest2", "noitpircsed","LGT_B");
-        g.addDeveloper("LGT_C");
-        g.changeStatus(Status.ACCEPTED);
-        ds.saveGame(g);
+        Game g;
 
         // Can Find A Game
         g = ds.loadGame("LoadGameTest1");
@@ -161,24 +156,6 @@ public class DataSourceTest {
     public static void dataSourceLoadGameListTest(DataSource ds) throws DataSourceException{
         System.out.println("Note, there cannot be a GameList called 'BogusList', otherwise tests will break");
 
-        Game g1 = new Game("Crossing Mammals", "HoarderOfBells");
-        Game g2 = new Game("Confusion Level Increasing", "Amelia Chady");
-
-        ds.saveGame(g1);
-        ds.saveGame(g2);
-
-        GameList gl1 = new GameList("Games I Have Time To Play");
-        ds.saveGameList(gl1);
-
-        GameList gl2 = new GameList("Everyone Else is Playing");
-        gl2.includeGame(g1.getTitle());
-        ds.saveGameList(gl2);
-
-        GameList gl3 = new GameList("The Kerry Anne Experience");
-        gl3.includeGame(g1.getTitle());
-        gl3.includeGame(g2.getTitle());
-        ds.saveGameList(gl3);
-
         // Load Game List with No Games
         assertEquals(0, ds.loadGameList("Games I Have Time To Play").getGameCount());
 
@@ -206,36 +183,31 @@ public class DataSourceTest {
     public static void dataSourceSaveDevelopersTest(DataSource ds) throws DataSourceException{
         System.out.println("Warning: DataSource must be empty for correct testing");
         System.out.println("Warning: Used Combined View to verify");
+        Developer bobby = new Developer("Bobby", 1);
 
-        Developer bobby = new Developer("Bobby");
-
-        Game game1 = new Game("game1", bobby.getName());
-        Game game2 = new Game("game2", bobby.getName());
-        Game game3 = new Game("game3", bobby.getName());
-
-        //ds.saveGameList(bobby.getGameList());
+        bobby.getGameList().includeGame("game1");
+        bobby.getGameList().includeGame("game2");
+        bobby.getGameList().includeGame("game3");
 
         // At this point db should be aware of bob and have a relationship between bob and these games
 
-        Developer gef = new Developer("jim");
-        game1.addDeveloper(gef.getName());
+        Developer gef = new Developer("jim", 2);
 
-        game3.addDeveloper(gef.getName());
-
-        gef.getGameList().includeGame(game1.getTitle());
-        gef.getGameList().includeGame(game3.getTitle());
-        ds.saveDeveloper(gef);
+        gef.getGameList().includeGame("game1");
+        gef.getGameList().includeGame("game3");
         ds.saveDeveloper(bobby);
+        ds.saveDeveloper(gef);
     }
 
     public static void dataSourceLoadDevelopersTest(DataSource ds) throws DataSourceException{
+        //todo  add checks for correct aid
         System.out.println("Note, there cannot be a GameList called 'LoadDeveloperBogusTest', otherwise tests will break");
-        Developer save = new Developer("LoadDeveloperTest");
-        Game aGame = new Game("LoadDeveloperTestGame", "aa", save.getName());
-        ds.saveGame(aGame);
-        save.getGameList().includeGame(aGame.getTitle());
-        ds.saveDeveloper(save);
-        ds.saveGameList(save.getGameList());
+//        Developer save = new Developer("LoadDeveloperTest", 1);
+//        Game aGame = new Game("LoadDeveloperTestGame", "aa", save.getName());
+//        ds.  saveGame(aGame);
+//        save.getGameList().includeGame(aGame.getTitle());
+//        ds.saveDeveloper(save);
+//        ds.saveGameList(save.getGameList());
 
         // Load Works
         Developer d = ds.loadDeveloper("LoadDeveloperTest");
@@ -252,9 +224,6 @@ public class DataSourceTest {
     }
 
     public static void dataSourceLoadDeveloperListTest(DataSource ds) throws DataSourceException {
-        // create and save devs
-        for (int i = 0; i < 5; i++)
-            ds.saveDeveloper( new Developer("test dev "+i) );
         // load them from db
         List<String> developers = ds.loadDeveloperList();
 

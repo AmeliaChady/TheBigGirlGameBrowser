@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -7,31 +6,36 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SQLiteSourceTests {
-    public static String CORRECT_PATH = "src/databases/testing.db";
+    public static String DB_BASE_PATH = "src/databases/Test_SQLiteSource/";
+    public static String SCRIPT_BASE_PATH = "src/scripts/";
 
     @Test
     public void SQLiteSourceRunSQL() throws IOException {
         System.out.println("Requires Manual Check");
         // Correct Paths
-        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/DDL.sql");
-        SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "src/scripts/sqlscriptrunningtest.sql");
+        SQLiteSource.RunSQL(DB_BASE_PATH + "RunSQL.db", SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(DB_BASE_PATH + "RunSQL.db", SCRIPT_BASE_PATH + "Test_SQLiteSource/RunSQL.sql");
 
-        System.out.println("Check that sqlscriptrunningtest.db has correct schema and has one entry (woofframe) in the Games table.");
+        System.out.println("Check that RunSQL.db has correct schema and has one entry (woofframe) in the Games table.");
 
         // Incorrect DB Path
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("no", "src/scripts/sqlscriptrunningtest.sql"));
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL(null, "src/scripts/sqlscriptrunningtest.sql"));
+        assertThrows(IllegalArgumentException.class,
+                () -> SQLiteSource.RunSQL("no", SCRIPT_BASE_PATH + "Test_SQLiteSource/RunSQL.sql"));
+        assertThrows(IllegalArgumentException.class,
+                () -> SQLiteSource.RunSQL(null, SCRIPT_BASE_PATH + "Test_SQLiteSource/RunSQL.sql"));
 
         // Incorrect SQL Path
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", "no"));
-        assertThrows(IllegalArgumentException.class, () -> SQLiteSource.RunSQL("src/databases/sqlscriptrunningtest.db", null));
+        assertThrows(IllegalArgumentException.class,
+                () -> SQLiteSource.RunSQL(DB_BASE_PATH + "Test_SQLiteSource/RunSQL.db", "no"));
+        assertThrows(IllegalArgumentException.class,
+                () -> SQLiteSource.RunSQL(DB_BASE_PATH + "Test_SQLiteSource/RunSQL.db", null));
 
     }
 
     @Test
-    public void SQLiteSourceConstructor() throws SQLException { // also
+    public void SQLiteSourceConstructor() { // also
         try {
-            SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+            SQLiteSource s = new SQLiteSource(DB_BASE_PATH + "RunSQL.db");
             s.close();
         }catch (Exception e){
             fail("Threw Exception when it shouldn't");
@@ -45,50 +49,92 @@ public class SQLiteSourceTests {
     }
 
     @Test
-    public void SQLiteSourceSaveGame() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceSaveGame() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveGame.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveGame.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/SaveGame.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+ "SaveGame.db");
         DataSourceTest.dataSourceSaveGameTest(s);
         s.close();
     }
 
     @Test
-    public void SQLiteSourceLoadGame() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceLoadGame() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadGame.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadGame.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadGame.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+ "LoadGame.db");
         DataSourceTest.dataSourceLoadGameTest(s);
         s.close();
     }
 
     @Test
-    public void SQLiteSourceSaveGameList() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceSaveGameList() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveGameList.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveGameList.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/SaveGameList.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"SaveGameList.db");
         DataSourceTest.dataSourceSaveGameListTest(s);
         s.close();
     }
 
     @Test
-    public void SQLiteSourceLoadGameList() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceLoadGameList() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadGameList.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadGameList.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadGameList.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"LoadGameList.db");
         DataSourceTest.dataSourceLoadGameListTest(s);
         s.close();
     }
 
     @Test
-    public void SQLiteSourceSaveDeveloper() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceSaveDeveloper() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveDevelopers.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "SaveDevelopers.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/SaveDeveloper.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"SaveDevelopers.db");
         DataSourceTest.dataSourceSaveDevelopersTest(s);
         s.close();
     }
 
     @Test
-    public void SQLiteSourceLoadDeveloper() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceLoadDeveloper() throws IOException , DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadDevelopers.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadDevelopers.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadDeveloper.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH + "LoadDevelopers.db");
         DataSourceTest.dataSourceLoadDevelopersTest(s);
         s.close();
     }
 
     @Test
-    public void SQLiteSourceLoadDeveloperList() throws SQLException, DataSourceException{
-        SQLiteSource s = new SQLiteSource(CORRECT_PATH);
+    public void SQLiteSourceLoadDeveloperList() throws IOException, DataSourceException{
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadDeveloperList.db",
+                SCRIPT_BASE_PATH + "DDL.sql");
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadDeveloperList.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadDeveloperList.sql");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+"LoadDeveloperList.db");
         DataSourceTest.dataSourceLoadDeveloperListTest(s);
         s.close();
     }

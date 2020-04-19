@@ -4,8 +4,9 @@ public class Developer {
 
     private String name;
     private GameList developerGameList;
+    private int aid;
 
-    public Developer(String nameIn, GameList gameListIn){
+    public Developer(String nameIn, GameList gameListIn, int aid){
         if (nameIn == null){
             throw new IllegalArgumentException("Name is null");
         }
@@ -13,18 +14,15 @@ public class Developer {
         if(gameListIn==null){
             throw new IllegalArgumentException("GameList is null");
         }
+        this.aid = aid;
         developerGameList = gameListIn;
     }
 
-    public Developer(String nameIn){
+    public Developer(String nameIn, int aid){
         name = nameIn;
         developerGameList = new GameList(nameIn+"'s Games");
+        this.aid = aid;
     }
-    //TODO: move to gameBrowser
-//    public void displayDeveloper() {
-//        System.out.println("Name: " + name );
-//        developerGameList.displayListNameAndGameTitles();
-//    }
 
     public String getName(){
         return name;
@@ -48,5 +46,9 @@ public class Developer {
 
     public String getGameListName() {
         return developerGameList.getName();
+    }
+
+    public int getAid(){
+        return aid;
     }
 }

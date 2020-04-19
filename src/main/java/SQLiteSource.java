@@ -63,10 +63,9 @@ public class SQLiteSource implements DataSource{
             safeUpsertGame(game, s);
 
             // Games ID
-            String sql = "SELECT gid FROM Games WHERE title=\""+game.getTitle()+"\";";
-            s.execute(sql);
+            String sql;
             // TODO: Hard Coded not accounting closed.
-            int gid = s.getResultSet().getInt(1);
+            int gid = getGid(game.getTitle(), s);
 
             // Developers Set Up
             Iterator<String> devs = game.getDevelopers().iterator();
@@ -76,16 +75,8 @@ public class SQLiteSource implements DataSource{
             while (devs.hasNext()) {
                 // Developer Set Up
                 String d = devs.next();
-                //saveDeveloper(d);
 
-                //safeUpsertDevelopers(d.getName(), s);
-
-                // Getting Developer ID
-                sql = "SELECT did FROM Developers WHERE name=\"" + d + "\";";
-                s.execute(sql);
-                // TODO: Hard Coded not accounting closed.
-                did = s.getResultSet().getInt(1);
-
+                did = getDid(d, s);
                 // Connect Game to Dev
                 safeUpsertGameDevelopers(gid, did, s);
             }
@@ -336,8 +327,7 @@ public class SQLiteSource implements DataSource{
             boolean exists = !s.getResultSet().isClosed();
 
             //This stops infinite loop while capturing all necessary information
-            if (exists){
-                //safeUpsertDevelopersGameLists(dev, s);
+            /*if (exists){
                 GameList devsGames = dev.getGameList();
                 saveGameList(devsGames);
                 s.close();
@@ -346,17 +336,22 @@ public class SQLiteSource implements DataSource{
                     inTransaction = false;
                 }
                 return;
-            }
-
-            safeUpsertDevelopers(dev.getName(), s);
+            }*/
+            if(!exists)
+                safeUpsertDevelopers(dev, s);
+            // TODO PURGE GAME CONNECTIONS?
 
             // Games Set Up
-            safeUpsertDevelopersGameLists(dev, s);
-
             saveGameList(dev.getGameList());
+            Iterator<String> games = dev.getGameList().getGames().iterator();
+            int did = getDid(dev.getName(), s);
+            while (games.hasNext()){
+                String game = games.next();
+                int gid = getGid(game, s);
+                safeUpsertGameDevelopers(gid, did, s);
+            }
 
             // Finalize
-
             s.close();
             if(sd != null){
                 conn.commit();
@@ -390,7 +385,7 @@ public class SQLiteSource implements DataSource{
             Statement s = conn.createStatement();
 
             // Get GameList name
-            String sql = "SELECT listName FROM Developers WHERE name=\""+dev+"\";";
+            String sql = "SELECT glid FROM Developers WHERE name=\""+dev+"\";";
             s.execute(sql);
             ResultSet rs = s.getResultSet();
             if(!rs.next()){
@@ -403,7 +398,7 @@ public class SQLiteSource implements DataSource{
             }
 
             // Fill GameList
-            GameList g = loadGameList(rs.getString("listName"));
+            GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
 
             // Return Dev Object
             s.close();
@@ -411,7 +406,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Developer(dev, g);
+            return new Developer(dev, g, -1);
             //return new Developer(dev);
         }catch (SQLException e){
             try {
@@ -488,15 +483,10 @@ public class SQLiteSource implements DataSource{
             Statement s = conn.createStatement();
 
             int did = getDid(developer, s);
-            GameList devsGL = loadGameList(developer.getGameListName());
-            int glid = getGlid(devsGL, s);
+            int glid = getGlid(developer.getGameListName(), s);
 
             // remove DevsGamelist from Gamelists
             String sql = "DELETE FROM GameListsGames WHERE glid="+glid+";";
-            s.execute(sql);
-
-            // remove DevsGameList from DevelopersGameLists
-            sql = "DELETE FROM DevelopersGameLists WHERE glid="+glid+";";
             s.execute(sql);
 
             // remove Developer from Developers
@@ -552,44 +542,20 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
-    private void safeUpsertDevelopers(String d, Statement s) throws DataSourceException{
-        String devListName = d + "'s Games";
-        safeUpsertGameList(devListName, s);
+    private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
+        safeUpsertGameList(d.getGameListName(), s);
         try {
             String sql = "SELECT * FROM Developers WHERE name =\""+ d +"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
-                sql = "INSERT INTO Developers(name, listName) VALUES(" +
-                        "\"" + d + "\", " +
-                        "\"" + devListName + "\");";
+                sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
+                        "\"" + d.getAid() + "\", " +
+                        "\"" + d.getName() + "\", " +
+                        "\"" + getGlid(d.getGameListName(), s) + "\");";
                 s.execute(sql);
             }
-        }catch (SQLException e){
-            throw new DataSourceException(e.getMessage());
-        }
-    }
-    private void safeUpsertDevelopersGameLists(Developer dev, Statement s) throws DataSourceException{
-        try{
-            String sql = "SELECT did FROM Developers WHERE name=\"" + dev.getName() + "\";";
-            s.execute(sql);
-            int did = s.getResultSet().getInt(1);
-
-            sql = "SELECT glid FROM GameLists WHERE name=\"" + dev.getGameListName() + "\";";
-            s.execute(sql);
-            int glid = s.getResultSet().getInt(1);
-
-            sql = "SELECT * FROM DevelopersGameLists WHERE" +
-                    " did="+ did +
-                    " AND glid="+ glid + ";";
-            s.execute(sql);
-            boolean exists = !s.getResultSet().isClosed();
-            if (!exists){
-                sql = "INSERT INTO DevelopersGameLists VALUES ("+did+", "+glid+");";
-                s.execute(sql);
-            }
-
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
@@ -612,20 +578,7 @@ public class SQLiteSource implements DataSource{
         }
     }
     private void safeUpsertGameList(GameList gameList, Statement s) throws DataSourceException{
-        // Get gameList Name
-        try{
-            String sql = "SELECT * FROM GameLists WHERE name=\""+gameList.getName()+"\";";
-            s.execute(sql);
-            boolean exists = !s.getResultSet().isClosed();
-
-            if (!exists){
-                sql = "INSERT INTO GameLists(name) VALUES(" +
-                        "\"" + gameList.getName()+ "\");";
-            }
-            s.execute(sql);
-        }catch (SQLException e){
-            throw new DataSourceException(e.getMessage());
-        }
+        safeUpsertGameList(gameList.getName(), s);
     }
     private void safeUpsertGameList(String listName, Statement s) throws DataSourceException{
         // Get gameList Name
@@ -661,14 +614,25 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    private int getGlid(GameList gameList, Statement s) throws DataSourceException{
+    private int getGlid(GameList list, Statement s) throws DataSourceException{
+        return getGlid(list.getName(), s);
+    }
+    private int getGlid(String listName, Statement s) throws DataSourceException{
         try {
-            String sql = "SELECT glid FROM GameLists WHERE name=\""+gameList.getName()+"\";";
+            String sql = "SELECT glid FROM GameLists WHERE name=\""+listName+"\";";
             s.execute(sql);
             return s.getResultSet().getInt(1);
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
+    }
+    private String getGameListName(int glid, Statement s) throws SQLException{
+        String sql = "SELECT name FROM GameLists WHERE glid="+glid+";";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(!rs.next())
+            return null;
+        return rs.getString("name");
     }
 
     private int getGid(String game, Statement s) throws DataSourceException, IllegalArgumentException{
@@ -685,8 +649,11 @@ public class SQLiteSource implements DataSource{
     }
 
     private int getDid(Developer developer, Statement s) throws DataSourceException{
+        return getDid(developer.getName(), s);
+    }
+    private int getDid(String devname, Statement s) throws DataSourceException{
         try {
-            String sql = "SELECT did FROM Developers WHERE name=\""+developer.getName()+"\";";
+            String sql = "SELECT did FROM Developers WHERE name=\""+devname+"\";";
             s.execute(sql);
             return s.getResultSet().getInt(1);
         }catch (SQLException e){

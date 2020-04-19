@@ -13,5 +13,17 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/testing.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="SaveGame" uuid="95df841b-2a9a-4c2c-b7af-4ea462cabbea">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/Test_SQLiteSource/SaveGame.db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="LoadDevelopers" uuid="8cc28292-c3ec-4fa8-8522-00b078ca3143">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/Test_SQLiteSource/LoadDevelopers.db</jdbc-url>
+    </data-source>
   </component>
 </project>
