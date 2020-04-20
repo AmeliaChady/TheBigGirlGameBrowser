@@ -145,6 +145,10 @@ public class Game {
         ownedCount = ownedCount + 1;
     }
 
+    public void decreaseOwnedCount() {
+        if (ownedCount > 0) ownedCount -= 1;
+    }
+
 
     // ------GETTERS------
 
