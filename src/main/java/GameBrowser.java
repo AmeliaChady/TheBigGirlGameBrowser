@@ -54,6 +54,16 @@ public class GameBrowser {
         throw new Exception("Invalid constructor. Supply a data source file.");
     }
 
+    /**
+     * To be called from UI to universally login
+     * @param username the username
+     * @param password corresponding password
+     * @return returns an Accounts type object which holds the user, dev, and/or admin associated with account
+     */
+    public Accounts login(String username, String password) throws DataSourceException{
+        return dataSource.login(username, password);
+    }
+
     public void addGame(Game game) throws DataSourceException {
         gameList.includeGame(game.getTitle());
         dataSource.saveGame(game);
@@ -146,10 +156,6 @@ public class GameBrowser {
             dataSource.saveGameList(user.getOwnedGames());
         }
         return gameTitle;
-    }
-
-    public Accounts login(String username, String password) throws DataSourceException{
-        return dataSource.login(username, password);
     }
 
     //TODO Remove a GameList
