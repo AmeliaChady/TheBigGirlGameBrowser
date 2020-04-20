@@ -8,4 +8,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UISprint2Test {
+    @Test
+    public void loginTest(){
+
+    }
 }
