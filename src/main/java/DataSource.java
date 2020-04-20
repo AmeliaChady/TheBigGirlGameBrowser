@@ -55,5 +55,14 @@ public interface DataSource {
 
     void removeDeveloper(Developer developer) throws DataSourceException;
 
+    /**
+     * Logs in a user and returns the accounts they have connected
+     * @param username overall account username
+     * @param password overall account password
+     * @return the accounts in an Accounts object
+     * @throws IllegalArgumentException if overall account doesn't exist
+     */
+    Accounts login(String username, String password) throws DataSourceException, IllegalArgumentException;
+
     void close();
 }

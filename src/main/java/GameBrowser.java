@@ -119,6 +119,39 @@ public class GameBrowser {
         // Do we need to check that the games in gameList are saved too?
     }
 
+    /**
+     * Add a game to a users game list
+     * @param user - user of owned game
+     * @param game - owned game to add to user's game list
+     * @throws DataSourceException
+     */
+    public void addGameToUserGameList(User user, Game game) throws DataSourceException {
+        user.addToOwnedGames(game.getTitle());
+        increaseOwnedGameCount(game);
+        dataSource.saveGameList(user.getOwnedGames());
+    }
+
+    /**
+     * Removes a game from a user's game list
+     * @param user
+     * @param game
+     * @return the game title of the removed game, or
+     *         null if not found in user's game list
+     * @throws DataSourceException
+     */
+    public String removeGameFromUserGameList(User user, Game game) throws DataSourceException {
+        String gameTitle = user.removeFromOwnedGames(game.getTitle());
+        if (gameTitle != null) {
+            decreaseOwnedGameCount(game);
+            dataSource.saveGameList(user.getOwnedGames());
+        }
+        return gameTitle;
+    }
+
+    public Accounts login(String username, String password) throws DataSourceException{
+        return dataSource.login(username, password);
+    }
+
     //TODO Remove a GameList
 
     // ------HELPERS------
@@ -133,6 +166,10 @@ public class GameBrowser {
             throw new DataSourceException(dse.getMessage());
         }
     }
+
+    private void increaseOwnedGameCount(Game game) { game.increaseOwnedCount(); }
+
+    private void decreaseOwnedGameCount(Game game) { game.decreaseOwnedCount(); }
 
     /**
      * Saves all the local contents into the database
