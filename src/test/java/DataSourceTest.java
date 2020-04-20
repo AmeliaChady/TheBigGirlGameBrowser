@@ -304,8 +304,9 @@ public class DataSourceTest {
 
         // add game to user's game list
         user.addToOwnedGames("Game 4");
+        System.out.println(user.getOwnedGames().getGame("Game 4"));
         ds.saveUser(account);
-        assertEquals(ds.loadGameList("user0 Game List").getGameCount(), 4);
+        assertEquals(4, ds.loadGameList("user0 Game List").getGameCount());
 
         // remove game from user's game list
         user.removeFromOwnedGames("Game 4");

@@ -783,7 +783,42 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    public void saveUser(Accounts account) throws IllegalArgumentException, DataSourceException {}
+    public void saveUser(Accounts account) throws IllegalArgumentException, DataSourceException {
+        if (account == null) throw new IllegalArgumentException("Account is null");
+        else if (account.user == null) throw new IllegalArgumentException("User account is null");
+
+        Savepoint su = null;
+        try {
+            if(!inTransaction) {
+                su = conn.setSavepoint();
+                inTransaction=  true;
+            }
+            Statement s = conn.createStatement();
+            String sql = "SELECT * FROM Users WHERE name =\""+account.getUsername() + "\";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (!exists) {
+                User user = account.user;
+                saveGameList(user.getOwnedGames());
+            }
+
+            s.close();
+            if (su != null) {
+                conn.commit();
+                inTransaction = false;
+            }
+        } catch (SQLException e) {
+            try {
+               if (su != null)  {
+                   conn.rollback(su);
+                   conn.releaseSavepoint(su);
+                   inTransaction = false;
+               }
+            } catch (SQLException ignored) {}
+            throw new DataSourceException(e.getMessage());
+        }
+    }
 
     /***
      * @return connection state of sqlite db
