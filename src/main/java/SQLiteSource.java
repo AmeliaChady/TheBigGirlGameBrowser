@@ -782,6 +782,9 @@ public class SQLiteSource implements DataSource{
         System.out.println(new String(pr.getErrorStream().readAllBytes()));
     }
 
+    @Override
+    public void saveUser(Accounts account) throws IllegalArgumentException, DataSourceException {}
+
     /***
      * @return connection state of sqlite db
      */

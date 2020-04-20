@@ -64,5 +64,7 @@ public interface DataSource {
      */
     Accounts login(String username, String password) throws DataSourceException, IllegalArgumentException;
 
+    void saveUser(Accounts account) throws DataSourceException, IllegalArgumentException;
+
     void close();
 }
