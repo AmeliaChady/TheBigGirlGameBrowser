@@ -312,4 +312,16 @@ public class DataSourceTest {
         user.removeFromOwnedGames("Game 4");
         ds.saveUser(account);
     }
+
+    public static void dataSourceLoadUserTest(DataSource ds) throws DataSourceException {
+        User u = ds.loadUser("kerry");
+        //object exists
+        assertNotNull(u);
+
+        //gameList length same
+        assertEquals(u.getOwnedGames().getGameCount(), 2);
+
+        //non-existing user
+        assertNull(ds.loadUser("notRealUser"));
+    }
 }

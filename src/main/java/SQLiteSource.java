@@ -820,6 +820,59 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    @Override
+    public User loadUser(String user) throws DataSourceException{
+        if(user == null){
+            return null;
+        }
+
+        Savepoint lu = null;
+        try{
+            // Setup
+            if(!inTransaction) {
+                lu = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            // Get GameList name
+            String sql = "SELECT * FROM Users WHERE name=\""+user+"\";";
+            s.execute(sql);
+            ResultSet rs = s.getResultSet();
+            if(!rs.next()){
+                if(lu!=null) {
+                    conn.releaseSavepoint(lu);
+                    inTransaction = false;
+                }
+                s.close();
+                return null;
+            }
+
+            // Fill GameList
+            GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
+
+            // Return Dev Object
+            s.close();
+            if(lu != null){
+                conn.commit();
+                inTransaction = false;
+            }
+            List<String> comments = new ArrayList();
+            List<String> reviews = new ArrayList();
+            return new User(g, new GameList(user + "'s wishlist"), reviews, comments);
+            //TODO: when wishlists, comments, and reviews are impolemented, change this method to reflect that
+        }catch (SQLException e){
+            try {
+                if(lu != null) {
+                    conn.rollback(lu);
+                    conn.releaseSavepoint(lu);
+                    inTransaction = false;
+                }
+            }catch (SQLException ignored){}
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
     /***
      * @return connection state of sqlite db
      */
