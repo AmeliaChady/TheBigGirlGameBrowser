@@ -294,4 +294,34 @@ public class DataSourceTest {
         assertThrows(IllegalArgumentException.class, () -> ds.login("fails", null));
         assertThrows(IllegalArgumentException.class, () -> ds.login(null, null));
     }
+
+    public static void dataSourceSaveUserTest(DataSource ds) throws DataSourceException {
+        User user = new User( ds.loadGameList("user0 Game List"), null );
+        Accounts account = new Accounts(user,"user0", "user0@mail.com", "password");
+
+        // pass null user
+        assertThrows(IllegalArgumentException.class, () -> ds.saveUser(null));
+
+        // add game to user's game list
+        user.addToOwnedGames("Game 4");
+        System.out.println(user.getOwnedGames().getGame("Game 4"));
+        ds.saveUser(account);
+        assertEquals(4, ds.loadGameList("user0 Game List").getGameCount());
+
+        // remove game from user's game list
+        user.removeFromOwnedGames("Game 4");
+        ds.saveUser(account);
+    }
+
+    public static void dataSourceLoadUserTest(DataSource ds) throws DataSourceException {
+        User u = ds.loadUser("kerry");
+        //object exists
+        assertNotNull(u);
+
+        //gameList length same
+        assertEquals(u.getOwnedGames().getGameCount(), 2);
+
+        //non-existing user
+        assertNull(ds.loadUser("notRealUser"));
+    }
 }

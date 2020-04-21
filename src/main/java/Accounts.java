@@ -1,4 +1,7 @@
 public class Accounts {
+    private String email;
+    private String username;
+    private String password;
     public Developer dev;
     public User user;
     public Administrator admin;
@@ -15,6 +18,15 @@ public class Accounts {
         admin = null;
     }
 
+    Accounts(User user, String email, String username, String password) {
+        this.user = user;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.dev = null;
+        admin = null;
+    }
+
     Accounts(Administrator admin){
         this.admin = admin;
         dev = null;
@@ -26,4 +38,10 @@ public class Accounts {
         user = null;
         admin = null;
     }
+
+    public String getEmail() { return email; }
+
+    public String getUsername() { return username; }
+
+    public String getPassword() { return password; }
 }
