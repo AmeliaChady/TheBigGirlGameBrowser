@@ -836,7 +836,7 @@ public class SQLiteSource implements DataSource{
             Statement s = conn.createStatement();
 
             // Get GameList name
-            String sql = "SELECT uid FROM Users WHERE name=\""+user+"\";";
+            String sql = "SELECT * FROM Users WHERE name=\""+user+"\";";
             s.execute(sql);
             ResultSet rs = s.getResultSet();
             if(!rs.next()){

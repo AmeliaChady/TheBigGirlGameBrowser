@@ -322,6 +322,6 @@ public class DataSourceTest {
         assertEquals(u.getOwnedGames().getGameCount(), 2);
 
         //non-existing user
-        assertNotNull(ds.loadUser("notRealUser"));
+        assertNull(ds.loadUser("notRealUser"));
     }
 }

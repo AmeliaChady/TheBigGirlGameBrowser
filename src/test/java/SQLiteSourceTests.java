@@ -181,7 +181,7 @@ public class SQLiteSourceTests {
                 SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadUser.sql"
         );
 
-        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+ "SaveUser.db");
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH+ "LoadUser.db");
         DataSourceTest.dataSourceLoadUserTest(s);
         s.close();
     }
