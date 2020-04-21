@@ -78,4 +78,9 @@ public interface UIPlugin {
      * @return string of numbered list of all games of a certain status
      */
     String displayNumberedListOfGamesGivenStatus(Status status) throws DataSourceException;
+
+    /**
+     * @return list of all games of a certain status
+     */
+    GameList getGamesGivenStatus(Status status) throws DataSourceException;
 }

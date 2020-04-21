@@ -333,6 +333,10 @@ public class GameBrowser {
         return uiplug.displayNumberedListOfGamesGivenStatus(status);
     }
 
+    public GameList getGamesGivenStatus(Status status) throws DataSourceException{
+        return uiplug.getGamesGivenStatus(status);
+    }
+
 
     // -----DB HELPFUL-----
     public void close(){
