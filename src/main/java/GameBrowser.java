@@ -309,27 +309,27 @@ public class GameBrowser {
         return uiplug.displayableGame();
     }
 
-    public String displayDeveloper(){
+    public String displayableDeveloper(){
         return uiplug.displayDeveloper();
     }
 
-    public String displayAllGames(){
+    public String displayableAllGames(){
         return uiplug.displayAllGames();
     }
 
-    public String displayListNameAndGameTitles(){
+    public String displayableListNameAndGameTitles(){
         return uiplug.displayAllGames();
     }
 
-    public String displayGamesGivenStatus(Status status){
+    public String displayableGamesGivenStatus(Status status){
         return uiplug.displayGamesGivenStatus(status);
     }
 
-    public String displayGameTitlesNumberedList(){
+    public String displayableGameTitlesNumberedList(){
         return uiplug.displayGameTitlesNumberedList();
     }
 
-    public String displayNumberedListOfGamesGivenStatus(Status status) throws DataSourceException{
+    public String displayableNumberedListOfGamesGivenStatus(Status status) throws DataSourceException{
         return uiplug.displayNumberedListOfGamesGivenStatus(status);
     }
 
