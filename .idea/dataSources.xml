@@ -31,5 +31,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/Test_SQLiteSource/Login.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="UIPluginCLI" uuid="8d12ba61-8564-42bf-a688-b67bc81d9c1b">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/Test_UIPlugin/UIPluginCLI.db</jdbc-url>
+    </data-source>
   </component>
 </project>

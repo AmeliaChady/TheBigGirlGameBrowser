@@ -110,17 +110,17 @@ public class UISprint2 {
             login();
         }
     }
-//
-//    //ADMINISTRATOR UI
-//
+
+    //ADMINISTRATOR UI
+
     private void administratorTakeAction(Administrator adminAccount){
-//        Scanner in = new Scanner(System.in);
-//        System.out.println("Welcome. Please choose what action you'd like to take:");
-//        System.out.println("1: Review Pending Games");
-//        System.out.println("2: Review Approved Games");
-//        System.out.println("3: Logout");
-//
-//        int adminChoice = in.nextInt();
+        Scanner in = new Scanner(System.in);
+        System.out.println("Welcome. Please choose what action you'd like to take:");
+        System.out.println("1: Review Pending Games");
+        System.out.println("2: Review Approved Games");
+        System.out.println("3: Logout");
+
+        int adminChoice = in.nextInt();
 //
 //        while (adminChoice<1 || adminChoice>3){
 //            System.out.println("Please enter a valid choice");
@@ -231,137 +231,139 @@ public class UISprint2 {
 //    }
 //
 //
-//    //DEVELOPER UI
+
+
+    //DEVELOPER UI
+
+
+    private void developerTakeAction(Developer devAccount){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Welcome. Please choose what action you'd like to take:");
+        System.out.println("1: Submit Game");
+        System.out.println("2: Update Game");
+        System.out.println("3: View Your Game List");
+        System.out.println("4: Logout");
+
+        int devChoice = in.nextInt();
+        while (devChoice<1 || devChoice>4){
+            System.out.println("Please enter a valid choice");
+            devChoice = in.nextInt();
+        }
+
+        if (devChoice == 1){
+            System.out.println("Please enter the title of your game:");
+            in.nextLine();
+            String gameName = in.nextLine();
+            System.out.println("Please enter the description of your game:");
+
+            String gameDescription = in.nextLine();
+
+            Game testGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
+            //TODO: gameBrowser.addGame(testGame)
+
+            System.out.println("Thank you! Your game has been submitted and is under review.");
+            System.out.println("Expect a response in your inbox shortly.");
+
+            //back to menu screen
+            developerTakeAction(devAccount);
+        }
+
+        else if(devChoice == 2){
+
+            //TODO: displayGameTitlesNumberedList(devAccount.getGameList());
+            System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
+            int devUpdateChoice = in.nextInt();
+            while (devUpdateChoice<0 || devUpdateChoice>devAccount.getGameList().getGameCount()){
+                System.out.println("Please pick a valid choice\n");
+                System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
+                devUpdateChoice = in.nextInt();
+            }
+            if(devUpdateChoice == 0){
+                developerTakeAction(devAccount);
+            }
+
+            //Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(devUpdateChoice-1));
+
+
+            System.out.println("Please select one of the following options:");
+            System.out.println("1: Update Title");
+            System.out.println("2: Update Bio");
+
+            int devModifyChoice = in.nextInt();
+            while (devModifyChoice<1 || devModifyChoice>2){
+                System.out.println("Please pick a valid choice\n");
+                System.out.println("Please select one of the following options:");
+                System.out.println("1: Update Title");
+                System.out.println("2: Update Bio");
+
+                devModifyChoice = in.nextInt();
+            }
+
+            if(devModifyChoice == 1){
+                System.out.println("Please enter the new game title:");
+                in.nextLine();
+                String updatedTitle = in.nextLine();
+                //updatingGame.changeTitle(updatedTitle);
+                //TODO: gameBrowser.addGame(updatingGame);
+
+                System.out.println("Title Updated!");
+                developerTakeAction(devAccount);
+            }
+
+            else if(devModifyChoice == 2){
+                System.out.println("Please enter the new game bio:");
+                in.nextLine();
+                String updatedBio = in.nextLine();
+                //updatingGame.changeDescription(updatedBio);
+                //TODO: gameBrowser.addGame(updatingGame);
+
+                System.out.println("Bio updated!");
+                developerTakeAction(devAccount);
+            }
+
+            else{
+                System.out.println("ERROR: Invalid answer.");
+                System.out.println("Please try again.");
+
+                developerTakeAction(devAccount);
+            }
+
+        }
+
+        else if (devChoice == 3){
+            //displayGameTitlesNumberedList(testDev.getGameList());
+            // TODO testDev.getGameList().displayAllGames();
+            System.out.println(devAccount.getGameList());
+            //testDev.displayDeveloper();
+            developerTakeAction(devAccount);
+
+        }
 //
-//
-//    private void developerTakeAction(Account devAccount){
-//        Scanner in = new Scanner(System.in);
-//        System.out.println("Welcome. Please choose what action you'd like to take:");
-//        System.out.println("1: Submit Game");
-//        System.out.println("2: Update Game");
-//        System.out.println("3: View Your Game List");
-//        System.out.println("4: Logout");
-//
-//        int devChoice = in.nextInt();
-//        while (devChoice<1 || devChoice>4){
-//            System.out.println("Please enter a vlid choice");
-//            devChoice = in.nextInt();
-//        }
-//
-//        if (devChoice == 1){
-//            System.out.println("Please enter the title of your game:");
-//            in.nextLine();
-//            String gameName = in.nextLine();
-//            System.out.println("Please enter the description of your game:");
-//            //in.nextLine();
-//            String gameDescription = in.nextLine();
-//
-//            Game testGame = new Game(gameName, gameDescription, testDev, Status.PENDING);
-//
-//            testDev.submitGame(testGame, gameBrowser.getGameList());
-//            //System.out.println(gameBrowser.getGameList().getGameCount());
-//
-//            System.out.println("Thank you! Your game has been submitted and is under review.");
-//            System.out.println("Expect a response in your inbox shortly.");
-//
-//            //back to menu screen
-//            developerTakeAction(devAccount);
-//        }
-//
-//        else if(devChoice == 2){
-//            GameList devGameList = testDev.getGameList();
-//            displayGameTitlesNumberedList(testDev.getGameList());
-//            System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
-//            int devUpdateChoice = in.nextInt();
-//            while (devUpdateChoice<0 || devUpdateChoice>testDev.getGameList().getGameCount()){
-//                System.out.println("Please pick a valid choice\n");
-//                System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
-//                devUpdateChoice = in.nextInt();
-//            }
-//            if(devUpdateChoice == 0){
-//                developerTakeAction(testDev);
-//            }
-//
-//            Game updatingGame = devGameList.getGames().get(devUpdateChoice-1);
-//
-//
-//            System.out.println("Please select one of the following options:");
-//            System.out.println("1: Update Title");
-//            System.out.println("2: Update Bio");
-//
-//            int devModifyChoice = in.nextInt();
-//            while (devModifyChoice<1 || devModifyChoice>2){
-//                System.out.println("Please pick a valid choice\n");
-//                System.out.println("Please select one of the following options:");
-//                System.out.println("1: Update Title");
-//                System.out.println("2: Update Bio");
-//
-//                devModifyChoice = in.nextInt();
-//            }
-//
-//            if(devModifyChoice == 1){
-//                System.out.println("Please enter the new game title:");
-//                in.nextLine();
-//                String updatedTitle = in.nextLine();
-//                updatingGame.changeTitle(updatedTitle);
-//
-//                System.out.println("Title Updated!");
-//                developerTakeAction(testDev);
-//            }
-//
-//            else if(devModifyChoice == 2){
-//                System.out.println("Please enter the new game bio:");
-//                in.nextLine();
-//                String updatedBio = in.nextLine();
-//                updatingGame.changeDescription(updatedBio);
-//
-//                System.out.println("Bio updated!");
-//                developerTakeAction(testDev);
-//            }
-//
-//            else{
-//                System.out.println("ERROR: Invalid answer.");
-//                System.out.println("Please try again.");
-//
-//                developerTakeAction(testDev);
-//            }
-//
-//        }
-//
-//        else if (devChoice == 3){
-//            //displayGameTitlesNumberedList(testDev.getGameList());
-//            testDev.getGameList().displayAllGames();
-//
-//            //testDev.displayDeveloper();
-//            developerTakeAction(testDev);
-//
-//        }
-//
-//        else if(devChoice == 4){
-//            System.out.println("Thank you for using the Big Girl Game Library");
-//            System.out.println("See you soon!");
-//
-//            login();
-//        }
-//
-//        else{
-//            System.out.println("ERROR: Invalid answer.");
-//            System.out.println("Please try again.");
-//            //back to the top of the list
-//            developerTakeAction(testDev);
-//        }
-//
-//    }
-//
-//
-//    private void commercialUserTakeAction(Account userAccount){
-//
-//    }
-//
-//
-    public static void main(String[] args) throws IOException, ParseException, DataSourceException {
-        UISprint2 myBGGLTest = new UISprint2("src/databases/Test_SQLiteSource/login.db");
-        myBGGLTest.login();
+        else if(devChoice == 4){
+            System.out.println("Thank you for using the Big Girl Game Library");
+            System.out.println("See you soon!");
+
+            //TODO: login();
+        }
+
+        else{
+            System.out.println("ERROR: Invalid answer.");
+            System.out.println("Please try again.");
+            //back to the top of the list
+            developerTakeAction(devAccount);
+        }
 
     }
-}
+
+
+//    private void commercialUserTakeAction(User userAccount){
+//
+//    }
+//
+//
+//    public static void main(String[] args) throws IOException, ParseException, DataSourceException {
+//        UISprint2 myBGGLTest = new UISprint2("src/databases/Test_SQLiteSource/login.db");
+//        myBGGLTest.login();
+//
+     }
+    }
