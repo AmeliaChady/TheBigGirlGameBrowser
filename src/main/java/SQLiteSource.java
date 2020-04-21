@@ -820,6 +820,11 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    @Override
+    public User loadUser(String user) throws DataSourceException{
+        return null;
+    }
+
     /***
      * @return connection state of sqlite db
      */

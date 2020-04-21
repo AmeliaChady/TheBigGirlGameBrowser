@@ -66,5 +66,7 @@ public interface DataSource {
 
     void saveUser(Accounts account) throws DataSourceException, IllegalArgumentException;
 
+    public User loadUser(String user) throws DataSourceException;
+
     void close();
 }
