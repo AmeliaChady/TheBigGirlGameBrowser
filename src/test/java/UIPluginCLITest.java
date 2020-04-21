@@ -285,11 +285,20 @@ public class UIPluginCLITest {
         assertEquals("1. Adventurer Kelsey\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
 
         //2 games
-
         gb.addGame("Adventurer Amelia","Amelia goes on an adventure", devs, Status.PENDING);
         gl.includeGame("Adventurer Amelia");
 
         assertEquals("1. Adventurer Kelsey\n2. Adventurer Amelia\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
+
+        //Accepted game added, still only 2 games showing
+        gb.addGame("Adventurer Kerry","Amelia goes on an adventure", devs, Status.ACCEPTED);
+        gl.includeGame("Adventurer Kerry");
+
+        assertEquals("1. Adventurer Kelsey\n2. Adventurer Amelia\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
+
+        //show only accepted game, not accepted
+        assertEquals("1. Adventurer Kerry\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.ACCEPTED));
+
 
         uiplug.pullGameList(null);
         assertThrows(IllegalStateException.class, () -> uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
