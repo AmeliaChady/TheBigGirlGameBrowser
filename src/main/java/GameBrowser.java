@@ -305,6 +305,35 @@ public class GameBrowser {
         }
     }
 
+    public String displayableGame(){
+        return uiplug.displayableGame();
+    }
+
+    public String displayDeveloper(){
+        return uiplug.displayDeveloper();
+    }
+
+    public String displayAllGames(){
+        return uiplug.displayAllGames();
+    }
+
+    public String displayListNameAndGameTitles(){
+        return uiplug.displayAllGames();
+    }
+
+    public String displayGamesGivenStatus(Status status){
+        return uiplug.displayGamesGivenStatus(status);
+    }
+
+    public String displayGameTitlesNumberedList(){
+        return uiplug.displayGameTitlesNumberedList();
+    }
+
+    public String displayNumberedListOfGamesGivenStatus(Status status) throws DataSourceException{
+        return uiplug.displayNumberedListOfGamesGivenStatus(status);
+    }
+
+
     // -----DB HELPFUL-----
     public void close(){
         dataSource.close();

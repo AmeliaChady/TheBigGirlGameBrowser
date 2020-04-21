@@ -42,4 +42,40 @@ public interface UIPlugin {
      * @return false if gamebrowser null, otherwise true
      */
     boolean hasGameBrowser();
+
+    /**
+     *
+     * @return string of game
+     */
+    String displayableGame();
+
+    /**
+     * @return string of Developer
+     */
+    String displayDeveloper();
+
+    /**
+     * @return string of all games
+     */
+    String displayAllGames();
+
+    /**
+     * @return string of all numbered games
+     */
+    String displayListNameAndGameTitles();
+
+    /**
+     * @return string of all games of a certain status
+     */
+    String displayGamesGivenStatus(Status status);
+
+    /**
+     * @return string of numbered list of all games
+     */
+    String displayGameTitlesNumberedList();
+
+    /**
+     * @return string of numbered list of all games of a certain status
+     */
+    String displayNumberedListOfGamesGivenStatus(Status status) throws DataSourceException;
 }
