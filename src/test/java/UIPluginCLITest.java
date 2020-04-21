@@ -303,4 +303,53 @@ public class UIPluginCLITest {
         uiplug.pullGameList(null);
         assertThrows(IllegalStateException.class, () -> uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
     }
+
+    @Test
+    public void getGamesGivenStatusTest() throws DataSourceException{
+        UIPluginCLI uiplug = new UIPluginCLI();
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+        GameList gl = new GameList("test");
+        GameList compareGL = new GameList("test");
+        uiplug.pullGameList(gl);
+        uiplug.pullGameBrowser(gb);
+
+        //0 games
+        assertEquals("There are no games to display\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.ACCEPTED));
+
+        //dev list
+        List<String> devs = new ArrayList<String>();
+        devs.add("snoop dog");
+        gb.addDeveloper(new Developer("snoop dog", 0));
+
+        //1 game
+        gb.addGame("Adventurer Kelsey","kels goes on an adventure", devs, Status.PENDING);
+        gl.includeGame("Adventurer Kelsey");
+        compareGL.includeGame("Adventurer Kelsey");
+
+        assertEquals(compareGL.getGames(), uiplug.getGamesGivenStatus(Status.PENDING).getGames());
+
+        //2 games
+        gb.addGame("Adventurer Amelia","Amelia goes on an adventure", devs, Status.PENDING);
+        gl.includeGame("Adventurer Amelia");
+        compareGL.includeGame("Adventurer Amelia");
+
+
+        assertEquals(compareGL.getGames(), uiplug.getGamesGivenStatus(Status.PENDING).getGames());
+
+        //Accepted game added, still only 2 games showing
+        gb.addGame("Adventurer Kerry","Amelia goes on an adventure", devs, Status.ACCEPTED);
+        gl.includeGame("Adventurer Kerry");
+
+        assertEquals(compareGL.getGames(), uiplug.getGamesGivenStatus(Status.PENDING).getGames());
+
+        compareGL.includeGame("Adventurer Kerry");
+        compareGL.removeGame("Adventurer Kelsey");
+        compareGL.removeGame("Adventurer Amelia");
+        //show only accepted game, not accepted
+        assertEquals(compareGL.getGames(), uiplug.getGamesGivenStatus(Status.ACCEPTED).getGames());
+
+
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, () -> uiplug.getGamesGivenStatus(Status.PENDING).getGames());
+    }
 }

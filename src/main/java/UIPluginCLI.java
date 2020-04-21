@@ -241,4 +241,8 @@ public class UIPluginCLI implements UIPlugin {
         }
         return  sb.toString();
     }
+
+    public GameList getGamesGivenStatus(Status status) throws DataSourceException{
+        return null;
+    }
 }
