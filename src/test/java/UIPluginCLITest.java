@@ -261,4 +261,37 @@ public class UIPluginCLITest {
         uiplug.pullGameList(gl);
         assertThrows(IllegalStateException.class, uiplug::displayAllGames);
     }
+
+    @Test
+    public void displayNumberedListOfGamesGivenStatusTest() throws DataSourceException{
+        UIPluginCLI uiplug = new UIPluginCLI();
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+        GameList gl = new GameList("test");
+        uiplug.pullGameList(gl);
+        uiplug.pullGameBrowser(gb);
+
+        //0 games
+        assertEquals("There are no games to display\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.ACCEPTED));
+
+        //dev list
+        List<String> devs = new ArrayList<String>();
+        devs.add("snoop dog");
+        gb.addDeveloper(new Developer("snoop dog", 0));
+
+        //1 game
+        gb.addGame("Adventurer Kelsey","kels goes on an adventure", devs, Status.PENDING);
+        gl.includeGame("Adventurer Kelsey");
+
+        assertEquals("1. Adventurer Kelsey\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
+
+        //2 games
+
+        gb.addGame("Adventurer Amelia","Amelia goes on an adventure", devs, Status.PENDING);
+        gl.includeGame("Adventurer Amelia");
+
+        assertEquals("1. Adventurer Kelsey\n2. Adventurer Amelia\n", uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
+
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, () -> uiplug.displayNumberedListOfGamesGivenStatus(Status.PENDING));
+    }
 }
