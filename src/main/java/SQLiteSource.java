@@ -606,6 +606,7 @@ public class SQLiteSource implements DataSource{
             if (exists){
                 //System.out.println("it really do think we exist..."); //TODO remove
                 sql = "UPDATE Games SET " +
+                        "title='" + game.getTitle() + "'," +
                         "description='" + game.getDescription() + "', " +
                         "gsid=" + gsid +
                         " WHERE title='"+ game.getTitle() + "';";
