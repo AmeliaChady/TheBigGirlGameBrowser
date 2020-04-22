@@ -352,4 +352,195 @@ public class UIPluginCLITest {
         uiplug.pullGameList(null);
         assertThrows(IllegalStateException.class, () -> uiplug.getGamesGivenStatus(Status.PENDING).getGames());
     }
+
+    @Test
+    public void displayableNumberedListOfFullGamesTest() throws DataSourceException{
+        UIPluginCLI uiplug= new UIPluginCLI();
+        GameList gl = new GameList("test");
+        uiplug.pullGameList(gl);
+        GameBrowser gb = new GameBrowser(DATABASE, uiplug);
+
+        List<String> developers = new ArrayList<>();
+        developers.add("snoop dog");
+        gb.addDeveloper(new Developer("snoop dog", 0));
+
+        //1 game
+        Game g = new Game();
+        gb.addDeveloper(new Developer("snoop dog", 1));
+        gb.addGame(g);
+        gl.includeGame(g.getTitle());
+        assertEquals("1. Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n", uiplug.displayableNumberedListOfFullGames());
+
+
+        //2 games
+        developers.add("kerry");
+        gb.addDeveloper(new Developer("kerry", 2));
+        g = new Game("Best game", "This is the best game ever!", "kerry", Status.PENDING);
+        gl.includeGame(g.getTitle());
+        gb.addGame(g);
+        assertEquals("1. Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "2. Title: Best game\n" +
+                "Description: This is the best game ever!\n" +
+                "Developer(s): kerry\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n", uiplug.displayableNumberedListOfFullGames());
+
+        //3 games
+        developers.add("kerry anne");
+        developers.add("kelsey");
+        gb.addDeveloper(new Developer("kerry anne", 3));
+        gb.addDeveloper(new Developer("kelsey", 4));
+        g = new Game("Cooking Mama",  developers);
+        gb.addGame(g);
+        gl.includeGame(g.getTitle());
+        assertEquals("1. Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "2. Title: Best game\n" +
+                "Description: This is the best game ever!\n" +
+                "Developer(s): kerry\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "3. Title: Cooking Mama\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n", uiplug.displayableNumberedListOfFullGames());
+
+        //4 games
+        developers.add("grace t. dury");
+        gb.addDeveloper(new Developer("grace t. dury", 5));
+        g = new Game("Animal Crossing New Horizons",
+                "Live as the only human, sell seashells to survive, and be in constant debt.",
+                developers, Status.PENDING);
+        gb.addGame(g);
+        gl.includeGame(g.getTitle());
+        assertEquals("1. Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "2. Title: Best game\n" +
+                "Description: This is the best game ever!\n" +
+                "Developer(s): kerry\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "3. Title: Cooking Mama\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "4. Title: Animal Crossing New Horizons\n" +
+                "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
+                "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n", uiplug.displayableNumberedListOfFullGames());
+
+        //5 games
+        developers.add("kevin jonas");
+        gb.addDeveloper(new Developer("kevin jonas", 6));
+        g = new Game("camp rock 4", "kevin sells real estate now", "kevin jonas", Status.ACCEPTED);
+        gl.includeGame(g.getTitle());
+        gb.addGame(g);
+        assertEquals("1. Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "2. Title: Best game\n" +
+                "Description: This is the best game ever!\n" +
+                "Developer(s): kerry\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "3. Title: Cooking Mama\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "4. Title: Animal Crossing New Horizons\n" +
+                "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
+                "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "5. Title: camp rock 4\n" +
+                "Description: kevin sells real estate now\n" +
+                "Developer(s): kevin jonas\n" +
+                "Status: ACCEPTED\n" +
+                "\n" +
+                "\n", uiplug.displayableNumberedListOfFullGames());
+
+        //6 games
+        developers.add("bertha");
+        gb.addDeveloper(new Developer("bertha", 7));
+        g = new Game("cutest dog <3",
+                "she is my dog. I hate her name but she's still cute",
+                "bertha", Status.REJECTED);
+        gl.includeGame(g.getTitle());
+        gb.addGame(g);
+        assertEquals("1. Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "2. Title: Best game\n" +
+                "Description: This is the best game ever!\n" +
+                "Developer(s): kerry\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "3. Title: Cooking Mama\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "4. Title: Animal Crossing New Horizons\n" +
+                "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
+                "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
+                "Status: PENDING\n" +
+                "\n" +
+                "\n" +
+                "5. Title: camp rock 4\n" +
+                "Description: kevin sells real estate now\n" +
+                "Developer(s): kevin jonas\n" +
+                "Status: ACCEPTED\n" +
+                "\n" +
+                "\n" +
+                "6. Title: cutest dog <3\n" +
+                "Description: she is my dog. I hate her name but she's still cute\n" +
+                "Developer(s): bertha\n" +
+                "Status: REJECTED\n" +
+                "\n" +
+                "\n", uiplug.displayableNumberedListOfFullGames());
+
+        // null game
+        uiplug.pullGameList(null);
+        assertThrows(IllegalStateException.class, ()-> uiplug.displayableNumberedListOfFullGames());
+
+    }
 }
