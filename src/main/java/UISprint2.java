@@ -275,6 +275,8 @@ public class UISprint2 {
             //saves dev's gamelist
             gameBrowser.saveGameList(devAccount.getGameList());
 
+            gameBrowser.saveGameList(gameBrowser.getGameList());
+
             System.out.println("Thank you! Your game has been submitted and is under review.");
             //System.out.println("Expect a response in your inbox shortly.");
 
@@ -328,6 +330,7 @@ public class UISprint2 {
                         //remove old title copy
                         gameBrowser.removeGame(oldTitle);
                         gameBrowser.saveGameList(devAccount.getGameList());
+                        gameBrowser.saveGameList(gameBrowser.getGameList());
                         System.out.println("Title Updated!");
                         developerTakeAction(devAccount, userAccount, dual);
                     }
@@ -339,6 +342,7 @@ public class UISprint2 {
                         String updatedBio = in3.nextLine();
                         updatingGame.changeDescription(updatedBio);
                         gameBrowser.saveGame(updatingGame);
+                        gameBrowser.saveGameList(gameBrowser.getGameList());
 
                         System.out.println("Description updated!");
                         developerTakeAction(devAccount, userAccount, dual);
