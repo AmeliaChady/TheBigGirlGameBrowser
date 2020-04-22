@@ -260,7 +260,6 @@ public class UISprint2 {
             //submit
             Game newGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
             gameBrowser.addGame(newGame);
-
             devAccount.submitGame(newGame.getTitle());
             gameBrowser.saveGameList(devAccount.getGameList());
 
@@ -343,7 +342,7 @@ public class UISprint2 {
             developerTakeAction(devAccount, userAccount, dual);
 
         }
-//----------------------
+//----------------------log out
         else if (parseInt(devChoice) == 4) {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
