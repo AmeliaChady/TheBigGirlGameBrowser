@@ -273,7 +273,7 @@ public class UISprint2 {
 
             System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
             int devUpdateChoice = in.nextInt();
-            while (devUpdateChoice < 0 || devUpdateChoice > devAccount.getGameList().getGameCount()) {
+            while (devUpdateChoice < 1 || devUpdateChoice > devAccount.getGameList().getGameCount()) {
                 System.out.println("Please pick a valid choice\n");
                 System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
                 devUpdateChoice = in.nextInt();
