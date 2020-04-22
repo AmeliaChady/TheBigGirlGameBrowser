@@ -259,8 +259,11 @@ public class UISprint2 {
 
             //submit
             Game newGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
+            //adds to master list and saves in database
             gameBrowser.addGame(newGame);
+            //includes game in dev's gamelist
             devAccount.submitGame(newGame.getTitle());
+            //saves dev's gamelist
             gameBrowser.saveGameList(devAccount.getGameList());
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
