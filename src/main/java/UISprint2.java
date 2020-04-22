@@ -123,7 +123,7 @@ public class UISprint2 {
             System.out.println("Please enter a valid choice");
             adminChoice = in.nextInt();
         }
-
+//----------------------------------
         if (adminChoice == 1) {
 
             //display pending games
@@ -166,7 +166,6 @@ public class UISprint2 {
                     String removeGameTitle = chosenGame.getTitle();
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
-                    gameBrowser.removeGame(removeGameTitle);
                     System.out.println("Game has been rejected.");
                     administratorTakeAction(adminAccount);
                 } else {
@@ -175,55 +174,57 @@ public class UISprint2 {
                 }
             }
 
-        } else if (adminChoice == 2) {
+        }
+//----------------------------------
+        else if (adminChoice == 2) {
             System.out.println("Approved Games:");
 
-            //display games with an accepted status
-            gameBrowser.pullGameList("Master Game List");
-            System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
+            //nothing in list
+            if (gameBrowser.getGameList().getGames().size() > 1) {
+                System.out.println("No approved games\n");
+                administratorTakeAction(adminAccount);
+            }
 
-//            if (gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).getGameCount()>0){
-            System.out.println("Would you like to remove any games?");
-            System.out.println("1: Yes");
-            System.out.println("2: No");
-            int adminApprovedChoice = in.nextInt();
-            while (adminApprovedChoice < 1 || adminApprovedChoice > 2) {
-                System.out.println("Please enter a valid choice");
-                adminApprovedChoice = in.nextInt();
-//                }
+            else {
+                System.out.println("Would you like to remove any games?");
+                System.out.println("1: Yes");
+                System.out.println("2: No");
+                int adminApprovedChoice = in.nextInt();
+                while (adminApprovedChoice < 1 || adminApprovedChoice > 2) {
+                    System.out.println("Please enter a valid choice");
+                    adminApprovedChoice = in.nextInt();
+                }
 
+                //yes
                 if (adminApprovedChoice == 1) {
                     System.out.println("Please select the game you would like to remove, or 0 to cancel");
-                    gameBrowser.pullGameList("Master Game List");
+
                     System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
+
+                    gameBrowser.pullGameList("Master Game List");
+                    GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
+
                     int adminRemoveChoice = in.nextInt();
-                    //TODO: while (adminRemoveChoice<0 || adminRemoveChoice>gameBrowser.getGameList().getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
-                    System.out.println("Please enter a valid choice");
-                    System.out.println("Please select the game you would like to remove, or 0 to cancel");
-                    adminRemoveChoice = in.nextInt();
+                    while (adminRemoveChoice < 1 || adminRemoveChoice > gameBrowser.getGameList().getGameCount()) {
+                        System.out.println("Please enter a valid choice");
+                        adminRemoveChoice = in.nextInt();
+                    }
+
+                    Game chosenGame = gameBrowser.loadGame(approvedGames.getGames().get(adminRemoveChoice));
+                    chosenGame.changeStatus(Status.REJECTED);
+                    gameBrowser.saveGame(chosenGame);
+                    System.out.println("Game has been rejected.");
+                    administratorTakeAction(adminAccount);
+
                 }
-                //TODO: Game adminRemoveGame = keepListOfGamesGivenStatus(Status.ACCEPTED, adminRemoveChoice, gameBrowser.getGameList());
-
-                //TODO: String removeGameTitle = adminRemoveGame.getTitle();
-//                    if(adminRemoveChoice!=0){
-//                        //TODO: gameBrowser.removeGame(removeGameTitle);
-                System.out.println("The game has been removed.");
-                System.out.println("Thank you!");
             }
-            administratorTakeAction(adminAccount);
-
-            administratorTakeAction(adminAccount);
-
-//            else{
-//                System.out.println("No approved games\n");
-//                administratorTakeAction(adminAccount);
-//            }
-//
-//            else if (adminChoice == 3) {
-//                System.out.println("Thank you for using the Big Girl Game Library.");
-//                System.out.println("See you soon!");
-//                login();
-//            }
+        }
+//----------------------------------
+        //log out
+        else {
+            System.out.println("Thank you for using the Big Girl Game Library.");
+            System.out.println("See you soon!");
+            login();
         }
 
     }
