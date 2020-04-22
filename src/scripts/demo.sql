@@ -51,7 +51,11 @@ INSERT INTO GameDevelopers (gid, did) VALUES (3, 3);
 INSERT INTO GameDevelopers (gid, did) VALUES (4, 4);
 INSERT INTO GameDevelopers (gid, did) VALUES (5, 4);
 
-INSERT INTO GameListsGames (glid, gid) VALUES (2, 1);
+INSERT INTO GameListsGames (glid, gid) VALUES (1, 1);
+INSERT INTO GameListsGames (glid, gid) VALUES (1, 2);
+INSERT INTO GameListsGames (glid, gid) VALUES (1, 3);
+INSERT INTO GameListsGames (glid, gid) VALUES (1, 4);
+INSERT INTO GameListsGames (glid, gid) VALUES (1, 5);
 INSERT INTO GameListsGames (glid, gid) VALUES (3, 1);
 INSERT INTO GameListsGames (glid, gid) VALUES (2, 2);
 INSERT INTO GameListsGames (glid, gid) VALUES (3, 2);
