@@ -306,11 +306,16 @@ public class UISprint2 {
 
                     //update title
                     if (parseInt(devModifyChoice) == 1) {
+                        //get old game title
+                        String oldTitle = updatingGame.getTitle();
                         System.out.println("Please enter the new game title:");
                         String updatedTitle = in.nextLine();
                         gameBrowser.changeTitle(updatingGame, updatedTitle);
                         System.out.println(gameBrowser.getGameList().getGames());
                         gameBrowser.addGameToDevGameList(devAccount, updatingGame);
+                        //remove old title copy
+                        gameBrowser.removeGame(oldTitle);
+                        gameBrowser.saveGameList(devAccount.getGameList());
                         System.out.println("Title Updated!");
                         developerTakeAction(devAccount, userAccount, dual);
                     }
