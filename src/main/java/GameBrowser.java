@@ -148,6 +148,18 @@ public class GameBrowser {
         increaseOwnedGameCount(game);
         dataSource.saveGameList(user.getOwnedGames());
     }
+    /**
+     * Add a game to a users game list
+     * @param user - user of owned game
+     * @param game - owned game to add to user's game list
+     * @throws DataSourceException
+     */
+    public void addGameToDevGameList(Developer developer, Game game) throws DataSourceException {
+        //developer.
+        //developer.(game.getTitle());
+        increaseOwnedGameCount(game);
+        dataSource.saveGameList(developer.getGameList());
+    }
 
     /**
      * Removes a game from a user's game list

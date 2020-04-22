@@ -245,15 +245,19 @@ public class UISprint2 {
 
 //-----------------------submit
         if (devChoice == 1) {
+            Scanner in1 = new Scanner(System.in);
             System.out.println("Please enter the title of your game:");
-            String gameName = in.nextLine();
+            String gameName = in1.nextLine();
 
             System.out.println("Please enter the description of your game:");
-            String gameDescription = in.nextLine();
+            String gameDescription = in1.nextLine();
 
             //submit
             Game newGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
             gameBrowser.addGame(newGame);
+
+            devAccount.submitGame(newGame.getTitle());
+            gameBrowser.saveGameList(devAccount.getGameList());
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
             //System.out.println("Expect a response in your inbox shortly.");
@@ -301,7 +305,7 @@ public class UISprint2 {
                     in.nextLine();
                     String updatedTitle = in.nextLine();
                     updatingGame.changeTitle(updatedTitle);
-                    gameBrowser.addGame(updatingGame);
+                    gameBrowser.saveGame(updatingGame);
 
                     System.out.println("Title Updated!");
                     developerTakeAction(devAccount, userAccount, dual);
@@ -312,7 +316,7 @@ public class UISprint2 {
                     in.nextLine();
                     String updatedBio = in.nextLine();
                     updatingGame.changeDescription(updatedBio);
-                    gameBrowser.addGame(updatingGame);
+                    gameBrowser.saveGame(updatingGame);
 
                     System.out.println("Bio updated!");
                     developerTakeAction(devAccount, userAccount, dual);
@@ -327,7 +331,7 @@ public class UISprint2 {
         else if (devChoice == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableAllGames());
+            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
             developerTakeAction(devAccount, userAccount, dual);
 
