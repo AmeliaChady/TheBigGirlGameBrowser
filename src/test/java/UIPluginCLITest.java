@@ -497,7 +497,7 @@ public class UIPluginCLITest {
         developers.add("bertha");
         gb.addDeveloper(new Developer("bertha", 7));
         g = new Game("cutest dog <3",
-                "she is my dog. I hate her name but she's still cute",
+                "she is my dog. I hate her name but shes still cute",
                 "bertha", Status.REJECTED);
         gl.includeGame(g.getTitle());
         gb.addGame(g);
@@ -532,7 +532,7 @@ public class UIPluginCLITest {
                 "\n" +
                 "\n" +
                 "6. Title: cutest dog <3\n" +
-                "Description: she is my dog. I hate her name but she's still cute\n" +
+                "Description: she is my dog. I hate her name but shes still cute\n" +
                 "Developer(s): bertha\n" +
                 "Status: REJECTED\n" +
                 "\n" +
