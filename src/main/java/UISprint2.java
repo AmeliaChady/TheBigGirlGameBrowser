@@ -206,7 +206,7 @@ public class UISprint2 {
 //----------------------------------
         else if (parseInt(adminChoice)==3){
             gameBrowser.pullGameList("Master Game List");
-            System.out.println(gameBrowser.displayableAllGames());
+            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
 
             administratorTakeAction(adminAccount);
         }
@@ -307,14 +307,11 @@ public class UISprint2 {
 
                     //update title
                     if (parseInt(devModifyChoice) == 1) {
-                        Scanner in2 = new Scanner(System.in);
                         System.out.println("Please enter the new game title:");
-                        in.nextLine();
                         String updatedTitle = in.nextLine();
                         gameBrowser.changeTitle(updatingGame, updatedTitle);
                         System.out.println(gameBrowser.getGameList().getGames());
                         gameBrowser.addGameToDevGameList(devAccount, updatingGame);
-
                         System.out.println("Title Updated!");
                         developerTakeAction(devAccount, userAccount, dual);
                     }
@@ -341,7 +338,7 @@ public class UISprint2 {
         else if (parseInt(devChoice) == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
+            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
 
             developerTakeAction(devAccount, userAccount, dual);
 
