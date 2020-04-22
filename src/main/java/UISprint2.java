@@ -427,10 +427,7 @@ public class UISprint2 {
 
             System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
             int removeOwnedListChoice = in.nextInt();
-            if (removeOwnedListChoice == 0){
-                commercialUserTakeAction(userAccount, devAccount, dual);
-            }
-            else if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
+            if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
 
                 Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(removeOwnedListChoice - 1));
                 gameBrowser.removeGameFromUserGameList(userAccount, updatingGame);
@@ -440,14 +437,14 @@ public class UISprint2 {
             else{
                 System.out.println("ERROR: Not a valid input.");
                 System.out.println("You will now be returned to the User Menu.");
-                commercialUserTakeAction(userAccount, devAccount, dual);
             }
-
+            commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
         else if (userChoice == 4) {
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
             System.out.println(gameBrowser.displayableAllGames());
+            commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
         else if(userChoice == 5){
