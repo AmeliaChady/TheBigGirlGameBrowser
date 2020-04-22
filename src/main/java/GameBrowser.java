@@ -84,6 +84,10 @@ public class GameBrowser {
         return game;
     }
 
+    public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
+        dataSource.saveGame(game);
+    }
+
 
     /**
      * A new developer is created and added to the developer list
