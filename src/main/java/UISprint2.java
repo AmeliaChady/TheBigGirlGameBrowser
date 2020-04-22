@@ -468,7 +468,7 @@ public class UISprint2 {
 
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
-        UISprint2 myBGGLTest = new UISprint2("src/databases/Test_SQLiteSource/login.db");
+        UISprint2 myBGGLTest = new UISprint2("src/databases/Test_SQLiteSource/Login.db");
         myBGGLTest.login();
 
     }
