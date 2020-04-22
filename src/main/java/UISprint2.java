@@ -29,78 +29,50 @@ public class UISprint2 {
             Accounts userAccounts = gameBrowser.login(usernameEnter, passwordEnter);
 
 
+            //admin login
             if (userAccounts.admin != null) {
                 System.out.println("Logged IN! Welcome " + userAccounts.admin.getUsername());
                 administratorTakeAction(userAccounts.admin);
-            } else if (userAccounts.user != null && userAccounts.dev == null) {
+            }
+            //user
+            else if (userAccounts.user != null && userAccounts.dev == null) {
                 System.out.println("Logged IN! you own " + userAccounts.user.getOwnedGames().getGames().size() + " Games!");
-                //commercialUserTakeAction(userAccounts.user); TODO
-            } else if (userAccounts.user == null && userAccounts.dev != null) {
+                commercialUserTakeAction(userAccounts.user);
+            }
+            //developer
+            else if (userAccounts.user == null && userAccounts.dev != null) {
                 System.out.println("Logged IN! Welcome " + userAccounts.dev.getName());
-                //developerTakeAction(userAccounts.user); TODO
-            } else if (userAccounts.user != null && userAccounts.dev != null) {
-                System.out.println("Please enter the number corresponding with the account you'd like " +
-                        "to use:");
-                System.out.println("1: Developer");
-                System.out.println("2: Commercial User");
+                developerTakeAction(userAccounts.dev);
+            }
 
-                int comboChoice = 0;
-                while (comboChoice != 1 && comboChoice != 2) {
-                    comboChoice = in.nextInt();
-                    if (comboChoice == 1) {
-                        System.out.println("Logged IN! Welcome " + userAccounts.dev.getName());
-                        //developerTakeAction(userAccounts.user); TODO
-                    } else if (comboChoice == 2) {
-                        System.out.println("Logged IN! you own " + userAccounts.user.getOwnedGames().getGames().size() + " Games!");
-                        //commercialUserTakeAction(userAccounts.user); TODO
-                    } else {
-                        System.out.println("ERROR: Not valid input");
-                    }
+            else if (userAccounts.user != null && userAccounts.dev != null) {
+                System.out.println("You have both a User and a Developer account, which would you like to login as?");
+                System.out.println("1. User");
+                System.out.println("2. Dev");
+
+                int choice = in.nextInt();
+
+                while(choice > 2 || choice < 1){
+                    System.out.println("Invalid choice.");
+                    System.out.println("Would you like to login as a user or dev?");
+                    System.out.println("1. User");
+                    System.out.println("2. Dev");
+
+                    choice = in.nextInt();
+                }
+
+                if (choice == 1){
+                    commercialUserTakeAction(userAccounts.user);
+                }
+
+                else{
+                    developerTakeAction(userAccounts.dev);
                 }
             } else {
                 System.out.println("I'm sorry, either your username or password is incorrect.");
-                System.out.println("Please select from the following options: ");
-                System.out.println("1: Retry Login");
-                //System.out.println("2: Forgot Password?");
-
-                int loginAttemptChoice = in.nextInt();
-
-                if (loginAttemptChoice == 1) {
-                    //back to beginning
-                }
-
-                //            else if (loginAttemptChoice == 2){
-                //                System.out.println("Please enter your username:");
-                //                String recoveryUsername = in.nextLine();
-                //
-                //                while(i2.hasNext()){
-                //                    iteratingUser2 = i2.next();
-                //                    if(iteratingUser2.getUsername().equalsIgnoreCase(recoveryUsername)){
-                //                        String recoveryEmail = iteratingUser2.getEmail();
-                //                        System.out.println("We have sent password recovery information to " + recoveryEmail);
-                //                        System.out.println("You will now be redirected back to the login screen.");
-                //
-                //                        login();
-                //                    }
-                //                    else{
-                //                        System.out.println("I'm sorry, we don't have any information associated with" +
-                //                                "that username");
-                //                        System.out.println("You will now be redirected back to the login screen.");
-                //                        login();
-                //                    }
-                //
-                //
-                //                }
-                //
-                //
-                //            }
-
-                else {
-                    System.out.println("ERROR: Invalid Input.");
-                    System.out.println("You are being redirected to the login page.");
-                }
-                //back to beginning
                 login();
+
+                //password recovery code moved below main for now
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage() + "\nPlease try again");
@@ -451,4 +423,60 @@ public class UISprint2 {
         myBGGLTest.login();
 
     }
+    // password recovery code moved below for mow
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //System.out.println("Please select from the following options: ");
+    //System.out.println("1: Retry Login");
+    //System.out.println("2: Forgot Password?");
+
+    //int loginAttemptChoice = in.nextInt();
+
+//                if (loginAttemptChoice == 1) {
+//                    //back to beginning
+//                }
+
+    //            else if (loginAttemptChoice == 2){
+    //                System.out.println("Please enter your username:");
+    //                String recoveryUsername = in.nextLine();
+    //
+    //                while(i2.hasNext()){
+    //                    iteratingUser2 = i2.next();
+    //                    if(iteratingUser2.getUsername().equalsIgnoreCase(recoveryUsername)){
+    //                        String recoveryEmail = iteratingUser2.getEmail();
+    //                        System.out.println("We have sent password recovery information to " + recoveryEmail);
+    //                        System.out.println("You will now be redirected back to the login screen.");
+    //
+    //                        login();
+    //                    }
+    //                    else{
+    //                        System.out.println("I'm sorry, we don't have any information associated with" +
+    //                                "that username");
+    //                        System.out.println("You will now be redirected back to the login screen.");
+    //                        login();
+    //                    }
+    //
+    //
+    //                }
+    //
+    //
+    //            }
 }
