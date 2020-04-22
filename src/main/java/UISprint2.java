@@ -115,11 +115,12 @@ public class UISprint2 {
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Review Pending Games");
         System.out.println("2: Review Approved Games");
-        System.out.println("3: Logout");
+        System.out.println("3: View All Games in Library");
+        System.out.println("4: Logout");
 
         int adminChoice = in.nextInt();
 
-        while (adminChoice < 1 || adminChoice > 3) {
+        while (adminChoice < 1 || adminChoice > 4) {
             System.out.println("Please enter a valid choice");
             adminChoice = in.nextInt();
         }
@@ -219,6 +220,13 @@ public class UISprint2 {
             }
         }
 //----------------------------------
+        else if (adminChoice==3){
+            gameBrowser.pullGameList("Master Game List");
+            System.out.println(gameBrowser.displayableAllGames());
+
+            administratorTakeAction(adminAccount);
+        }
+//----------------------------------
         //log out
         else {
             System.out.println("Thank you for using the Big Girl Game Library.");
@@ -230,8 +238,6 @@ public class UISprint2 {
 
 
     //DEVELOPER UI
-
-
     private void developerTakeAction(Developer devAccount) throws DataSourceException {
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome. Please choose what action you'd like to take:");
