@@ -224,9 +224,18 @@ public class UISprint2 {
         }
 
         int devChoice = in.nextInt();
-        while (!dual && devChoice < 1 || devChoice > 4) {
-            System.out.println("Please enter a valid choice");
-            devChoice = in.nextInt();
+
+        if(!dual){
+            while (devChoice < 1 || devChoice > 4) {
+                System.out.println("Please enter a valid choice");
+                devChoice = in.nextInt();
+            }
+        }
+        else{
+            while (devChoice < 1 || devChoice > 5) {
+                System.out.println("Please enter a valid choice");
+                devChoice = in.nextInt();
+            }
         }
 
         while(dual && devChoice < 1 || devChoice > 5){
@@ -331,9 +340,9 @@ public class UISprint2 {
             login();
         }
 
-        else if(dual && devChoice == 5){
+        else if(devChoice == 5){
             System.out.println("You will now be logged into your Commercial User account.");
-            //commercialUserTakeAction();
+            commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
         else {
@@ -359,9 +368,17 @@ public class UISprint2 {
         }
 
         int userChoice = in.nextInt();
-        while (userChoice < 1 || userChoice > 4) {
-            System.out.println("Please enter a valid choice:");
-            userChoice = in.nextInt();
+        if(!dual){
+            while (userChoice < 1 || userChoice > 5) {
+                System.out.println("Please enter a valid choice:");
+                userChoice = in.nextInt();
+            }
+        }
+        else{
+            while (userChoice < 1 || userChoice > 6) {
+                System.out.println("Please enter a valid choice:");
+                userChoice = in.nextInt();
+            }
         }
 
         if (userChoice == 1) {
@@ -437,7 +454,7 @@ public class UISprint2 {
 
         else if(dual && userChoice == 6){
             System.out.println("You will now be logged in as a developer.");
-            //developerTakeAction();
+            developerTakeAction(devAccount, userAccount, true);
         }
 
     }
