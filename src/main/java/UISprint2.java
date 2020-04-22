@@ -307,14 +307,11 @@ public class UISprint2 {
 
                     //update title
                     if (parseInt(devModifyChoice) == 1) {
-                        Scanner in2 = new Scanner(System.in);
                         System.out.println("Please enter the new game title:");
-                        in.nextLine();
                         String updatedTitle = in.nextLine();
                         gameBrowser.changeTitle(updatingGame, updatedTitle);
                         System.out.println(gameBrowser.getGameList().getGames());
                         gameBrowser.addGameToDevGameList(devAccount, updatingGame);
-
                         System.out.println("Title Updated!");
                         developerTakeAction(devAccount, userAccount, dual);
                     }
