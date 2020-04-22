@@ -125,6 +125,7 @@ public class SQLiteSource implements DataSource{
                     inTransaction = false;
                 }
                 s.close();
+                //System.out.println("uhoh"); //TODO remove
                 return null;
             }
 
@@ -245,7 +246,7 @@ public class SQLiteSource implements DataSource{
     public GameList loadGameList(String gameListName) throws DataSourceException {
         if (gameListName == null) return null;
 
-        Savepoint lgl = null, lgts  = null;
+        Savepoint lgl = null;
         try {
             if(!inTransaction) {
                 lgl = conn.setSavepoint();
@@ -267,11 +268,6 @@ public class SQLiteSource implements DataSource{
                 return null;
             }
 
-            if (!inTransaction) {
-                lgts = conn.setSavepoint();
-                inTransaction = true;
-            }
-
             // Get game titles
             sql = "SELECT title FROM GameListsGames INNER JOIN GameLists USING(glid) " +
                     "INNER JOIN Games USING(gid) WHERE name="+"\""+gameListName+"\";";
@@ -289,7 +285,7 @@ public class SQLiteSource implements DataSource{
                 }
             }
             s.close();
-            if(lgts != null){
+            if(lgl != null){
                 conn.commit();
                 inTransaction = false;
             }
@@ -297,9 +293,9 @@ public class SQLiteSource implements DataSource{
 
         } catch(SQLException e) {
             try {
-                if (lgts != null) {
-                    conn.rollback(lgts);
-                    conn.releaseSavepoint(lgts);
+                if (lgl != null) {
+                    conn.rollback(lgl);
+                    conn.releaseSavepoint(lgl);
                     inTransaction = false;
                 }
             }catch (SQLException ignored){}
@@ -608,15 +604,18 @@ public class SQLiteSource implements DataSource{
             boolean exists = !s.getResultSet().isClosed();
 
             if (exists){
+                //System.out.println("it really do think we exist..."); //TODO remove
                 sql = "UPDATE Games SET " +
-                        "description=\"" + game.getDescription() + "\", " +
+                        "title='" + game.getTitle() + "'," +
+                        "description='" + game.getDescription() + "', " +
                         "gsid=" + gsid +
-                        " WHERE title=\""+ game.getTitle() + "\";";
+                        " WHERE title='"+ game.getTitle() + "';";
             }
             else {
+                //System.out.println("at some point the game is inserted"); //TODO remove
                 sql = "INSERT INTO Games(title, description, gsid) VALUES(" +
-                        "\"" + game.getTitle() + "\", " +
-                        "\"" + game.getDescription() + "\", " +
+                        "'" + game.getTitle() + "', " +
+                        "'" + game.getDescription() + "', " +
                         gsid + ");";
             }
             s.execute(sql);
@@ -776,7 +775,7 @@ public class SQLiteSource implements DataSource{
         if (Files.notExists(Paths.get(absPath+"/"+sqlPath)))
             throw new IllegalArgumentException("Incorrect SQL Path");
 
-        System.out.println(absPath);
+        //System.out.println(absPath);
         ProcessBuilder pb = new ProcessBuilder("sqlite3", absPath+"/"+databasePath, ".read " + absPath+"/"+sqlPath + "");
         Process pr = pb.start();
         System.out.println(new String(pr.getErrorStream().readAllBytes()));
