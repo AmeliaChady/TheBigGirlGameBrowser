@@ -353,6 +353,10 @@ public class GameBrowser {
         return uiplug.displayNumberedListOfGamesGivenStatus(status);
     }
 
+    public String displayableNumberedListOfFullGames() throws DataSourceException{
+        return uiplug.displayableNumberedListOfFullGames();
+    }
+
     public GameList getGamesGivenStatus(Status status) throws DataSourceException{
         return uiplug.getGamesGivenStatus(status);
     }
