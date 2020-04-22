@@ -92,6 +92,11 @@ public class GameBrowser {
         dataSource.saveGameList(gameList);
     }
 
+    public void changeTitle(Game game, String title) throws DataSourceException {
+        game.changeTitle(title);
+        addGame(game);
+    }
+
 
     /**
      * A new developer is created and added to the developer list
@@ -113,7 +118,7 @@ public class GameBrowser {
         for (String d : developers) {
             if (d.equals(username)) {
                 developer = d;
-                System.out.println("we here");
+                System.out.println("we here"); //TODO remove
                 developers.remove(d);
                 break;
             }
@@ -150,14 +155,14 @@ public class GameBrowser {
     }
     /**
      * Add a game to a users game list
-     * @param user - user of owned game
+     * @param developer - user of owned game
      * @param game - owned game to add to user's game list
      * @throws DataSourceException
      */
     public void addGameToDevGameList(Developer developer, Game game) throws DataSourceException {
-        //developer.
-        //developer.(game.getTitle());
-        increaseOwnedGameCount(game);
+        dataSource.saveGame(game);
+        saveGame(game);
+        developer.getGameList().includeGame(game.getTitle());
         dataSource.saveGameList(developer.getGameList());
     }
 

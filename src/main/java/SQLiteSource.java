@@ -67,6 +67,8 @@ public class SQLiteSource implements DataSource{
             // TODO: Hard Coded not accounting closed.
             int gid = getGid(game.getTitle(), s);
 
+            System.out.println(game.getTitle() + "has gid = " + gid); //TODO remove
+
             // Developers Set Up
             Iterator<String> devs = game.getDevelopers().iterator();
             int did;
@@ -125,6 +127,7 @@ public class SQLiteSource implements DataSource{
                     inTransaction = false;
                 }
                 s.close();
+                System.out.println("uhoh"); //TODO remove
                 return null;
             }
 
@@ -608,12 +611,14 @@ public class SQLiteSource implements DataSource{
             boolean exists = !s.getResultSet().isClosed();
 
             if (exists){
+                System.out.println("it really do think we exist..."); //TODO remove
                 sql = "UPDATE Games SET " +
                         "description=\"" + game.getDescription() + "\", " +
                         "gsid=" + gsid +
                         " WHERE title=\""+ game.getTitle() + "\";";
             }
             else {
+                System.out.println("at some point the game is inserted"); //TODO remove
                 sql = "INSERT INTO Games(title, description, gsid) VALUES(" +
                         "\"" + game.getTitle() + "\", " +
                         "\"" + game.getDescription() + "\", " +
