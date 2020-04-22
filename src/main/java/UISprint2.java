@@ -383,28 +383,28 @@ public class UISprint2 {
             System.out.println("6: Switch Accounts");
         }
 
-        int userChoice = in.nextInt();
+        String userChoice = in.nextLine();
         if(!dual){
-            while (userChoice < 1 || userChoice > 5) {
+            while (isInt(userChoice) || (parseInt(userChoice) < 1 || parseInt(userChoice) > 5)) {
                 System.out.println("Please enter a valid choice:");
-                userChoice = in.nextInt();
+                userChoice = in.nextLine();
             }
         }
         else{
-            while (userChoice < 1 || userChoice > 6) {
+            while (isInt(userChoice) || (parseInt(userChoice) < 1 || parseInt(userChoice) > 6)) {
                 System.out.println("Please enter a valid choice:");
-                userChoice = in.nextInt();
+                userChoice = in.nextLine();
             }
         }
 
-        if (userChoice == 1) {
+        if (parseInt(userChoice) == 1) {
             System.out.println("Big Girl Game Browser Game List:");
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
-        else if (userChoice == 2) {
+        else if (parseInt(userChoice) == 2) {
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
 
@@ -432,7 +432,7 @@ public class UISprint2 {
             }
 
         }
-        else if (userChoice == 3) {
+        else if (parseInt(userChoice) == 3) {
             System.out.println("Owned Games:");
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
             System.out.println(gameBrowser.displayableGameTitlesNumberedList());
@@ -453,19 +453,19 @@ public class UISprint2 {
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
-        else if (userChoice == 4) {
+        else if (parseInt(userChoice) == 4) {
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
             System.out.println(gameBrowser.displayableAllGames());
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
-        else if(userChoice == 5){
+        else if(parseInt(userChoice) == 5){
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
             login();
         }
 
-        else if(dual && userChoice == 6){
+        else if(dual && parseInt(userChoice) == 6){
             System.out.println("You will now be logged in as a developer.");
             developerTakeAction(devAccount, userAccount, true);
         }
