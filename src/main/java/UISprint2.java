@@ -441,6 +441,11 @@ public class UISprint2 {
 
             System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
             int removeOwnedListChoice = in.nextInt();
+
+            if(removeOwnedListChoice == 0){
+                System.out.println("Returning you to the User menu");
+                commercialUserTakeAction(userAccount, devAccount, dual);
+            }
             if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
 
                 Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(removeOwnedListChoice - 1));
