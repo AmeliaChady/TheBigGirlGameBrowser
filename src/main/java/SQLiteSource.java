@@ -774,7 +774,7 @@ public class SQLiteSource implements DataSource{
         if (Files.notExists(Paths.get(absPath+"/"+sqlPath)))
             throw new IllegalArgumentException("Incorrect SQL Path");
 
-        System.out.println(absPath);
+        //System.out.println(absPath);
         ProcessBuilder pb = new ProcessBuilder("sqlite3", absPath+"/"+databasePath, ".read " + absPath+"/"+sqlPath + "");
         Process pr = pb.start();
         System.out.println(new String(pr.getErrorStream().readAllBytes()));
