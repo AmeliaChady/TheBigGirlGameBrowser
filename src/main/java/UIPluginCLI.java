@@ -242,7 +242,31 @@ public class UIPluginCLI implements UIPlugin {
         return  sb.toString();
     }
 
-    public GameList getGamesGivenStatus(Status status) throws DataSourceException{
+    public String displayableNumberedListOfFullGames() throws DataSourceException{
+        if(gl == null){
+            throw new IllegalStateException("no gamelist pulled");
+        }
+        if(gl.getGameCount()==0){
+            return "There are no games to display\n";
+        }
+
+        int count = 1;
+        Iterator<String> games = gl.getGames().iterator();
+        StringBuilder sb = new StringBuilder();
+
+        while (games.hasNext()){
+            gb.pullGame(games.next());
+            sb.append(count);
+            sb.append(". ");
+            sb.append(displayableGame());
+            sb.append("\n");
+            count++;
+
+        }
+        return  sb.toString();
+    }
+
+    public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{
         if(gl == null){
             throw new IllegalStateException("no gamelist pulled");
         }
