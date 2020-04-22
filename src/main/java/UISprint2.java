@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.Integer.parseInt;
+
 public class UISprint2 {
 
     GameBrowser gameBrowser;
@@ -82,6 +84,16 @@ public class UISprint2 {
         }
     }
 
+    public boolean isInt( String input ) {
+        try {
+            Integer.parseInt( input );
+            return true;
+        }
+        catch( Exception e ) {
+            return false;
+        }
+    }
+
     //ADMINISTRATOR UI
 
     private void administratorTakeAction(Administrator adminAccount) throws DataSourceException {
@@ -92,14 +104,13 @@ public class UISprint2 {
         System.out.println("3: View All Games in Library");
         System.out.println("4: Logout");
 
-        int adminChoice = in.nextInt();
-
-        while (adminChoice < 1 || adminChoice > 4) {
+        String adminChoice = in.nextLine();
+        while (!isInt(adminChoice) || (parseInt(adminChoice) < 1 || parseInt(adminChoice) > 4)) {
             System.out.println("Please enter a valid choice");
-            adminChoice = in.nextInt();
+            adminChoice = in.nextLine();
         }
 //----------------------------------
-        if (adminChoice == 1) {
+        if (parseInt(adminChoice) == 1) {
 
             //display pending games
             gameBrowser.pullGameList("Master Game List");
@@ -108,19 +119,19 @@ public class UISprint2 {
 
             System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
 
-            int devReviewGameChoice = in.nextInt();
-            while (devReviewGameChoice < 0 || devReviewGameChoice > gameBrowser.getGameList().getGameCount()) {
+            String devReviewGameChoice = in.nextLine();
+            while (!isInt(devReviewGameChoice) || (parseInt(devReviewGameChoice) < 0 || parseInt(devReviewGameChoice) > gameBrowser.getGameList().getGameCount())) {
                 System.out.println("Please enter a valid choice");
                 System.out.println("Please choose which pending game you'd like to review, or press 0 to exit:");
-                devReviewGameChoice = in.nextInt();
+                devReviewGameChoice = in.nextLine();
             }
 
-            if (devReviewGameChoice == 0) {
+            if (parseInt(devReviewGameChoice) == 0) {
                 administratorTakeAction(adminAccount);
 
-            } else if (devReviewGameChoice >= 1 && devReviewGameChoice <= pendingGames.getGames().size()) {
+            } else if (parseInt(devReviewGameChoice) >= 1 && parseInt(devReviewGameChoice) <= pendingGames.getGames().size()) {
 
-                String devReviewGame = pendingGames.getGames().get(devReviewGameChoice - 1);
+                String devReviewGame = pendingGames.getGames().get(parseInt(devReviewGameChoice) - 1);
 
                 //get game
                 Game chosenGame = gameBrowser.loadGame(devReviewGame);
@@ -150,7 +161,7 @@ public class UISprint2 {
 
         }
 //----------------------------------
-        else if (adminChoice == 2) {
+        else if (parseInt(adminChoice) == 2) {
             System.out.println("Approved Games:");
 
             //nothing in list
@@ -163,14 +174,14 @@ public class UISprint2 {
                 System.out.println("Would you like to remove any games?");
                 System.out.println("1: Yes");
                 System.out.println("2: No");
-                int adminApprovedChoice = in.nextInt();
-                while (adminApprovedChoice < 1 || adminApprovedChoice > 2) {
+                String adminApprovedChoice = in.nextLine();
+                while (!isInt(adminApprovedChoice) || (parseInt(adminApprovedChoice) < 1 || parseInt(adminApprovedChoice) > 2)) {
                     System.out.println("Please enter a valid choice");
-                    adminApprovedChoice = in.nextInt();
+                    adminApprovedChoice = in.nextLine();
                 }
 
                 //yes
-                if (adminApprovedChoice == 1) {
+                if (parseInt(adminApprovedChoice) == 1) {
                     System.out.println("Please select the game you would like to remove, or 0 to cancel");
 
                     System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
@@ -178,13 +189,13 @@ public class UISprint2 {
                     gameBrowser.pullGameList("Master Game List");
                     GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
 
-                    int adminRemoveChoice = in.nextInt();
-                    while (adminRemoveChoice < 1 || adminRemoveChoice > gameBrowser.getGameList().getGameCount()) {
+                    String adminRemoveChoice = in.nextLine();
+                    while (!isInt(adminRemoveChoice) || (parseInt(adminRemoveChoice) < 1 || parseInt(adminRemoveChoice) > gameBrowser.getGameList().getGameCount())) {
                         System.out.println("Please enter a valid choice");
-                        adminRemoveChoice = in.nextInt();
+                        adminRemoveChoice = in.nextLine();
                     }
 
-                    Game chosenGame = gameBrowser.loadGame(approvedGames.getGames().get(adminRemoveChoice - 1));
+                    Game chosenGame = gameBrowser.loadGame(approvedGames.getGames().get(parseInt(adminRemoveChoice) - 1));
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
@@ -194,7 +205,7 @@ public class UISprint2 {
             }
         }
 //----------------------------------
-        else if (adminChoice==3){
+        else if (parseInt(adminChoice)==3){
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableAllGames());
 
