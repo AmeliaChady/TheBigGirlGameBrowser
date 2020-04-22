@@ -67,8 +67,6 @@ public class SQLiteSource implements DataSource{
             // TODO: Hard Coded not accounting closed.
             int gid = getGid(game.getTitle(), s);
 
-            //System.out.println(game.getTitle() + "has gid = " + gid); //TODO remove
-
             // Developers Set Up
             Iterator<String> devs = game.getDevelopers().iterator();
             int did;

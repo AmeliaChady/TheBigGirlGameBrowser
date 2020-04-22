@@ -118,7 +118,6 @@ public class GameBrowser {
         for (String d : developers) {
             if (d.equals(username)) {
                 developer = d;
-                System.out.println("we here"); //TODO remove
                 developers.remove(d);
                 break;
             }
