@@ -145,7 +145,7 @@ public class UISprint2 {
 
             } else if (devReviewGameChoice >= 1 && devReviewGameChoice <= pendingGames.getGames().size()) {
 
-                String devReviewGame = pendingGames.getGames().get(devReviewGameChoice);
+                String devReviewGame = pendingGames.getGames().get(devReviewGameChoice - 1);
 
                 //get game
                 Game chosenGame = gameBrowser.loadGame(devReviewGame);
@@ -163,7 +163,6 @@ public class UISprint2 {
                     administratorTakeAction(adminAccount);
                 }
                 else if (devApproveReject == 2) {
-                    String removeGameTitle = chosenGame.getTitle();
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
@@ -210,7 +209,7 @@ public class UISprint2 {
                         adminRemoveChoice = in.nextInt();
                     }
 
-                    Game chosenGame = gameBrowser.loadGame(approvedGames.getGames().get(adminRemoveChoice));
+                    Game chosenGame = gameBrowser.loadGame(approvedGames.getGames().get(adminRemoveChoice - 1));
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
@@ -247,25 +246,26 @@ public class UISprint2 {
             devChoice = in.nextInt();
         }
 
+//-----------------------submit
         if (devChoice == 1) {
             System.out.println("Please enter the title of your game:");
-            in.nextLine();
             String gameName = in.nextLine();
-            System.out.println("Please enter the description of your game:");
 
+            System.out.println("Please enter the description of your game:");
             String gameDescription = in.nextLine();
 
+            //submit
             Game newGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
-
-            gameBrowser.saveGame(newGame);
             gameBrowser.addGame(newGame);
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
-            System.out.println("Expect a response in your inbox shortly.");
+            //System.out.println("Expect a response in your inbox shortly.");
 
             //back to menu screen
             developerTakeAction(devAccount);
-        } else if (devChoice == 2) {
+        }
+//-------------------------update game
+        else if (devChoice == 2) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
             System.out.println(gameBrowser.displayableGameTitlesNumberedList());
@@ -280,52 +280,54 @@ public class UISprint2 {
             if (devUpdateChoice == 0) {
                 developerTakeAction(devAccount);
             }
+            else {
 
-            Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(devUpdateChoice - 1));
+                Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(devUpdateChoice - 1));
 
 
-            System.out.println("Please select one of the following options:");
-            System.out.println("1: Update Title");
-            System.out.println("2: Update Bio");
-
-            int devModifyChoice = in.nextInt();
-            while (devModifyChoice < 1 || devModifyChoice > 2) {
-                System.out.println("Please pick a valid choice\n");
                 System.out.println("Please select one of the following options:");
                 System.out.println("1: Update Title");
-                System.out.println("2: Update Bio");
+                System.out.println("2: Update Description");
 
-                devModifyChoice = in.nextInt();
+                int devModifyChoice = in.nextInt();
+                while (devModifyChoice < 1 || devModifyChoice > 2) {
+                    System.out.println("Please select one of the following options:");
+                    System.out.println("1: Update Title");
+                    System.out.println("2: Update Bio");
+
+                    devModifyChoice = in.nextInt();
+                }
+
+                //update title
+                if (devModifyChoice == 1) {
+                    System.out.println("Please enter the new game title:");
+                    in.nextLine();
+                    String updatedTitle = in.nextLine();
+                    updatingGame.changeTitle(updatedTitle);
+                    gameBrowser.addGame(updatingGame);
+
+                    System.out.println("Title Updated!");
+                    developerTakeAction(devAccount);
+                }
+                //update description
+                else if (devModifyChoice == 2) {
+                    System.out.println("Please enter the new game bio:");
+                    in.nextLine();
+                    String updatedBio = in.nextLine();
+                    updatingGame.changeDescription(updatedBio);
+                    gameBrowser.addGame(updatingGame);
+
+                    System.out.println("Bio updated!");
+                    developerTakeAction(devAccount);
+                } else {
+                    System.out.println("ERROR: Invalid answer.");
+                    developerTakeAction(devAccount);
+                }
             }
 
-            if (devModifyChoice == 1) {
-                System.out.println("Please enter the new game title:");
-                in.nextLine();
-                String updatedTitle = in.nextLine();
-                updatingGame.changeTitle(updatedTitle);
-                gameBrowser.saveGame(updatingGame);
-                gameBrowser.addGame(updatingGame);
-
-                System.out.println("Title Updated!");
-                developerTakeAction(devAccount);
-            } else if (devModifyChoice == 2) {
-                System.out.println("Please enter the new game bio:");
-                in.nextLine();
-                String updatedBio = in.nextLine();
-                updatingGame.changeDescription(updatedBio);
-                gameBrowser.saveGame(updatingGame);
-                gameBrowser.addGame(updatingGame);
-
-                System.out.println("Bio updated!");
-                developerTakeAction(devAccount);
-            } else {
-                System.out.println("ERROR: Invalid answer.");
-                System.out.println("Please try again.");
-
-                developerTakeAction(devAccount);
-            }
-
-        } else if (devChoice == 3) {
+        }
+//---------------------view gameList
+        else if (devChoice == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
             System.out.println(gameBrowser.displayableAllGames());
@@ -333,7 +335,7 @@ public class UISprint2 {
             developerTakeAction(devAccount);
 
         }
-
+//----------------------
         else if (devChoice == 4) {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
@@ -388,7 +390,7 @@ public class UISprint2 {
 
                 //get game based on user input
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String userGameToAdd = approvedGames.getGames().get(userAddChoice);
+                String userGameToAdd = approvedGames.getGames().get(userAddChoice - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
                 gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
