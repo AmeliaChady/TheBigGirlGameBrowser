@@ -248,11 +248,6 @@ public class UISprint2 {
             }
         }
 
-        while(dual && ( !isInt(devChoice) || (parseInt(devChoice) < 1 || parseInt(devChoice) > 5))){
-            System.out.println("Please enter a valid choice");
-            devChoice = in.nextLine();
-        }
-
 //-----------------------submit
         if (parseInt(devChoice) == 1) {
             Scanner in1 = new Scanner(System.in);
@@ -281,64 +276,66 @@ public class UISprint2 {
             gameBrowser.pullGameList(devAccount.getGameList().getName());
             System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
-            System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
-            String devUpdateChoice = in.nextLine();
-            while (!isInt(devUpdateChoice) || (parseInt(devUpdateChoice) < 1 || parseInt(devUpdateChoice) > devAccount.getGameList().getGameCount())) {
-                System.out.println("Please pick a valid choice\n");
+            //only will do things if list size is at least 1.
+            if (gameBrowser.getGameList().getGameCount()>0) {
                 System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
-                devUpdateChoice = in.nextLine();
-            }
-            if (parseInt(devUpdateChoice) == 0) {
-                developerTakeAction(devAccount, userAccount, dual);
-            }
-            else {
-
-                Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(parseInt(devUpdateChoice) - 1));
-
-
-                System.out.println("Please select one of the following options:");
-                System.out.println("1: Update Title");
-                System.out.println("2: Update Description");
-
-                String devModifyChoice = in.nextLine();
-                while (isInt(devModifyChoice) || (parseInt(devModifyChoice) < 1 || parseInt(devModifyChoice) > 2)) {
-                    System.out.println("Please select one of the following options:");
-                    System.out.println("1: Update Title");
-                    System.out.println("2: Update Bio");
-
-                    devModifyChoice = in.nextLine();
+                String devUpdateChoice = in.nextLine();
+                while (!isInt(devUpdateChoice) || (parseInt(devUpdateChoice) < 0 || parseInt(devUpdateChoice) > devAccount.getGameList().getGameCount())) {
+                    System.out.println("Please pick a valid choice\n");
+                    System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
+                    devUpdateChoice = in.nextLine();
                 }
-
-                //update title
-                if (parseInt(devModifyChoice) == 1) {
-                    Scanner in2 = new Scanner(System.in);
-                    System.out.println("Please enter the new game title:");
-                    in.nextLine();
-                    String updatedTitle = in.nextLine();
-                    gameBrowser.changeTitle(updatingGame, updatedTitle);
-                    System.out.println(gameBrowser.getGameList().getGames());
-                    gameBrowser.addGameToDevGameList(devAccount, updatingGame);
-
-                    System.out.println("Title Updated!");
-                    developerTakeAction(devAccount, userAccount, dual);
-                }
-                //update description
-                else if (parseInt(devModifyChoice) == 2) {
-                    Scanner in3 = new Scanner(System.in);
-                    System.out.println("Please enter the new game bio:");
-                    //in3.nextLine();
-                    String updatedBio = in3.nextLine();
-                    updatingGame.changeDescription(updatedBio);
-                    gameBrowser.saveGame(updatingGame);
-
-                    System.out.println("Bio updated!");
+                if (parseInt(devUpdateChoice) == 0) {
                     developerTakeAction(devAccount, userAccount, dual);
                 } else {
-                    System.out.println("ERROR: Invalid answer.");
-                    developerTakeAction(devAccount, userAccount, dual);
+
+                    Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(parseInt(devUpdateChoice) - 1));
+
+
+                    System.out.println("Please select one of the following options:");
+                    System.out.println("1: Update Title");
+                    System.out.println("2: Update Description");
+
+                    String devModifyChoice = in.nextLine();
+                    while (!isInt(devModifyChoice) || (parseInt(devModifyChoice) < 1 || parseInt(devModifyChoice) > 2)) {
+                        System.out.println("Please select one of the following options:");
+                        System.out.println("1: Update Title");
+                        System.out.println("2: Update Description");
+
+                        devModifyChoice = in.nextLine();
+                    }
+
+                    //update title
+                    if (parseInt(devModifyChoice) == 1) {
+                        Scanner in2 = new Scanner(System.in);
+                        System.out.println("Please enter the new game title:");
+                        in.nextLine();
+                        String updatedTitle = in.nextLine();
+                        gameBrowser.changeTitle(updatingGame, updatedTitle);
+                        System.out.println(gameBrowser.getGameList().getGames());
+                        gameBrowser.addGameToDevGameList(devAccount, updatingGame);
+
+                        System.out.println("Title Updated!");
+                        developerTakeAction(devAccount, userAccount, dual);
+                    }
+                    //update description
+                    else if (parseInt(devModifyChoice) == 2) {
+                        Scanner in3 = new Scanner(System.in);
+                        System.out.println("Please enter the new game description:");
+                        //in3.nextLine();
+                        String updatedBio = in3.nextLine();
+                        updatingGame.changeDescription(updatedBio);
+                        gameBrowser.saveGame(updatingGame);
+
+                        System.out.println("Description updated!");
+                        developerTakeAction(devAccount, userAccount, dual);
+                    } else {
+                        System.out.println("ERROR: Invalid answer.");
+                        developerTakeAction(devAccount, userAccount, dual);
+                    }
                 }
             }
-
+            developerTakeAction(devAccount, userAccount, dual);
         }
 //---------------------view gameList
         else if (parseInt(devChoice) == 3) {
