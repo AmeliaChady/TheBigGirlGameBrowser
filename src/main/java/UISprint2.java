@@ -304,8 +304,10 @@ public class UISprint2 {
                     System.out.println("Please enter the new game title:");
                     in.nextLine();
                     String updatedTitle = in.nextLine();
-                    updatingGame.changeTitle(updatedTitle);
-                    gameBrowser.saveGame(updatingGame);
+                    gameBrowser.changeTitle(updatingGame, updatedTitle);
+                    System.out.println(gameBrowser.getGameList().getGames());
+                    gameBrowser.addGameToDevGameList(devAccount, updatingGame);
+
 
                     System.out.println("Title Updated!");
                     developerTakeAction(devAccount, userAccount, dual);
