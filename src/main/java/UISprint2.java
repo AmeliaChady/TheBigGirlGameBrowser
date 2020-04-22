@@ -333,7 +333,7 @@ public class UISprint2 {
         else if (devChoice == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
+            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
 
             developerTakeAction(devAccount, userAccount, dual);
 
