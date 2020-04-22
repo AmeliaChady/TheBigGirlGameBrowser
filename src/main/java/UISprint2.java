@@ -165,6 +165,7 @@ public class UISprint2 {
         }
 //--------------approved--------------------
         else if (parseInt(adminChoice) == 2) {
+            gameBrowser.pullGameList("Master Game List");
 
             System.out.println("Approved Games:");
 
