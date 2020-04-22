@@ -111,7 +111,6 @@ public class UISprint2 {
         }
 //----------------------------------
         if (parseInt(adminChoice) == 1) {
-
             //display pending games
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.PENDING));
@@ -147,8 +146,7 @@ public class UISprint2 {
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been approved");
                     administratorTakeAction(adminAccount);
-                }
-                else if (devApproveReject == 2) {
+                } else if (devApproveReject == 2) {
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
@@ -162,6 +160,7 @@ public class UISprint2 {
         }
 //----------------------------------
         else if (parseInt(adminChoice) == 2) {
+
             System.out.println("Approved Games:");
 
             //nothing in list
@@ -211,7 +210,7 @@ public class UISprint2 {
 
             administratorTakeAction(adminAccount);
         }
-//----------------------------------
+//----------------------------------log out
         //log out
         else {
             System.out.println("Thank you for using the Big Girl Game Library.");
@@ -312,9 +311,10 @@ public class UISprint2 {
 
                 //update title
                 if (devModifyChoice == 1) {
+                    Scanner in2 = new Scanner(System.in);
                     System.out.println("Please enter the new game title:");
-                    in.nextLine();
-                    String updatedTitle = in.nextLine();
+                    //in2.nextLine();
+                    String updatedTitle = in2.nextLine();
                     updatingGame.changeTitle(updatedTitle);
                     gameBrowser.saveGame(updatingGame);
 
@@ -323,9 +323,10 @@ public class UISprint2 {
                 }
                 //update description
                 else if (devModifyChoice == 2) {
+                    Scanner in3 = new Scanner(System.in);
                     System.out.println("Please enter the new game bio:");
-                    in.nextLine();
-                    String updatedBio = in.nextLine();
+                    //in3.nextLine();
+                    String updatedBio = in3.nextLine();
                     updatingGame.changeDescription(updatedBio);
                     gameBrowser.saveGame(updatingGame);
 
