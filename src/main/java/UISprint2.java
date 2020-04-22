@@ -206,7 +206,7 @@ public class UISprint2 {
 //----------------------------------
         else if (parseInt(adminChoice)==3){
             gameBrowser.pullGameList("Master Game List");
-            System.out.println(gameBrowser.displayableAllGames());
+            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
 
             administratorTakeAction(adminAccount);
         }
@@ -338,7 +338,7 @@ public class UISprint2 {
         else if (parseInt(devChoice) == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
+            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
 
             developerTakeAction(devAccount, userAccount, dual);
 
