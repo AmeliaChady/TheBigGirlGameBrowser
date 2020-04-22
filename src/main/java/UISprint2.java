@@ -233,28 +233,28 @@ public class UISprint2 {
             System.out.println("5: Switch Accounts");
         }
 
-        int devChoice = in.nextInt();
+        String devChoice = in.nextLine();
 
         if(!dual){
-            while (devChoice < 1 || devChoice > 4) {
+            while (!isInt(devChoice) || (parseInt(devChoice) < 1 || parseInt(devChoice) > 4)) {
                 System.out.println("Please enter a valid choice");
-                devChoice = in.nextInt();
+                devChoice = in.nextLine();
             }
         }
         else{
-            while (devChoice < 1 || devChoice > 5) {
+            while (!isInt(devChoice) || (parseInt(devChoice) < 1 || parseInt(devChoice) > 5)) {
                 System.out.println("Please enter a valid choice");
-                devChoice = in.nextInt();
+                devChoice = in.nextLine();
             }
         }
 
-        while(dual && devChoice < 1 || devChoice > 5){
+        while(dual && ( !isInt(devChoice) || (parseInt(devChoice) < 1 || parseInt(devChoice) > 5))){
             System.out.println("Please enter a valid choice");
-            devChoice = in.nextInt();
+            devChoice = in.nextLine();
         }
 
 //-----------------------submit
-        if (devChoice == 1) {
+        if (parseInt(devChoice) == 1) {
             Scanner in1 = new Scanner(System.in);
             System.out.println("Please enter the title of your game:");
             String gameName = in1.nextLine();
@@ -276,19 +276,19 @@ public class UISprint2 {
             developerTakeAction(devAccount, userAccount, dual);
         }
 //-------------------------update game
-        else if (devChoice == 2) {
+        else if (parseInt(devChoice) == 2) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
             System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
             System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
-            int devUpdateChoice = in.nextInt();
-            while (devUpdateChoice < 1 || devUpdateChoice > devAccount.getGameList().getGameCount()) {
+            String devUpdateChoice = in.nextLine();
+            while (!isInt(devUpdateChoice) || (parseInt(devUpdateChoice) < 1 || parseInt(devUpdateChoice) > devAccount.getGameList().getGameCount())) {
                 System.out.println("Please pick a valid choice\n");
                 System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
-                devUpdateChoice = in.nextInt();
+                devUpdateChoice = in.nextLine();
             }
-            if (devUpdateChoice == 0) {
+            if (parseInt(devUpdateChoice) == 0) {
                 developerTakeAction(devAccount, userAccount, dual);
             }
             else {
@@ -300,17 +300,17 @@ public class UISprint2 {
                 System.out.println("1: Update Title");
                 System.out.println("2: Update Description");
 
-                int devModifyChoice = in.nextInt();
-                while (devModifyChoice < 1 || devModifyChoice > 2) {
+                String devModifyChoice = in.nextLine();
+                while (isInt(devModifyChoice) || (parseInt(devModifyChoice) < 1 || parseInt(devModifyChoice) > 2)) {
                     System.out.println("Please select one of the following options:");
                     System.out.println("1: Update Title");
                     System.out.println("2: Update Bio");
 
-                    devModifyChoice = in.nextInt();
+                    devModifyChoice = in.nextLine();
                 }
 
                 //update title
-                if (devModifyChoice == 1) {
+                if (parseInt(devModifyChoice) == 1) {
                     Scanner in2 = new Scanner(System.in);
                     System.out.println("Please enter the new game title:");
                     //in2.nextLine();
@@ -322,7 +322,7 @@ public class UISprint2 {
                     developerTakeAction(devAccount, userAccount, dual);
                 }
                 //update description
-                else if (devModifyChoice == 2) {
+                else if (parseInt(devModifyChoice) == 2) {
                     Scanner in3 = new Scanner(System.in);
                     System.out.println("Please enter the new game bio:");
                     //in3.nextLine();
@@ -340,7 +340,7 @@ public class UISprint2 {
 
         }
 //---------------------view gameList
-        else if (devChoice == 3) {
+        else if (parseInt(devChoice) == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
             System.out.println(gameBrowser.displayableGameTitlesNumberedList());
@@ -349,14 +349,14 @@ public class UISprint2 {
 
         }
 //----------------------
-        else if (devChoice == 4) {
+        else if (parseInt(devChoice) == 4) {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
             login();
         }
 
-        else if(devChoice == 5){
+        else if(parseInt(devChoice) == 5){
             System.out.println("You will now be logged into your Commercial User account.");
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
