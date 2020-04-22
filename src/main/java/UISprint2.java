@@ -259,8 +259,11 @@ public class UISprint2 {
 
             //submit
             Game newGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
+            //adds to master list and saves in database
             gameBrowser.addGame(newGame);
+            //includes game in dev's gamelist
             devAccount.submitGame(newGame.getTitle());
+            //saves dev's gamelist
             gameBrowser.saveGameList(devAccount.getGameList());
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
@@ -306,11 +309,16 @@ public class UISprint2 {
 
                     //update title
                     if (parseInt(devModifyChoice) == 1) {
+                        //get old game title
+                        String oldTitle = updatingGame.getTitle();
                         System.out.println("Please enter the new game title:");
                         String updatedTitle = in.nextLine();
                         gameBrowser.changeTitle(updatingGame, updatedTitle);
                         System.out.println(gameBrowser.getGameList().getGames());
                         gameBrowser.addGameToDevGameList(devAccount, updatingGame);
+                        //remove old title copy
+                        gameBrowser.removeGame(oldTitle);
+                        gameBrowser.saveGameList(devAccount.getGameList());
                         System.out.println("Title Updated!");
                         developerTakeAction(devAccount, userAccount, dual);
                     }
@@ -379,13 +387,13 @@ public class UISprint2 {
 
         String userChoice = in.nextLine();
         if(!dual){
-            while (isInt(userChoice) || (parseInt(userChoice) < 1 || parseInt(userChoice) > 5)) {
+            while (!isInt(userChoice) || (parseInt(userChoice) < 1 || parseInt(userChoice) > 5)) {
                 System.out.println("Please enter a valid choice:");
                 userChoice = in.nextLine();
             }
         }
         else{
-            while (isInt(userChoice) || (parseInt(userChoice) < 1 || parseInt(userChoice) > 6)) {
+            while (!isInt(userChoice) || (parseInt(userChoice) < 1 || parseInt(userChoice) > 6)) {
                 System.out.println("Please enter a valid choice:");
                 userChoice = in.nextLine();
             }
@@ -433,6 +441,11 @@ public class UISprint2 {
 
             System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
             int removeOwnedListChoice = in.nextInt();
+
+            if(removeOwnedListChoice == 0){
+                System.out.println("Returning you to the User menu");
+                commercialUserTakeAction(userAccount, devAccount, dual);
+            }
             if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
 
                 Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(removeOwnedListChoice - 1));
