@@ -67,7 +67,7 @@ public class SQLiteSource implements DataSource{
             // TODO: Hard Coded not accounting closed.
             int gid = getGid(game.getTitle(), s);
 
-            System.out.println(game.getTitle() + "has gid = " + gid); //TODO remove
+            //System.out.println(game.getTitle() + "has gid = " + gid); //TODO remove
 
             // Developers Set Up
             Iterator<String> devs = game.getDevelopers().iterator();
@@ -776,7 +776,7 @@ public class SQLiteSource implements DataSource{
         if (Files.notExists(Paths.get(absPath+"/"+sqlPath)))
             throw new IllegalArgumentException("Incorrect SQL Path");
 
-        System.out.println(absPath);
+        //System.out.println(absPath);
         ProcessBuilder pb = new ProcessBuilder("sqlite3", absPath+"/"+databasePath, ".read " + absPath+"/"+sqlPath + "");
         Process pr = pb.start();
         System.out.println(new String(pr.getErrorStream().readAllBytes()));
