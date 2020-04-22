@@ -37,12 +37,12 @@ public class UISprint2 {
             //user
             else if (userAccounts.user != null && userAccounts.dev == null) {
                 System.out.println("Logged IN! you own " + userAccounts.user.getOwnedGames().getGames().size() + " Games!");
-                commercialUserTakeAction(userAccounts.user);
+                commercialUserTakeAction(userAccounts.user, null, false);
             }
             //developer
             else if (userAccounts.user == null && userAccounts.dev != null) {
                 System.out.println("Logged IN! Welcome " + userAccounts.dev.getName());
-                developerTakeAction(userAccounts.dev);
+                developerTakeAction(userAccounts.dev, null, false);
             }
 
 
@@ -64,11 +64,11 @@ public class UISprint2 {
                 }
 
                 if (choice == 1){
-                    commercialUserTakeAction(userAccounts.user);
+                    commercialUserTakeAction(userAccounts.user, userAccounts.dev, true);
                 }
 
                 else{
-                    developerTakeAction(userAccounts.dev);
+                    developerTakeAction(userAccounts.dev, userAccounts.user, true);
                 }
             } else {
                 System.out.println("I'm sorry, either your username or password is incorrect.");
@@ -84,7 +84,7 @@ public class UISprint2 {
 
     //ADMINISTRATOR UI
 
-    private void administratorTakeAction(Administrator adminAccount, boolean dual) throws DataSourceException {
+    private void administratorTakeAction(Administrator adminAccount) throws DataSourceException {
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Review Pending Games");
@@ -116,7 +116,7 @@ public class UISprint2 {
             }
 
             if (devReviewGameChoice == 0) {
-                administratorTakeAction(adminAccount, dual);
+                administratorTakeAction(adminAccount);
 
             } else if (devReviewGameChoice >= 1 && devReviewGameChoice <= pendingGames.getGames().size()) {
 
@@ -135,16 +135,16 @@ public class UISprint2 {
                     chosenGame.changeStatus(Status.ACCEPTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been approved");
-                    administratorTakeAction(adminAccount, dual);
+                    administratorTakeAction(adminAccount);
                 }
                 else if (devApproveReject == 2) {
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
-                    administratorTakeAction(adminAccount, dual);
+                    administratorTakeAction(adminAccount);
                 } else {
                     System.out.println("Game status not changed");
-                    administratorTakeAction(adminAccount, dual);
+                    administratorTakeAction(adminAccount);
                 }
             }
 
@@ -156,7 +156,7 @@ public class UISprint2 {
             //nothing in list
             if (gameBrowser.getGameList().getGames().size() > 1) {
                 System.out.println("No approved games\n");
-                administratorTakeAction(adminAccount, dual);
+                administratorTakeAction(adminAccount);
             }
 
             else {
@@ -188,7 +188,7 @@ public class UISprint2 {
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
-                    administratorTakeAction(adminAccount, dual);
+                    administratorTakeAction(adminAccount);
 
                 }
             }
@@ -198,7 +198,7 @@ public class UISprint2 {
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableAllGames());
 
-            administratorTakeAction(adminAccount, dual);
+            administratorTakeAction(adminAccount);
         }
 //----------------------------------
         //log out
@@ -212,16 +212,24 @@ public class UISprint2 {
 
 
     //DEVELOPER UI
-    private void developerTakeAction(Developer devAccount, boolean dual) throws DataSourceException {
+    private void developerTakeAction(Developer devAccount, User userAccount, boolean dual) throws DataSourceException {
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Submit Game");
         System.out.println("2: Update Game");
         System.out.println("3: View Your Game List");
         System.out.println("4: Logout");
+        if(dual){
+            System.out.println("5: Switch Accounts");
+        }
 
         int devChoice = in.nextInt();
-        while (devChoice < 1 || devChoice > 4) {
+        while (!dual && devChoice < 1 || devChoice > 4) {
+            System.out.println("Please enter a valid choice");
+            devChoice = in.nextInt();
+        }
+
+        while(dual && devChoice < 1 || devChoice > 5){
             System.out.println("Please enter a valid choice");
             devChoice = in.nextInt();
         }
@@ -242,7 +250,7 @@ public class UISprint2 {
             //System.out.println("Expect a response in your inbox shortly.");
 
             //back to menu screen
-            developerTakeAction(devAccount, dual);
+            developerTakeAction(devAccount, userAccount, dual);
         }
 //-------------------------update game
         else if (devChoice == 2) {
@@ -258,7 +266,7 @@ public class UISprint2 {
                 devUpdateChoice = in.nextInt();
             }
             if (devUpdateChoice == 0) {
-                developerTakeAction(devAccount, dual);
+                developerTakeAction(devAccount, userAccount, dual);
             }
             else {
 
@@ -287,7 +295,7 @@ public class UISprint2 {
                     gameBrowser.addGame(updatingGame);
 
                     System.out.println("Title Updated!");
-                    developerTakeAction(devAccount, dual);
+                    developerTakeAction(devAccount, userAccount, dual);
                 }
                 //update description
                 else if (devModifyChoice == 2) {
@@ -298,10 +306,10 @@ public class UISprint2 {
                     gameBrowser.addGame(updatingGame);
 
                     System.out.println("Bio updated!");
-                    developerTakeAction(devAccount, dual);
+                    developerTakeAction(devAccount, userAccount, dual);
                 } else {
                     System.out.println("ERROR: Invalid answer.");
-                    developerTakeAction(devAccount, dual);
+                    developerTakeAction(devAccount, userAccount, dual);
                 }
             }
 
@@ -312,7 +320,7 @@ public class UISprint2 {
             gameBrowser.pullGameList(devAccount.getGameList().getName());
             System.out.println(gameBrowser.displayableAllGames());
 
-            developerTakeAction(devAccount, dual);
+            developerTakeAction(devAccount, userAccount, dual);
 
         }
 //----------------------
@@ -321,17 +329,24 @@ public class UISprint2 {
             System.out.println("See you soon!");
 
             login();
-        } else {
+        }
+
+        else if(dual && devChoice == 5){
+            System.out.println("You will now be logged into your Commercial User account.");
+            //commercialUserTakeAction();
+        }
+
+        else {
             System.out.println("ERROR: Invalid answer.");
             System.out.println("Please try again.");
             //back to the top of the list
-            developerTakeAction(devAccount, dual);
+            developerTakeAction(devAccount, userAccount, dual);
         }
 
     }
 
 
-    private void commercialUserTakeAction(User userAccount, boolean dual) throws DataSourceException {
+    private void commercialUserTakeAction(User userAccount, Developer devAccount, boolean dual) throws DataSourceException {
         Scanner in = new Scanner(System.in);
         System.out.println("Please choose the action you'd like to take");
         System.out.println("1: View All Games");
@@ -339,6 +354,9 @@ public class UISprint2 {
         System.out.println("3: Remove Game from Owned Games List");
         System.out.println("4: View Owned Games List");
         System.out.println("5: Logout");
+        if(dual){
+            System.out.println("6: Switch Accounts");
+        }
 
         int userChoice = in.nextInt();
         while (userChoice < 1 || userChoice > 4) {
@@ -350,7 +368,7 @@ public class UISprint2 {
             System.out.println("Big Girl Game Browser Game List:");
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
-            commercialUserTakeAction(userAccount, dual);
+            commercialUserTakeAction(userAccount, devAccount, dual);
         }
 
         else if (userChoice == 2) {
@@ -364,7 +382,7 @@ public class UISprint2 {
 
             if (userAddChoice == 0) {
                 //back to user menu
-                commercialUserTakeAction(userAccount, dual);
+                commercialUserTakeAction(userAccount, devAccount, dual);
 
             } else if (userAddChoice > 1 || userAddChoice < userAccount.getOwnedGames().getGameCount()) {
 
@@ -377,7 +395,7 @@ public class UISprint2 {
                 gameBrowser.saveGameList(userAccount.getOwnedGames());
 
                 System.out.println("Game has successfully been added to your list.");
-                commercialUserTakeAction(userAccount, dual);
+                commercialUserTakeAction(userAccount, devAccount, dual);
             }
 
         }
@@ -389,7 +407,7 @@ public class UISprint2 {
             System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
             int removeOwnedListChoice = in.nextInt();
             if (removeOwnedListChoice == 0){
-                commercialUserTakeAction(userAccount, dual);
+                commercialUserTakeAction(userAccount, devAccount, dual);
             }
             else if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
 
@@ -401,7 +419,7 @@ public class UISprint2 {
             else{
                 System.out.println("ERROR: Not a valid input.");
                 System.out.println("You will now be returned to the User Menu.");
-                commercialUserTakeAction(userAccount, dual);
+                commercialUserTakeAction(userAccount, devAccount, dual);
             }
 
         }
@@ -415,6 +433,11 @@ public class UISprint2 {
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
             login();
+        }
+
+        else if(dual && userChoice == 6){
+            System.out.println("You will now be logged in as a developer.");
+            //developerTakeAction();
         }
 
     }
