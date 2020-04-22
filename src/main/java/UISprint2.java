@@ -163,36 +163,39 @@ public class UISprint2 {
             }
 
         }
-//----------------------------------
+//--------------approved--------------------
         else if (parseInt(adminChoice) == 2) {
 
             System.out.println("Approved Games:");
 
             //nothing in list
-            if (gameBrowser.getGameList().getGames().size() > 1) {
+            if (gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount() < 1) {
                 System.out.println("No approved games\n");
                 administratorTakeAction(adminAccount);
             }
 
             else {
+                //yes
+
+                System.out.println("Please select the game you would like to remove, or 0 to cancel");
+
+                System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
+
                 System.out.println("Would you like to remove any games?");
                 System.out.println("1: Yes");
                 System.out.println("2: No");
+
                 String adminApprovedChoice = in.nextLine();
                 while (!isInt(adminApprovedChoice) || (parseInt(adminApprovedChoice) < 1 || parseInt(adminApprovedChoice) > 2)) {
                     System.out.println("Please enter a valid choice");
                     adminApprovedChoice = in.nextLine();
                 }
 
-                //yes
                 if (parseInt(adminApprovedChoice) == 1) {
-                    System.out.println("Please select the game you would like to remove, or 0 to cancel");
-
-                    System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
-
                     gameBrowser.pullGameList("Master Game List");
                     GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
 
+                    System.out.println("Which game would you like to remove? Please enter its number.");
                     String adminRemoveChoice = in.nextLine();
                     while (!isInt(adminRemoveChoice) || (parseInt(adminRemoveChoice) < 1 || parseInt(adminRemoveChoice) > gameBrowser.getGameList().getGameCount())) {
                         System.out.println("Please enter a valid choice");
@@ -203,9 +206,9 @@ public class UISprint2 {
                     chosenGame.changeStatus(Status.REJECTED);
                     gameBrowser.saveGame(chosenGame);
                     System.out.println("Game has been rejected.");
-                    administratorTakeAction(adminAccount);
-
                 }
+                administratorTakeAction(adminAccount);
+
             }
         }
 //----------------------------------
