@@ -88,6 +88,10 @@ public class GameBrowser {
         dataSource.saveGame(game);
     }
 
+    public void saveGameList(GameList gameList) throws DataSourceException {
+        dataSource.saveGameList(gameList);
+    }
+
 
     /**
      * A new developer is created and added to the developer list

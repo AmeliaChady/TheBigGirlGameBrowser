@@ -253,8 +253,10 @@ public class UISprint2 {
 
             String gameDescription = in.nextLine();
 
-            Game testGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
-            gameBrowser.addGame(testGame);
+            Game newGame = new Game(gameName, gameDescription, devAccount.getName(), Status.PENDING);
+
+            gameBrowser.saveGame(newGame);
+            gameBrowser.addGame(newGame);
 
             System.out.println("Thank you! Your game has been submitted and is under review.");
             System.out.println("Expect a response in your inbox shortly.");
@@ -264,7 +266,7 @@ public class UISprint2 {
         } else if (devChoice == 2) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableAllGames());
+            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
             System.out.println("Please select the game that you'd like to update, or press 0 to cancel:");
             int devUpdateChoice = in.nextInt();
@@ -299,6 +301,7 @@ public class UISprint2 {
                 in.nextLine();
                 String updatedTitle = in.nextLine();
                 updatingGame.changeTitle(updatedTitle);
+                gameBrowser.saveGame(updatingGame);
                 gameBrowser.addGame(updatingGame);
 
                 System.out.println("Title Updated!");
@@ -308,6 +311,7 @@ public class UISprint2 {
                 in.nextLine();
                 String updatedBio = in.nextLine();
                 updatingGame.changeDescription(updatedBio);
+                gameBrowser.saveGame(updatingGame);
                 gameBrowser.addGame(updatingGame);
 
                 System.out.println("Bio updated!");
@@ -354,17 +358,18 @@ public class UISprint2 {
 
         int userChoice = in.nextInt();
         while (userChoice < 1 || userChoice > 4) {
-            System.out.println("Please enter a valid choice");
+            System.out.println("Please enter a valid choice:");
             userChoice = in.nextInt();
         }
 
         if (userChoice == 1) {
+            System.out.println("Big Girl Game Browser Game List:");
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
             commercialUserTakeAction(userAccount);
         }
 
-        if (userChoice == 2) {
+        else if (userChoice == 2) {
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
 
@@ -376,53 +381,57 @@ public class UISprint2 {
             if (userAddChoice == 0) {
                 //back to user menu
                 commercialUserTakeAction(userAccount);
-                //TODO: make sure this length of approved games list, not all games list
-            } else if (userAddChoice > 1 || userAddChoice < gameBrowser.getGameList().getGameCount()) {
+
+            } else if (userAddChoice > 1 || userAddChoice < userAccount.getOwnedGames().getGameCount()) {
 
                 //get game based on user input
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String devReviewGame = approvedGames.getGames().get(userAddChoice);
-                Game gameToAdd = gameBrowser.loadGame(devReviewGame);
+                String userGameToAdd = approvedGames.getGames().get(userAddChoice);
+                Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
                 gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
+                gameBrowser.saveGameList(userAccount.getOwnedGames());
 
                 System.out.println("Game has successfully been added to your list.");
                 commercialUserTakeAction(userAccount);
             }
 
         }
-        if (userChoice == 3) {
+        else if (userChoice == 3) {
             System.out.println("Owned Games:");
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
-            System.out.println(gameBrowser.displayableAllGames());
+            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
             System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
             int removeOwnedListChoice = in.nextInt();
             if (removeOwnedListChoice == 0){
                 commercialUserTakeAction(userAccount);
             }
-            while (removeOwnedListChoice < 0 || removeOwnedListChoice > userAccount.getOwnedGames().getGameCount()){
+            else if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
 
-                int removeListChoice = in.nextInt();
+                Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(removeOwnedListChoice - 1));
+                gameBrowser.removeGameFromUserGameList(userAccount, updatingGame);
+                gameBrowser.saveGameList(userAccount.getOwnedGames());
             }
 
-
-            //Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(devUpdateChoice - 1));
-
+            else{
+                System.out.println("ERROR: Not a valid input.");
+                System.out.println("You will now be returned to the User Menu.");
+                commercialUserTakeAction(userAccount);
+            }
 
         }
 
-        if (userChoice == 4) {
+        else if (userChoice == 4) {
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
             System.out.println(gameBrowser.displayableAllGames());
         }
 
-        if(userChoice == 5){
+        else if(userChoice == 5){
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
             login();
         }
-
 
     }
 
