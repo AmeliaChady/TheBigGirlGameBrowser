@@ -293,7 +293,7 @@ public class UISprint2 {
             }
             else {
 
-                Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(devUpdateChoice - 1));
+                Game updatingGame = gameBrowser.loadGame(devAccount.getGameList().getGames().get(parseInt(devUpdateChoice) - 1));
 
 
                 System.out.println("Please select one of the following options:");
