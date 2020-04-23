@@ -37,5 +37,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/Test_UIPlugin/UIPluginCLI.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="DemoDaySprint2" uuid="fe89c853-2c54-4238-afc2-87107061de38">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/DemoDaySprint2.db</jdbc-url>
+    </data-source>
   </component>
 </project>
