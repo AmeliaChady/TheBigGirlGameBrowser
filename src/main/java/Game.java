@@ -181,6 +181,7 @@ public class Game {
     public void addReview(Review review){
         this.reviews.add(review);
     }
+
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
 //        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
