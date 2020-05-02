@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 enum Status {PENDING, ACCEPTED, REJECTED, LIMBO}
@@ -7,7 +8,7 @@ public class Game {
     private String title;
     private String description;
     private List<String> developers;
-    private ReviewList reviews;
+    private List<Review> reviews;
     private Status status;
     private int ownedCount;
 
@@ -27,7 +28,7 @@ public class Game {
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description, ReviewList reviews, List<String> developers, Status status){
+    public Game(String title, String description, List<Review> reviews, List<String> developers, Status status){
         this.title = title;
         this.description = description;
         this.developers = developers;
@@ -46,7 +47,7 @@ public class Game {
         this.description = description;
         this.developers = new ArrayList<String>();
         developers.add(developer);
-        this.reviews = new ReviewList(title + "'s Reviews");
+        this.reviews = new LinkedList<Review>();
         this.status = Status.PENDING;
         this.ownedCount = 0;
 
@@ -62,7 +63,7 @@ public class Game {
      * @param ownedCount number of people who own game
      * @param reviews list of reviews
      */
-    public Game(String title, String description,  List<String> developers, Status status, int ownedCount, ReviewList reviews){
+    public Game(String title, String description,  List<String> developers, Status status, int ownedCount, List<Review> reviews){
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>();
@@ -83,7 +84,7 @@ public class Game {
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
-        this.reviews = new ReviewList(title + "'s Reviews");
+        this.reviews = new LinkedList<Review>();
         this.status = status;
     }
 
@@ -98,7 +99,7 @@ public class Game {
         this.description = description;
         this.developers = new ArrayList<String>();
         developers.add(developer);
-        this.reviews = new ReviewList(title + "'s Reviews");
+        this.reviews =new LinkedList<Review>();
         this.status = status;
     }
 
@@ -177,8 +178,8 @@ public class Game {
     }
 
 
-    public void addReview(String review){
-        this.reviews.addReview(review);
+    public void addReview(Review review){
+        this.reviews.add(review);
     }
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
@@ -223,8 +224,9 @@ public class Game {
     }
 
 
-    public List<String> getReviews() {
-        return reviews.getReviews();
+    public List<Review> getReviews() {
+        // gonna be honest, not like we care that much about hiding inner objects right now anyways.
+        return reviews;
     }
 
     public int getOwnedCount(){return ownedCount;}

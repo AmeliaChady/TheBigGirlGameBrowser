@@ -5,7 +5,7 @@ public class GameBrowser {
     private DataSource dataSource; // the connection to the database
     private final String gameListName = "Master Game List"; // is this necessary?
     private GameList gameList; // The local master game list!
-    private ReviewList allReviews;
+    //private ReviewList allReviews; We probably don't want to hold all reviews at once. I don't think there is a point
     private List<String> administrators; // list of keys to administrator
     private List<String> developers; // list of keys to devs
     private List<String> allGameLists; // list of keys to gameLists
@@ -26,7 +26,7 @@ public class GameBrowser {
         allGameLists = new ArrayList<String>();
         // TODO loadAllLists helper functions
         // TODO loadAllAdministrators // loads administrators keys from db
-        allReviews = null; // TODO load all reviews
+        //allReviews = null; // TODO load all reviews
         uiplug = null;
     }
 

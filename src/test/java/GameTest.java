@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -100,35 +101,35 @@ public class GameTest {
 
     @Test
     public void gameHoldsReviewsTest(){
-        ReviewList reviews = new ReviewList("Bogardt");
+        List<Review> reviews = new LinkedList<Review>();
 
-        Review r1 = new Review(1, "Bad Game!", "Kerry", "Animal Crossing New Horizons");
+        Review r1 = new Review(1, "Bad Game!", "Kerry");
         r1.setID("a");
-        Review r2 = new Review(2, "Boring Game", "kb", "acnh");
+        Review r2 = new Review(2, "Boring Game", "kb");
         r2.setID("b");
-        Review r3 = new Review(3, "It's a Game...", "kab", "Animal Crossing");
+        Review r3 = new Review(3, "It's a Game...", "kab");
         r3.setID("c");
-        Review r4 = new Review(4, "Yeah I liked this game", "Kerry Anne", "Animal Horizons");
+        Review r4 = new Review(4, "Yeah I liked this game", "Kerry Anne");
         r4.setID("d");
-        Review r5 = new Review(5,"WOW Best Game ever", "kerby", "Crossing Horizons");
+        Review r5 = new Review(5,"WOW Best Game ever", "kerby");
         r5.setID("e");
 
-        reviews.addReview(r1.getID());
-        reviews.addReview(r2.getID());
-        reviews.addReview(r3.getID());
-        reviews.addReview(r4.getID());
-        reviews.addReview(r5.getID());
+        reviews.add(r1);
+        reviews.add(r2);
+        reviews.add(r3);
+        reviews.add(r4);
+        reviews.add(r5);
 
         ArrayList<String> devNames = new ArrayList<>();
         devNames.add("Jimmy");
 
         Game game = new Game("testGame", "a game for Tests", reviews, devNames, Status.PENDING);
 
-        assertEquals(reviews.getReviews(), game.getReviews());
-        assertEquals("a", game.getReviews().get(0));
+        assertTrue(reviews.equals(game.getReviews()));
+        assertEquals("a", game.getReviews().get(0).getID());
 
-        Review r6 = new Review(3, "I kinda liked this but I didn't either", "coolGuy", "coolGame");
-        game.addReview(r6.getID());
+        Review r6 = new Review(3, "I kinda liked this but I didn't either", "coolGuy");
+        game.addReview(r6);
 
         assertEquals(6, game.getReviews().size());
     }
