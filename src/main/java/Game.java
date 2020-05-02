@@ -182,6 +182,10 @@ public class Game {
         this.reviews.add(review);
     }
 
+    /**
+     * Calculates the average rating of a game based from reviews
+     * @return 0 if there are no ratings, otherwise return an average
+     */
     public double calculateAverageRating() {
         double total = 0;
         for (Review r: reviews) total += r.getRating();
