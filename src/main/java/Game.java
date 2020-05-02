@@ -9,6 +9,7 @@ public class Game {
     private List<String> developers;
     private ReviewList reviews;
     private Status status;
+    private int ownedCount;
 
     /**
      * Default constructor
@@ -47,6 +48,29 @@ public class Game {
         developers.add(developer);
         this.reviews = new ReviewList(title + "'s Reviews");
         this.status = Status.PENDING;
+        this.ownedCount = 0;
+
+    }
+
+    /**
+     *  Full constructor
+     *  THIS CONSTRUCTOR IS WHAT
+     * @param title game title
+     * @param description descriptor for game
+     * @param developers list of developer names
+     * @param status game status
+     * @param ownedCount number of people who own game
+     * @param reviews list of reviews
+     */
+    public Game(String title, String description,  List<String> developers, Status status, int ownedCount, ReviewList reviews){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>();
+        developers.addAll(developers);
+        this.reviews = reviews;
+        this.ownedCount = ownedCount;
+        this.status = status;
+
     }
 
     /**
@@ -126,7 +150,7 @@ public class Game {
         this.description = description;
     }
 
-    /**git
+    /**
      * Allows for title to be replaced
      * TODO maybe we want to be able to add or do something other than overwrite a currently existing title?
      * @param title descriptor for game
@@ -152,6 +176,7 @@ public class Game {
         this.developers.add(developer);
     }
 
+
     public void addReview(String review){
         this.reviews.addReview(review);
     }
@@ -170,6 +195,13 @@ public class Game {
 //        display += "\nStatus: "+ status.toString() + "\n";
 //        System.out.println(display);
 //    }
+    public void increaseOwnedCount(){
+        ownedCount = ownedCount + 1;
+    }
+
+    public void decreaseOwnedCount() {
+        if (ownedCount > 0) ownedCount -= 1;
+    }
 
 
     // ------GETTERS------
@@ -190,8 +222,11 @@ public class Game {
         return status;
     }
 
+
     public List<String> getReviews() {
         return reviews.getReviews();
     }
+
+    public int getOwnedCount(){return ownedCount;}
 
 }

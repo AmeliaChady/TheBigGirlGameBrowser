@@ -14,7 +14,10 @@ This project will replicate the non-commercial part of a game store, assisting w
 ### [Sprint 1 UI State Diagram](https://drive.google.com/file/d/10_Qpb4h6OAhN6eot-mFdDGy2r9vl11FU/view?usp=sharing)
 ### [Sprint 1 Review Meeting](https://docs.google.com/document/d/1QaHlBhAwRNtEHjLgm5LlowZOA44IrR4lHfpMtFJOC24/edit)
 ### [Sprint 1 Retropective Meeting](https://docs.google.com/document/d/17tCz9LbWjbAny0sOZq_eoXIrNWIxyM8mToswUtqeAj8/edit?usp=sharing)
-### [Sprint 1 UI Manual Test](https://docs.google.com/document/d/1OAP_4UdqX79A6kCBPxl_k07YpVD3TvDmNo1CXhtpZVk/edit?usp=sharing)
+### [Sprint 1 UI Manual Test Document](https://docs.google.com/document/d/1OAP_4UdqX79A6kCBPxl_k07YpVD3TvDmNo1CXhtpZVk/edit?usp=sharing)
 
 ## Sprint 2 - Users, Comments, Reviews, and Database Restructure
 ### [Sprint 2 Class Diagram](https://drive.google.com/file/d/1Bfamu5ryuSE5ZlLHwGXGp08tqSOzOHxB/view?usp=sharing)
+### [Sprint 2 UI Manual Test Document](https://docs.google.com/document/d/12Ja5TIlJKZHh3wNfBdp1cQQ_J-IU38E-ZI18adSQVgo/edit?usp=sharing)
+### [Sprint 2 Review Meeting](https://docs.google.com/document/d/1Yue37DsydqqFS4xosLzwpxTLuZUTRxX6fnWNfh4e8K8/edit)
+### [Sprint 2 Retropective Meeting](https://docs.google.com/document/d/1zKwuW5BU58l-poTNOZLDbyyFOL2hpU-6ra_2l_Jzmt4/edit)

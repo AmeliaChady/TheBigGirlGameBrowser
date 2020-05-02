@@ -1,22 +1,59 @@
 BEGIN TRANSACTION;
 
--- Dropping Old --
+--- Dropping Old ---
 DROP VIEW IF EXISTS Combined;
 DROP VIEW IF EXISTS GameListTest;
+DROP VIEW IF EXISTS DevelopersWithListName;
+DROP VIEW IF EXISTS UsersWithListName;
+-- connecting tables
 DROP TABLE IF EXISTS GameDevelopers;
-DROP TABLE IF EXISTS Games;
-DROP TABLE IF EXISTS Developers;
-DROP TABLE IF EXISTS GameStatuses;
-DROP TABLE IF EXISTS GameLists;
 DROP TABLE IF EXISTS GameListsGames;
-DROP TABLE IF EXISTS DevelopersGameLists;
+-- base tables
+DROP TABLE IF EXISTS Games;
+DROP TABLE IF EXISTS GameStatuses;
+DROP TABLE IF EXISTS Developers;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Administrators;
+DROP TABLE IF EXISTS Accounts;
+DROP TABLE IF EXISTS GameLists;
 
 
--- Tables --
+--- Tables ---
+CREATE TABLE GameLists(
+    glid INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE Accounts(
+    aid INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    email TEXT UNIQUE,
+    password TEXT
+    );
+
+CREATE TABLE Administrators(
+    amid INTEGER PRIMARY KEY AUTOINCREMENT,
+    aid INTEGER UNIQUE NOT NULL,
+    name TEXT UNIQUE,
+    FOREIGN KEY(aid) REFERENCES Accounts(aid)
+    );
+
+CREATE TABLE Users(
+    uid INTEGER PRIMARY KEY AUTOINCREMENT,
+    aid INTEGER UNIQUE NOT NULL,
+    name TEXT UNIQUE,
+    glid INTEGER UNIQUE NOT NULL,
+    FOREIGN KEY(aid) REFERENCES Accounts(aid),
+    FOREIGN KEY(glid) REFERENCES GameLists(glid)
+    );
+
 CREATE TABLE Developers(
     did INTEGER PRIMARY KEY AUTOINCREMENT,
+    aid INTEGER UNIQUE NOT NULL,
     name TEXT UNIQUE NOT NULL,
-    listName TEXT UNIQUE NOT NULL
+    glid INTEGER UNIQUE NOT NULL,
+    FOREIGN KEY(aid) REFERENCES Accounts(aid),
+    FOREIGN KEY(glid) REFERENCES GameLists(glid)
     );
 
 CREATE TABLE GameStatuses(
@@ -40,10 +77,7 @@ CREATE TABLE GameDevelopers(
     PRIMARY KEY(did, gid)
     );
 
-CREATE TABLE GameLists(
-    glid INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE NOT NULL
-    );
+
 
 CREATE TABLE GameListsGames(
     glid INTEGER NOT NULL,
@@ -53,35 +87,33 @@ CREATE TABLE GameListsGames(
     PRIMARY KEY(glid, gid)
     );
 
-CREATE TABLE DevelopersGameLists(
-    did INTEGER NOT NULL,
-    glid INTEGER NOT NULL,
-    FOREIGN KEY(did) REFERENCES Developers(did),
-    FOREIGN KEY(glid) REFERENCES GameLists(glid),
-    PRIMARY KEY(did, glid)
-    );
+
+--- Constraints ---
 
 
-
--- Constraints --
+--- Views ---
 CREATE VIEW Combined AS
-    SELECT title, name, description, status
-    FROM GameDevelopers
-        INNER JOIN Developers D on GameDevelopers.did = D.did
-        INNER JOIN Games G on GameDevelopers.gid = G.gid
-        INNER JOIN GameStatuses GS on G.gsid = GS.gsid
-    ORDER BY title, name;
+SELECT title, name, description, status
+FROM GameDevelopers
+         INNER JOIN Developers D on GameDevelopers.did = D.did
+         INNER JOIN Games G on GameDevelopers.gid = G.gid
+         INNER JOIN GameStatuses GS on G.gsid = GS.gsid
+ORDER BY title, name;
 
 CREATE VIEW GameListTest AS
-    SELECT name, title
-    FROM GameListsGames
-        INNER JOIN Games
-        INNER JOIN GameLists
-    ORDER BY name, title;
--- Views --
+SELECT name, title
+FROM GameListsGames
+         INNER JOIN Games
+         INNER JOIN GameLists
+ORDER BY name, title;
 
+CREATE VIEW DevelopersWithListName AS
+SELECT * FROM Developers INNER JOIN GameLists USING(glid);
 
--- Inserts --
+CREATE VIEW UsersWithListName AS
+SELECT * FROM Users INNER JOIN GameLists USING(glid);
+
+--- Inserts ---
 INSERT INTO GameStatuses VALUES
     (0, 'PENDING'),
     (1, 'ACCEPTED'),

@@ -216,22 +216,73 @@ public class UIPluginCLI implements UIPlugin {
     }
 
 
-//    public String displayNumberedListOfGamesGivenStatus(Status status){
-////        System.out.println(name + "(" + status +"):\n");
-////
-////        if (getGameCount()==0){
-////            System.out.println("This list is empty");
-////        }
-////        else {
-////            int counter = 1; //tracks the number to be printed
-////            for (int i = 0; i < getGameCount(); i++) {
-////                if (gameList.get(i).getStatus()==status) {
-////                    System.out.println(counter + ":");
-////                    gameList.get(i).displayableGame();
-////                    counter +=1;
-////                }
-////            }
-////        }
-//        return null;
-//    }
+    public String displayNumberedListOfGamesGivenStatus(Status status) throws DataSourceException{
+        if(gl == null){
+            throw new IllegalStateException("no gamelist pulled");
+        }
+        if(gl.getGameCount()==0){
+            return "There are no games to display\n";
+        }
+
+        Iterator<String> games = gl.getGames().iterator();
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+
+        while (games.hasNext()){
+            gb.pullGame(games.next());
+            Game game = gb.loadGame(g.getTitle());
+            if(game.getStatus() == status) {
+                sb.append(count);
+                sb.append(". ");
+                sb.append(g.getTitle());
+                sb.append("\n");
+                count++;
+            }
+        }
+        return  sb.toString();
+    }
+
+    public String displayableNumberedListOfFullGames() throws DataSourceException{
+        if(gl == null){
+            throw new IllegalStateException("no gamelist pulled");
+        }
+        if(gl.getGameCount()==0){
+            return "There are no games to display\n";
+        }
+
+        int count = 1;
+        Iterator<String> games = gl.getGames().iterator();
+        StringBuilder sb = new StringBuilder();
+
+        while (games.hasNext()){
+            gb.pullGame(games.next());
+            sb.append(count);
+            sb.append(". ");
+            sb.append(displayableGame());
+            sb.append("\n");
+            count++;
+
+        }
+        return  sb.toString();
+    }
+
+    public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{
+        if(gl == null){
+            throw new IllegalStateException("no gamelist pulled");
+        }
+        if (gl.getGameCount()==0){
+            return new GameList("empty");
+        }
+        else {
+            GameList list = new GameList(status.toString());
+            for (int i = 0; i < gl.getGameCount(); i++) {
+                gb.pullGame(gl.getGames().get(i));
+                Game game = gb.loadGame(g.getTitle());
+                if (game.getStatus()==status) {
+                    list.includeGame(gl.getGames().get(i));
+                }
+            }
+            return list;
+        }
+    }
 }

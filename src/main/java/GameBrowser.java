@@ -55,6 +55,16 @@ public class GameBrowser {
         throw new Exception("Invalid constructor. Supply a data source file.");
     }
 
+    /**
+     * To be called from UI to universally login
+     * @param username the username
+     * @param password corresponding password
+     * @return returns an Accounts type object which holds the user, dev, and/or admin associated with account
+     */
+    public Accounts login(String username, String password) throws DataSourceException{
+        return dataSource.login(username, password);
+    }
+
     public void addGame(Game game) throws DataSourceException {
         gameList.includeGame(game.getTitle());
         dataSource.saveGame(game);
@@ -73,6 +83,19 @@ public class GameBrowser {
         Game game = dataSource.loadGame(title);
         // TODO Search for all reference of game and remove...
         return game;
+    }
+
+    public void saveGame(Game game) throws IllegalArgumentException, DataSourceException{
+        dataSource.saveGame(game);
+    }
+
+    public void saveGameList(GameList gameList) throws DataSourceException {
+        dataSource.saveGameList(gameList);
+    }
+
+    public void changeTitle(Game game, String title) throws DataSourceException {
+        game.changeTitle(title);
+        addGame(game);
     }
 
 
@@ -96,7 +119,6 @@ public class GameBrowser {
         for (String d : developers) {
             if (d.equals(username)) {
                 developer = d;
-                System.out.println("we here");
                 developers.remove(d);
                 break;
             }
@@ -120,6 +142,47 @@ public class GameBrowser {
         // Do we need to check that the games in gameList are saved too?
     }
 
+    /**
+     * Add a game to a users game list
+     * @param user - user of owned game
+     * @param game - owned game to add to user's game list
+     * @throws DataSourceException
+     */
+    public void addGameToUserGameList(User user, Game game) throws DataSourceException {
+        user.addToOwnedGames(game.getTitle());
+        increaseOwnedGameCount(game);
+        dataSource.saveGameList(user.getOwnedGames());
+    }
+    /**
+     * Add a game to a users game list
+     * @param developer - user of owned game
+     * @param game - owned game to add to user's game list
+     * @throws DataSourceException
+     */
+    public void addGameToDevGameList(Developer developer, Game game) throws DataSourceException {
+        dataSource.saveGame(game);
+        saveGame(game);
+        developer.getGameList().includeGame(game.getTitle());
+        dataSource.saveGameList(developer.getGameList());
+    }
+
+    /**
+     * Removes a game from a user's game list
+     * @param user
+     * @param game
+     * @return the game title of the removed game, or
+     *         null if not found in user's game list
+     * @throws DataSourceException
+     */
+    public String removeGameFromUserGameList(User user, Game game) throws DataSourceException {
+        String gameTitle = user.removeFromOwnedGames(game.getTitle());
+        if (gameTitle != null) {
+            decreaseOwnedGameCount(game);
+            dataSource.saveGameList(user.getOwnedGames());
+        }
+        return gameTitle;
+    }
+
     //TODO Remove a GameList
 
     // ------HELPERS------
@@ -134,6 +197,10 @@ public class GameBrowser {
             throw new DataSourceException(dse.getMessage());
         }
     }
+
+    private void increaseOwnedGameCount(Game game) { game.increaseOwnedCount(); }
+
+    private void decreaseOwnedGameCount(Game game) { game.decreaseOwnedCount(); }
 
     /**
      * Saves all the local contents into the database
@@ -262,6 +329,43 @@ public class GameBrowser {
             return false;
         }
     }
+
+    public String displayableGame(){
+        return uiplug.displayableGame();
+    }
+
+    public String displayableDeveloper(){
+        return uiplug.displayDeveloper();
+    }
+
+    public String displayableAllGames(){
+        return uiplug.displayAllGames();
+    }
+
+    public String displayableListNameAndGameTitles(){
+        return uiplug.displayAllGames();
+    }
+
+    public String displayableGamesGivenStatus(Status status){
+        return uiplug.displayGamesGivenStatus(status);
+    }
+
+    public String displayableGameTitlesNumberedList(){
+        return uiplug.displayGameTitlesNumberedList();
+    }
+
+    public String displayableNumberedListOfGamesGivenStatus(Status status) throws DataSourceException{
+        return uiplug.displayNumberedListOfGamesGivenStatus(status);
+    }
+
+    public String displayableNumberedListOfFullGames() throws DataSourceException{
+        return uiplug.displayableNumberedListOfFullGames();
+    }
+
+    public GameList getGamesGivenStatus(Status status) throws DataSourceException{
+        return uiplug.getGamesGivenStatus(status);
+    }
+
 
     // -----DB HELPFUL-----
     public void close(){

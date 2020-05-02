@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +25,7 @@ public class GameBrowserTest {
         int gameCount = 9;
 
         for (int i = 1; i < gameCount+1; i++) {
-            testDev = new Developer("dev "+i);
+            testDev = new Developer("dev "+i, i);
             testDataSource.saveDeveloper(testDev);
             testGame = new Game("game "+i, testDev.getName());
             testDataSource.saveGame(testGame);
@@ -95,14 +96,16 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void addGameTest(){
+    public void addGameTest() throws IOException{
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/GameBrowserAddGame.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gb.getGameList().getGameCount();
 
             //add game
-            Developer dev = new Developer("Anita");
+            Developer dev = new Developer("Anita", 1);
             Game gameToAdd = new Game("Candy Crush","My mom plays a lot of candy crush", dev.getName(), Status.PENDING);
             gb.addGame(gameToAdd);
             assertEquals(baseNumber+1, gb.getGameList().getGameCount());
@@ -112,7 +115,7 @@ public class GameBrowserTest {
             //assertEquals(Status.PENDING, gb.getGameList().getGames().get(gb.getGameList().getGameCount()-1).getStatus());
 
             //pass game properties
-            Developer dev2 = new Developer("Robert");
+            Developer dev2 = new Developer("Robert", 2);
             List<String> devList = new ArrayList<String>();
             devList.add(dev2.getName());
             gb.addGame("Clash of clans", "My dad plays a lot of clash of clans", devList, Status.PENDING);
@@ -132,10 +135,11 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void removeGameTest(){
+    public void removeGameTest() throws IOException{
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
-            gb.addDeveloper(new Developer("Something"));
+            gb.addDeveloper(new Developer("Something",1 ));
 
             List<String> devs = new LinkedList<>();
             devs.add("Something");
@@ -181,13 +185,14 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void addDeveloperTest() {
+    public void addDeveloperTest() throws IOException {
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
 
             int baseNumber = gameBrowser.getDevelopers().size();
             // create a new developer
-            Developer dev = new Developer("dev1");
+            Developer dev = new Developer("dev1", 1);
             gameBrowser.addDeveloper(dev);
             assertEquals(baseNumber+1, gameBrowser.getDevelopers().size());
             boolean contains = false;
@@ -201,7 +206,7 @@ public class GameBrowserTest {
 
 
             // create another
-            dev = new Developer("dev2");
+            dev = new Developer("dev2",2);
             gameBrowser.addDeveloper(dev);
             assertEquals(baseNumber+2, gameBrowser.getDevelopers().size());
             contains = false;
@@ -226,8 +231,9 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void removeDeveloperTest() { // assumes a passing addDeveloperTest
+    public void removeDeveloperTest() throws IOException{ // assumes a passing addDeveloperTest
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gb = new GameBrowser("src/databases/testing.db");
 
             gb.removeDeveloper("dev1");
@@ -239,7 +245,7 @@ public class GameBrowserTest {
 
             System.out.println(gb.getDevelopers());
             // remove one developer from list of only one dev
-            Developer dev = new Developer("dev1");
+            Developer dev = new Developer("dev1", 1);
             gb.addDeveloper(dev);
 
             assertEquals("dev1", gb.removeDeveloper("dev1"));
@@ -248,7 +254,7 @@ public class GameBrowserTest {
 
             // remove one developer from dev list > 1
             gb.addDeveloper(dev);
-            gb.addDeveloper(new Developer("dev2"));
+            gb.addDeveloper(new Developer("dev2", 2));
             assertEquals("dev2", gb.removeDeveloper("dev2"));
             assertEquals(baseNumber+1, gb.getDevelopers().size());
 
@@ -264,10 +270,11 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void saveTest(){
+    public void saveTest() throws IOException{
         try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
-            Developer rob =  new Developer("Rob");
+            Developer rob =  new Developer("Rob", 1);
             gameBrowser.addDeveloper(rob);
 
             Game game = new Game("robsGame", "HEY LOOK IM IN A DataBase", rob.getName());
@@ -281,7 +288,7 @@ public class GameBrowserTest {
             // Setup for below
             if (gameBrowser.getGameList().getGames().size() < 8) {
                 int num = 0;
-                Developer d = new Developer("Amelia's Fix Dude");
+                Developer d = new Developer("Amelia's Fix Dude", 2);
                 gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
                     Game xtraGame = new Game("xtra"+num, d.getName());
@@ -313,6 +320,69 @@ public class GameBrowserTest {
         }catch (DataSourceException dse){
             fail(dse.getMessage());
             return;
+        }
+    }
+
+    @Test
+    public void addGameToUserGameListTest() throws IOException {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            User user1 = new User(new GameList("user1"), null),
+                 user2 = new User(new GameList("user2"), null);
+            Developer dev = new Developer("Amelia Chady", 0);
+            Game game = new Game("Crossing Mammals", dev.getName());
+
+            gameBrowser.addDeveloper(dev);
+            gameBrowser.addGame(game);
+
+            // unowned game
+            assertEquals(0, game.getOwnedCount());
+
+            // owned game by one user
+            gameBrowser.addGameToUserGameList(user1, game);
+            assertEquals(1, game.getOwnedCount());
+
+            // owned game by more than one user;
+            gameBrowser.addGameToUserGameList(user2, game);
+            assertEquals(2, game.getOwnedCount());
+
+            gameBrowser.close();
+        } catch (DataSourceException dse) {
+            fail(dse.getMessage());
+        }
+    }
+
+    @Test
+    public void removeGameFromUserGameListTest() throws IOException {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
+            User user1 = new User(new GameList("user1"), null),
+                 user2 = new User(new GameList("user2"), null);
+            Developer dev = new Developer("Amelia Chady", 0);
+            Game game = new Game("Crossing Mammals", dev.getName());
+
+            gameBrowser.addDeveloper(dev);
+            gameBrowser.addGame(game);
+
+            // removal of non-owned game is null
+            assertNull(gameBrowser.removeGameFromUserGameList(user1, game));
+
+            // owned game removed by one user
+            gameBrowser.addGameToUserGameList(user1, game);
+            assertEquals("Crossing Mammals", gameBrowser.removeGameFromUserGameList(user1, game));
+            assertEquals(0, game.getOwnedCount());
+
+            // owned game by more than one user removed once;
+            gameBrowser.addGameToUserGameList(user1, game);
+            gameBrowser.addGameToUserGameList(user2, game);
+            gameBrowser.removeGameFromUserGameList(user1, game);
+            assertEquals(1, game.getOwnedCount());
+
+            gameBrowser.close();
+        } catch(DataSourceException dse) {
+            fail(dse.getMessage());
         }
     }
 }
