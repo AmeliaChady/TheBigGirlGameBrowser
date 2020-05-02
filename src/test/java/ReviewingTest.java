@@ -37,7 +37,7 @@ public class ReviewingTest {
         GameBrowser gb = new GameBrowser(DB_PATH);
         // Pass Good Args In
         gb.gameNewReview("apple", 5, "frank is best character", "frank");
-        assertEquals(0, gb.loadGame("apple").getReviews().size());
+        assertEquals(1, gb.loadGame("apple").getReviews().size());
 
         // Pass Bogus Args In (throws exception)
         assertThrows(IllegalArgumentException.class, () -> gb.gameNewReview("dontexist", 5, "a", "bob"));
