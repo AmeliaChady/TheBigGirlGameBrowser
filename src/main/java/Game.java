@@ -182,7 +182,11 @@ public class Game {
         this.reviews.add(review);
     }
 
-    public double calculateAverageRating() { return -1; }
+    public double calculateAverageRating() {
+        double total = 0;
+        for (Review r: reviews) total += r.getRating();
+        return total > 0 ? total/(double)reviews.size() : total;
+    }
 
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
