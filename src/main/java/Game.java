@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 enum Status {PENDING, ACCEPTED, REJECTED, LIMBO}
@@ -7,6 +8,7 @@ public class Game {
     private String title;
     private String description;
     private List<String> developers;
+    private List<Review> reviews;
     private Status status;
     private int ownedCount;
 
@@ -21,6 +23,58 @@ public class Game {
     }
 
     /**
+     * THIS CONSTRUCTOR IS WHAT THE Loader SHOULD USE
+     * @param title game title
+     * @param description descriptor for game
+     * @param developers link to developer object
+     */
+    public Game(String title, String description, List<Review> reviews, List<String> developers, Status status){
+        this.title = title;
+        this.description = description;
+        this.developers = developers;
+        this.reviews = reviews;
+        this.status = status;
+    }
+
+    /**
+     * THIS Constructor is for UI
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description, String developer) {
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>();
+        developers.add(developer);
+        this.reviews = new LinkedList<Review>();
+        this.status = Status.PENDING;
+        this.ownedCount = 0;
+
+    }
+
+    /**
+     *  Full constructor
+     *  THIS CONSTRUCTOR IS WHAT
+     * @param title game title
+     * @param description descriptor for game
+     * @param developers list of developer names
+     * @param status game status
+     * @param ownedCount number of people who own game
+     * @param reviews list of reviews
+     */
+    public Game(String title, String description,  List<String> developers, Status status, int ownedCount, List<Review> reviews){
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>();
+        developers.addAll(developers);
+        this.reviews = reviews;
+        this.ownedCount = ownedCount;
+        this.status = status;
+
+    }
+
+    /**
      * FullFull constructor (should only be used for backend tests)
      * @param title game title
      * @param description descriptor for game
@@ -30,26 +84,37 @@ public class Game {
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
+        this.reviews = new LinkedList<Review>();
         this.status = status;
     }
 
     /**
-     *  Full constructor
+     * FullFull constructor (should only be used for backend tests)
+     * @param title game title
+     * @param description descriptor for game
+     * @param developer link to developer object
+     */
+    public Game(String title, String description, String developer, Status status) {
+        this.title = title;
+        this.description = description;
+        this.developers = new ArrayList<String>();
+        developers.add(developer);
+        this.reviews =new LinkedList<Review>();
+        this.status = status;
+    }
 
-     *  THIS CONSTRUCTOR IS WHAT
 
+    /**
+     * Deprecated Constructor
      * @param title game title
      * @param description descriptor for game
      * @param developers link to developer object
      */
-    public Game(String title, String description,  List<String> developers, Status status, int ownedCount){
+    public Game(String title, String description,  List<String> developers){
         this.title = title;
         this.description = description;
         this.developers = new ArrayList<String>(developers);
         this.status = Status.PENDING;
-        this.ownedCount = ownedCount;
-        this.status = status;
-
     }
 
     /**
@@ -61,35 +126,6 @@ public class Game {
         this.title = title;
         this.developers = new ArrayList<String>(developers);
         this.description = "No Description Given";
-        this.status = Status.PENDING;
-    }
-
-
-    /**
-     * FullFull constructor (should only be used for backend tests)
-     * @param title game title
-     * @param description descriptor for game
-     * @param developer link to developer object
-     */
-    public Game(String title, String description, String developer, Status status){
-        this.title = title;
-        this.description = description;
-        this.developers = new ArrayList<String>();
-        this.developers.add(developer);
-        this.status = status;
-    }
-
-    /**
-     *  Full constructor
-     * @param title game title
-     * @param description descriptor for game
-     * @param developer link to developer object
-     */
-    public Game(String title, String description, String developer){
-        this.title = title;
-        this.description = description;
-        this.developers = new ArrayList<String>();
-        this.developers.add(developer);
         this.status = Status.PENDING;
     }
 
@@ -141,6 +177,25 @@ public class Game {
         this.developers.add(developer);
     }
 
+
+    public void addReview(Review review){
+        this.reviews.add(review);
+    }
+    // TODO: move to GameBrowserDisplay
+//    public void displayableGame() {
+//        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
+//        if (developers.size()==0){
+//            display += "None";
+//        }
+//        else{
+//            for(int i = 0; i < developers.size()-1; i++){
+//                display += developers.get(i) + ", ";
+//            }
+//            display += developers.get(developers.size()-1);
+//        }
+//        display += "\nStatus: "+ status.toString() + "\n";
+//        System.out.println(display);
+//    }
     public void increaseOwnedCount(){
         ownedCount = ownedCount + 1;
     }
@@ -166,6 +221,12 @@ public class Game {
 
     public Status getStatus() {
         return status;
+    }
+
+
+    public List<Review> getReviews() {
+        // gonna be honest, not like we care that much about hiding inner objects right now anyways.
+        return reviews;
     }
 
     public int getOwnedCount(){return ownedCount;}

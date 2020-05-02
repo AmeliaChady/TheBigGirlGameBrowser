@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -58,7 +59,9 @@ public class GameTest {
     @Test
     public void enumTest(){
 
-        Game game = new Game("title", "description", "Jimmy", Status.ACCEPTED);
+        ArrayList<String> devNames = new ArrayList<>();
+        devNames.add("Jimmy");
+        Game game = new Game("title", "description", devNames, Status.ACCEPTED);
 
         assertEquals(Status.ACCEPTED, game.getStatus()); //checks that the fullfull constructor works
 
@@ -94,5 +97,40 @@ public class GameTest {
         developers.add(thatGuy);
 
         assertEquals(developers, multiDevGame.getDevelopers());
+    }
+
+    @Test
+    public void gameHoldsReviewsTest(){
+        List<Review> reviews = new LinkedList<Review>();
+
+        Review r1 = new Review(1, "Bad Game!", "Kerry");
+        r1.setID("a");
+        Review r2 = new Review(2, "Boring Game", "kb");
+        r2.setID("b");
+        Review r3 = new Review(3, "It's a Game...", "kab");
+        r3.setID("c");
+        Review r4 = new Review(4, "Yeah I liked this game", "Kerry Anne");
+        r4.setID("d");
+        Review r5 = new Review(5,"WOW Best Game ever", "kerby");
+        r5.setID("e");
+
+        reviews.add(r1);
+        reviews.add(r2);
+        reviews.add(r3);
+        reviews.add(r4);
+        reviews.add(r5);
+
+        ArrayList<String> devNames = new ArrayList<>();
+        devNames.add("Jimmy");
+
+        Game game = new Game("testGame", "a game for Tests", reviews, devNames, Status.PENDING);
+
+        assertTrue(reviews.equals(game.getReviews()));
+        assertEquals("a", game.getReviews().get(0).getID());
+
+        Review r6 = new Review(3, "I kinda liked this but I didn't either", "coolGuy");
+        game.addReview(r6);
+
+        assertEquals(6, game.getReviews().size());
     }
 }

@@ -65,7 +65,7 @@ public class UserTest {
     @Test
     public void userAddToOwnedGamesTest(){
         Game countGameTest = new Game("test game", "test game description",
-                new ArrayList<>() , Status.ACCEPTED, 0);
+                new ArrayList<String>() , Status.ACCEPTED);
         User user4 = new User(new GameList("ownedGames"), new GameList("wishList"));
         User user5 = new User(new GameList("ownedGames"), new GameList("wishList"));
         User user6 = new User(new GameList("ownedGames"), new GameList("wishList"));
