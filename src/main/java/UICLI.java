@@ -38,7 +38,7 @@ public class UICLI {
                         init();
                         break;
                     case 3:
-                        System.out.println("We're not accepting new devs at this time.");
+                        createDeveloper();
                         init();
                         break;
                     default:
@@ -50,6 +50,23 @@ public class UICLI {
         } catch(Exception e) {
             System.out.print(e.getMessage());
         }
+    }
+
+    private void createDeveloper() {
+        Scanner in = new Scanner(System.in);
+        String email = null,
+               username = null,
+               password = null;
+        Developer developer = null;
+
+        System.out.println("Please enter your email: ");
+        email = in.nextLine();
+        System.out.println("Please create a username: ");
+        username = in.nextLine();
+        System.out.println("Please create a password: ");
+        password = in.nextLine();
+
+        developer = new Developer(email, -1);
     }
 
     private void login() throws DataSourceException {
