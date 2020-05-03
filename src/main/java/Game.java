@@ -178,6 +178,10 @@ public class Game {
     }
 
 
+    /**
+     * assumes author of review is primary key
+     * @param review
+     */
     public void addReview(Review review){
         this.reviews.add(review);
     }

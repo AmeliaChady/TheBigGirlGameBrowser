@@ -37,13 +37,32 @@ public class ReviewingTest {
         assertEquals("sucky game", got.getSummary());
         assertEquals("jerky jerk" , got.getAuthor());
 
-        // Update game
+        // Update review
         Review rUpdate = new Review(5, "okay game", "jerky jerk");
         g.addReview(rUpdate);
+        assertEquals(1, g.getReviews().size());
         got = g.getReviews().get(0);
         assertEquals(5, got.getRating());
         assertEquals("okay game", got.getSummary());
         assertEquals("jerky jerk" , got.getAuthor());
+
+        // Can have multiple reviews
+        Review r_second = new Review(4, "best", "groggy");
+        g.addReview(r_second);
+        assertEquals(2, g.getReviews().size());
+        got = g.getReviews().get(1);
+        assertEquals(4, got.getRating());
+        assertEquals("best", got.getSummary());
+        assertEquals("groggy" , got.getAuthor());
+
+        // Can update one review in multiple
+        Review r2Up = new Review(5, "best", "groggy");
+        g.addReview(r2Up);
+        assertEquals(2, g.getReviews().size());
+        got = g.getReviews().get(1);
+        assertEquals(5, got.getRating());
+        assertEquals("best", got.getSummary());
+        assertEquals("groggy" , got.getAuthor());
 
 
         // author can't be null (not a review constraint?)
