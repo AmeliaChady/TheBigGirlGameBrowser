@@ -16,18 +16,46 @@ public class ReviewingTest {
 
         g.addReview(r);
         assertEquals(1, g.getReviews().size());
+        Review got = g.getReviews().get(0);
+        assertEquals(5, got.getRating());
+        assertEquals("sucky game", got.getSummary());
+        assertEquals("jerky jerk" , got.getAuthor());
 
-        // Testing adding same (copy or not) throws error
+        // Testing adding same (copy or not) doesn't add
         Review rCopy = new Review(5, "sucky game", "jerky jerk");
-        assertThrows(IllegalArgumentException.class, () -> g.addReview(r));
-        assertThrows(IllegalArgumentException.class, () -> g.addReview(rCopy));
+        g.addReview(r);
         assertEquals(1, g.getReviews().size());
+        got = g.getReviews().get(0);
+        assertEquals(5, got.getRating());
+        assertEquals("sucky game", got.getSummary());
+        assertEquals("jerky jerk" , got.getAuthor());
+
+        g.addReview(rCopy);
+        assertEquals(1, g.getReviews().size());
+        got = g.getReviews().get(0);
+        assertEquals(5, got.getRating());
+        assertEquals("sucky game", got.getSummary());
+        assertEquals("jerky jerk" , got.getAuthor());
+
+        // Update game
+        Review rUpdate = new Review(5, "okay game", "jerky jerk");
+        g.addReview(rUpdate);
+        got = g.getReviews().get(0);
+        assertEquals(5, got.getRating());
+        assertEquals("okay game", got.getSummary());
+        assertEquals("jerky jerk" , got.getAuthor());
+
+
+        // author can't be null (not a review constraint?)
+        Review nullauthor= new Review(5, "10", null);
+        assertThrows(NullPointerException.class, () -> g.addReview(nullauthor));
 
         // Testing adding null throws error
         assertThrows(NullPointerException.class, () -> g.addReview(null));
         assertEquals(1, g.getReviews().size());
     }
 
+    /*
     @Test
     public void gameBrowserGameNewReview() throws DataSourceException, IOException {
         SQLiteSource.RunSQL(DB_PATH, "src/scripts/DDL.sql");
@@ -48,6 +76,6 @@ public class ReviewingTest {
         assertThrows(IllegalArgumentException.class, () -> gb.gameNewReview("apple", 0, null, "bob2"));
 
     }
-
+    */
 
 }
