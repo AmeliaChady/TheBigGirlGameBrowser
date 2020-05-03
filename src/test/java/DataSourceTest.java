@@ -296,7 +296,7 @@ public class DataSourceTest {
     }
 
     public static void dataSourceSaveUserTest(DataSource ds) throws DataSourceException {
-        User user = new User( ds.loadGameList("user0 Game List"), null );
+        User user = new User("user0", ds.loadGameList("user0 Game List"), null );
         Accounts account = new Accounts(user,"user0", "user0@mail.com", "password");
 
         // pass null user
@@ -361,7 +361,8 @@ public class DataSourceTest {
 
         // user creates user account (duplicate)
         User userDuplicate = new User("user0");
-        Accounts userDuplicateAccount = new Accounts(userDuplicate, "", "", "");
+        Accounts userDuplicateAccount = new Accounts(userDuplicate, "e",
+                                                     userDuplicate.getName(), "password");
         try {
             ds.saveAccount(userDuplicateAccount);
             fail("Duplicate user account was created.");
@@ -370,8 +371,9 @@ public class DataSourceTest {
         }
 
         // developer creates developer (duplicate)
-        User developerDuplicate = new User("developer0");
-        Accounts developerDuplicateAccount = new Accounts(developerDuplicate, "", "", "");
+        Developer developerDuplicate = new Developer("developer0");
+        Accounts developerDuplicateAccount = new Accounts(developerDuplicate, "e",
+                                                          developerDuplicate.getName(), "password");
         try {
             ds.saveAccount(developerDuplicateAccount);
             fail("Duplicate developer account was created.");
