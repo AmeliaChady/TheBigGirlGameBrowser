@@ -14,9 +14,46 @@ public class UICLI {
         gameBrowser = new GameBrowser(filepath, new UIPluginCLI());
     }
 
+    private void init() {
+        try {
+            Scanner in = new Scanner(System.in);
+            String choice = null;
+
+            System.out.println("Welcome to the Big Girl Game Library!");
+            while (!isInt(choice) || (parseInt(choice) < 1 || parseInt(choice) > 4)) {
+                System.out.println("What would you like to do?");
+                System.out.println("1. Login");
+                System.out.println("2. Register as a user");
+                System.out.println("3. Register as a developer");
+                choice = in.nextLine();
+            }
+
+            if (isInt(choice)) {
+                switch (parseInt(choice)) {
+                    case 1:
+                        login();
+                        break;
+                    case 2:
+                        System.out.println("We're not accepting new users at this time.");
+                        init();
+                        break;
+                    case 3:
+                        System.out.println("We're not accepting new devs at this time.");
+                        init();
+                        break;
+                    default:
+                        System.out.println("We're not so sure about that...");
+                        init();
+                        break;
+                }
+            }
+        } catch(Exception e) {
+            System.out.print(e.getMessage());
+        }
+    }
+
     private void login() throws DataSourceException {
         Scanner in = new Scanner(System.in);
-        System.out.println("Welcome to the Big Girl Game Library!");
         System.out.println("Please enter your username: ");
 
         String usernameEnter = in.nextLine();
@@ -494,7 +531,8 @@ public class UICLI {
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
         UICLI myBGGLTest = new UICLI("src/databases/DemoDaySprint2.db");
-        myBGGLTest.login();
+//        myBGGLTest.login();
+        myBGGLTest.init();
 
     }
     // password recovery code moved below for mow
