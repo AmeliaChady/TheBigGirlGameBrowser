@@ -64,6 +64,14 @@ public interface DataSource {
      */
     Accounts login(String username, String password) throws DataSourceException, IllegalArgumentException;
 
+    /**
+     * Creates a new account for a user or a developer
+     * @param account
+     * @throws DataSourceException
+     * @throws IllegalArgumentException
+     */
+    void saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException;
+
     void saveUser(Accounts account) throws DataSourceException, IllegalArgumentException;
 
     public User loadUser(String user) throws DataSourceException;

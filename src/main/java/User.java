@@ -2,12 +2,13 @@ import java.util.List;
 
 public class User {
 
-    //private Account
+    private String name;
     private GameList ownedGames;
     private GameList wishList;
     private List<String> reviews;
     private List<String> comments;
 
+    public User(String nameIn) { name = nameIn; }
 
     public User(GameList ownedGamesIn, GameList wishListIn){
         ownedGames = ownedGamesIn;
@@ -55,6 +56,8 @@ public class User {
     }
 
     public List<String> getComments(){ return comments; }
+
+    public String getName() { return name; }
 
     //end getters
 

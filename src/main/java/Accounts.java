@@ -26,6 +26,14 @@ public class Accounts {
         this.dev = null;
         admin = null;
     }
+    Accounts(Developer dev, String email, String username, String password) {
+        this.dev = dev;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.dev = null;
+        admin = null;
+    }
 
     Accounts(Administrator admin){
         this.admin = admin;

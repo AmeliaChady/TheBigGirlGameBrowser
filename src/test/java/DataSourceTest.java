@@ -324,4 +324,70 @@ public class DataSourceTest {
         //non-existing user
         assertNull(ds.loadUser("notRealUser"));
     }
+
+    public static void dataSourceSaveAccountTest(DataSource ds) throws DataSourceException {
+        // new developer account
+        Developer developer1 = new Developer("developer1");
+        String developer1Name = developer1.getName();
+        Accounts developerAccount1 = new Accounts(developer1, "developer1@mail.com", developer1Name, "p");
+        ds.saveAccount(developerAccount1);
+        assertEquals(developer1Name, ds.loadDeveloper(developer1Name).getName());
+
+        // new user account
+        User user1 = new User("user1");
+        String user1Name = user1.getName();
+        Accounts userAccount1 = new Accounts(user1, "user1@mail.com", user1Name, "p");
+        ds.saveAccount(userAccount1);
+        ds.loadUser(user1Name);
+        assertEquals(user1Name, ds.loadUser(user1Name).getName());
+
+        // user creates new developer account
+        Developer user1Developer = new Developer("user1");
+        String user1DeveloperName = user1Developer.getName();
+        Accounts user1DeveloperAccount = new Accounts(user1Developer,
+                                                "user1@mail.com", user1DeveloperName, "p");
+        ds.saveAccount(user1DeveloperAccount);
+        ds.loadUser(user1DeveloperName);
+        assertEquals(user1DeveloperName, ds.loadUser(user1Name).getName());
+
+        // developer creates new user account
+        User developer1User = new User("developer1");
+        String developer1UserName = developer1User.getName();
+        Accounts developer1UserAccount = new Accounts(developer1User,
+                                                "developer1@mail.com", developer1UserName, "p");
+        ds.saveAccount(developer1UserAccount);
+        ds.loadUser(developer1UserName);
+        assertEquals(developer1Name, ds.loadUser(developer1Name).getName());
+
+        // user creates user account (duplicate)
+        User userDuplicate = new User("user0");
+        Accounts userDuplicateAccount = new Accounts(userDuplicate, "", "", "");
+        try {
+            ds.saveAccount(userDuplicateAccount);
+            fail("Duplicate user account was created.");
+        } catch(Exception e) {
+            assertEquals("This user already exists!", e.getMessage());
+        }
+
+        // developer creates developer (duplicate)
+        User developerDuplicate = new User("developer0");
+        Accounts developerDuplicateAccount = new Accounts(developerDuplicate, "", "", "");
+        try {
+            ds.saveAccount(developerDuplicateAccount);
+            fail("Duplicate developer account was created.");
+        } catch(Exception e) {
+            assertEquals("This developer already exists!", e.getMessage());
+        }
+
+        // create new account with invalid credentials
+        User invalidUser = new User("");
+        String invalidUserName = "";
+        Accounts invalidAccount = new Accounts(invalidUser, invalidUserName, "", "");
+        try {
+            ds.saveAccount(invalidAccount);
+            fail("A user with invalid credentials was created.");
+        } catch(Exception e) {
+            assertEquals("Please provide proper credentials", e.getMessage());
+        }
+    }
 }

@@ -24,6 +24,11 @@ public class Developer {
         this.aid = aid;
     }
 
+    public Developer(String nameIn){
+        name = nameIn;
+        developerGameList = new GameList(nameIn+"'s Games");
+    }
+
     public String getName(){
         return name;
     }

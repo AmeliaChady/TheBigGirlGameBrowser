@@ -580,6 +580,16 @@ public class SQLiteSource implements DataSource{
         }
     }
 
+    @Override
+    public void saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException {
+       try {
+           throw new SQLException("!!!!");
+       } catch(SQLException e) {
+           throw new DataSourceException(e.getMessage());
+       }
+    }
+
+
     // underlying DB calls
     // Upsert -> Insert/Update depending on existence
     private void safeUpsertGame(Game game, Statement s) throws DataSourceException{
