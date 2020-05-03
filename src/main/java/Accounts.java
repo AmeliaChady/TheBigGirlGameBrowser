@@ -31,7 +31,7 @@ public class Accounts {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.dev = null;
+        user = null;
         admin = null;
     }
 
