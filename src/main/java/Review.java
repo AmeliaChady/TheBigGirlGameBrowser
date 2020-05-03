@@ -45,4 +45,16 @@ public class Review {
     public String getAuthor() {
         return author;
     }
+
+
+    // ASSUMES BASED ON P.KEY (author)
+    @Override
+    public boolean equals(Object o){
+        if(o == this)
+            return true; // self
+        if(!(o instanceof Review))
+            return false; // other object type
+        Review r = (Review) o;
+        return r.author.equals(this.author);
+    }
 }

@@ -71,7 +71,7 @@ public class ReviewingTest {
 
         // Testing adding null throws error
         assertThrows(NullPointerException.class, () -> g.addReview(null));
-        assertEquals(1, g.getReviews().size());
+        assertEquals(2, g.getReviews().size());
     }
 
     /*

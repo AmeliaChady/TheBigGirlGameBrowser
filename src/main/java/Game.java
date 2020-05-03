@@ -183,7 +183,16 @@ public class Game {
      * @param review
      */
     public void addReview(Review review){
-        this.reviews.add(review);
+        if(review == null)
+            throw new NullPointerException("Review is null");
+        if(review.getAuthor() == null)
+            throw new NullPointerException("Author is null");
+        // index indicates if in reviews
+        int index = reviews.indexOf(review);
+        if(index < 0)
+            reviews.add(review);
+        else
+            reviews.set(index, review);
     }
 
     // TODO: move to GameBrowserDisplay
