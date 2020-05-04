@@ -338,7 +338,6 @@ public class DataSourceTest {
         String user1Name = user1.getName();
         Accounts userAccount1 = new Accounts(user1, "user1@mail.com", user1Name, "p");
         ds.saveAccount(userAccount1);
-        ds.loadUser(user1Name);
         assertEquals(user1Name, ds.loadUser(user1Name).getName());
 
         // user creates new developer account
@@ -347,7 +346,6 @@ public class DataSourceTest {
         Accounts user1DeveloperAccount = new Accounts(user1Developer,
                                                 "user1@mail.com", user1DeveloperName, "p");
         ds.saveAccount(user1DeveloperAccount);
-        ds.loadUser(user1DeveloperName);
         assertEquals(user1DeveloperName, ds.loadUser(user1Name).getName());
 
         // developer creates new user account
@@ -356,8 +354,7 @@ public class DataSourceTest {
         Accounts developer1UserAccount = new Accounts(developer1User,
                                                 "developer1@mail.com", developer1UserName, "p");
         ds.saveAccount(developer1UserAccount);
-        ds.loadUser(developer1UserName);
-        assertEquals(developer1Name, ds.loadUser(developer1Name).getName());
+        assertEquals(developer1UserName, ds.loadUser(developer1Name).getName());
 
         // user creates user account (duplicate)
         User userDuplicate = new User("user0");
