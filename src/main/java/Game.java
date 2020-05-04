@@ -178,18 +178,21 @@ public class Game {
     }
 
 
-    public void addReview(Review review){
-        this.reviews.add(review);
-    }
-
     /**
-     * Calculates the average rating of a game based from reviews
-     * @return 0 if there are no ratings, otherwise return an average
+     * assumes author of review is primary key
+     * @param review
      */
-    public double calculateAverageRating() {
-        double total = 0;
-        for (Review r: reviews) total += r.getRating();
-        return total > 0 ? total/(double)reviews.size() : total;
+    public void addReview(Review review){
+        if(review == null)
+            throw new NullPointerException("Review is null");
+        if(review.getAuthor() == null)
+            throw new NullPointerException("Author is null");
+        // index indicates if in reviews
+        int index = reviews.indexOf(review);
+        if(index < 0)
+            reviews.add(review);
+        else
+            reviews.set(index, review);
     }
 
     // TODO: move to GameBrowserDisplay

@@ -84,19 +84,19 @@ public class UIPluginCLITest {
         Developer d = new Developer("George Washington", 1);
         uiplug.pullDeveloper(d);
         assertEquals("Name: George Washington\n" +
-                     "George Washington's Games: This list is empty\n", uiplug.displayDeveloper());
+                     "George Washingtons DevGames: This list is empty\n", uiplug.displayDeveloper());
 
         //1 game
         d.getGameList().includeGame("testGame");
         uiplug.pullDeveloper(d);
         assertEquals("Name: George Washington\n" +
-                     "George Washington's Games: testGame\n", uiplug.displayDeveloper());
+                     "George Washingtons DevGames: testGame\n", uiplug.displayDeveloper());
 
         //2 games
         d.getGameList().includeGame("testGame2");
         uiplug.pullDeveloper(d);
         assertEquals("Name: George Washington\n" +
-                     "George Washington's Games: testGame, testGame2\n", uiplug.displayDeveloper());
+                     "George Washingtons DevGames: testGame, testGame2\n", uiplug.displayDeveloper());
 
         uiplug.pullDeveloper(null);
         assertThrows(IllegalStateException.class, uiplug::displayDeveloper);

@@ -1,12 +1,11 @@
+import org.sqlite.SQLiteException;
+
 import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class SQLiteSource implements DataSource{
     String path;
@@ -50,7 +49,7 @@ public class SQLiteSource implements DataSource{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
         }
-        
+
         Savepoint sg = null;
         try{
             // Set up statement
@@ -509,9 +508,7 @@ public class SQLiteSource implements DataSource{
             throw new IllegalArgumentException("password is null");
         }
 
-        Developer dev = null;
-        User user = null;
-        Administrator admin = null;
+        Accounts acct;
         String sql;
         ResultSet rs;
 
@@ -535,12 +532,16 @@ public class SQLiteSource implements DataSource{
                 throw new IllegalArgumentException("username & password combination do not exist.");
             }
 
+            // TODO: Getting Email Stuff
+            String email = getEmail(username, s);
+            acct = new Accounts(username, email, password);
+
             // Try User
             sql = "SELECT * FROM Users WHERE aid=" + aid + ";";
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                user = new User(loadGameList(getGameListName(rs.getInt("glid"),s)), null);
+                acct.user = new User(rs.getString("name"), loadGameList(getGameListName(rs.getInt("glid"),s)), null);
             }
 
             // Try Dev
@@ -548,7 +549,7 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                dev = new Developer(rs.getString("name"),
+                acct.dev = new Developer(rs.getString("name"),
                         loadGameList(getGameListName(rs.getInt("glid"),s)),
                         aid);
             }
@@ -558,7 +559,7 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                admin = new Administrator(rs.getString("name"));
+                acct.admin = new Administrator(rs.getString("name"));
             }
 
             // Return Dev Object
@@ -567,7 +568,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Accounts(dev, user, admin);
+            return acct;
         }catch (SQLException e){
             try {
                 if(l != null) {
@@ -578,6 +579,125 @@ public class SQLiteSource implements DataSource{
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
+    }
+
+    @Override
+    public Map<AccountSavingAccounts, AccountSavingFlags> saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException {
+        if (account == null)  throw new IllegalArgumentException("Account is null");
+
+        Map<AccountSavingAccounts, AccountSavingFlags> flagmap =
+                new EnumMap<AccountSavingAccounts, AccountSavingFlags>(AccountSavingAccounts.class);
+        Savepoint sa = null;
+        try {
+            if (!inTransaction) {
+                sa = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            // Base Account
+            flagmap.put(AccountSavingAccounts.ACCT,
+                    saveAccount(account.getUsername(), account.getEmail(), account.getPassword(), s));
+
+            Integer aidI = getAid(account.getUsername(), account.getPassword(), s);
+            if(aidI == null){
+                flagmap.put(AccountSavingAccounts.ACCT, AccountSavingFlags.FAIL);
+                s.close();
+                if (sa != null) {
+                    conn.commit();
+                    inTransaction = false;
+                }
+            }
+            int aid = aidI;
+            // User Account
+            if(account.user != null) {
+                flagmap.put(AccountSavingAccounts.USER,
+                        saveUserAccount(account.user, aid, s));
+                saveUser(account);
+            }else flagmap.put(AccountSavingAccounts.USER, AccountSavingFlags.NOTHING);
+
+            // Dev Account
+            if(account.dev != null) {
+                flagmap.put(AccountSavingAccounts.DEV,
+                        saveDeveloperAccount(account.dev, aid, s));
+                saveDeveloper(account.dev);
+            }else flagmap.put(AccountSavingAccounts.DEV, AccountSavingFlags.NOTHING);
+
+            s.close();
+            if (sa != null) {
+                conn.commit();
+                inTransaction = false;
+            }
+            return flagmap;
+       } catch(SQLException e) {
+           try {
+               if (sa != null) {
+                   conn.rollback(sa);
+                   conn.releaseSavepoint(sa);
+                   inTransaction = false;
+               }
+           } catch (SQLException ignored) {}
+           throw new DataSourceException(e.getMessage());
+       }
+    }
+
+    /*private String newAccountGameList(boolean dualAccountFlag, String username) {
+        return dualAccountFlag ? username+",user-dev" : username;
+    }*/
+    private AccountSavingFlags saveAccount(String username, String email, String password, Statement s) throws SQLException{
+        String sql = "SELECT aid FROM Accounts WHERE username =\""+username+"\";";
+        s.execute(sql);
+        boolean exists = !s.getResultSet().isClosed();
+
+        if (!exists) {
+            sql = "INSERT INTO Accounts(username, email, password) VALUES(" +
+                    "'" + username+ "'," +
+                    "'" + email + "'," +
+                    "'" + password + "');";
+            s.execute(sql);
+            return AccountSavingFlags.PASS;
+        }
+        return AccountSavingFlags.DUPLICATE;
+    }
+    private AccountSavingFlags saveDeveloperAccount(Developer d, int aid, Statement s) throws SQLException{
+        String sql = "SELECT * FROM Developers WHERE name =\""+ d.getName() +"\";";
+        s.execute(sql);
+
+        // makes sure new dev is not a duplicate
+        boolean exists = !s.getResultSet().isClosed();
+        if (!exists) {
+            sql = "INSERT INTO GameLists(name) VALUES('"+d.getGameListName()+"');";
+            s.execute(sql);
+            int glid = getGlid(d.getGameListName(), s);
+
+            sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
+                    "'" + aid + "'," +
+                    "'" + d.getName() + "'," +
+                    "'"+glid+"');";
+            s.execute(sql);
+            return AccountSavingFlags.PASS;
+        }
+        return AccountSavingFlags.DUPLICATE;
+    }
+    private AccountSavingFlags saveUserAccount(User u, int aid, Statement s) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE name =\""+ u.getName() +"\";";
+        s.execute(sql);
+
+        // makes sure new user is not a duplicate
+        boolean exists = !s.getResultSet().isClosed();
+        if (!exists) {
+            sql = "INSERT INTO GameLists(name) VALUES('"+u.getOwnedGames().getName()+"');";
+            s.execute(sql);
+            int glid = getGlid(u.getOwnedGames().getName(), s);
+
+            sql = "INSERT INTO USERS(aid, name, glid) VALUES(" +
+                    "'" + aid + "'," +
+                    "'" + u.getName() + "'," +
+                    "'"+glid+"');";
+            s.execute(sql);
+            return AccountSavingFlags.PASS;
+        }
+        return AccountSavingFlags.DUPLICATE;
     }
 
     // underlying DB calls
@@ -626,15 +746,15 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
         safeUpsertGameList(d.getGameListName(), s);
         try {
-            String sql = "SELECT * FROM Developers WHERE name =\""+ d +"\";";
+            String sql = "SELECT * FROM Developers WHERE name ='"+ d +"';";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
-                        "\"" + d.getAid() + "\", " +
-                        "\"" + d.getName() + "\", " +
-                        "\"" + getGlid(d.getGameListName(), s) + "\");";
+                        "'" + d.getAid() + "', " +
+                        "'" + d.getName() + "', " +
+                        "" + getGlid(d.getGameListName(), s) + ");";
                 s.execute(sql);
             }
         }catch (SQLException e){
@@ -664,15 +784,15 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertGameList(String listName, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
-            String sql = "SELECT * FROM GameLists WHERE name=\""+listName+"\";";
+            String sql = "SELECT * FROM GameLists WHERE name='"+listName+"';";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO GameLists(name) VALUES(" +
-                        "\"" + listName+ "\");";
+                        "'" + listName+ "');";
+                s.execute(sql);
             }
-            s.execute(sql);
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
@@ -705,17 +825,17 @@ public class SQLiteSource implements DataSource{
         return null;
     }
 
-    private int getGlid(GameList list, Statement s) throws DataSourceException{
+    private Integer getGlid(GameList list, Statement s) throws SQLException{
         return getGlid(list.getName(), s);
     }
-    private int getGlid(String listName, Statement s) throws DataSourceException{
-        try {
-            String sql = "SELECT glid FROM GameLists WHERE name=\""+listName+"\";";
-            s.execute(sql);
-            return s.getResultSet().getInt(1);
-        }catch (SQLException e){
-            throw new DataSourceException(e.getMessage());
+    private Integer getGlid(String listName, Statement s) throws SQLException{
+        String sql = "SELECT glid FROM GameLists WHERE name='"+listName+"';";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(rs.next()){
+            return rs.getInt(1);
         }
+        return null;
     }
     private String getGameListName(int glid, Statement s) throws SQLException{
         String sql = "SELECT name FROM GameLists WHERE glid="+glid+";";
@@ -752,7 +872,7 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    private void purgeGameListGames(GameList gl, Statement s) throws DataSourceException{
+    private void purgeGameListGames(GameList gl, Statement s) throws SQLException, DataSourceException{
         int glid = getGlid(gl, s);
 
         try {
@@ -788,6 +908,7 @@ public class SQLiteSource implements DataSource{
 
         Savepoint su = null;
         try {
+            User user = account.user;
             if(!inTransaction) {
                 su = conn.setSavepoint();
                 inTransaction=  true;
@@ -798,10 +919,9 @@ public class SQLiteSource implements DataSource{
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists) {
-                User user = account.user;
-                saveGameList(user.getOwnedGames());
+                saveUserAccount(user, getAid(account.getUsername(), account.getPassword(), s), s);
             }
-
+            saveGameList(user.getOwnedGames());
             s.close();
             if (su != null) {
                 conn.commit();
@@ -849,6 +969,7 @@ public class SQLiteSource implements DataSource{
 
             // Fill GameList
             GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
+            String name = rs.getString("name");
 
             // Return Dev Object
             s.close();
@@ -858,7 +979,7 @@ public class SQLiteSource implements DataSource{
             }
             List<String> comments = new ArrayList();
             List<String> reviews = new ArrayList();
-            return new User(g, new GameList(user + "'s wishlist"), reviews, comments);
+            return new User(user, g, new GameList(user + "'s wishlist"), reviews, comments);
             //TODO: when wishlists, comments, and reviews are impolemented, change this method to reflect that
         }catch (SQLException e){
             try {
@@ -870,6 +991,15 @@ public class SQLiteSource implements DataSource{
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
+    }
+
+    public String getEmail(String username, Statement s) throws SQLException{
+        String sql = "SELECT email FROM Accounts WHERE username='"+username+"';";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(rs.next())
+            return rs.getString("email");
+        return null;
     }
 
     /***

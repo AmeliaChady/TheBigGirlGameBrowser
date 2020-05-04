@@ -2,19 +2,25 @@ import java.util.List;
 
 public class User {
 
-    //private Account
+    private String name;
     private GameList ownedGames;
     private GameList wishList;
     private List<String> reviews;
     private List<String> comments;
 
+    public User(String nameIn) {
+        name = nameIn;
+        ownedGames = new GameList(nameIn + "s UserGames");
+    }
 
-    public User(GameList ownedGamesIn, GameList wishListIn){
+    public User(String nameIn, GameList ownedGamesIn, GameList wishListIn){
+        name = nameIn;
         ownedGames = ownedGamesIn;
         wishList = wishListIn;
     }
 
-    public User(GameList ownedGamesIn, GameList wishListIn, List<String> reviewsIn, List<String> commentsIn){
+    public User(String nameIn, GameList ownedGamesIn, GameList wishListIn, List<String> reviewsIn, List<String> commentsIn){
+        name = nameIn;
         ownedGames = ownedGamesIn;
         wishList = wishListIn;
         reviews = reviewsIn;
@@ -55,6 +61,8 @@ public class User {
     }
 
     public List<String> getComments(){ return comments; }
+
+    public String getName() { return name; }
 
     //end getters
 

@@ -185,6 +185,12 @@ public class GameBrowser {
 
     //TODO Remove a GameList
 
+    public void gameNewReview(String title, int rating, String comment, String author) throws DataSourceException{
+        //Game g = loadGame(title);
+        //Review r = new Review(rating, comment, author);
+        //g.addReview(r);
+    }
+
     // ------HELPERS------
     private void loadAllGames() throws DataSourceException {
         try {
