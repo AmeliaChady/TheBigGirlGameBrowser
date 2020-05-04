@@ -328,8 +328,8 @@ public class GameBrowserTest {
         try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
-            User user1 = new User(new GameList("user1"), null),
-                 user2 = new User(new GameList("user2"), null);
+            User user1 = new User("user1", new GameList("user1"), null),
+                 user2 = new User("user2", new GameList("user2"), null);
             Developer dev = new Developer("Amelia Chady", 0);
             Game game = new Game("Crossing Mammals", dev.getName());
 
@@ -358,8 +358,8 @@ public class GameBrowserTest {
         try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
-            User user1 = new User(new GameList("user1"), null),
-                 user2 = new User(new GameList("user2"), null);
+            User user1 = new User("user1", new GameList("user1"), null),
+                 user2 = new User("user2", new GameList("user2"), null);
             Developer dev = new Developer("Amelia Chady", 0);
             Game game = new Game("Crossing Mammals", dev.getName());
 

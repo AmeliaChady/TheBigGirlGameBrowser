@@ -10,12 +10,14 @@ public class User {
 
     public User(String nameIn) { name = nameIn; }
 
-    public User(GameList ownedGamesIn, GameList wishListIn){
+    public User(String nameIn, GameList ownedGamesIn, GameList wishListIn){
+        name = nameIn;
         ownedGames = ownedGamesIn;
         wishList = wishListIn;
     }
 
-    public User(GameList ownedGamesIn, GameList wishListIn, List<String> reviewsIn, List<String> commentsIn){
+    public User(String nameIn, GameList ownedGamesIn, GameList wishListIn, List<String> reviewsIn, List<String> commentsIn){
+        name = nameIn;
         ownedGames = ownedGamesIn;
         wishList = wishListIn;
         reviews = reviewsIn;

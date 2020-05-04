@@ -1,3 +1,5 @@
+import org.sqlite.SQLiteException;
+
 import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,7 +52,7 @@ public class SQLiteSource implements DataSource{
         if(game == null){
             throw new IllegalArgumentException("Game is null");
         }
-        
+
         Savepoint sg = null;
         try{
             // Set up statement
@@ -540,7 +542,7 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                user = new User(loadGameList(getGameListName(rs.getInt("glid"),s)), null);
+                user = new User(rs.getString("name"), loadGameList(getGameListName(rs.getInt("glid"),s)), null);
             }
 
             // Try Dev
@@ -582,13 +584,113 @@ public class SQLiteSource implements DataSource{
 
     @Override
     public void saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException {
-       try {
-           throw new SQLException("!!!!");
-       } catch(SQLException e) {
+        if (account == null)  throw new IllegalArgumentException("Account is null");
+
+        Savepoint sa = null;
+        try {
+           if (!inTransaction) {
+               sa = conn.setSavepoint();
+               inTransaction = true;
+           }
+            Statement s = conn.createStatement();
+
+           // create new developer account
+            if (account.dev != null || account.user != null) {
+                String username = account.getUsername(),
+                       email = account .getEmail(),
+                       password = account.getPassword();
+                int aid = 0;
+                boolean dualAccountFlag = false;
+
+                if (username.equals("") || email.equals("") || password.equals(""))
+                    throw new DataSourceException("Please provide proper credentials");
+
+                // check for existing account
+                String sql = "SELECT aid FROM Accounts WHERE username =\""+username+"\";";
+                s.execute(sql);
+                boolean exists = !s.getResultSet().isClosed();
+
+                if (!exists) {
+                    sql = "INSERT INTO Accounts(username, email, password) VALUES(" +
+                            "'" + username+ "'," +
+                            "'" + email + "'," +
+                            "'" + password + "');";
+                    s.execute(sql);
+                // user wanting to be new dev, vice versa, or duplicate
+                } else dualAccountFlag = true;
+
+                aid = getAid(username, password, s);
+                if (account.dev != null) saveDeveloperAccount(username, aid, s, dualAccountFlag);
+                else if (account.user != null) saveUserAccount(username, aid, s, dualAccountFlag);
+            }
+            s.close();
+            if (sa != null) {
+                conn.commit();
+                inTransaction = false;
+            }
+       } catch(SQLException | DataSourceException e) {
+           try {
+               if (sa != null) {
+                   conn.rollback(sa);
+                   conn.releaseSavepoint(sa);
+                   inTransaction = false;
+               }
+           } catch (SQLException ignored) {}
            throw new DataSourceException(e.getMessage());
        }
     }
 
+    private String newAccountGameList(boolean dualAccountFlag, String username) {
+        return dualAccountFlag ? username+",user-dev" : username;
+    }
+
+    private void saveDeveloperAccount(String username, int aid, Statement s, boolean dualAccountFlag) throws DataSourceException {
+        try {
+            String sql = "SELECT * FROM Developers WHERE name =\""+ username +"\";";
+            s.execute(sql);
+
+            // makes sure new dev is not a duplicate
+            boolean exists = !s.getResultSet().isClosed();
+            if (!exists) {
+                String glName = newAccountGameList(dualAccountFlag, username);
+                sql = "INSERT INTO GameLists(name) VALUES('"+glName+"');";
+                s.execute(sql);
+                int glid = getGlid(glName, s);
+
+                sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
+                        "'" + aid + "'," +
+                        "'" + username + "'," +
+                        "'"+glid+"');";
+                s.execute(sql);
+            } else throw new DataSourceException("This developer already exists!");
+        } catch(SQLException sle) {
+            throw new DataSourceException(sle.getMessage());
+        }
+    }
+
+    private void saveUserAccount(String username, int aid, Statement s, boolean dualAccountFlag) throws DataSourceException {
+        try {
+            String sql = "SELECT * FROM Users WHERE name =\""+ username +"\";";
+            s.execute(sql);
+
+            // makes sure new user is not a duplicate
+            boolean exists = !s.getResultSet().isClosed();
+            if (!exists) {
+                String glName = newAccountGameList(dualAccountFlag, username);
+                sql = "INSERT INTO GameLists(name) VALUES('"+glName+"');";
+                s.execute(sql);
+                int glid = getGlid(glName, s);
+
+                sql = "INSERT INTO USERS(aid, name, glid) VALUES(" +
+                        "'" + aid + "'," +
+                        "'" + username + "'," +
+                        "'"+glid+"');";
+                s.execute(sql);
+            } else throw new DataSourceException("This user already exists!");
+        } catch(SQLException sle) {
+            throw new DataSourceException(sle.getMessage());
+        }
+    }
 
     // underlying DB calls
     // Upsert -> Insert/Update depending on existence
@@ -859,6 +961,7 @@ public class SQLiteSource implements DataSource{
 
             // Fill GameList
             GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
+            String name = rs.getString("name");
 
             // Return Dev Object
             s.close();
@@ -868,7 +971,7 @@ public class SQLiteSource implements DataSource{
             }
             List<String> comments = new ArrayList();
             List<String> reviews = new ArrayList();
-            return new User(g, new GameList(user + "'s wishlist"), reviews, comments);
+            return new User(user, g, new GameList(user + "'s wishlist"), reviews, comments);
             //TODO: when wishlists, comments, and reviews are impolemented, change this method to reflect that
         }catch (SQLException e){
             try {
