@@ -784,7 +784,7 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertGameList(String listName, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
-            String sql = "SELECT * FROM GameLists WHERE name=\""+listName+"\";";
+            String sql = "SELECT * FROM GameLists WHERE name='"+listName+"';";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 

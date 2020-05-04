@@ -288,7 +288,7 @@ public class GameBrowserTest {
             // Setup for below
             if (gameBrowser.getGameList().getGames().size() < 8) {
                 int num = 0;
-                Developer d = new Developer("Amelia's Fix Dude", 2);
+                Developer d = new Developer("Amelia Fixing Dude", 2);
                 gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
                     Game xtraGame = new Game("xtra"+num, d.getName());
@@ -299,7 +299,7 @@ public class GameBrowserTest {
 
             // makes a new list of games from those already existing in browser
             // (just like a user might
-            GameList subGameList = new GameList("Rob's Games NEWLIST");
+            GameList subGameList = new GameList("Robcommas Games NEWLIST");
             List<String> sublist = gameBrowser.getGameList().getGames().subList(2,7);
             for(String aGame : sublist){
                 subGameList.includeGame(aGame);
@@ -312,7 +312,7 @@ public class GameBrowserTest {
             gameBrowser.save();
 
             System.out.println("Visibly Check DB for \"robsGame\", \"rob's Games\", " +
-                    "\nthe gameList \"Rob's Games NEWLIST\", and developer \"Rob\"");
+                    "\nthe gameList \"Robcommas Games NEWLIST\", and developer \"Rob\"");
 
             gameBrowser.close();
 
