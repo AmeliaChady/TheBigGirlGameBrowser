@@ -270,8 +270,8 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void saveTest() throws IOException{
-        try {
+    public void saveTest() throws IOException, DataSourceException{
+//        try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
             Developer rob =  new Developer("Rob", 1);
@@ -317,10 +317,10 @@ public class GameBrowserTest {
             gameBrowser.close();
 
 
-        }catch (DataSourceException dse){
-            fail(dse.getMessage());
-            return;
-        }
+//        }catch (DataSourceException dse){
+//            fail(dse.getMessage());
+//            return;
+//        }
     }
 
     @Test

@@ -533,7 +533,7 @@ public class SQLiteSource implements DataSource{
             }
 
             // TODO: Getting Email Stuff
-            String email = "needsimplementation@amelia.lazy";
+            String email = getEmail(username, s);
             acct = new Accounts(username, email, password);
 
             // Try User
@@ -991,6 +991,15 @@ public class SQLiteSource implements DataSource{
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
+    }
+
+    public String getEmail(String username, Statement s) throws SQLException{
+        String sql = "SELECT email FROM Accounts WHERE username='"+username+"';";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(rs.next())
+            return rs.getString("email");
+        return null;
     }
 
     /***
