@@ -533,7 +533,7 @@ public class SQLiteSource implements DataSource{
             }
 
             // TODO: Getting Email Stuff
-            String email = "amelialazy.not.an.email";
+            String email = "needsimplementation@amelia.lazy";
             acct = new Accounts(username, email, password);
 
             // Try User

@@ -239,14 +239,15 @@ public class DataSourceTest {
     }
 
     public static void dataSourceLoginTest(DataSource ds) throws DataSourceException{
+        // TODO: UPDATE FOR EMAILS
         System.out.println("NEEDS SETUP!:" +
-                        "\n  Source Has: Account(username, password) w/ account types" +
-                        "\n    Account(userTest, user) w/ User" +
-                        "\n    Account(devTest, dev) w/ Developer" +
-                        "\n    Account(adminTest, admin) w/ Administrator" +
-                        "\n    Account(doubleTest, double) w/ User & Developer" +
-                        "\n    Account(nothingTest, nothing) w/ nothing" +
-                        "\n    Account(fails, failure)" +
+                        "\n  Source Has: Account(username, email, password) w/ account types" +
+                        "\n    Account(userTest, userTest@test.com, user) w/ User" +
+                        "\n    Account(devTest, devTest@test.com, dev) w/ Developer" +
+                        "\n    Account(adminTest, adminTest@test.com, admin) w/ Administrator" +
+                        "\n    Account(doubleTest, doubleTest@test.com, double) w/ User & Developer" +
+                        "\n    Account(nothingTest, nothingTest@test.com, nothing) w/ nothing" +
+                        "\n    Account(fails, fails@test.com, failure)" +
                         "\n Source Doesnt Have:" +
                         "\n    Account(usernameFail, failure)" +
                         "\n    Account(fails, passwordFail)" +
@@ -254,26 +255,41 @@ public class DataSourceTest {
 
         // Correct (returns)
         Accounts userAccounts = ds.login("userTest", "user");
+        assertEquals("userTest", userAccounts.getUsername());
+        assertEquals("userTest@test.com", userAccounts.getEmail());
+        assertEquals("user", userAccounts.getPassword());
         assertNotNull(userAccounts.user);
         assertNull(userAccounts.admin);
         assertNull(userAccounts.dev);
 
         Accounts devAccounts = ds.login("devTest", "dev");
+        assertEquals("devTest", devAccounts.getUsername());
+        assertEquals("devTest@test.com", devAccounts.getEmail());
+        assertEquals("dev", devAccounts.getPassword());
         assertNotNull(devAccounts.dev);
         assertNull(devAccounts.user);
         assertNull(devAccounts.admin);
 
         Accounts adminAccounts = ds.login("adminTest", "admin");
+        assertEquals("adminTest", adminAccounts.getUsername());
+        assertEquals("adminTest@test.com", adminAccounts.getEmail());
+        assertEquals("admin", adminAccounts.getPassword());
         assertNotNull(adminAccounts.admin);
         assertNull(adminAccounts.user);
         assertNull(adminAccounts.dev);
 
         Accounts doubleAccounts = ds.login("doubleTest", "double");
+        assertEquals("doubleTest", doubleAccounts.getUsername());
+        assertEquals("doubleTest@test.com", doubleAccounts.getEmail());
+        assertEquals("double", doubleAccounts.getPassword());
         assertNotNull(doubleAccounts.user);
         assertNotNull(doubleAccounts.dev);
         assertNull(doubleAccounts.admin);
 
         Accounts nothingAccounts = ds.login("nothingTest", "nothing");
+        assertEquals("nothingTest", nothingAccounts.getUsername());
+        assertEquals("nothingTest@test.com", nothingAccounts.getEmail());
+        assertEquals("nothing", nothingAccounts.getPassword());
         assertNull(nothingAccounts.admin);
         assertNull(nothingAccounts.dev);
         assertNull(nothingAccounts.user);
