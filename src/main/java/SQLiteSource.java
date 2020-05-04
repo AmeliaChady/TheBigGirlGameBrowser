@@ -908,6 +908,7 @@ public class SQLiteSource implements DataSource{
 
         Savepoint su = null;
         try {
+            User user = account.user;
             if(!inTransaction) {
                 su = conn.setSavepoint();
                 inTransaction=  true;
@@ -918,10 +919,9 @@ public class SQLiteSource implements DataSource{
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists) {
-                User user = account.user;
-                saveGameList(user.getOwnedGames());
+                saveUserAccount(user, getAid(account.getUsername(), account.getPassword(), s), s);
             }
-
+            saveGameList(user.getOwnedGames());
             s.close();
             if (su != null) {
                 conn.commit();
