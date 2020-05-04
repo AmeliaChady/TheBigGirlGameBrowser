@@ -139,16 +139,23 @@ public class GameTest {
         List<Review>  reviews = new LinkedList<Review>();
         Game game = new Game("title", "description",
                     new ArrayList<Review>(), null, Status.PENDING);
-        // 0 reviews
-        assertEquals(0, game.calculateAverageRating());
 
-        // 1 review
+        // loaded with 0 reviews
+        assertEquals(0, game.getAverageRating());
+
+        // loaded with 1 review
+        reviews = new LinkedList<Review>();
+        game = new Game("title", "description",
+                new ArrayList<Review>(), null, Status.PENDING);
         game.addReview(new Review(1, "comment 1", "author 1"));
-        assertEquals(1, game.calculateAverageRating());
+        assertEquals(1, game.getAverageRating());
 
-        // 1+ review
-        for (int i = 2; i < 6; i++)
-            game.addReview(new Review(i, "comment "+1, "author "+1));
-        assertEquals(3, game.calculateAverageRating());
+        // review is added
+        game.addReview(new Review(2, "comment 2", "author 2"));
+        assertEquals(1.5, game.getAverageRating());
+
+        // review is updated
+        game.getReviews().get(1).setRating(3);
+        assertEquals(2, game.getAverageRating());
     }
 }

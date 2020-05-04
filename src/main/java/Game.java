@@ -11,6 +11,7 @@ public class Game {
     private List<Review> reviews;
     private Status status;
     private int ownedCount;
+    private double averageRating;
 
     /**
      * Default constructor
@@ -195,6 +196,12 @@ public class Game {
             reviews.set(index, review);
     }
 
+    private void setAverageRatingFromNewRating() {}
+
+    private void setAverageRatingFromUpdatedRating() {}
+
+    private void loadAverageRating() {}
+
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
 //        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
@@ -245,4 +252,5 @@ public class Game {
 
     public int getOwnedCount(){return ownedCount;}
 
+    public double getAverageRating() { return averageRating; }
 }
