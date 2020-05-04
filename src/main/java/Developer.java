@@ -20,8 +20,13 @@ public class Developer {
 
     public Developer(String nameIn, int aid){
         name = nameIn;
-        developerGameList = new GameList(nameIn+"'s Games");
+        developerGameList = new GameList(nameIn+"s DevGames");
         this.aid = aid;
+    }
+
+    public Developer(String nameIn){
+        name = nameIn;
+        developerGameList = new GameList(nameIn+"s DevGames");
     }
 
     public String getName(){
