@@ -8,7 +8,10 @@ public class User {
     private List<String> reviews;
     private List<String> comments;
 
-    public User(String nameIn) { name = nameIn; }
+    public User(String nameIn) {
+        name = nameIn;
+        ownedGames = new GameList(nameIn + "s UserGames");
+    }
 
     public User(String nameIn, GameList ownedGamesIn, GameList wishListIn){
         name = nameIn;

@@ -589,48 +589,47 @@ public class SQLiteSource implements DataSource{
                 new EnumMap<AccountSavingAccounts, AccountSavingFlags>(AccountSavingAccounts.class);
         Savepoint sa = null;
         try {
-           if (!inTransaction) {
-               sa = conn.setSavepoint();
-               inTransaction = true;
-           }
+            if (!inTransaction) {
+                sa = conn.setSavepoint();
+                inTransaction = true;
+            }
             Statement s = conn.createStatement();
 
-           // create new developer account
-            if (account.dev != null || account.user != null) {
-                String username = account.getUsername(),
-                       email = account .getEmail(),
-                       password = account.getPassword();
-                int aid = 0;
-                boolean dualAccountFlag = false;
+            // Base Account
+            flagmap.put(AccountSavingAccounts.ACCT,
+                    saveAccount(account.getUsername(), account.getEmail(), account.getPassword(), s));
 
-                if (username.equals("") || email.equals("") || password.equals(""))
-                    throw new DataSourceException("Please provide proper credentials");
-
-                // check for existing account
-                String sql = "SELECT aid FROM Accounts WHERE username =\""+username+"\";";
-                s.execute(sql);
-                boolean exists = !s.getResultSet().isClosed();
-
-                if (!exists) {
-                    sql = "INSERT INTO Accounts(username, email, password) VALUES(" +
-                            "'" + username+ "'," +
-                            "'" + email + "'," +
-                            "'" + password + "');";
-                    s.execute(sql);
-                // user wanting to be new dev, vice versa, or duplicate
-                } else dualAccountFlag = true;
-
-                aid = getAid(username, password, s);
-                if (account.dev != null) saveDeveloperAccount(username, aid, s, dualAccountFlag);
-                else if (account.user != null) saveUserAccount(username, aid, s, dualAccountFlag);
+            Integer aidI = getAid(account.getUsername(), account.getPassword(), s);
+            if(aidI == null){
+                flagmap.put(AccountSavingAccounts.ACCT, AccountSavingFlags.FAIL);
+                s.close();
+                if (sa != null) {
+                    conn.commit();
+                    inTransaction = false;
+                }
             }
+            int aid = aidI;
+            // User Account
+            if(account.user != null) {
+                flagmap.put(AccountSavingAccounts.USER,
+                        saveUserAccount(account.user, aid, s));
+                saveUser(account);
+            }else flagmap.put(AccountSavingAccounts.USER, AccountSavingFlags.NOTHING);
+
+            // Dev Account
+            if(account.dev != null) {
+                flagmap.put(AccountSavingAccounts.DEV,
+                        saveDeveloperAccount(account.dev, aid, s));
+                saveDeveloper(account.dev);
+            }else flagmap.put(AccountSavingAccounts.DEV, AccountSavingFlags.NOTHING);
+
             s.close();
             if (sa != null) {
                 conn.commit();
                 inTransaction = false;
             }
             return flagmap;
-       } catch(SQLException | DataSourceException e) {
+       } catch(SQLException e) {
            try {
                if (sa != null) {
                    conn.rollback(sa);
@@ -642,56 +641,63 @@ public class SQLiteSource implements DataSource{
        }
     }
 
-    private String newAccountGameList(boolean dualAccountFlag, String username) {
+    /*private String newAccountGameList(boolean dualAccountFlag, String username) {
         return dualAccountFlag ? username+",user-dev" : username;
-    }
+    }*/
+    private AccountSavingFlags saveAccount(String username, String email, String password, Statement s) throws SQLException{
+        String sql = "SELECT aid FROM Accounts WHERE username =\""+username+"\";";
+        s.execute(sql);
+        boolean exists = !s.getResultSet().isClosed();
 
-    private void saveDeveloperAccount(String username, int aid, Statement s, boolean dualAccountFlag) throws DataSourceException {
-        try {
-            String sql = "SELECT * FROM Developers WHERE name =\""+ username +"\";";
+        if (!exists) {
+            sql = "INSERT INTO Accounts(username, email, password) VALUES(" +
+                    "'" + username+ "'," +
+                    "'" + email + "'," +
+                    "'" + password + "');";
             s.execute(sql);
-
-            // makes sure new dev is not a duplicate
-            boolean exists = !s.getResultSet().isClosed();
-            if (!exists) {
-                String glName = newAccountGameList(dualAccountFlag, username);
-                sql = "INSERT INTO GameLists(name) VALUES('"+glName+"');";
-                s.execute(sql);
-                int glid = getGlid(glName, s);
-
-                sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
-                        "'" + aid + "'," +
-                        "'" + username + "'," +
-                        "'"+glid+"');";
-                s.execute(sql);
-            } else throw new DataSourceException("This developer already exists!");
-        } catch(SQLException sle) {
-            throw new DataSourceException(sle.getMessage());
+            return AccountSavingFlags.PASS;
         }
+        return AccountSavingFlags.DUPLICATE;
     }
+    private AccountSavingFlags saveDeveloperAccount(Developer d, int aid, Statement s) throws SQLException{
+        String sql = "SELECT * FROM Developers WHERE name =\""+ d.getName() +"\";";
+        s.execute(sql);
 
-    private void saveUserAccount(String username, int aid, Statement s, boolean dualAccountFlag) throws DataSourceException {
-        try {
-            String sql = "SELECT * FROM Users WHERE name =\""+ username +"\";";
+        // makes sure new dev is not a duplicate
+        boolean exists = !s.getResultSet().isClosed();
+        if (!exists) {
+            sql = "INSERT INTO GameLists(name) VALUES('"+d.getGameListName()+"');";
             s.execute(sql);
+            int glid = getGlid(d.getGameListName(), s);
 
-            // makes sure new user is not a duplicate
-            boolean exists = !s.getResultSet().isClosed();
-            if (!exists) {
-                String glName = newAccountGameList(dualAccountFlag, username);
-                sql = "INSERT INTO GameLists(name) VALUES('"+glName+"');";
-                s.execute(sql);
-                int glid = getGlid(glName, s);
-
-                sql = "INSERT INTO USERS(aid, name, glid) VALUES(" +
-                        "'" + aid + "'," +
-                        "'" + username + "'," +
-                        "'"+glid+"');";
-                s.execute(sql);
-            } else throw new DataSourceException("This user already exists!");
-        } catch(SQLException sle) {
-            throw new DataSourceException(sle.getMessage());
+            sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
+                    "'" + aid + "'," +
+                    "'" + d.getName() + "'," +
+                    "'"+glid+"');";
+            s.execute(sql);
+            return AccountSavingFlags.PASS;
         }
+        return AccountSavingFlags.DUPLICATE;
+    }
+    private AccountSavingFlags saveUserAccount(User u, int aid, Statement s) throws SQLException {
+        String sql = "SELECT * FROM Users WHERE name =\""+ u.getName() +"\";";
+        s.execute(sql);
+
+        // makes sure new user is not a duplicate
+        boolean exists = !s.getResultSet().isClosed();
+        if (!exists) {
+            sql = "INSERT INTO GameLists(name) VALUES('"+u.getOwnedGames().getName()+"');";
+            s.execute(sql);
+            int glid = getGlid(u.getOwnedGames().getName(), s);
+
+            sql = "INSERT INTO USERS(aid, name, glid) VALUES(" +
+                    "'" + aid + "'," +
+                    "'" + u.getName() + "'," +
+                    "'"+glid+"');";
+            s.execute(sql);
+            return AccountSavingFlags.PASS;
+        }
+        return AccountSavingFlags.DUPLICATE;
     }
 
     // underlying DB calls
@@ -740,15 +746,15 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
         safeUpsertGameList(d.getGameListName(), s);
         try {
-            String sql = "SELECT * FROM Developers WHERE name =\""+ d +"\";";
+            String sql = "SELECT * FROM Developers WHERE name ='"+ d +"';";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
-                        "\"" + d.getAid() + "\", " +
-                        "\"" + d.getName() + "\", " +
-                        "\"" + getGlid(d.getGameListName(), s) + "\");";
+                        "'" + d.getAid() + "', " +
+                        "'" + d.getName() + "', " +
+                        "" + getGlid(d.getGameListName(), s) + ");";
                 s.execute(sql);
             }
         }catch (SQLException e){
@@ -784,9 +790,9 @@ public class SQLiteSource implements DataSource{
 
             if (!exists){
                 sql = "INSERT INTO GameLists(name) VALUES(" +
-                        "\"" + listName+ "\");";
+                        "'" + listName+ "');";
+                s.execute(sql);
             }
-            s.execute(sql);
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }
@@ -819,17 +825,17 @@ public class SQLiteSource implements DataSource{
         return null;
     }
 
-    private int getGlid(GameList list, Statement s) throws DataSourceException{
+    private Integer getGlid(GameList list, Statement s) throws SQLException{
         return getGlid(list.getName(), s);
     }
-    private int getGlid(String listName, Statement s) throws DataSourceException{
-        try {
-            String sql = "SELECT glid FROM GameLists WHERE name=\""+listName+"\";";
-            s.execute(sql);
-            return s.getResultSet().getInt(1);
-        }catch (SQLException e){
-            throw new DataSourceException(e.getMessage());
+    private Integer getGlid(String listName, Statement s) throws SQLException{
+        String sql = "SELECT glid FROM GameLists WHERE name='"+listName+"';";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        if(rs.next()){
+            return rs.getInt(1);
         }
+        return null;
     }
     private String getGameListName(int glid, Statement s) throws SQLException{
         String sql = "SELECT name FROM GameLists WHERE glid="+glid+";";
@@ -866,7 +872,7 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    private void purgeGameListGames(GameList gl, Statement s) throws DataSourceException{
+    private void purgeGameListGames(GameList gl, Statement s) throws SQLException, DataSourceException{
         int glid = getGlid(gl, s);
 
         try {

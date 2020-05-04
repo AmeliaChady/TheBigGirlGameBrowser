@@ -390,8 +390,8 @@ public class DataSourceTest {
         flagmap = ds.saveAccount(dev);
 
         assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.ACCT));
-        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.USER));
-        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.DEV));
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.DEV));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.USER));
         assertEquals(dev.user.getOwnedGames().getName(),
                 ds.loadUser(dev.user.getName()).getOwnedGames().getName());
         assertEquals(dev.dev.getGameListName(),
