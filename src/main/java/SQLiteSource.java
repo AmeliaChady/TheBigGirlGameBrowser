@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 public class SQLiteSource implements DataSource{
     String path;
@@ -511,9 +508,7 @@ public class SQLiteSource implements DataSource{
             throw new IllegalArgumentException("password is null");
         }
 
-        Developer dev = null;
-        User user = null;
-        Administrator admin = null;
+        Accounts acct;
         String sql;
         ResultSet rs;
 
@@ -537,12 +532,16 @@ public class SQLiteSource implements DataSource{
                 throw new IllegalArgumentException("username & password combination do not exist.");
             }
 
+            // TODO: Getting Email Stuff
+            String email = "amelialazy.not.an.email";
+            acct = new Accounts(username, email, password);
+
             // Try User
             sql = "SELECT * FROM Users WHERE aid=" + aid + ";";
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                user = new User(rs.getString("name"), loadGameList(getGameListName(rs.getInt("glid"),s)), null);
+                acct.user = new User(rs.getString("name"), loadGameList(getGameListName(rs.getInt("glid"),s)), null);
             }
 
             // Try Dev
@@ -550,7 +549,7 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                dev = new Developer(rs.getString("name"),
+                acct.dev = new Developer(rs.getString("name"),
                         loadGameList(getGameListName(rs.getInt("glid"),s)),
                         aid);
             }
@@ -560,7 +559,7 @@ public class SQLiteSource implements DataSource{
             s.execute(sql);
             rs = s.getResultSet();
             if(rs.next()){
-                admin = new Administrator(rs.getString("name"));
+                acct.admin = new Administrator(rs.getString("name"));
             }
 
             // Return Dev Object
@@ -569,7 +568,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
-            return new Accounts(dev, user, admin);
+            return acct;
         }catch (SQLException e){
             try {
                 if(l != null) {
@@ -583,9 +582,11 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
-    public void saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException {
+    public Map<AccountSavingAccounts, AccountSavingFlags> saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException {
         if (account == null)  throw new IllegalArgumentException("Account is null");
 
+        Map<AccountSavingAccounts, AccountSavingFlags> flagmap =
+                new EnumMap<AccountSavingAccounts, AccountSavingFlags>(AccountSavingAccounts.class);
         Savepoint sa = null;
         try {
            if (!inTransaction) {
@@ -628,6 +629,7 @@ public class SQLiteSource implements DataSource{
                 conn.commit();
                 inTransaction = false;
             }
+            return flagmap;
        } catch(SQLException | DataSourceException e) {
            try {
                if (sa != null) {

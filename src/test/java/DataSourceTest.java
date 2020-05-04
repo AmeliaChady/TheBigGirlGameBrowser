@@ -1,12 +1,4 @@
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
-
-import java.awt.geom.IllegalPathStateException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -297,7 +289,8 @@ public class DataSourceTest {
 
     public static void dataSourceSaveUserTest(DataSource ds) throws DataSourceException {
         User user = new User("user0", ds.loadGameList("user0 Game List"), null );
-        Accounts account = new Accounts(user,"user0", "user0@mail.com", "password");
+        Accounts account = new Accounts("user0", "user0@mail.com", "password");
+        account.user = user;
 
         // pass null user
         assertThrows(IllegalArgumentException.class, () -> ds.saveUser(null));
@@ -326,67 +319,88 @@ public class DataSourceTest {
     }
 
     public static void dataSourceSaveAccountTest(DataSource ds) throws DataSourceException {
-        // new developer account
-        Developer developer1 = new Developer("developer1");
-        String developer1Name = developer1.getName();
-        Accounts developerAccount1 = new Accounts(developer1, "developer1@mail.com", developer1Name, "p");
-        ds.saveAccount(developerAccount1);
-        assertEquals(developer1Name, ds.loadDeveloper(developer1Name).getName());
+        Map<AccountSavingAccounts, AccountSavingFlags> flagmap;
+        // new developer account (NO Existing User)
+        Accounts dev = new Accounts("developer","developer1@mail.com", "password");
+        dev.dev = new Developer("developer");
+        flagmap = ds.saveAccount(dev);
 
-        // new user account
-        User user1 = new User("user1");
-        String user1Name = user1.getName();
-        Accounts userAccount1 = new Accounts(user1, "user1@mail.com", user1Name, "p");
-        ds.saveAccount(userAccount1);
-        assertEquals(user1Name, ds.loadUser(user1Name).getName());
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.NOTHING);
+        assertEquals(dev.dev.getGameListName(),
+                ds.loadDeveloper(dev.dev.getName()).getGameListName());
 
-        // user creates new developer account
-        Developer user1Developer = new Developer("user1");
-        String user1DeveloperName = user1Developer.getName();
-        Accounts user1DeveloperAccount = new Accounts(user1Developer,
-                                                "user1@mail.com", user1DeveloperName, "p");
-        ds.saveAccount(user1DeveloperAccount);
-        assertEquals(user1DeveloperName, ds.loadUser(user1Name).getName());
 
-        // developer creates new user account
-        User developer1User = new User("developer1");
-        String developer1UserName = developer1User.getName();
-        Accounts developer1UserAccount = new Accounts(developer1User,
-                                                "developer1@mail.com", developer1UserName, "p");
-        ds.saveAccount(developer1UserAccount);
-        assertEquals(developer1UserName, ds.loadUser(developer1Name).getName());
+        // new user account (NO Existing Developer)
+        Accounts user = new Accounts("user","user@mail.com", "password");
+        user.user = new User("user");
+        flagmap = ds.saveAccount(user);
 
-        // user creates user account (duplicate)
-        User userDuplicate = new User("user0");
-        Accounts userDuplicateAccount = new Accounts(userDuplicate, "e",
-                                                     userDuplicate.getName(), "password");
-        try {
-            ds.saveAccount(userDuplicateAccount);
-            fail("Duplicate user account was created.");
-        } catch(Exception e) {
-            assertEquals("This user already exists!", e.getMessage());
-        }
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.NOTHING);
+        assertEquals(user.user.getOwnedGames().getName(),
+                ds.loadUser(user.user.getName()).getOwnedGames().getName());
 
-        // developer creates developer (duplicate)
-        Developer developerDuplicate = new Developer("developer0");
-        Accounts developerDuplicateAccount = new Accounts(developerDuplicate, "e",
-                                                          developerDuplicate.getName(), "password");
-        try {
-            ds.saveAccount(developerDuplicateAccount);
-            fail("Duplicate developer account was created.");
-        } catch(Exception e) {
-            assertEquals("This developer already exists!", e.getMessage());
-        }
+        // new user & dev accounts
+        Accounts doubleacct = new Accounts("double1", "double1@mail.com", "password");
+        doubleacct.dev = new Developer("double1");
+        doubleacct.user = new User("double1");
+        flagmap = ds.saveAccount(doubleacct);
 
-        // create new account with invalid credentials
-        User invalidUser = new User("");
-        String invalidUserName = "";
-        Accounts invalidAccount = new Accounts(invalidUser, invalidUserName, "", "");
-        try {
-            ds.saveAccount(invalidAccount);
-            fail("A user with invalid credentials was created.");
-        } catch(Exception e) {
-            assertEquals("Please provide proper credentials", e.getMessage());
-        }
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(doubleacct.dev.getGameListName(),
+                ds.loadDeveloper(doubleacct.dev.getName()).getGameListName());
+        assertEquals(doubleacct.user.getOwnedGames().getName(),
+                ds.loadUser(doubleacct.user.getName()).getOwnedGames().getName());
+
+        // old user creates new developer account
+        user.dev = new Developer(user.getUsername());
+        flagmap = ds.saveAccount(user);
+
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.DUPLICATE);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.DUPLICATE);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(user.user.getOwnedGames().getName(),
+                ds.loadUser(user.user.getName()).getOwnedGames().getName());
+        assertEquals(user.dev.getGameListName(),
+                ds.loadDeveloper(user.dev.getName()).getGameListName());
+
+        // old developer creates new user account
+        dev.user = new User(dev.getUsername());
+        flagmap = ds.saveAccount(dev);
+
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.DUPLICATE);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.DUPLICATE);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(dev.user.getOwnedGames().getName(),
+                ds.loadUser(dev.user.getName()).getOwnedGames().getName());
+        assertEquals(dev.dev.getGameListName(),
+                ds.loadDeveloper(dev.dev.getName()).getGameListName());
+
+
+        // Double Dupe
+        flagmap = ds.saveAccount(doubleacct);
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.DUPLICATE);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.DUPLICATE);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.DUPLICATE);
+        assertEquals(doubleacct.dev.getGameListName(),
+                ds.loadDeveloper(doubleacct.dev.getName()).getGameListName());
+        assertEquals(doubleacct.user.getOwnedGames().getName(),
+                ds.loadUser(doubleacct.user.getName()).getOwnedGames().getName());
+
+        // Null
+        Accounts nulls = new Accounts("nulls", "nulls@mail.com", "password");
+        flagmap = ds.saveAccount(nulls);
+
+        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
+        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.NOTHING);
+        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.NOTHING);
+
+        // Account is null
+        assertThrows(IllegalArgumentException.class, () -> ds.saveAccount(null));
     }
 }
