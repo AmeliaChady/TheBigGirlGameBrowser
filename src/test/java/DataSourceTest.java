@@ -341,9 +341,9 @@ public class DataSourceTest {
         dev.dev = new Developer("developer");
         flagmap = ds.saveAccount(dev);
 
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.NOTHING);
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.DEV));
+        assertEquals(AccountSavingFlags.NOTHING, flagmap.get(AccountSavingAccounts.USER));
         assertEquals(dev.dev.getGameListName(),
                 ds.loadDeveloper(dev.dev.getName()).getGameListName());
 
@@ -353,9 +353,9 @@ public class DataSourceTest {
         user.user = new User("user");
         flagmap = ds.saveAccount(user);
 
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.NOTHING);
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.USER));
+        assertEquals(AccountSavingFlags.NOTHING, flagmap.get(AccountSavingAccounts.DEV));
         assertEquals(user.user.getOwnedGames().getName(),
                 ds.loadUser(user.user.getName()).getOwnedGames().getName());
 
@@ -365,9 +365,9 @@ public class DataSourceTest {
         doubleacct.user = new User("double1");
         flagmap = ds.saveAccount(doubleacct);
 
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.USER));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.DEV));
         assertEquals(doubleacct.dev.getGameListName(),
                 ds.loadDeveloper(doubleacct.dev.getName()).getGameListName());
         assertEquals(doubleacct.user.getOwnedGames().getName(),
@@ -377,9 +377,9 @@ public class DataSourceTest {
         user.dev = new Developer(user.getUsername());
         flagmap = ds.saveAccount(user);
 
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.DUPLICATE);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.DUPLICATE);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.USER));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.DEV));
         assertEquals(user.user.getOwnedGames().getName(),
                 ds.loadUser(user.user.getName()).getOwnedGames().getName());
         assertEquals(user.dev.getGameListName(),
@@ -389,9 +389,9 @@ public class DataSourceTest {
         dev.user = new User(dev.getUsername());
         flagmap = ds.saveAccount(dev);
 
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.DUPLICATE);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.DUPLICATE);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.PASS);
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.USER));
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.DEV));
         assertEquals(dev.user.getOwnedGames().getName(),
                 ds.loadUser(dev.user.getName()).getOwnedGames().getName());
         assertEquals(dev.dev.getGameListName(),
@@ -400,9 +400,9 @@ public class DataSourceTest {
 
         // Double Dupe
         flagmap = ds.saveAccount(doubleacct);
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.DUPLICATE);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.DUPLICATE);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.DUPLICATE);
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.USER));
+        assertEquals(AccountSavingFlags.DUPLICATE, flagmap.get(AccountSavingAccounts.DEV));
         assertEquals(doubleacct.dev.getGameListName(),
                 ds.loadDeveloper(doubleacct.dev.getName()).getGameListName());
         assertEquals(doubleacct.user.getOwnedGames().getName(),
@@ -412,9 +412,9 @@ public class DataSourceTest {
         Accounts nulls = new Accounts("nulls", "nulls@mail.com", "password");
         flagmap = ds.saveAccount(nulls);
 
-        assertEquals(flagmap.get(AccountSavingAccounts.ACCT), AccountSavingFlags.PASS);
-        assertEquals(flagmap.get(AccountSavingAccounts.USER), AccountSavingFlags.NOTHING);
-        assertEquals(flagmap.get(AccountSavingAccounts.DEV), AccountSavingFlags.NOTHING);
+        assertEquals(AccountSavingFlags.PASS, flagmap.get(AccountSavingAccounts.ACCT));
+        assertEquals(AccountSavingFlags.NOTHING, flagmap.get(AccountSavingAccounts.USER));
+        assertEquals(AccountSavingFlags.NOTHING, flagmap.get(AccountSavingAccounts.DEV));
 
         // Account is null
         assertThrows(IllegalArgumentException.class, () -> ds.saveAccount(null));
