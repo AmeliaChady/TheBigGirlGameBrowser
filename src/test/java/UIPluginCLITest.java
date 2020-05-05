@@ -9,6 +9,19 @@ public class UIPluginCLITest {
     public static final String DATABASE = "src/databases/Test_UIPlugin/UIPluginCLI.db";
 
     @Test
+    public void displayReviewTest(){
+        UIPluginCLI uiplug= new UIPluginCLI();
+
+        Review r1 = new Review(5, "Pretty cool!", "Kerry Anne");
+        uiplug.pullReview(r1);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n", uiplug.displayableReview());
+    }
+
+
+    @Test
     public void displayGameTest(){
         UIPluginCLI uiplug= new UIPluginCLI();
 
