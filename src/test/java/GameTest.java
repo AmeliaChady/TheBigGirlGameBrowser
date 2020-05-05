@@ -133,4 +133,44 @@ public class GameTest {
 
         assertEquals(6, game.getReviews().size());
     }
+
+    @Test
+    public void calculateRatingTest() {
+        Game game = new Game("title", "description",
+                    new ArrayList<Review>(), null, Status.PENDING);
+
+        // loaded with 0 reviews
+        assertEquals(0, game.getAverageRating());
+
+        // loaded with 1 review
+        LinkedList reviews = new LinkedList<Review>();
+        reviews.add(new Review(1, "comment 1", "author 1"));
+        game = new Game("title", "description",
+                reviews, null, Status.PENDING);
+        assertEquals(1, game.getAverageRating());
+
+        // review is added
+        game.addReview(new Review(2, "comment 2", "author 2"));
+        assertEquals(1.5, game.getAverageRating());
+
+        // review is updated
+        game.updateReviewRating(game.getReviews().get(1), 3);
+        assertEquals(2, game.getAverageRating());
+
+        // non-existent review update (invalid)
+        try {
+            game.updateReviewRating(new Review(1, "c", "a"), 0);
+            fail("rating updated from non-existent review'");
+        } catch (IllegalArgumentException e) {
+            assertEquals("This review does not exist for this game.", e.getMessage());
+        } assertEquals(2, game.getAverageRating());
+
+        // null review update (invalid)
+        try {
+            game.updateReviewRating(null, 0);
+            fail("rating 'updated' from null review");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Please provide a review to update.", e.getMessage());
+        } assertEquals(2, game.getAverageRating());
+    }
 }
