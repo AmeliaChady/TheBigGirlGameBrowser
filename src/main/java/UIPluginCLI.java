@@ -274,7 +274,7 @@ public class UIPluginCLI implements UIPlugin {
 
     @Override
     public String displayableReview(){
-        return null;
+        return "Rating: "+r.getRating()+"\nSummary: " + r.getSummary() + "\nAuthor: "+ r.getAuthor()+"\n\n";
     }
 
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{
