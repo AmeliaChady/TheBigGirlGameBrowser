@@ -234,7 +234,7 @@ public class UICLI {
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Submit Game");
         System.out.println("2: Update Game");
-        System.out.println("3: View Your Game List");
+        System.out.println("3: View Your Games");
         System.out.println("4: Logout");
         if(dual){
             System.out.println("5: Switch Accounts");
@@ -337,7 +337,6 @@ public class UICLI {
                     else if (parseInt(devModifyChoice) == 2) {
                         Scanner in3 = new Scanner(System.in);
                         System.out.println("Please enter the new game description:");
-                        //in3.nextLine();
                         String updatedBio = in3.nextLine();
                         updatingGame.changeDescription(updatedBio);
                         gameBrowser.saveGame(updatingGame);
@@ -353,13 +352,32 @@ public class UICLI {
             }
             developerTakeAction(devAccount, userAccount, dual);
         }
-//---------------------view gameList
+//---------------------view games
         else if (parseInt(devChoice) == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
+            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
-            developerTakeAction(devAccount, userAccount, dual);
+            Scanner dc3 = new Scanner(System.in);
+
+            System.out.println("Enter the number associated with the game you'd like to view more details of, or press 0 to cancel");
+            String gameNum = dc3.nextLine();
+
+            //ask for answer until a valid one is given
+            while (!isInt(gameNum) || (parseInt(gameNum) < 0 || parseInt(gameNum) > devAccount.getGameList().getGameCount())) {
+                System.out.println("Please enter a valid choice");
+                gameNum = in.nextLine();
+            }
+
+            if (parseInt(gameNum) == 0){
+                developerTakeAction(devAccount, userAccount, dual);
+            }
+            else{
+                gameBrowser.pullGame(devAccount.getGameList().getGames().get(parseInt(gameNum)-1));
+                System.out.println(gameBrowser.displayableGame());
+                developerTakeAction(devAccount, userAccount, dual);
+            }
+
 
         }
 //----------------------log out
