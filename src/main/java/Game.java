@@ -198,12 +198,23 @@ public class Game {
         setAverageRatingFromNewRating(review.getRating());
     }
 
+    public void updateReviewRating(Review review, int newRating) {
+        if (reviews.contains(review)) {
+            int oldRating = review.getRating();
+            review.setRating(newRating);
+            setAverageRatingFromUpdatedRating(newRating, oldRating);
+        }
+    }
+
     private void setAverageRatingFromNewRating(int newRating) {
         double totalRatings = reviews.size();
         averageRating = (averageRating * (totalRatings-1) + newRating) / totalRatings;
     }
 
-    private void setAverageRatingFromUpdatedRating(int newRating, int oldRating) {}
+    private void setAverageRatingFromUpdatedRating(int newRating, int oldRating) {
+        double totalRatings = reviews.size();
+        averageRating = (averageRating * totalRatings - oldRating + newRating) / totalRatings;
+    }
 
     private void loadAverageRating() {
         double total = 0;
