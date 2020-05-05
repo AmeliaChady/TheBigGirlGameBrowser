@@ -158,11 +158,19 @@ public class GameTest {
         assertEquals(2, game.getAverageRating());
 
         // non-existent review update (invalid)
-        game.updateReviewRating(new Review(1, "c", "a"), 0);
-        assertEquals(2, game.getAverageRating());
+        try {
+            game.updateReviewRating(new Review(1, "c", "a"), 0);
+            fail("rating updated from non-existent review'");
+        } catch (IllegalArgumentException e) {
+            assertEquals("This review does not exist for this game.", e.getMessage());
+        } assertEquals(2, game.getAverageRating());
 
         // null review update (invalid)
-        game.updateReviewRating(null, 0);
-        assertEquals(2, game.getAverageRating());
+        try {
+            game.updateReviewRating(null, 0);
+            fail("rating 'updated' from null review");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Please provide a review to update.", e.getMessage());
+        } assertEquals(2, game.getAverageRating());
     }
 }
