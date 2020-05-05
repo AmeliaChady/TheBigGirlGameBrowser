@@ -38,6 +38,55 @@ public class UIPluginCLITest {
         assertEquals("No review to display", uiplug.displayableReview());
     }
 
+    @Test
+    public void displayReviewListTest(){
+        UIPluginCLI uiplug= new UIPluginCLI();
+
+        //null
+        assertEquals("No review list", uiplug.displayableReviewList());
+
+        //make review list
+        List<Review> revList = new ArrayList<>();
+
+        //1 review
+        Review r1 = new Review(5, "Pretty cool!", "Kerry Anne");
+        revList.add(r1);
+        uiplug.pullReviewList(revList);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n", uiplug.displayableReviewList());
+
+        //2 reviews
+        Review r2 = new Review(3, "Not my favorite", "bertha");
+        revList.add(r2);
+        uiplug.pullReviewList(revList);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n" + "Rating: 3\n" +
+                "Summary: Not my favorite\n" +
+                "Author: bertha\n\n", uiplug.displayableReviewList());
+
+        //3 reviews
+        Review r3 = new Review(1, "Hate it", "smellypants");
+        revList.add(r3);
+        uiplug.pullReviewList(revList);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n" + "Rating: 3\n" +
+                "Summary: Not my favorite\n" +
+                "Author: bertha\n\n" + "Rating: 1\n" +
+                "Summary: Hate it\n" +
+                "Author: smellypants\n\n", uiplug.displayableReviewList());
+
+        //null again
+        r1 = null;
+        uiplug.pullReview(r1);
+        assertEquals("No review list", uiplug.displayableReviewList());
+    }
+
 
     @Test
     public void displayGameTest(){

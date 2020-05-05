@@ -101,4 +101,6 @@ public interface UIPlugin {
     String displayableNumberedListOfFullGames()  throws DataSourceException;
 
     String displayableReview();
+
+    String displayableReviewList();
 }

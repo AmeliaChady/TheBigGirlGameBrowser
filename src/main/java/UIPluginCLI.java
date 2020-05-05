@@ -290,6 +290,11 @@ public class UIPluginCLI implements UIPlugin {
         return "Rating: "+r.getRating()+"\nSummary: " + r.getSummary() + "\nAuthor: "+ r.getAuthor()+"\n\n";
     }
 
+
+    public String displayableReviewList() {
+        return "blah";
+    }
+
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{
         if(gl == null){
             throw new IllegalStateException("no gamelist pulled");
