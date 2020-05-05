@@ -292,7 +292,20 @@ public class UIPluginCLI implements UIPlugin {
 
 
     public String displayableReviewList() {
-        return "blah";
+        if (rl == null){
+            return "No review list";
+        }
+
+        if (rl.size() == 0){
+            return "Review list empty";
+        }
+
+        String rlStr = "";
+        for (Review review : rl){
+            pullReview(review);
+            rlStr += displayableReview();
+        }
+        return rlStr;
     }
 
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{

@@ -48,6 +48,10 @@ public class UIPluginCLITest {
         //make review list
         List<Review> revList = new ArrayList<>();
 
+        //empty
+        uiplug.pullReviewList(revList);
+        assertEquals("Review list empty", uiplug.displayableReviewList());
+
         //1 review
         Review r1 = new Review(5, "Pretty cool!", "Kerry Anne");
         revList.add(r1);
@@ -81,10 +85,6 @@ public class UIPluginCLITest {
                 "Summary: Hate it\n" +
                 "Author: smellypants\n\n", uiplug.displayableReviewList());
 
-        //null again
-        r1 = null;
-        uiplug.pullReview(r1);
-        assertEquals("No review list", uiplug.displayableReviewList());
     }
 
 
