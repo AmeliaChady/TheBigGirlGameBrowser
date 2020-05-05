@@ -198,11 +198,15 @@ public class Game {
         setAverageRatingFromNewRating(review.getRating());
     }
 
-    public void updateReviewRating(Review review, int newRating) {
+    public void updateReviewRating(Review review, int newRating) throws IllegalArgumentException {
         if (reviews.contains(review)) {
             int oldRating = review.getRating();
             review.setRating(newRating);
             setAverageRatingFromUpdatedRating(newRating, oldRating);
+        } else {
+            String msg = review == null ? "Please provide a review to update." :
+                                          "This review does not exist for this game.";
+            throw new IllegalArgumentException(msg);
         }
     }
 
