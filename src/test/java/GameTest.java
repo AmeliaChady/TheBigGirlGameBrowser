@@ -154,7 +154,15 @@ public class GameTest {
         assertEquals(1.5, game.getAverageRating());
 
         // review is updated
-        game.getReviews().get(1).setRating(3);
+        game.updateReviewRating(game.getReviews().get(1), 3);
+        assertEquals(2, game.getAverageRating());
+
+        // non-existent review update (invalid)
+        game.updateReviewRating(new Review(1, "c", "a"), 0);
+        assertEquals(2, game.getAverageRating());
+
+        // null review update (invalid)
+        game.updateReviewRating(null, 0);
         assertEquals(2, game.getAverageRating());
     }
 }
