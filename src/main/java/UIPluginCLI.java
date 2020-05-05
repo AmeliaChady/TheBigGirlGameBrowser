@@ -274,6 +274,9 @@ public class UIPluginCLI implements UIPlugin {
 
     @Override
     public String displayableReview(){
+        if (r == null){
+            return "No review to display";
+        }
         return "Rating: "+r.getRating()+"\nSummary: " + r.getSummary() + "\nAuthor: "+ r.getAuthor()+"\n\n";
     }
 

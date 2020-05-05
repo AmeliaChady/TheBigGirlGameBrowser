@@ -32,6 +32,10 @@ public class UIPluginCLITest {
         assertEquals("Rating: 1\n" +
                 "Summary: Hate it\n" +
                 "Author: smellypants\n\n", uiplug.displayableReview());
+
+        r1 = null;
+        uiplug.pullReview(r1);
+        assertEquals("No review to display", uiplug.displayableReview());
     }
 
 
