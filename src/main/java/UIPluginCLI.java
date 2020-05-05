@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.List;
 
 public class UIPluginCLI implements UIPlugin {
     Game g;
@@ -6,12 +7,16 @@ public class UIPluginCLI implements UIPlugin {
     Developer d;
     GameBrowser gb;
     Review r;
+    List<Review> rl;
+
 
     UIPluginCLI(){
         g = null;
         gl = null;
         d = null;
         gb = null;
+        r = null;
+        rl = null;
     }
 
     @Override
@@ -37,6 +42,11 @@ public class UIPluginCLI implements UIPlugin {
     @Override
     public void pullReview(Review r1) {
         r = r1;
+    }
+
+    @Override
+    public void pullReviewList(List<Review> r1) {
+        rl = r1;
     }
 
     @Override
