@@ -18,6 +18,20 @@ public class UIPluginCLITest {
         assertEquals("Rating: 5\n" +
                 "Summary: Pretty cool!\n" +
                 "Author: Kerry Anne\n\n", uiplug.displayableReview());
+
+        r1 = new Review(3, "Not my favorite", "bertha");
+        uiplug.pullReview(r1);
+
+        assertEquals("Rating: 3\n" +
+                "Summary: Not my favorite\n" +
+                "Author: bertha\n\n", uiplug.displayableReview());
+
+        r1 = new Review(1, "Hate it", "smellypants");
+        uiplug.pullReview(r1);
+
+        assertEquals("Rating: 1\n" +
+                "Summary: Hate it\n" +
+                "Author: smellypants\n\n", uiplug.displayableReview());
     }
 
 
