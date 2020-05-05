@@ -24,6 +24,12 @@ public interface UIPlugin {
     void pullGameBrowser(GameBrowser gb);
 
     /**
+     * Brings Review into the UIPlugin
+     * @param r1 review to pull in
+     */
+    void pullReview(Review r1);
+
+    /**
      * @return false if game null, otherwise true
      */
     boolean hasGame();
@@ -85,4 +91,6 @@ public interface UIPlugin {
     GameList getGamesGivenStatus(Status status) throws DataSourceException;
 
     String displayableNumberedListOfFullGames()  throws DataSourceException;
+
+    String displayableReview();
 }

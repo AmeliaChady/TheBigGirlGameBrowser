@@ -5,6 +5,7 @@ public class UIPluginCLI implements UIPlugin {
     GameList gl;
     Developer d;
     GameBrowser gb;
+    Review r;
 
     UIPluginCLI(){
         g = null;
@@ -31,6 +32,11 @@ public class UIPluginCLI implements UIPlugin {
     @Override
     public void pullGameBrowser(GameBrowser gb){
         this.gb = gb;
+    }
+
+    @Override
+    public void pullReview(Review r1) {
+        r = r1;
     }
 
     @Override
@@ -264,6 +270,11 @@ public class UIPluginCLI implements UIPlugin {
 
         }
         return  sb.toString();
+    }
+
+    @Override
+    public String displayableReview(){
+        return "Rating: "+r.getRating()+"\nSummary: " + r.getSummary() + "\nAuthor: "+ r.getAuthor()+"\n\n";
     }
 
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{
