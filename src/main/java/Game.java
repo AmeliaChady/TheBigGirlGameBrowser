@@ -35,6 +35,7 @@ public class Game {
         this.developers = developers;
         this.reviews = reviews;
         this.status = status;
+        loadAverageRating();
     }
 
     /**
@@ -194,13 +195,21 @@ public class Game {
             reviews.add(review);
         else
             reviews.set(index, review);
+        setAverageRatingFromNewRating(review.getRating());
     }
 
-    private void setAverageRatingFromNewRating() {}
+    private void setAverageRatingFromNewRating(int newRating) {
+        double totalRatings = reviews.size();
+        averageRating = (averageRating * (totalRatings-1) + newRating) / totalRatings;
+    }
 
-    private void setAverageRatingFromUpdatedRating() {}
+    private void setAverageRatingFromUpdatedRating(int newRating, int oldRating) {}
 
-    private void loadAverageRating() {}
+    private void loadAverageRating() {
+        double total = 0;
+        for (Review r: reviews) total += r.getRating();
+        averageRating = total > 0 ? total/(double)reviews.size() : total;
+    }
 
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {

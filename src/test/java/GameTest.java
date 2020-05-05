@@ -136,7 +136,6 @@ public class GameTest {
 
     @Test
     public void calculateRatingTest() {
-        List<Review>  reviews = new LinkedList<Review>();
         Game game = new Game("title", "description",
                     new ArrayList<Review>(), null, Status.PENDING);
 
@@ -144,10 +143,10 @@ public class GameTest {
         assertEquals(0, game.getAverageRating());
 
         // loaded with 1 review
-        reviews = new LinkedList<Review>();
+        LinkedList reviews = new LinkedList<Review>();
+        reviews.add(new Review(1, "comment 1", "author 1"));
         game = new Game("title", "description",
-                new ArrayList<Review>(), null, Status.PENDING);
-        game.addReview(new Review(1, "comment 1", "author 1"));
+                reviews, null, Status.PENDING);
         assertEquals(1, game.getAverageRating());
 
         // review is added
