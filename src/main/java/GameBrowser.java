@@ -266,6 +266,13 @@ public class GameBrowser {
 
     public void createDeveloperAccount(String username, String email, String password)
                                     throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts developerAccount = new Accounts(username, email, password);
+        developerAccount.dev = new Developer(username);
+        flagMap = dataSource.saveAccount(developerAccount);
+
+        if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
+            throw new IllegalArgumentException("This developer already exists.");
     }
 
     // -----SETTERS-----
