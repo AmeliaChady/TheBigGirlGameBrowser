@@ -438,7 +438,7 @@ public class UICLI {
             System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
             String userReviewChoice = in.nextLine();
 
-            while(!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice)>gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
+            while(!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice) > gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
                 System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
                 userReviewChoice = in.nextLine();
             }
@@ -446,16 +446,16 @@ public class UICLI {
             if(parseInt(userReviewChoice) == 0){
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
-            else if(parseInt(userReviewChoice) <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()) {
+            else{
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
                 String userGameToAdd = approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
-                Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
+                Game gameToReview = gameBrowser.loadGame(userGameToAdd);
 
                 //TODO: check and see if user has already made a review for this game
-                List<Review> revs = gameToAdd.getReviews();
+                List<Review> revs = gameToReview.getReviews();
                 boolean reviewMade = false;
                 for (Review review : revs) {
-                    if (review.getAuthor() == userAccount.getName()) {
+                    if (review.getAuthor().equals(userAccount.getName())) {
                         reviewMade = true;
                     }
                 }
@@ -463,20 +463,18 @@ public class UICLI {
                 if (!reviewMade) {
 
 
-                    System.out.println("Please write a review for " + gameToAdd.getTitle());
+                    System.out.println("Please write a review for " + gameToReview.getTitle());
 
                     String reviewDescriptionToAdd = in.nextLine();
 
-                    System.out.println("Please rate " + gameToAdd.getTitle() + " on a scale from 1 star to 5 stars.");
+                    System.out.println("Please rate " + gameToReview.getTitle() + " on a scale from 1 star to 5 stars.");
 
                     String reviewStarRating = in.nextLine();
 
-                    while (!isInt(reviewDescriptionToAdd) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating) > 5) {
+                    while (!isInt(reviewStarRating) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating) > 5) {
                         System.out.println("ERROR: Invalid rating");
                         System.out.println("Please try again.");
-
-                        System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
-                        System.out.println("Whole numbers only, please");
+                        System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
 
                         reviewStarRating = in.nextLine();
 
@@ -484,7 +482,8 @@ public class UICLI {
 
                     Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
 
-                    gameToAdd.addReview(reviewToAdd);
+                    //TODO: call Gamebrowser add review (add to game and save review
+                    gameToReview.addReview(reviewToAdd);
 
                     System.out.println("Thank you! Your response has been recorded.");
                     //back to user menu
