@@ -48,7 +48,7 @@ public class UICLI {
 
             //user and dev dual account
             else if (userAccounts.user != null && userAccounts.dev != null) {
-                System.out.println("You have both a User and a Developer account, which would you like to login as?");
+                System.out.println("You have both a User and a Developer account; which would you like to login as?");
                 System.out.println("1. User");
                 System.out.println("2. Dev");
 
@@ -433,7 +433,56 @@ public class UICLI {
             System.out.println("Big Girl Game Browser Game List:");
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
-            commercialUserTakeAction(userAccount, devAccount, dual);
+
+            System.out.println("If you'd like to review a game, please enter it's number now" +
+                    "or press 0 to exit.");
+            int userReviewChoice = in.nextInt();
+
+            if(userReviewChoice == 0){
+                commercialUserTakeAction(userAccount, devAccount, dual);
+            }
+            else if(userReviewChoice <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
+                GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
+                String userGameToAdd = approvedGames.getGames().get(userReviewChoice - 1);
+                Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
+
+                //TODO: check and see if user has already made a review for this game
+
+
+                System.out.println("Please write a review for " + gameToAdd.getTitle());
+
+                String reviewDescriptionToAdd = in.nextLine();
+
+                System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
+                System.out.println("Whole numbers only, please");
+
+                int reviewStarRating = in.nextInt();
+
+                while(reviewStarRating != 1 || reviewStarRating != 2 || reviewStarRating != 3 || reviewStarRating != 4 || reviewStarRating != 5){
+                    System.out.println("ERROR: Invalid rating");
+                    System.out.println("Please try again.");
+
+                    System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
+                    System.out.println("Whole numbers only, please");
+
+                    reviewStarRating = in.nextInt();
+
+                }
+
+                if(reviewStarRating >= 1 || reviewStarRating <= 5) {
+
+                    Review reviewToAdd = new Review(reviewStarRating, reviewDescriptionToAdd, userAccount.getName());
+
+                    gameToAdd.addReview(reviewToAdd);
+
+                    System.out.println("Thank you! Your response has been recorded.");
+                    //back to user menu
+                    commercialUserTakeAction(userAccount, devAccount, dual);
+                }
+
+
+            }
+
         }
 
         else if (parseInt(userChoice) == 2) {
