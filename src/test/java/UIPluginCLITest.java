@@ -348,7 +348,7 @@ public class UIPluginCLITest {
                 "Title: agtg1\n" +
                 "Description: displayAllGamesTest\n" +
                 "Developer(s): amelia\n" +
-                "Status: ACCEPTED\n\n",
+                "Status: ACCEPTED\n" + "No reviews\n\n",
                 uiplug.displayAllGames());
 
         // 2 Games
@@ -357,11 +357,11 @@ public class UIPluginCLITest {
                 "Title: agtg1\n" +
                 "Description: displayAllGamesTest\n" +
                 "Developer(s): amelia\n" +
-                "Status: ACCEPTED\n\n" +
+                "Status: ACCEPTED\n" + "No reviews\n\n"+
                 "Title: agtg2\n" +
                 "Description: displayAllGamesTest\n" +
                 "Developer(s): amelia\n" +
-                "Status: PENDING\n\n",
+                "Status: PENDING\n"+ "No reviews\n\n",
                 uiplug.displayAllGames());
 
         // Null Game List.

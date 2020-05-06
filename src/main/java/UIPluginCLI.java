@@ -92,10 +92,10 @@ public class UIPluginCLI implements UIPlugin {
         }
         gameString += "Status: " + g.getStatus() + "\n";
         if (g.getAverageRating() == -1){
-            gameString += "No reviews\n";
+            gameString += "No reviews\n\n";
         }
         else{
-            gameString += "Average rating: " + g.getAverageRating() + "\n";
+            gameString += "Average rating: " + g.getAverageRating() + "\n\n";
         }
         return gameString;
     }
@@ -281,7 +281,6 @@ public class UIPluginCLI implements UIPlugin {
             sb.append(count);
             sb.append(". ");
             sb.append(displayableGame());
-            sb.append("\n");
             count++;
 
         }
