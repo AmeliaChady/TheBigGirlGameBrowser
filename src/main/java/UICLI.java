@@ -434,16 +434,20 @@ public class UICLI {
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
 
-            System.out.println("If you'd like to review a game, please enter it's number now" +
-                    "or press 0 to exit.");
-            int userReviewChoice = in.nextInt();
+            System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
+            String userReviewChoice = in.nextLine();
 
-            if(userReviewChoice == 0){
+            while(!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice)>gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
+                System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
+                userReviewChoice = in.nextLine();
+            }
+
+            if(parseInt(userReviewChoice) == 0){
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
-            else if(userReviewChoice <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
+            else if(parseInt(userReviewChoice) <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String userGameToAdd = approvedGames.getGames().get(userReviewChoice - 1);
+                String userGameToAdd = approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
                 //TODO: check and see if user has already made a review for this game
