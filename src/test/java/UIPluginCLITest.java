@@ -289,7 +289,7 @@ public class UIPluginCLITest {
                     "Title: ggstgp1\n" +
                     "Description: displayGamesGivenStatusTest\n" +
                     "Developer(s): amelia\n" +
-                    "Status: PENDING\n\n",
+                    "Status: PENDING\n"+ "No reviews\n\n",
                     uiplug.displayGamesGivenStatus(Status.PENDING));
 
         // 2 Games
@@ -298,11 +298,11 @@ public class UIPluginCLITest {
                         "Title: ggstgp1\n" +
                         "Description: displayGamesGivenStatusTest\n" +
                         "Developer(s): amelia\n" +
-                        "Status: PENDING\n\n" +
+                        "Status: PENDING\n"+ "No reviews\n\n" +
                         "Title: ggstgp2\n" +
                         "Description: displayGamesGivenStatusTest\n" +
                         "Developer(s): amelia\n" +
-                        "Status: PENDING\n\n",
+                        "Status: PENDING\n"+ "No reviews\n\n",
                 uiplug.displayGamesGivenStatus(Status.PENDING));
 
         // Accepted Status
@@ -310,7 +310,7 @@ public class UIPluginCLITest {
                         "Title: ggstga\n" +
                         "Description: displayGamesGivenStatusTest\n" +
                         "Developer(s): amelia\n" +
-                        "Status: ACCEPTED\n\n",
+                        "Status: ACCEPTED\n"+ "No reviews\n\n",
                 uiplug.displayGamesGivenStatus(Status.ACCEPTED));
 
         // Null Game List.
