@@ -385,4 +385,26 @@ public class GameBrowserTest {
             fail(dse.getMessage());
         }
     }
+
+    @Test
+    public void createDeveloperAccountTest() {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser =  new GameBrowser("src/databases/testing.db");
+
+            // new developer (single account)
+            gameBrowser.createDeveloperAccount("developer", "developer@mail.com", "password");
+            assertEquals("developer", gameBrowser.loadDeveloper("developer").getName());
+
+
+            // duplicate developer account creation (invalid)
+            assertThrows(IllegalArgumentException.class,
+            () -> gameBrowser.createDeveloperAccount("developer",
+                    "developer@mail.com", "password"));
+
+            gameBrowser.close();
+        } catch (DataSourceException | IOException e) {
+            fail(e.getMessage());
+        }
+    }
 }
