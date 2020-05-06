@@ -448,8 +448,8 @@ public class UICLI {
             }
             else{
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String userGameToAdd = approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
-                Game gameToReview = gameBrowser.loadGame(userGameToAdd);
+                String userGameToReview= approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
+                Game gameToReview = gameBrowser.loadGame(userGameToReview);
 
                 //TODO: check and see if user has already made a review for this game
                 List<Review> revs = gameToReview.getReviews();
@@ -482,7 +482,7 @@ public class UICLI {
 
                     Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
 
-                    //TODO: call Gamebrowser add review (add to game and save review
+                    //TODO: eventually call Gamebrowser add review (which would add the review to the game and save review in the db)
                     gameToReview.addReview(reviewToAdd);
 
                     System.out.println("Thank you! Your response has been recorded.");
