@@ -453,34 +453,28 @@ public class UICLI {
 
                 String reviewDescriptionToAdd = in.nextLine();
 
-                System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
-                System.out.println("Whole numbers only, please");
+                System.out.println("Please rate " + gameToAdd.getTitle() + " on a scale from 1 star to 5 stars.");
 
-                int reviewStarRating = in.nextInt();
+                String reviewStarRating = in.nextLine();
 
-                while(reviewStarRating != 1 || reviewStarRating != 2 || reviewStarRating != 3 || reviewStarRating != 4 || reviewStarRating != 5){
+                while(!isInt(reviewDescriptionToAdd) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating)>5){
                     System.out.println("ERROR: Invalid rating");
                     System.out.println("Please try again.");
 
                     System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
                     System.out.println("Whole numbers only, please");
 
-                    reviewStarRating = in.nextInt();
+                    reviewStarRating = in.nextLine();
 
                 }
 
-                if(reviewStarRating >= 1 || reviewStarRating <= 5) {
+                Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
 
-                    Review reviewToAdd = new Review(reviewStarRating, reviewDescriptionToAdd, userAccount.getName());
+                gameToAdd.addReview(reviewToAdd);
 
-                    gameToAdd.addReview(reviewToAdd);
-
-                    System.out.println("Thank you! Your response has been recorded.");
-                    //back to user menu
-                    commercialUserTakeAction(userAccount, devAccount, dual);
-                }
-
-
+                System.out.println("Thank you! Your response has been recorded.");
+                //back to user menu
+                commercialUserTakeAction(userAccount, devAccount, dual);
             }
 
         }
