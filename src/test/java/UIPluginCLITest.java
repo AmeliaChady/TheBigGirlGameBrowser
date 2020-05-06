@@ -155,35 +155,35 @@ public class UIPluginCLITest {
         assertThrows(IllegalStateException.class, uiplug::displayableGame);
 
 //----game with reviews----
+        uiplug.pullGame(g);
         //1 review
-        g.addReview(new Review(8, "Pretty cool!", "Kerry Anne"));
+        g.addReview(new Review(4, "Pretty cool!", "Kerry Anne"));
         assertEquals("Title: cutest dog <3\n" +
                 "Description: she is my dog. I hate her name but she's still cute\n" +
                 "Developer(s): bertha\n" +
-                "Status: REJECTED\nAverage rating: 8\n\n", uiplug.displayableGame());
+                "Status: REJECTED\nAverage rating: 4.0\n\n", uiplug.displayableGame());
 
 
         //2 reviews
-        g.addReview(new Review(5, "Not my favorite", "Abby"));
+        g.addReview(new Review(2, "Not my favorite", "Abby"));
         assertEquals("Title: cutest dog <3\n" +
                 "Description: she is my dog. I hate her name but she's still cute\n" +
                 "Developer(s): bertha\n" +
-                "Status: REJECTED\nAverage rating: 6.5\n\n", uiplug.displayableGame());
+                "Status: REJECTED\nAverage rating: 3.0\n\n", uiplug.displayableGame());
 
         //3 reviews
-        g.addReview(new Review(1, "Hate it", "Aiko"));
-        assertTrue(4.6 < g.getAverageRating() && g.getAverageRating() < 4.7);
+        g.addReview(new Review(3, "Hate it", "Aiko"));
         assertEquals("Title: cutest dog <3\n" +
                 "Description: she is my dog. I hate her name but she's still cute\n" +
                 "Developer(s): bertha\n" +
-                "Status: REJECTED\nAverage rating: 4.66\n\n", uiplug.displayableGame());
+                "Status: REJECTED\nAverage rating: 3.0\n\n", uiplug.displayableGame());
 
         //4 reviews
-        g.addReview(new Review(10, "I actually love this dog more than my 2 daughters, and it shows.", "Anita"));
+        g.addReview(new Review(5, "I actually love this dog more than my 2 daughters, and it shows.", "Anita"));
         assertEquals("Title: cutest dog <3\n" +
                 "Description: she is my dog. I hate her name but she's still cute\n" +
                 "Developer(s): bertha\n" +
-                "Status: REJECTED\nAverage rating: 6\n\n", uiplug.displayableGame());
+                "Status: REJECTED\nAverage rating: 3.5\n\n", uiplug.displayableGame());
 
 
 

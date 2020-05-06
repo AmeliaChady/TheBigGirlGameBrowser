@@ -90,7 +90,13 @@ public class UIPluginCLI implements UIPlugin {
             }
             gameString += "Developer(s): " + devs.substring(0, devs.length()-2)+ "\n";
         }
-        gameString += "Status: " + g.getStatus() + "\n\n";
+        gameString += "Status: " + g.getStatus() + "\n";
+        if (g.getAverageRating() == -1){
+            gameString += "No reviews\n\n";
+        }
+        else{
+            gameString += "Average rating: " + g.getAverageRating() + "\n\n";
+        }
         return gameString;
     }
 

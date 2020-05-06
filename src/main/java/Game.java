@@ -11,7 +11,7 @@ public class Game {
     private List<Review> reviews;
     private Status status;
     private int ownedCount;
-    private double averageRating;
+    private double averageRating = -1;
 
     /**
      * Default constructor
