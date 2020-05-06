@@ -486,8 +486,7 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
 
         //2 games
@@ -500,14 +499,12 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //3 games
         developers.add("kerry anne");
@@ -521,20 +518,17 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //4 games
         developers.add("grace t. dury");
@@ -548,26 +542,22 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "4. Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //5 games
         developers.add("kevin jonas");
@@ -579,32 +569,27 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "4. Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "5. Title: camp rock 4\n" +
                 "Description: kevin sells real estate now\n" +
                 "Developer(s): kevin jonas\n" +
                 "Status: ACCEPTED\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //6 games
         developers.add("bertha");
@@ -618,38 +603,32 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "4. Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "5. Title: camp rock 4\n" +
                 "Description: kevin sells real estate now\n" +
                 "Developer(s): kevin jonas\n" +
                 "Status: ACCEPTED\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "6. Title: cutest dog <3\n" +
                 "Description: she is my dog. I hate her name but shes still cute\n" +
                 "Developer(s): bertha\n" +
                 "Status: REJECTED\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         // null game
         uiplug.pullGameList(null);

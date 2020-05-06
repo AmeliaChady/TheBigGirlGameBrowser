@@ -92,10 +92,10 @@ public class UIPluginCLI implements UIPlugin {
         }
         gameString += "Status: " + g.getStatus() + "\n";
         if (g.getAverageRating() == -1){
-            gameString += "No reviews\n\n";
+            gameString += "No reviews\n";
         }
         else{
-            gameString += "Average rating: " + g.getAverageRating() + "\n\n";
+            gameString += "Average rating: " + g.getAverageRating() + "\n";
         }
         return gameString;
     }
