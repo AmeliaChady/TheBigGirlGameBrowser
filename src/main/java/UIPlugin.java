@@ -1,3 +1,5 @@
+import java.util.List;
+
 public interface UIPlugin {
     /**
      * Brings game into the UIPlugin
@@ -28,6 +30,12 @@ public interface UIPlugin {
      * @param r1 review to pull in
      */
     void pullReview(Review r1);
+
+    /**
+     * Brings Review List into the UIPlugin
+     * @param r1 review List to pull in
+     */
+    void pullReviewList(List<Review> r1);
 
     /**
      * @return false if game null, otherwise true
@@ -93,4 +101,6 @@ public interface UIPlugin {
     String displayableNumberedListOfFullGames()  throws DataSourceException;
 
     String displayableReview();
+
+    String displayableReviewList();
 }

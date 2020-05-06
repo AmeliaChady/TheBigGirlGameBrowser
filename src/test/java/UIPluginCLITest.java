@@ -32,6 +32,59 @@ public class UIPluginCLITest {
         assertEquals("Rating: 1\n" +
                 "Summary: Hate it\n" +
                 "Author: smellypants\n\n", uiplug.displayableReview());
+
+        r1 = null;
+        uiplug.pullReview(r1);
+        assertEquals("No review to display", uiplug.displayableReview());
+    }
+
+    @Test
+    public void displayReviewListTest(){
+        UIPluginCLI uiplug= new UIPluginCLI();
+
+        //null
+        assertEquals("No review list", uiplug.displayableReviewList());
+
+        //make review list
+        List<Review> revList = new ArrayList<>();
+
+        //empty
+        uiplug.pullReviewList(revList);
+        assertEquals("Review list empty", uiplug.displayableReviewList());
+
+        //1 review
+        Review r1 = new Review(5, "Pretty cool!", "Kerry Anne");
+        revList.add(r1);
+        uiplug.pullReviewList(revList);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n", uiplug.displayableReviewList());
+
+        //2 reviews
+        Review r2 = new Review(3, "Not my favorite", "bertha");
+        revList.add(r2);
+        uiplug.pullReviewList(revList);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n" + "Rating: 3\n" +
+                "Summary: Not my favorite\n" +
+                "Author: bertha\n\n", uiplug.displayableReviewList());
+
+        //3 reviews
+        Review r3 = new Review(1, "Hate it", "smellypants");
+        revList.add(r3);
+        uiplug.pullReviewList(revList);
+
+        assertEquals("Rating: 5\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n\n" + "Rating: 3\n" +
+                "Summary: Not my favorite\n" +
+                "Author: bertha\n\n" + "Rating: 1\n" +
+                "Summary: Hate it\n" +
+                "Author: smellypants\n\n", uiplug.displayableReviewList());
+
     }
 
 
@@ -45,7 +98,7 @@ public class UIPluginCLITest {
         assertEquals("Title: testGame\n" +
                      "Description: This is a test to create a new game object\n" +
                      "Developer(s): None\n" +
-                     "Status: PENDING\n\n", uiplug.displayableGame());
+                     "Status: PENDING\nNo reviews\n\n", uiplug.displayableGame());
 
 
         //1 developer, pending status
@@ -54,7 +107,7 @@ public class UIPluginCLITest {
         assertEquals("Title: Best game\n" +
                      "Description: This is the best game ever!\n" +
                      "Developer(s): kerry\n" +
-                     "Status: PENDING\n\n", uiplug.displayableGame());
+                     "Status: PENDING\nNo reviews\n\n", uiplug.displayableGame());
 
         //2 developers, pending status, no description
         List<String> developers = new ArrayList<>();
@@ -65,7 +118,7 @@ public class UIPluginCLITest {
         assertEquals("Title: Cooking Mama\n" +
                      "Description: No Description Given\n" +
                      "Developer(s): kerry anne, kelsey\n" +
-                     "Status: PENDING\n\n", uiplug.displayableGame());
+                     "Status: PENDING\nNo reviews\n\n", uiplug.displayableGame());
 
         //3 developers, pending status=
         // keeps devs from before + 1
@@ -77,7 +130,7 @@ public class UIPluginCLITest {
         assertEquals("Title: Animal Crossing New Horizons\n" +
                      "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                      "Developer(s): kerry anne, kelsey, grace t. dury\n" +
-                     "Status: PENDING\n\n", uiplug.displayableGame());
+                     "Status: PENDING\nNo reviews\n\n", uiplug.displayableGame());
 
         //1 developer, accepted
         g = new Game("camp rock 4", "kevin sells real estate now", "kevin jonas", Status.ACCEPTED);
@@ -85,7 +138,7 @@ public class UIPluginCLITest {
         assertEquals("Title: camp rock 4\n" +
                      "Description: kevin sells real estate now\n" +
                      "Developer(s): kevin jonas\n" +
-                     "Status: ACCEPTED\n\n", uiplug.displayableGame());
+                     "Status: ACCEPTED\nNo reviews\n\n", uiplug.displayableGame());
 
         //1 developer, rejected
         g = new Game("cutest dog <3",
@@ -95,11 +148,44 @@ public class UIPluginCLITest {
         assertEquals("Title: cutest dog <3\n" +
                      "Description: she is my dog. I hate her name but she's still cute\n" +
                      "Developer(s): bertha\n" +
-                     "Status: REJECTED\n\n", uiplug.displayableGame());
+                     "Status: REJECTED\nNo reviews\n\n", uiplug.displayableGame());
 
         // null game
         uiplug.pullGame(null);
         assertThrows(IllegalStateException.class, uiplug::displayableGame);
+
+//----game with reviews----
+        uiplug.pullGame(g);
+        //1 review
+        g.addReview(new Review(4, "Pretty cool!", "Kerry Anne"));
+        assertEquals("Title: cutest dog <3\n" +
+                "Description: she is my dog. I hate her name but she's still cute\n" +
+                "Developer(s): bertha\n" +
+                "Status: REJECTED\nAverage rating: 4.0\n\n", uiplug.displayableGame());
+
+
+        //2 reviews
+        g.addReview(new Review(2, "Not my favorite", "Abby"));
+        assertEquals("Title: cutest dog <3\n" +
+                "Description: she is my dog. I hate her name but she's still cute\n" +
+                "Developer(s): bertha\n" +
+                "Status: REJECTED\nAverage rating: 3.0\n\n", uiplug.displayableGame());
+
+        //3 reviews
+        g.addReview(new Review(3, "Hate it", "Aiko"));
+        assertEquals("Title: cutest dog <3\n" +
+                "Description: she is my dog. I hate her name but she's still cute\n" +
+                "Developer(s): bertha\n" +
+                "Status: REJECTED\nAverage rating: 3.0\n\n", uiplug.displayableGame());
+
+        //4 reviews
+        g.addReview(new Review(5, "I actually love this dog more than my 2 daughters, and it shows.", "Anita"));
+        assertEquals("Title: cutest dog <3\n" +
+                "Description: she is my dog. I hate her name but she's still cute\n" +
+                "Developer(s): bertha\n" +
+                "Status: REJECTED\nAverage rating: 3.5\n\n", uiplug.displayableGame());
+
+
 
     }
 
@@ -203,7 +289,7 @@ public class UIPluginCLITest {
                     "Title: ggstgp1\n" +
                     "Description: displayGamesGivenStatusTest\n" +
                     "Developer(s): amelia\n" +
-                    "Status: PENDING\n\n",
+                    "Status: PENDING\n"+ "No reviews\n\n",
                     uiplug.displayGamesGivenStatus(Status.PENDING));
 
         // 2 Games
@@ -212,11 +298,11 @@ public class UIPluginCLITest {
                         "Title: ggstgp1\n" +
                         "Description: displayGamesGivenStatusTest\n" +
                         "Developer(s): amelia\n" +
-                        "Status: PENDING\n\n" +
+                        "Status: PENDING\n"+ "No reviews\n\n" +
                         "Title: ggstgp2\n" +
                         "Description: displayGamesGivenStatusTest\n" +
                         "Developer(s): amelia\n" +
-                        "Status: PENDING\n\n",
+                        "Status: PENDING\n"+ "No reviews\n\n",
                 uiplug.displayGamesGivenStatus(Status.PENDING));
 
         // Accepted Status
@@ -224,7 +310,7 @@ public class UIPluginCLITest {
                         "Title: ggstga\n" +
                         "Description: displayGamesGivenStatusTest\n" +
                         "Developer(s): amelia\n" +
-                        "Status: ACCEPTED\n\n",
+                        "Status: ACCEPTED\n"+ "No reviews\n\n",
                 uiplug.displayGamesGivenStatus(Status.ACCEPTED));
 
         // Null Game List.
@@ -262,7 +348,7 @@ public class UIPluginCLITest {
                 "Title: agtg1\n" +
                 "Description: displayAllGamesTest\n" +
                 "Developer(s): amelia\n" +
-                "Status: ACCEPTED\n\n",
+                "Status: ACCEPTED\n" + "No reviews\n\n",
                 uiplug.displayAllGames());
 
         // 2 Games
@@ -271,11 +357,11 @@ public class UIPluginCLITest {
                 "Title: agtg1\n" +
                 "Description: displayAllGamesTest\n" +
                 "Developer(s): amelia\n" +
-                "Status: ACCEPTED\n\n" +
+                "Status: ACCEPTED\n" + "No reviews\n\n"+
                 "Title: agtg2\n" +
                 "Description: displayAllGamesTest\n" +
                 "Developer(s): amelia\n" +
-                "Status: PENDING\n\n",
+                "Status: PENDING\n"+ "No reviews\n\n",
                 uiplug.displayAllGames());
 
         // Null Game List.
@@ -400,8 +486,7 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
 
         //2 games
@@ -414,14 +499,12 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //3 games
         developers.add("kerry anne");
@@ -435,20 +518,17 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //4 games
         developers.add("grace t. dury");
@@ -462,26 +542,22 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "4. Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //5 games
         developers.add("kevin jonas");
@@ -493,32 +569,27 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "4. Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "5. Title: camp rock 4\n" +
                 "Description: kevin sells real estate now\n" +
                 "Developer(s): kevin jonas\n" +
                 "Status: ACCEPTED\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         //6 games
         developers.add("bertha");
@@ -532,38 +603,32 @@ public class UIPluginCLITest {
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "2. Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "3. Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "4. Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): grace t. dury, kelsey, kerry, kerry anne, snoop dog\n" +
                 "Status: PENDING\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "5. Title: camp rock 4\n" +
                 "Description: kevin sells real estate now\n" +
                 "Developer(s): kevin jonas\n" +
                 "Status: ACCEPTED\n" +
-                "\n" +
-                "\n" +
+                "No reviews\n\n" +
                 "6. Title: cutest dog <3\n" +
                 "Description: she is my dog. I hate her name but shes still cute\n" +
                 "Developer(s): bertha\n" +
                 "Status: REJECTED\n" +
-                "\n" +
-                "\n", uiplug.displayableNumberedListOfFullGames());
+                "No reviews\n\n", uiplug.displayableNumberedListOfFullGames());
 
         // null game
         uiplug.pullGameList(null);
