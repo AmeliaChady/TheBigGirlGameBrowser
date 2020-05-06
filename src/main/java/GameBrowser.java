@@ -256,6 +256,16 @@ public class GameBrowser {
         }
     }
 
+    public User loadUser(String username) throws DataSourceException {
+        try {
+            User user = dataSource.loadUser(username);
+            return user;
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
+    }
+
     public Game loadGame(String title) throws DataSourceException{
         return dataSource.loadGame(title);
     }
@@ -274,6 +284,9 @@ public class GameBrowser {
         if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
             throw new IllegalArgumentException("This developer already exists.");
     }
+
+    public void createUserAccount(String username, String email, String password)
+            throws DataSourceException, IllegalArgumentException {}
 
     // -----SETTERS-----
     public void setGameList(GameList gameListTurnIn) {
