@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -445,40 +446,54 @@ public class UICLI {
             if(parseInt(userReviewChoice) == 0){
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
-            else if(parseInt(userReviewChoice) <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
+            else if(parseInt(userReviewChoice) <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()) {
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
                 String userGameToAdd = approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
                 //TODO: check and see if user has already made a review for this game
-
-
-                System.out.println("Please write a review for " + gameToAdd.getTitle());
-
-                String reviewDescriptionToAdd = in.nextLine();
-
-                System.out.println("Please rate " + gameToAdd.getTitle() + " on a scale from 1 star to 5 stars.");
-
-                String reviewStarRating = in.nextLine();
-
-                while(!isInt(reviewDescriptionToAdd) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating)>5){
-                    System.out.println("ERROR: Invalid rating");
-                    System.out.println("Please try again.");
-
-                    System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
-                    System.out.println("Whole numbers only, please");
-
-                    reviewStarRating = in.nextLine();
-
+                List<Review> revs = gameToAdd.getReviews();
+                boolean reviewMade = false;
+                for (Review review : revs) {
+                    if (review.getAuthor() == userAccount.getName()) {
+                        reviewMade = true;
+                    }
                 }
 
-                Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
+                if (!reviewMade) {
 
-                gameToAdd.addReview(reviewToAdd);
 
-                System.out.println("Thank you! Your response has been recorded.");
-                //back to user menu
-                commercialUserTakeAction(userAccount, devAccount, dual);
+                    System.out.println("Please write a review for " + gameToAdd.getTitle());
+
+                    String reviewDescriptionToAdd = in.nextLine();
+
+                    System.out.println("Please rate " + gameToAdd.getTitle() + " on a scale from 1 star to 5 stars.");
+
+                    String reviewStarRating = in.nextLine();
+
+                    while (!isInt(reviewDescriptionToAdd) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating) > 5) {
+                        System.out.println("ERROR: Invalid rating");
+                        System.out.println("Please try again.");
+
+                        System.out.println("Please rate " + gameToAdd.getTitle() + "on a scale from 1 star to 5 stars.");
+                        System.out.println("Whole numbers only, please");
+
+                        reviewStarRating = in.nextLine();
+
+                    }
+
+                    Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
+
+                    gameToAdd.addReview(reviewToAdd);
+
+                    System.out.println("Thank you! Your response has been recorded.");
+                    //back to user menu
+                    commercialUserTakeAction(userAccount, devAccount, dual);
+                }
+                else{
+                    System.out.println("Review already made, you may not make multiple reviews");
+                    commercialUserTakeAction(userAccount, devAccount, dual);
+                }
             }
 
         }
