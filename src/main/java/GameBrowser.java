@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameBrowser {
     private DataSource dataSource; // the connection to the database
@@ -261,6 +262,17 @@ public class GameBrowser {
 
     public GameList loadGameList(String name) throws DataSourceException{
         return dataSource.loadGameList(name);
+    }
+
+    public void createDeveloperAccount(String username, String email, String password)
+                                    throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts developerAccount = new Accounts(username, email, password);
+        developerAccount.dev = new Developer(username);
+        flagMap = dataSource.saveAccount(developerAccount);
+
+        if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
+            throw new IllegalArgumentException("This developer already exists.");
     }
 
     // -----SETTERS-----
