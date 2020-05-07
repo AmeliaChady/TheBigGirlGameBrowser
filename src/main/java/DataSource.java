@@ -1,4 +1,8 @@
 import java.util.List;
+import java.util.Map;
+
+enum AccountSavingFlags{FAIL, PASS, DUPLICATE, NOTHING}
+enum AccountSavingAccounts{ACCT, DEV, USER}
 
 public interface DataSource {
     /**
@@ -63,6 +67,15 @@ public interface DataSource {
      * @throws IllegalArgumentException if overall account doesn't exist
      */
     Accounts login(String username, String password) throws DataSourceException, IllegalArgumentException;
+
+    /**
+     * Creates a new account for a user or a developer
+     * @param account
+     * @return map {'a': account status, 'd': dev status, 'u': user status}
+     * @throws DataSourceException
+     * @throws IllegalArgumentException
+     */
+    Map<AccountSavingAccounts, AccountSavingFlags> saveAccount(Accounts account) throws DataSourceException, IllegalArgumentException;
 
     void saveUser(Accounts account) throws DataSourceException, IllegalArgumentException;
 

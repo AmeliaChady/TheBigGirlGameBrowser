@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameBrowser {
     private DataSource dataSource; // the connection to the database
@@ -185,6 +186,12 @@ public class GameBrowser {
 
     //TODO Remove a GameList
 
+    public void gameNewReview(String title, int rating, String comment, String author) throws DataSourceException{
+        //Game g = loadGame(title);
+        //Review r = new Review(rating, comment, author);
+        //g.addReview(r);
+    }
+
     // ------HELPERS------
     private void loadAllGames() throws DataSourceException {
         try {
@@ -249,12 +256,48 @@ public class GameBrowser {
         }
     }
 
+    public User loadUser(String username) throws DataSourceException {
+        try {
+            User user = dataSource.loadUser(username);
+            return user;
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
+    }
+
     public Game loadGame(String title) throws DataSourceException{
         return dataSource.loadGame(title);
     }
 
     public GameList loadGameList(String name) throws DataSourceException{
         return dataSource.loadGameList(name);
+    }
+
+    public void createDeveloperAccount(String username, String email, String password)
+                                    throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts developerAccount = new Accounts(username, email, password);
+        developerAccount.dev = new Developer(username);
+        flagMap = dataSource.saveAccount(developerAccount);
+
+        assertAccount(flagMap, "developer");
+    }
+
+    public void createUserAccount(String username, String email, String password)
+            throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts userAccount = new Accounts(username, email, password);
+        userAccount.user = new User(username);
+        flagMap = dataSource.saveAccount(userAccount);
+
+        assertAccount(flagMap, "user");
+    }
+
+    private void assertAccount(Map<AccountSavingAccounts, AccountSavingFlags> flagMap, String accountType)
+            throws IllegalArgumentException {
+        if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
+            throw new IllegalArgumentException("This "+accountType+" already exists.");
     }
 
     // -----SETTERS-----

@@ -11,6 +11,7 @@ public class Game {
     private List<Review> reviews;
     private Status status;
     private int ownedCount;
+    private double averageRating = -1;
 
     /**
      * Default constructor
@@ -34,6 +35,7 @@ public class Game {
         this.developers = developers;
         this.reviews = reviews;
         this.status = status;
+        loadAverageRating();
     }
 
     /**
@@ -178,9 +180,52 @@ public class Game {
     }
 
 
+    /**
+     * assumes author of review is primary key
+     * @param review
+     */
     public void addReview(Review review){
-        this.reviews.add(review);
+        if(review == null)
+            throw new NullPointerException("Review is null");
+        if(review.getAuthor() == null)
+            throw new NullPointerException("Author is null");
+        // index indicates if in reviews
+        int index = reviews.indexOf(review);
+        if(index < 0)
+            reviews.add(review);
+        else
+            reviews.set(index, review);
+        setAverageRatingFromNewRating(review.getRating());
     }
+
+    public void updateReviewRating(Review review, int newRating) throws IllegalArgumentException {
+        if (reviews.contains(review)) {
+            int oldRating = review.getRating();
+            review.setRating(newRating);
+            setAverageRatingFromUpdatedRating(newRating, oldRating);
+        } else {
+            String msg = review == null ? "Please provide a review to update." :
+                                          "This review does not exist for this game.";
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
+    private void setAverageRatingFromNewRating(int newRating) {
+        double totalRatings = reviews.size();
+        averageRating = (averageRating * (totalRatings-1) + newRating) / totalRatings;
+    }
+
+    private void setAverageRatingFromUpdatedRating(int newRating, int oldRating) {
+        double totalRatings = reviews.size();
+        averageRating = (averageRating * totalRatings - oldRating + newRating) / totalRatings;
+    }
+
+    private void loadAverageRating() {
+        double total = 0;
+        for (Review r: reviews) total += r.getRating();
+        averageRating = total > 0 ? total/(double)reviews.size() : total;
+    }
+
     // TODO: move to GameBrowserDisplay
 //    public void displayableGame() {
 //        String display = "Title: " + title + "\nDescription: " + description + "\nDeveloper(s): ";
@@ -231,4 +276,5 @@ public class Game {
 
     public int getOwnedCount(){return ownedCount;}
 
+    public double getAverageRating() { return averageRating; }
 }
