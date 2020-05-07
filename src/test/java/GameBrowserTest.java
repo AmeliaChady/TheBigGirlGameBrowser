@@ -270,8 +270,8 @@ public class GameBrowserTest {
     }
 
     @Test
-    public void saveTest() throws IOException{
-        try {
+    public void saveTest() throws IOException, DataSourceException{
+//        try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
             Developer rob =  new Developer("Rob", 1);
@@ -288,7 +288,7 @@ public class GameBrowserTest {
             // Setup for below
             if (gameBrowser.getGameList().getGames().size() < 8) {
                 int num = 0;
-                Developer d = new Developer("Amelia's Fix Dude", 2);
+                Developer d = new Developer("Amelia Fixing Dude", 2);
                 gameBrowser.addDeveloper(d);
                 while (gameBrowser.getGameList().getGames().size() < 8) {
                     Game xtraGame = new Game("xtra"+num, d.getName());
@@ -299,7 +299,7 @@ public class GameBrowserTest {
 
             // makes a new list of games from those already existing in browser
             // (just like a user might
-            GameList subGameList = new GameList("Rob's Games NEWLIST");
+            GameList subGameList = new GameList("Robcommas Games NEWLIST");
             List<String> sublist = gameBrowser.getGameList().getGames().subList(2,7);
             for(String aGame : sublist){
                 subGameList.includeGame(aGame);
@@ -312,15 +312,15 @@ public class GameBrowserTest {
             gameBrowser.save();
 
             System.out.println("Visibly Check DB for \"robsGame\", \"rob's Games\", " +
-                    "\nthe gameList \"Rob's Games NEWLIST\", and developer \"Rob\"");
+                    "\nthe gameList \"Robcommas Games NEWLIST\", and developer \"Rob\"");
 
             gameBrowser.close();
 
 
-        }catch (DataSourceException dse){
-            fail(dse.getMessage());
-            return;
-        }
+//        }catch (DataSourceException dse){
+//            fail(dse.getMessage());
+//            return;
+//        }
     }
 
     @Test
@@ -328,8 +328,8 @@ public class GameBrowserTest {
         try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
-            User user1 = new User(new GameList("user1"), null),
-                 user2 = new User(new GameList("user2"), null);
+            User user1 = new User("user1", new GameList("user1"), null),
+                 user2 = new User("user2", new GameList("user2"), null);
             Developer dev = new Developer("Amelia Chady", 0);
             Game game = new Game("Crossing Mammals", dev.getName());
 
@@ -358,8 +358,8 @@ public class GameBrowserTest {
         try {
             SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
             GameBrowser gameBrowser = new GameBrowser("src/databases/testing.db");
-            User user1 = new User(new GameList("user1"), null),
-                 user2 = new User(new GameList("user2"), null);
+            User user1 = new User("user1", new GameList("user1"), null),
+                 user2 = new User("user2", new GameList("user2"), null);
             Developer dev = new Developer("Amelia Chady", 0);
             Game game = new Game("Crossing Mammals", dev.getName());
 
@@ -383,6 +383,72 @@ public class GameBrowserTest {
             gameBrowser.close();
         } catch(DataSourceException dse) {
             fail(dse.getMessage());
+        }
+    }
+
+    @Test
+    public void createDeveloperAccountTest() {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser =  new GameBrowser("src/databases/testing.db");
+
+            // new developer (single account)
+            gameBrowser.createDeveloperAccount("developer", "developer@mail.com", "password");
+            assertEquals("developer", gameBrowser.loadDeveloper("developer").getName());
+
+
+            // duplicate developer account creation (invalid)
+            assertThrows(IllegalArgumentException.class,
+            () -> gameBrowser.createDeveloperAccount("developer",
+                    "developer@mail.com", "password"));
+
+            gameBrowser.close();
+        } catch (DataSourceException | IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void createUserAccountTest() {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser =  new GameBrowser("src/databases/testing.db");
+
+            // new user (single account)
+            gameBrowser.createUserAccount("user", "user@mail.com", "password");
+            assertEquals("user", gameBrowser.loadUser("user").getName());
+
+
+            // duplicate user account creation (invalid)
+            assertThrows(IllegalArgumentException.class,
+                    () -> gameBrowser.createUserAccount("user",
+                            "user@mail.com", "password"));
+
+            gameBrowser.close();
+        } catch (DataSourceException | IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void createDualAccountTest() {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser =  new GameBrowser("src/databases/testing.db");
+
+            // new user and dev account
+            gameBrowser.createDualAccount("user-dev", "user-dev@mail.com", "password");
+            assertEquals("user-dev", gameBrowser.loadUser("user-dev").getName());
+
+
+            // duplicate dual account creation (invalid)
+            assertThrows(IllegalArgumentException.class,
+                    () -> gameBrowser.createDualAccount("user-dev",
+                            "user-dev@mail.com", "password"));
+
+            gameBrowser.close();
+        } catch (DataSourceException | IOException e) {
+            fail(e.getMessage());
         }
     }
 }

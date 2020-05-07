@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -14,9 +15,80 @@ public class UICLI {
         gameBrowser = new GameBrowser(filepath, new UIPluginCLI());
     }
 
+    private void init() {
+        try {
+            Scanner in = new Scanner(System.in);
+            String choice = null;
+
+            System.out.println("Welcome to the Big Girl Game Library!");
+            while (!isInt(choice) || (parseInt(choice) < 1 || parseInt(choice) > 4)) {
+                System.out.println("What would you like to do?");
+                System.out.println("1. Login");
+                System.out.println("2. Register a new account");
+                System.out.println("3. Quit");
+                choice = in.nextLine();
+            }
+
+            if (isInt(choice)) {
+                switch (parseInt(choice)) {
+                    case 1:
+                        login();
+                        break;
+                    case 2:
+                        createAccount();
+                        init();
+                        break;
+                    case 3:
+                        System.out.println("Have a nice day!");
+                        break;
+                    default:
+                        System.out.println("We're not so sure about that...");
+                        init();
+                        break;
+                }
+            }
+        } catch(Exception e) {
+            System.out.print("Error: " + e.getMessage() + "\n");
+            init();
+        }
+    }
+
+    private void createAccount() throws DataSourceException{
+        Scanner in = new Scanner(System.in);
+        String email = null,
+                username = null,
+                password = null;
+        Developer developer = null;
+        User user = null;
+
+        System.out.println("Would you like to make a new user account(1), a new developer account(2), or a new dual(user and developer) account(3)? To cancel press 0");
+        String accountType = in.nextLine();
+        while(!isInt(accountType) || parseInt(accountType) < 0 || parseInt(accountType) > 3){
+            System.out.println("Invalid input");
+            System.out.println("Would you like to make a user account(1) or a developer account(2)? To cancel press 0");
+            accountType = in.nextLine();
+        }
+        if (parseInt(accountType) != 0){
+            System.out.println("Please enter your email: ");
+            email = in.nextLine();
+            System.out.println("Please create a username: ");
+            username = in.nextLine();
+            System.out.println("Please create a password: ");
+            password = in.nextLine();
+            if (parseInt(accountType) == 1){
+                gameBrowser.createUserAccount(username, email, password);
+            }
+            else if (parseInt(accountType) == 2){
+                gameBrowser.createDeveloperAccount(username, email, password);
+            }
+            else{
+                gameBrowser.createDualAccount(username,email,password);
+            }
+        }
+    }
+
     private void login() throws DataSourceException {
         Scanner in = new Scanner(System.in);
-        System.out.println("Welcome to the Big Girl Game Library!");
         System.out.println("Please enter your username: ");
 
         String usernameEnter = in.nextLine();
@@ -48,7 +120,7 @@ public class UICLI {
 
             //user and dev dual account
             else if (userAccounts.user != null && userAccounts.dev != null) {
-                System.out.println("You have both a User and a Developer account, which would you like to login as?");
+                System.out.println("You have both a User and a Developer account; which would you like to login as?");
                 System.out.println("1. User");
                 System.out.println("2. Dev");
 
@@ -72,13 +144,13 @@ public class UICLI {
                 }
             } else {
                 System.out.println("I'm sorry, either your username or password is incorrect.");
-                login();
+                init();
 
                 //password recovery code moved below main for now
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage() + "\nPlease try again");
-            login();
+            init();
         }
     }
 
@@ -222,7 +294,7 @@ public class UICLI {
         else {
             System.out.println("Thank you for using the Big Girl Game Library.");
             System.out.println("See you soon!");
-            login();
+            init();
         }
 
     }
@@ -234,7 +306,7 @@ public class UICLI {
         System.out.println("Welcome. Please choose what action you'd like to take:");
         System.out.println("1: Submit Game");
         System.out.println("2: Update Game");
-        System.out.println("3: View Your Game List");
+        System.out.println("3: View Your Games");
         System.out.println("4: Logout");
         if(dual){
             System.out.println("5: Switch Accounts");
@@ -337,7 +409,6 @@ public class UICLI {
                     else if (parseInt(devModifyChoice) == 2) {
                         Scanner in3 = new Scanner(System.in);
                         System.out.println("Please enter the new game description:");
-                        //in3.nextLine();
                         String updatedBio = in3.nextLine();
                         updatingGame.changeDescription(updatedBio);
                         gameBrowser.saveGame(updatingGame);
@@ -353,13 +424,32 @@ public class UICLI {
             }
             developerTakeAction(devAccount, userAccount, dual);
         }
-//---------------------view gameList
+//---------------------view games
         else if (parseInt(devChoice) == 3) {
 
             gameBrowser.pullGameList(devAccount.getGameList().getName());
-            System.out.println(gameBrowser.displayableNumberedListOfFullGames());
+            System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
-            developerTakeAction(devAccount, userAccount, dual);
+            Scanner dc3 = new Scanner(System.in);
+
+            System.out.println("Enter the number associated with the game you'd like to view more details of, or press 0 to cancel");
+            String gameNum = dc3.nextLine();
+
+            //ask for answer until a valid one is given
+            while (!isInt(gameNum) || (parseInt(gameNum) < 0 || parseInt(gameNum) > devAccount.getGameList().getGameCount())) {
+                System.out.println("Please enter a valid choice");
+                gameNum = in.nextLine();
+            }
+
+            if (parseInt(gameNum) == 0){
+                developerTakeAction(devAccount, userAccount, dual);
+            }
+            else{
+                gameBrowser.pullGame(devAccount.getGameList().getGames().get(parseInt(gameNum)-1));
+                System.out.println(gameBrowser.displayableGame());
+                developerTakeAction(devAccount, userAccount, dual);
+            }
+
 
         }
 //----------------------log out
@@ -367,7 +457,7 @@ public class UICLI {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
-            login();
+            init();
         }
 
         else if(parseInt(devChoice) == 5){
@@ -415,7 +505,67 @@ public class UICLI {
             System.out.println("Big Girl Game Browser Game List:");
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
-            commercialUserTakeAction(userAccount, devAccount, dual);
+
+            System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
+            String userReviewChoice = in.nextLine();
+
+            while(!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice) > gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
+                System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
+                userReviewChoice = in.nextLine();
+            }
+
+            if(parseInt(userReviewChoice) == 0){
+                commercialUserTakeAction(userAccount, devAccount, dual);
+            }
+            else{
+                GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
+                String userGameToReview= approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
+                Game gameToReview = gameBrowser.loadGame(userGameToReview);
+
+                //TODO: this won't work yet because reviews aren't being saved in the database
+                List<Review> revs = gameToReview.getReviews();
+                boolean reviewMade = false;
+                for (Review review : revs) {
+                    if (review.getAuthor().equals(userAccount.getName())) {
+                        reviewMade = true;
+                    }
+                }
+
+                if (!reviewMade) {
+
+
+                    System.out.println("Please write a review for " + gameToReview.getTitle());
+
+                    String reviewDescriptionToAdd = in.nextLine();
+
+                    System.out.println("Please rate " + gameToReview.getTitle() + " on a scale from 1 star to 5 stars.");
+
+                    String reviewStarRating = in.nextLine();
+
+                    while (!isInt(reviewStarRating) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating) > 5) {
+                        System.out.println("ERROR: Invalid rating");
+                        System.out.println("Please try again.");
+                        System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
+
+                        reviewStarRating = in.nextLine();
+
+                    }
+
+                    Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
+
+                    //TODO: eventually call Gamebrowser add review (which would add the review to the game and save review in the db)
+                    gameToReview.addReview(reviewToAdd);
+
+                    System.out.println("Thank you! Your response has been recorded.");
+                    //back to user menu
+                    commercialUserTakeAction(userAccount, devAccount, dual);
+                }
+                else{
+                    System.out.println("Review already made, you may not make multiple reviews");
+                    commercialUserTakeAction(userAccount, devAccount, dual);
+                }
+            }
+
         }
 
         else if (parseInt(userChoice) == 2) {
@@ -481,7 +631,7 @@ public class UICLI {
         else if(parseInt(userChoice) == 5){
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
-            login();
+            init();
         }
 
         else if(dual && parseInt(userChoice) == 6){
@@ -494,7 +644,8 @@ public class UICLI {
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
         UICLI myBGGLTest = new UICLI("src/databases/DemoDaySprint2.db");
-        myBGGLTest.login();
+//        myBGGLTest.login();
+        myBGGLTest.init();
 
     }
     // password recovery code moved below for mow

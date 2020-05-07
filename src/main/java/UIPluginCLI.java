@@ -1,16 +1,22 @@
 import java.util.Iterator;
+import java.util.List;
 
 public class UIPluginCLI implements UIPlugin {
     Game g;
     GameList gl;
     Developer d;
     GameBrowser gb;
+    Review r;
+    List<Review> rl;
+
 
     UIPluginCLI(){
         g = null;
         gl = null;
         d = null;
         gb = null;
+        r = null;
+        rl = null;
     }
 
     @Override
@@ -31,6 +37,16 @@ public class UIPluginCLI implements UIPlugin {
     @Override
     public void pullGameBrowser(GameBrowser gb){
         this.gb = gb;
+    }
+
+    @Override
+    public void pullReview(Review r1) {
+        r = r1;
+    }
+
+    @Override
+    public void pullReviewList(List<Review> r1) {
+        rl = r1;
     }
 
     @Override
@@ -74,7 +90,13 @@ public class UIPluginCLI implements UIPlugin {
             }
             gameString += "Developer(s): " + devs.substring(0, devs.length()-2)+ "\n";
         }
-        gameString += "Status: " + g.getStatus() + "\n\n";
+        gameString += "Status: " + g.getStatus() + "\n";
+        if (g.getAverageRating() == -1){
+            gameString += "No reviews\n\n";
+        }
+        else{
+            gameString += "Average rating: " + g.getAverageRating() + "\n\n";
+        }
         return gameString;
     }
 
@@ -259,11 +281,36 @@ public class UIPluginCLI implements UIPlugin {
             sb.append(count);
             sb.append(". ");
             sb.append(displayableGame());
-            sb.append("\n");
             count++;
 
         }
         return  sb.toString();
+    }
+
+    @Override
+    public String displayableReview(){
+        if (r == null){
+            return "No review to display";
+        }
+        return "Rating: "+r.getRating()+"\nSummary: " + r.getSummary() + "\nAuthor: "+ r.getAuthor()+"\n\n";
+    }
+
+
+    public String displayableReviewList() {
+        if (rl == null){
+            return "No review list";
+        }
+
+        if (rl.size() == 0){
+            return "Review list empty";
+        }
+
+        String rlStr = "";
+        for (Review review : rl){
+            pullReview(review);
+            rlStr += displayableReview();
+        }
+        return rlStr;
     }
 
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{

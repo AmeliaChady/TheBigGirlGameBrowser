@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameBrowser {
     private DataSource dataSource; // the connection to the database
@@ -255,12 +256,51 @@ public class GameBrowser {
         }
     }
 
+    public User loadUser(String username) throws DataSourceException {
+        try {
+            User user = dataSource.loadUser(username);
+            return user;
+        } catch(DataSourceException dse) {
+            System.out.println(dse.getMessage());
+            throw new DataSourceException(dse.getMessage());
+        }
+    }
+
     public Game loadGame(String title) throws DataSourceException{
         return dataSource.loadGame(title);
     }
 
     public GameList loadGameList(String name) throws DataSourceException{
         return dataSource.loadGameList(name);
+    }
+
+    public void createDeveloperAccount(String username, String email, String password)
+                                    throws DataSourceException, IllegalArgumentException {
+        assertAccount(username, email, password, "developer");
+    }
+
+    public void createUserAccount(String username, String email, String password)
+            throws DataSourceException, IllegalArgumentException {
+        assertAccount(username, email, password, "user");
+    }
+
+    public void createDualAccount(String username, String email, String password)
+            throws DataSourceException, IllegalArgumentException {
+        assertAccount(username, email, password, "dual");
+    }
+
+    private void assertAccount(String username, String email, String password, String accountType)
+            throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts newAccount = new Accounts(username, email, password);
+
+        String accountTypeVerifier = accountType.equals("dual") ? "user developer" : accountType;
+        if (accountTypeVerifier.contains("user"))  newAccount.user = new User(username);
+        if (accountTypeVerifier.contains("developer")) newAccount.dev = new Developer(username);
+        flagMap = dataSource.saveAccount(newAccount);
+
+        if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
+            throw new IllegalArgumentException("This "+accountType+" account already exists.");
     }
 
     // -----SETTERS-----

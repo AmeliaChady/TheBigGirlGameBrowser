@@ -43,5 +43,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/DemoDaySprint2.db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="SaveUser" uuid="79e69115-7bc2-4c4b-b0b1-89dc3d56c62f">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/Test_SQLiteSource/SaveUser.db</jdbc-url>
+    </data-source>
   </component>
 </project>
