@@ -281,8 +281,7 @@ public class GameBrowser {
         developerAccount.dev = new Developer(username);
         flagMap = dataSource.saveAccount(developerAccount);
 
-        if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
-            throw new IllegalArgumentException("This developer already exists.");
+        assertAccount(flagMap, "developer");
     }
 
     public void createUserAccount(String username, String email, String password)
@@ -292,8 +291,13 @@ public class GameBrowser {
         userAccount.user = new User(username);
         flagMap = dataSource.saveAccount(userAccount);
 
+        assertAccount(flagMap, "user");
+    }
+
+    private void assertAccount(Map<AccountSavingAccounts, AccountSavingFlags> flagMap, String accountType)
+            throws IllegalArgumentException {
         if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
-            throw new IllegalArgumentException("This user already exists.");
+            throw new IllegalArgumentException("This "+accountType+" already exists.");
     }
 
     // -----SETTERS-----
