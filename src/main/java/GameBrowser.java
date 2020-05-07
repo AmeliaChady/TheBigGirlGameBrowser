@@ -286,7 +286,15 @@ public class GameBrowser {
     }
 
     public void createUserAccount(String username, String email, String password)
-            throws DataSourceException, IllegalArgumentException {}
+            throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts userAccount = new Accounts(username, email, password);
+        userAccount.user = new User(username);
+        flagMap = dataSource.saveAccount(userAccount);
+
+        if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
+            throw new IllegalArgumentException("This user already exists.");
+    }
 
     // -----SETTERS-----
     public void setGameList(GameList gameListTurnIn) {
