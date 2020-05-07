@@ -509,18 +509,16 @@ public class UICLI {
             System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
             String userReviewChoice = in.nextLine();
 
-            while(!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice) > gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
+            while (!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice) > gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()) {
                 System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
                 userReviewChoice = in.nextLine();
             }
 
-            if(parseInt(userReviewChoice) == 0){
+            if (parseInt(userReviewChoice) == 0) {
                 commercialUserTakeAction(userAccount, devAccount, dual);
-            }
-
-            else{
+            } else {
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String userGameToReview= approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
+                String userGameToReview = approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
                 Game gameToReview = gameBrowser.loadGame(userGameToReview);
 
                 //TODO: this won't work yet because reviews aren't being saved in the database
@@ -561,38 +559,55 @@ public class UICLI {
                     System.out.println("Thank you! Your response has been recorded.");
                     //back to user menu
                     commercialUserTakeAction(userAccount, devAccount, dual);
-                }
-                else{
+                } else {
                     System.out.println("Review already made, you may not make multiple reviews");
                     commercialUserTakeAction(userAccount, devAccount, dual);
 
-                    //System.out.println("You've already written a review for this game. Would you like to edit your review?");
-                    //System.out.println("1: Yes");
-                    //System.out.println("2: No");
+                    System.out.println("Would you like to edit your review?");
+                    System.out.println("1: Yes");
+                    System.out.println("2: No");
 
-                    //int editReviewChoice = in.nextInt();
+                    String editReviewChoice = in.nextLine();
 
-                    //if(editReviewChoice == 2){
-                    //commercialUserTakeAction(userAccount, devAccount, dual);
-                    //}
+                    if (parseInt(editReviewChoice) == 2) {
+                        commercialUserTakeAction(userAccount, devAccount, dual);
+                    } else if (parseInt(editReviewChoice) == 1) {
+                        System.out.println("Please enter a new rating for this game: ");
 
-                    //else if(editReviewChoice == 1){
-                    //System.out.println("Please enter a new rating for this game: ");
-                    //int newRating == in.nextInt();
-                    //if(newRating != 1 || newRating != 2 || newRating != 3 || newRating != 4 || newRating != 5){
-                    //}
-                    //else{
-                    //setRating(newRating);
-                    //System.out.println("Please enter a new review for this game: ");
+                        String newRating = in.nextLine();
 
-                    //}
+                        while (!isInt(newRating) || parseInt(newRating) < 0 || parseInt(newRating) > 5) {
+                            System.out.println("ERROR: Invalid rating");
+                            System.out.println("Please try again.");
+                            System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
+
+                            newRating = in.nextLine();
+
+                        }
+
+                        //TODO: hold onto review that's been made so that it can be modified
+                        //setAverageRatingFromUpdatedRating( ,newRating);
+
+                        //System.out.println("Please enter a new review for this game: ");
+                        //String newReview = in.nextLine();
+
+                        //TODO: make function to update rating? i can't find one.
+
+                        //System.out.println("Thank you! Your updated review has been recorded.");
+                        //System.out.println("You will now be returned to the main menu.");
+
+                        //commercialUserTakeAction(userAccount, devAccount, dual);
 
 
-                    //}
+                        //}
 
+
+                        //}
+
+                    }
                 }
-            }
 
+            }
         }
 
         else if (parseInt(userChoice) == 2) {
