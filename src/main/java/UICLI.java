@@ -24,8 +24,8 @@ public class UICLI {
             while (!isInt(choice) || (parseInt(choice) < 1 || parseInt(choice) > 4)) {
                 System.out.println("What would you like to do?");
                 System.out.println("1. Login");
-                System.out.println("2. Register as a user");
-                System.out.println("3. Register as a developer");
+                System.out.println("2. Register a new account");
+                System.out.println("3. Quit");
                 choice = in.nextLine();
             }
 
@@ -35,39 +35,50 @@ public class UICLI {
                         login();
                         break;
                     case 2:
-                        System.out.println("We're not accepting new users at this time.");
-                        init();
-                        break;
-                    case 3:
-                        createDeveloper();
-                        init();
+                        createAccount();
                         break;
                     default:
-                        System.out.println("We're not so sure about that...");
-                        init();
+                        System.out.println("Have a nice day!");
                         break;
                 }
+                init();
             }
         } catch(Exception e) {
             System.out.print(e.getMessage());
         }
     }
 
-    private void createDeveloper() throws DataSourceException{
+    private void createAccount() throws DataSourceException{
         Scanner in = new Scanner(System.in);
         String email = null,
-               username = null,
-               password = null;
+                username = null,
+                password = null;
         Developer developer = null;
+        User user = null;
 
-        System.out.println("Please enter your email: ");
-        email = in.nextLine();
-        System.out.println("Please create a username: ");
-        username = in.nextLine();
-        System.out.println("Please create a password: ");
-        password = in.nextLine();
-
-        gameBrowser.createDeveloperAccount(username, email, password);
+        System.out.println("Would you like to make a user account(1) or a developer account(2)? To cancel press 0");
+        String accountType = in.nextLine();
+        while(!isInt(accountType) || parseInt(accountType) < 0 || parseInt(accountType) > 2){
+            System.out.println("Invalid input");
+            System.out.println("Would you like to make a user account(1) or a developer account(2)? To cancel press 0");
+            accountType = in.nextLine();
+        }
+        if (parseInt(accountType) != 0){
+            System.out.println("Please enter your email: ");
+            email = in.nextLine();
+            System.out.println("Please create a username: ");
+            username = in.nextLine();
+            System.out.println("Please create a password: ");
+            password = in.nextLine();
+            if (parseInt(accountType) == 1){
+                gameBrowser.createUserAccount(username, email, password);
+            }
+            else{
+                gameBrowser.createDeveloperAccount(username, email, password);
+            }
+        }
+        //back to starting screen
+        init();
     }
 
     private void login() throws DataSourceException {
