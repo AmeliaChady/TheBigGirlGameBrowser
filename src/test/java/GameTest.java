@@ -114,22 +114,22 @@ public class GameTest {
         Review r5 = new Review(5,"WOW Best Game ever", "kerby");
         r5.setID("e");
 
-        reviews.add(r1);
-        reviews.add(r2);
-        reviews.add(r3);
-        reviews.add(r4);
-        reviews.add(r5);
+        reviews.add(r1.getID());
+        reviews.add(r2.getID());
+        reviews.add(r3.getID());
+        reviews.add(r4.getID());
+        reviews.add(r5.getID());
 
         ArrayList<String> devNames = new ArrayList<>();
         devNames.add("Jimmy");
 
         Game game = new Game("testGame", "a game for Tests", reviews, devNames, Status.PENDING);
 
-        assertTrue(reviews.equals(game.getReviews()));
-        assertEquals("a", game.getReviews().get(0).getID());
+        assertTrue(reviews.size() == (game.getReviews().size()));
+        assertEquals("a", game.getReviews().get(0));
 
         Review r6 = new Review(3, "I kinda liked this but I didn't either", "coolGuy");
-        game.addReview(r6);
+        game.addReview(r6.getID());
 
         assertEquals(6, game.getReviews().size());
     }
