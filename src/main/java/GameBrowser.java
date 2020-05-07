@@ -294,6 +294,10 @@ public class GameBrowser {
         assertAccount(flagMap, "user");
     }
 
+    public void createDualAccount(String username, String email, String password)
+            throws DataSourceException, IllegalArgumentException {
+    }
+
     private void assertAccount(Map<AccountSavingAccounts, AccountSavingFlags> flagMap, String accountType)
             throws IllegalArgumentException {
         if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
