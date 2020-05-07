@@ -48,7 +48,7 @@ public class UICLI {
                 }
             }
         } catch(Exception e) {
-            System.out.print(e.getMessage());
+            System.out.print("Error: " + e.getMessage());
             init();
         }
     }
