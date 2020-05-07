@@ -276,37 +276,29 @@ public class GameBrowser {
 
     public void createDeveloperAccount(String username, String email, String password)
                                     throws DataSourceException, IllegalArgumentException {
-        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
-        Accounts developerAccount = new Accounts(username, email, password);
-        developerAccount.dev = new Developer(username);
-        flagMap = dataSource.saveAccount(developerAccount);
-
-        assertAccount(flagMap, "developer");
+        assertAccount(username, email, password, "developer");
     }
 
     public void createUserAccount(String username, String email, String password)
             throws DataSourceException, IllegalArgumentException {
-        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
-        Accounts userAccount = new Accounts(username, email, password);
-        userAccount.user = new User(username);
-        flagMap = dataSource.saveAccount(userAccount);
-
-        assertAccount(flagMap, "user");
+        assertAccount(username, email, password, "user");
     }
 
     public void createDualAccount(String username, String email, String password)
             throws DataSourceException, IllegalArgumentException {
-        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
-        Accounts dualAccount = new Accounts(username, email, password);
-        dualAccount.dev = new Developer(username);
-        dualAccount.user = new User(username);
-        flagMap = dataSource.saveAccount(dualAccount);
-
-        assertAccount(flagMap, "dual");
+        assertAccount(username, email, password, "dual");
     }
 
-    private void assertAccount(Map<AccountSavingAccounts, AccountSavingFlags> flagMap, String accountType)
-            throws IllegalArgumentException {
+    private void assertAccount(String username, String email, String password, String accountType)
+            throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts newAccount = new Accounts(username, email, password);
+
+        String accountTypeVerifier = accountType.equals("dual") ? "user developer" : accountType;
+        if (accountTypeVerifier.contains("user"))  newAccount.user = new User(username);
+        if (accountTypeVerifier.contains("developer")) newAccount.dev = new Developer(username);
+        flagMap = dataSource.saveAccount(newAccount);
+
         if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
             throw new IllegalArgumentException("This "+accountType+" account already exists.");
     }
