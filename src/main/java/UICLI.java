@@ -53,7 +53,7 @@ public class UICLI {
         }
     }
 
-    private void createDeveloper() {
+    private void createDeveloper() throws DataSourceException{
         Scanner in = new Scanner(System.in);
         String email = null,
                username = null,
@@ -67,7 +67,7 @@ public class UICLI {
         System.out.println("Please create a password: ");
         password = in.nextLine();
 
-        developer = new Developer(email, -1);
+        gameBrowser.createDeveloperAccount(username, email, password);
     }
 
     private void login() throws DataSourceException {
