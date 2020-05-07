@@ -15,9 +15,80 @@ public class UICLI {
         gameBrowser = new GameBrowser(filepath, new UIPluginCLI());
     }
 
+    private void init() {
+        try {
+            Scanner in = new Scanner(System.in);
+            String choice = null;
+
+            System.out.println("Welcome to the Big Girl Game Library!");
+            while (!isInt(choice) || (parseInt(choice) < 1 || parseInt(choice) > 4)) {
+                System.out.println("What would you like to do?");
+                System.out.println("1. Login");
+                System.out.println("2. Register a new account");
+                System.out.println("3. Quit");
+                choice = in.nextLine();
+            }
+
+            if (isInt(choice)) {
+                switch (parseInt(choice)) {
+                    case 1:
+                        login();
+                        break;
+                    case 2:
+                        createAccount();
+                        init();
+                        break;
+                    case 3:
+                        System.out.println("Have a nice day!");
+                        break;
+                    default:
+                        System.out.println("We're not so sure about that...");
+                        init();
+                        break;
+                }
+            }
+        } catch(Exception e) {
+            System.out.print("Error: " + e.getMessage() + "\n");
+            init();
+        }
+    }
+
+    private void createAccount() throws DataSourceException{
+        Scanner in = new Scanner(System.in);
+        String email = null,
+                username = null,
+                password = null;
+        Developer developer = null;
+        User user = null;
+
+        System.out.println("Would you like to make a new user account(1), a new developer account(2), or a new dual(user and developer) account(3)? To cancel press 0");
+        String accountType = in.nextLine();
+        while(!isInt(accountType) || parseInt(accountType) < 0 || parseInt(accountType) > 3){
+            System.out.println("Invalid input");
+            System.out.println("Would you like to make a user account(1) or a developer account(2)? To cancel press 0");
+            accountType = in.nextLine();
+        }
+        if (parseInt(accountType) != 0){
+            System.out.println("Please enter your email: ");
+            email = in.nextLine();
+            System.out.println("Please create a username: ");
+            username = in.nextLine();
+            System.out.println("Please create a password: ");
+            password = in.nextLine();
+            if (parseInt(accountType) == 1){
+                gameBrowser.createUserAccount(username, email, password);
+            }
+            else if (parseInt(accountType) == 2){
+                gameBrowser.createDeveloperAccount(username, email, password);
+            }
+            else{
+                gameBrowser.createDualAccount(username,email,password);
+            }
+        }
+    }
+
     private void login() throws DataSourceException {
         Scanner in = new Scanner(System.in);
-        System.out.println("Welcome to the Big Girl Game Library!");
         System.out.println("Please enter your username: ");
 
         String usernameEnter = in.nextLine();
@@ -73,13 +144,13 @@ public class UICLI {
                 }
             } else {
                 System.out.println("I'm sorry, either your username or password is incorrect.");
-                login();
+                init();
 
                 //password recovery code moved below main for now
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage() + "\nPlease try again");
-            login();
+            init();
         }
     }
 
@@ -223,7 +294,7 @@ public class UICLI {
         else {
             System.out.println("Thank you for using the Big Girl Game Library.");
             System.out.println("See you soon!");
-            login();
+            init();
         }
 
     }
@@ -386,7 +457,7 @@ public class UICLI {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
-            login();
+            init();
         }
 
         else if(parseInt(devChoice) == 5){
@@ -560,7 +631,7 @@ public class UICLI {
         else if(parseInt(userChoice) == 5){
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
-            login();
+            init();
         }
 
         else if(dual && parseInt(userChoice) == 6){
@@ -573,7 +644,8 @@ public class UICLI {
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
         UICLI myBGGLTest = new UICLI("src/databases/DemoDaySprint2.db");
-        myBGGLTest.login();
+//        myBGGLTest.login();
+        myBGGLTest.init();
 
     }
     // password recovery code moved below for mow
