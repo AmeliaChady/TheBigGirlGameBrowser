@@ -451,7 +451,7 @@ public class UICLI {
                 String userGameToReview= approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
                 Game gameToReview = gameBrowser.loadGame(userGameToReview);
 
-                //TODO: check and see if user has already made a review for this game
+                //TODO: this won't work yet because reviews aren't being saved in the database
                 List<Review> revs = gameToReview.getReviews();
                 boolean reviewMade = false;
                 for (Review review : revs) {
