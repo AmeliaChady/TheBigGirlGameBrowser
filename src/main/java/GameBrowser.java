@@ -296,12 +296,19 @@ public class GameBrowser {
 
     public void createDualAccount(String username, String email, String password)
             throws DataSourceException, IllegalArgumentException {
+        Map<AccountSavingAccounts, AccountSavingFlags> flagMap;
+        Accounts dualAccount = new Accounts(username, email, password);
+        dualAccount.dev = new Developer(username);
+        dualAccount.user = new User(username);
+        flagMap = dataSource.saveAccount(dualAccount);
+
+        assertAccount(flagMap, "dual");
     }
 
     private void assertAccount(Map<AccountSavingAccounts, AccountSavingFlags> flagMap, String accountType)
             throws IllegalArgumentException {
         if (flagMap.get(AccountSavingAccounts.ACCT) == AccountSavingFlags.DUPLICATE)
-            throw new IllegalArgumentException("This "+accountType+" already exists.");
+            throw new IllegalArgumentException("This "+accountType+" account already exists.");
     }
 
     // -----SETTERS-----
