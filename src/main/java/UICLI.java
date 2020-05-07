@@ -441,12 +441,37 @@ public class UICLI {
             if(userReviewChoice == 0){
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
-            else if(userReviewChoice <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()){
+            else if(userReviewChoice <= gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGameCount()) {
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
                 String userGameToAdd = approvedGames.getGames().get(userReviewChoice - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
                 //TODO: check and see if user has already made a review for this game
+                //if user has already made a review for this game
+                //System.out.println("You've already written a review for this game. Would you like to edit your review?");
+                //System.out.println("1: Yes");
+                //System.out.println("2: No");
+
+                //int editReviewChoice = in.nextInt();
+
+                //if(editReviewChoice == 2){
+                    //commercialUserTakeAction(userAccount, devAccount, dual);
+                //}
+
+                //else if(editReviewChoice == 1){
+                    //System.out.println("Please enter a new rating for this game: ");
+                    //int newRating == in.nextInt();
+                    //if(newRating != 1 || newRating != 2 || newRating != 3 || newRating != 4 || newRating != 5){
+                    //}
+                    //else{
+                        //setRating(newRating);
+                        //System.out.println("Please enter a new review for this game: ");
+
+                    //}
+
+
+                //}
+
 
 
                 System.out.println("Please write a review for " + gameToAdd.getTitle());
