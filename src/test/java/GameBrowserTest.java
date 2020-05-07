@@ -429,4 +429,26 @@ public class GameBrowserTest {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    public void createDualAccountTest() {
+        try {
+            SQLiteSource.RunSQL("src/databases/testing.db","src/scripts/DDL.sql");
+            GameBrowser gameBrowser =  new GameBrowser("src/databases/testing.db");
+
+            // new user and dev account
+            gameBrowser.createDualAccount("user-dev", "user-dev@mail.com", "password");
+            assertEquals("user-dev", gameBrowser.loadUser("user-dev").getName());
+
+
+            // duplicate dual account creation (invalid)
+            assertThrows(IllegalArgumentException.class,
+                    () -> gameBrowser.createDualAccount("user-dev",
+                            "user-dev@mail.com", "password"));
+
+            gameBrowser.close();
+        } catch (DataSourceException | IOException e) {
+            fail(e.getMessage());
+        }
+    }
 }
