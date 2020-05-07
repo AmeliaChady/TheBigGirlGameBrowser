@@ -36,12 +36,16 @@ public class UICLI {
                         break;
                     case 2:
                         createAccount();
+                        init();
                         break;
-                    default:
+                    case 3:
                         System.out.println("Have a nice day!");
                         break;
+                    default:
+                        System.out.println("We're not so sure about that...");
+                        init();
+                        break;
                 }
-                init();
             }
         } catch(Exception e) {
             System.out.print(e.getMessage());
@@ -56,7 +60,7 @@ public class UICLI {
         Developer developer = null;
         User user = null;
 
-        System.out.println("Would you like to make a user account(1) or a developer account(2)? To cancel press 0");
+        System.out.println("Would you like to make a new user account(1) or a new developer account(2)? To cancel press 0");
         String accountType = in.nextLine();
         while(!isInt(accountType) || parseInt(accountType) < 0 || parseInt(accountType) > 2){
             System.out.println("Invalid input");
@@ -77,8 +81,6 @@ public class UICLI {
                 gameBrowser.createDeveloperAccount(username, email, password);
             }
         }
-        //back to starting screen
-        init();
     }
 
     private void login() throws DataSourceException {
@@ -138,13 +140,13 @@ public class UICLI {
                 }
             } else {
                 System.out.println("I'm sorry, either your username or password is incorrect.");
-                login();
+                init();
 
                 //password recovery code moved below main for now
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage() + "\nPlease try again");
-            login();
+            init();
         }
     }
 
@@ -288,7 +290,7 @@ public class UICLI {
         else {
             System.out.println("Thank you for using the Big Girl Game Library.");
             System.out.println("See you soon!");
-            login();
+            init();
         }
 
     }
@@ -451,7 +453,7 @@ public class UICLI {
             System.out.println("Thank you for using the Big Girl Game Library");
             System.out.println("See you soon!");
 
-            login();
+            init();
         }
 
         else if(parseInt(devChoice) == 5){
@@ -625,7 +627,7 @@ public class UICLI {
         else if(parseInt(userChoice) == 5){
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
-            login();
+            init();
         }
 
         else if(dual && parseInt(userChoice) == 6){
