@@ -60,9 +60,9 @@ public class UICLI {
         Developer developer = null;
         User user = null;
 
-        System.out.println("Would you like to make a new user account(1) or a new developer account(2)? To cancel press 0");
+        System.out.println("Would you like to make a new user account(1), a new developer account(2), or a new dual(user and developer) account(3)? To cancel press 0");
         String accountType = in.nextLine();
-        while(!isInt(accountType) || parseInt(accountType) < 0 || parseInt(accountType) > 2){
+        while(!isInt(accountType) || parseInt(accountType) < 0 || parseInt(accountType) > 3){
             System.out.println("Invalid input");
             System.out.println("Would you like to make a user account(1) or a developer account(2)? To cancel press 0");
             accountType = in.nextLine();
@@ -77,8 +77,11 @@ public class UICLI {
             if (parseInt(accountType) == 1){
                 gameBrowser.createUserAccount(username, email, password);
             }
-            else{
+            else if (parseInt(accountType) == 2){
                 gameBrowser.createDeveloperAccount(username, email, password);
+            }
+            else{
+                gameBrowser.createDualAccount(username,email,password);
             }
         }
     }
