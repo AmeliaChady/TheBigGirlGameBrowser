@@ -452,6 +452,98 @@ public class SQLiteSource implements DataSource{
     }
 
     @Override
+    public void saveUser(Accounts account) throws IllegalArgumentException, DataSourceException {
+        if (account == null) throw new IllegalArgumentException("Account is null");
+        else if (account.user == null) throw new IllegalArgumentException("User account is null");
+
+        Savepoint su = null;
+        try {
+            User user = account.user;
+            if(!inTransaction) {
+                su = conn.setSavepoint();
+                inTransaction=  true;
+            }
+            Statement s = conn.createStatement();
+            String sql = "SELECT * FROM Users WHERE name =\""+account.getUsername() + "\";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (!exists) {
+                saveUserAccount(user, getAid(account.getUsername(), account.getPassword(), s), s);
+            }
+            saveGameList(user.getOwnedGames());
+            s.close();
+            if (su != null) {
+                conn.commit();
+                inTransaction = false;
+            }
+        } catch (SQLException e) {
+            try {
+                if (su != null)  {
+                    conn.rollback(su);
+                    conn.releaseSavepoint(su);
+                    inTransaction = false;
+                }
+            } catch (SQLException ignored) {}
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public User loadUser(String user) throws DataSourceException{
+        if(user == null){
+            return null;
+        }
+
+        Savepoint lu = null;
+        try{
+            // Setup
+            if(!inTransaction) {
+                lu = conn.setSavepoint();
+                inTransaction = true;
+            }
+            Statement s = conn.createStatement();
+
+            // Get GameList name
+            String sql = "SELECT * FROM Users WHERE name=\""+user+"\";";
+            s.execute(sql);
+            ResultSet rs = s.getResultSet();
+            if(!rs.next()){
+                if(lu!=null) {
+                    conn.releaseSavepoint(lu);
+                    inTransaction = false;
+                }
+                s.close();
+                return null;
+            }
+
+            // Fill GameList
+            GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
+            String name = rs.getString("name");
+
+            // Return Dev Object
+            s.close();
+            if(lu != null){
+                conn.commit();
+                inTransaction = false;
+            }
+            List<String> comments = new ArrayList();
+            List<String> reviews = new ArrayList();
+            return new User(user, g, new GameList(user + "'s wishlist"), reviews, comments);
+            //TODO: when wishlists, comments, and reviews are impolemented, change this method to reflect that
+        }catch (SQLException e){
+            try {
+                if(lu != null) {
+                    conn.rollback(lu);
+                    conn.releaseSavepoint(lu);
+                    inTransaction = false;
+                }
+            }catch (SQLException ignored){}
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+
+    @Override
     public List<String> loadDeveloperList() throws DataSourceException{
         Savepoint lds = null;
         try{
@@ -937,99 +1029,7 @@ public class SQLiteSource implements DataSource{
         System.out.println(new String(pr.getErrorStream().readAllBytes()));
     }
 
-    @Override
-    public void saveUser(Accounts account) throws IllegalArgumentException, DataSourceException {
-        if (account == null) throw new IllegalArgumentException("Account is null");
-        else if (account.user == null) throw new IllegalArgumentException("User account is null");
-
-        Savepoint su = null;
-        try {
-            User user = account.user;
-            if(!inTransaction) {
-                su = conn.setSavepoint();
-                inTransaction=  true;
-            }
-            Statement s = conn.createStatement();
-            String sql = "SELECT * FROM Users WHERE name =\""+account.getUsername() + "\";";
-            s.execute(sql);
-            boolean exists = !s.getResultSet().isClosed();
-
-            if (!exists) {
-                saveUserAccount(user, getAid(account.getUsername(), account.getPassword(), s), s);
-            }
-            saveGameList(user.getOwnedGames());
-            s.close();
-            if (su != null) {
-                conn.commit();
-                inTransaction = false;
-            }
-        } catch (SQLException e) {
-            try {
-               if (su != null)  {
-                   conn.rollback(su);
-                   conn.releaseSavepoint(su);
-                   inTransaction = false;
-               }
-            } catch (SQLException ignored) {}
-            throw new DataSourceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public User loadUser(String user) throws DataSourceException{
-        if(user == null){
-            return null;
-        }
-
-        Savepoint lu = null;
-        try{
-            // Setup
-            if(!inTransaction) {
-                lu = conn.setSavepoint();
-                inTransaction = true;
-            }
-            Statement s = conn.createStatement();
-
-            // Get GameList name
-            String sql = "SELECT * FROM Users WHERE name=\""+user+"\";";
-            s.execute(sql);
-            ResultSet rs = s.getResultSet();
-            if(!rs.next()){
-                if(lu!=null) {
-                    conn.releaseSavepoint(lu);
-                    inTransaction = false;
-                }
-                s.close();
-                return null;
-            }
-
-            // Fill GameList
-            GameList g = loadGameList(getGameListName(rs.getInt("glid"), s));
-            String name = rs.getString("name");
-
-            // Return Dev Object
-            s.close();
-            if(lu != null){
-                conn.commit();
-                inTransaction = false;
-            }
-            List<String> comments = new ArrayList();
-            List<String> reviews = new ArrayList();
-            return new User(user, g, new GameList(user + "'s wishlist"), reviews, comments);
-            //TODO: when wishlists, comments, and reviews are impolemented, change this method to reflect that
-        }catch (SQLException e){
-            try {
-                if(lu != null) {
-                    conn.rollback(lu);
-                    conn.releaseSavepoint(lu);
-                    inTransaction = false;
-                }
-            }catch (SQLException ignored){}
-            throw new DataSourceException(e.getMessage());
-        }
-    }
-
-    public String getEmail(String username, Statement s) throws SQLException{
+    private String getEmail(String username, Statement s) throws SQLException{
         String sql = "SELECT email FROM Accounts WHERE username='"+username+"';";
         s.execute(sql);
         ResultSet rs = s.getResultSet();
