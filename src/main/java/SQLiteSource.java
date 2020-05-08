@@ -1080,4 +1080,11 @@ public class SQLiteSource implements DataSource{
             return false;
         }
     }
+
+    private String correctQuotesDB(String s){
+        return s.replaceAll("'", "''");
+    }
+    private String correctQuotesSoftware(String s){
+        return s.replaceAll("''", "'");
+    }
 }
