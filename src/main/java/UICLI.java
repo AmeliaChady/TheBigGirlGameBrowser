@@ -589,7 +589,7 @@ public class UICLI {
 
                             String updatedReviewStarRating = in.nextLine();
 
-                            while (!isInt(updatedReviewStarRating) || parseInt(updatedReviewStarRating) < 0 || parseInt(updatedReviewStarRating) > 5) {
+                            while (!isInt(updatedReviewStarRating) || parseInt(updatedReviewStarRating) < 1 || parseInt(updatedReviewStarRating) > 5) {
                                 System.out.println("ERROR: Invalid rating, please enter a number between 1 and 5.");
                                 System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
                                 updatedReviewStarRating = in.nextLine();
