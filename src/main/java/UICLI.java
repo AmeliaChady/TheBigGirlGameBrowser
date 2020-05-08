@@ -77,12 +77,15 @@ public class UICLI {
             password = in.nextLine();
             if (parseInt(accountType) == 1){
                 gameBrowser.createUserAccount(username, email, password);
+                System.out.println("User account created!");
             }
             else if (parseInt(accountType) == 2){
                 gameBrowser.createDeveloperAccount(username, email, password);
+                System.out.println("Developer account created!");
             }
             else{
                 gameBrowser.createDualAccount(username,email,password);
+                System.out.println("Dual account created!");
             }
         }
     }
@@ -593,7 +596,7 @@ public class UICLI {
                             }
 
                             gameBrowser.updateReview(gameToReview, userAccount.getName(), reviewDescriptionToUpdate, parseInt(updatedReviewStarRating));
-
+                            System.out.println("Review updated!");
                         }
 
                         commercialUserTakeAction(userAccount, devAccount, dual);
@@ -631,11 +634,22 @@ public class UICLI {
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
                 String userGameToAdd = approvedGames.getGames().get(parseInt(userAddChoice) - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
+                String gameTitleFound = null;
+                for (String gt : userAccount.getOwnedGames().getGames()) {
+                    if (gt.equals(gameToAdd.getTitle())) {
+                        gameTitleFound = gt;
+                        break;
+                    }
+                }
+                if (gameTitleFound == null){
+                    gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
+                    gameBrowser.saveGameList(userAccount.getOwnedGames());
 
-                gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
-                gameBrowser.saveGameList(userAccount.getOwnedGames());
-
-                System.out.println("Game has successfully been added to your list.");
+                    System.out.println("Game has successfully been added to your list.");
+                }
+                else{
+                    System.out.println("Already in your list!");
+                }
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
             else{
@@ -662,12 +676,12 @@ public class UICLI {
                 //wanna quit this task
                 if(parseInt(removeOwnedListChoice) == 0){
                     System.out.println("Returning you to the User menu");
-                    commercialUserTakeAction(userAccount, devAccount, dual);
                 }
                 //remove a game
                 else if (parseInt(removeOwnedListChoice) > 0 && parseInt(removeOwnedListChoice) <= userAccount.getOwnedGames().getGameCount()){
 
                     Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(parseInt(removeOwnedListChoice) - 1));
+                    gameBrowser.pullGame(updatingGame.getTitle());
                     gameBrowser.removeGameFromUserGameList(userAccount, updatingGame);
                     gameBrowser.saveGameList(userAccount.getOwnedGames());
                 }
@@ -676,7 +690,9 @@ public class UICLI {
                     System.out.println("ERROR: Not a valid input.");
                     System.out.println("You will now be returned to the User Menu.");
                 }
-            } else System.out.println("You have no games to remove");
+            }
+            else
+                System.out.println("You have no games to remove");
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
 //----- View Owned Games List-----
