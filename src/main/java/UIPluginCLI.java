@@ -100,6 +100,8 @@ public class UIPluginCLI implements UIPlugin {
         return gameString;
     }
 
+
+
     /**
      * @return a string with the developers information
      * @throws IllegalStateException if no pulled developers
@@ -311,6 +313,11 @@ public class UIPluginCLI implements UIPlugin {
             rlStr += displayableReview();
         }
         return rlStr;
+    }
+
+    @Override
+    public String displayableGameandReviews() {
+        return null;
     }
 
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{
