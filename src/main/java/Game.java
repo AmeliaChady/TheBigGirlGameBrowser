@@ -202,14 +202,58 @@ public class Game {
         setAverageRatingFromNewRating(review.getRating());
     }
 
-    public void updateReviewRating(Review review, int newRating) throws IllegalArgumentException {
-        if (reviews.contains(review)) {
-            int oldRating = review.getRating();
-            review.setRating(newRating);
+    /**
+     * An existing reviews rating value is updated and games avgRating is updated
+     * @param author the reviews author
+     * @param newRating the new rating
+     * @throws IllegalArgumentException
+     */
+    public void updateReviewRating(String author, int newRating) throws IllegalArgumentException {
+        Review exists = null;
+        for (Review review : reviews){
+            if (review.getAuthor() == author){
+                exists = review;
+            }
+        }
+        if (exists != null) {
+            int oldRating = exists.getRating();
+            exists.setRating(newRating);
             setAverageRatingFromUpdatedRating(newRating, oldRating);
         } else {
-            String msg = review == null ? "Please provide a review to update." :
-                                          "This review does not exist for this game.";
+            String msg;
+            if (exists == null && author != null){
+                msg = "The author does not have a review for this game.";
+            }
+            else{
+                msg = "Please provide an author.";
+            }
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
+    /**
+     * An existing reviews summary is updated
+     * @param author
+     * @param newComment
+     * @throws IllegalArgumentException
+     */
+    public void updateReviewComment(String author, String newComment) throws IllegalArgumentException {
+        Review exists = null;
+        for (Review review : reviews){
+            if (review.getAuthor() == author){
+                exists = review;
+            }
+        }
+        if (exists != null) {
+            exists.setSummary(newComment);
+        } else {
+            String msg;
+            if (exists == null && author != null){
+                msg = "The author does not have a review for this game.";
+            }
+            else{
+                msg = "Please provide an author.";
+            }
             throw new IllegalArgumentException(msg);
         }
     }
