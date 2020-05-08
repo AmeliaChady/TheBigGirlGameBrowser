@@ -613,31 +613,33 @@ public class UICLI {
             System.out.println("Please enter the number of the game you'd like to add to your owned list");
             System.out.println("Or press 0 to exit.");
 
-            String userAddChoice = "-1";
-            while (parseInt(userAddChoice) < 0 || parseInt(userAddChoice) > userAccount.getOwnedGames().getGameCount() || !isInt(userAddChoice)){
+            String userAddChoice = in.nextLine();
+            while (!isInt(userAddChoice) || parseInt(userAddChoice) < 0 || parseInt(userAddChoice) > gameBrowser.getGameList().getGameCount()) {
 
+                System.out.println("Please enter the number of the game you'd like to add to your owned list");
+                System.out.println("Or press 0 to exit.");
                 userAddChoice = in.nextLine();
+            }
 
-                if (isInt(userAddChoice) && parseInt(userAddChoice) == 0) {
-                    //back to user menu
-                    commercialUserTakeAction(userAccount, devAccount, dual);
+            if (parseInt(userAddChoice) == 0) {
+                //back to user menu
+                commercialUserTakeAction(userAccount, devAccount, dual);
 
-                } else if (isInt(userAddChoice) && parseInt(userAddChoice) > 0 && parseInt(userAddChoice) < userAccount.getOwnedGames().getGameCount()) {
+            } else if (parseInt(userAddChoice) > 0 && parseInt(userAddChoice) < gameBrowser.getGameList().getGameCount()) {
 
-                    //get game based on user input
-                    GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                    String userGameToAdd = approvedGames.getGames().get(parseInt(userAddChoice) - 1);
-                    Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
+                //get game based on user input
+                GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
+                String userGameToAdd = approvedGames.getGames().get(parseInt(userAddChoice) - 1);
+                Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
-                    gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
-                    gameBrowser.saveGameList(userAccount.getOwnedGames());
+                gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
+                gameBrowser.saveGameList(userAccount.getOwnedGames());
 
-                    System.out.println("Game has successfully been added to your list.");
-                    commercialUserTakeAction(userAccount, devAccount, dual);
-                }
-                else{
-                    System.out.println("Please use the numbers displayed by the Game Titles.");
-                }
+                System.out.println("Game has successfully been added to your list.");
+                commercialUserTakeAction(userAccount, devAccount, dual);
+            }
+            else{
+                System.out.println("Please use the numbers displayed by the Game Titles.");
             }
         }
 //-----Remove Game from Owned Games List-----
