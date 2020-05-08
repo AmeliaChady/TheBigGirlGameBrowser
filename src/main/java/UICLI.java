@@ -648,17 +648,26 @@ public class UICLI {
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
             System.out.println(gameBrowser.displayableGameTitlesNumberedList());
 
+            //if they have owned gamed
             if (userAccount.getOwnedGames().getGameCount()  > 0) {
                 System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
-                int removeOwnedListChoice = in.nextInt();
+                String removeOwnedListChoice = in.nextLine();
+                //make sure input is good
+                while (!isInt(removeOwnedListChoice) || parseInt(removeOwnedListChoice) < 0 || parseInt(removeOwnedListChoice) > userAccount.getOwnedGames().getGameCount()) {
 
-                if(removeOwnedListChoice == 0){
+                    System.out.println("Please enter the number of the game you'd like to remove from your owned list");
+                    System.out.println("Or press 0 to exit.");
+                    removeOwnedListChoice = in.nextLine();
+                }
+                //wanna quit this task
+                if(parseInt(removeOwnedListChoice) == 0){
                     System.out.println("Returning you to the User menu");
                     commercialUserTakeAction(userAccount, devAccount, dual);
                 }
-                if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
+                //remove a game
+                else if (parseInt(removeOwnedListChoice) > 0 && parseInt(removeOwnedListChoice) <= userAccount.getOwnedGames().getGameCount()){
 
-                    Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(removeOwnedListChoice - 1));
+                    Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(parseInt(removeOwnedListChoice) - 1));
                     gameBrowser.removeGameFromUserGameList(userAccount, updatingGame);
                     gameBrowser.saveGameList(userAccount.getOwnedGames());
                 }
@@ -697,60 +706,4 @@ public class UICLI {
         myBGGLTest.init();
 
     }
-    // password recovery code moved below for mow
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //System.out.println("Please select from the following options: ");
-    //System.out.println("1: Retry Login");
-    //System.out.println("2: Forgot Password?");
-
-    //int loginAttemptChoice = in.nextInt();
-
-//                if (loginAttemptChoice == 1) {
-//                    //back to beginning
-//                }
-
-    //            else if (loginAttemptChoice == 2){
-    //                System.out.println("Please enter your username:");
-    //                String recoveryUsername = in.nextLine();
-    //
-    //                while(i2.hasNext()){
-    //                    iteratingUser2 = i2.next();
-    //                    if(iteratingUser2.getUsername().equalsIgnoreCase(recoveryUsername)){
-    //                        String recoveryEmail = iteratingUser2.getEmail();
-    //                        System.out.println("We have sent password recovery information to " + recoveryEmail);
-    //                        System.out.println("You will now be redirected back to the login screen.");
-    //
-    //                        login();
-    //                    }
-    //                    else{
-    //                        System.out.println("I'm sorry, we don't have any information associated with" +
-    //                                "that username");
-    //                        System.out.println("You will now be redirected back to the login screen.");
-    //                        login();
-    //                    }
-    //
-    //
-    //                }
-    //
-    //
-    //            }
 }
