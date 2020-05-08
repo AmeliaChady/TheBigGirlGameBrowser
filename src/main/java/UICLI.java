@@ -478,7 +478,7 @@ public class UICLI {
     private void commercialUserTakeAction(User userAccount, Developer devAccount, boolean dual) throws DataSourceException {
         Scanner in = new Scanner(System.in);
         System.out.println("Please choose the action you'd like to take");
-        System.out.println("1: View All Games");
+        System.out.println("1: View Games / Write Reviews");
         System.out.println("2: Add Game to Owned Games List");
         System.out.println("3: Remove Game from Owned Games List");
         System.out.println("4: View Owned Games List");
@@ -500,74 +500,89 @@ public class UICLI {
                 userChoice = in.nextLine();
             }
         }
-
+//-----View Games / Write Reviews-----
         if (parseInt(userChoice) == 1) {
             System.out.println("Big Girl Game Browser Game List:");
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
 
-            System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
-            String userReviewChoice = in.nextLine();
+            System.out.println("Enter the number associated with the game you'd like to view more details of, or press 0 to cancel");
+            String userViewChoice = in.nextLine();
 
-            while(!isInt(userReviewChoice) || parseInt(userReviewChoice) < 0 || parseInt(userReviewChoice) > gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
-                System.out.println("If you'd like to review a game, please enter it's number now, or press 0 to exit.");
-                userReviewChoice = in.nextLine();
+            while(!isInt(userViewChoice) || parseInt(userViewChoice) < 0 || parseInt(userViewChoice) > gameBrowser.getGamesGivenStatus(Status.ACCEPTED).getGames().size()){
+                System.out.println("Enter the number associated with the game you'd like to view more details of, or press 0 to cancel");
+                userViewChoice = in.nextLine();
             }
 
-            if(parseInt(userReviewChoice) == 0){
+            if(parseInt(userViewChoice) == 0){
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
             else{
+                //gets all approves games
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String userGameToReview= approvedGames.getGames().get(parseInt(userReviewChoice) - 1);
+                //gets the game id
+                String userGameToReview = approvedGames.getGames().get(parseInt(userViewChoice) - 1);
+                //loads game
                 Game gameToReview = gameBrowser.loadGame(userGameToReview);
+                //pulls into gb
+                gameBrowser.pullGame(gameToReview.getTitle());
+                //prints game
+                System.out.println(gameBrowser.displayableGameAndReviews());
 
-                //TODO: this won't work yet because reviews aren't being saved in the database
-                List<Review> revs = gameToReview.getReviews();
-                boolean reviewMade = false;
-                for (Review review : revs) {
-                    if (review.getAuthor().equals(userAccount.getName())) {
-                        reviewMade = true;
-                    }
-                }
+                System.out.println("Press 1 to review this game, or any other key to cancel");
+                String userReviewChoice = in.nextLine();
 
-                if (!reviewMade) {
+                if (userReviewChoice.equals("1")) {
 
-
-                    System.out.println("Please write a review for " + gameToReview.getTitle());
-
-                    String reviewDescriptionToAdd = in.nextLine();
-
-                    System.out.println("Please rate " + gameToReview.getTitle() + " on a scale from 1 star to 5 stars.");
-
-                    String reviewStarRating = in.nextLine();
-
-                    while (!isInt(reviewStarRating) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating) > 5) {
-                        System.out.println("ERROR: Invalid rating");
-                        System.out.println("Please try again.");
-                        System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
-
-                        reviewStarRating = in.nextLine();
-
+                    //TODO: this won't work yet because reviews aren't being saved in the database
+                    List<Review> revs = gameToReview.getReviews();
+                    boolean reviewMade = false;
+                    for (Review review : revs) {
+                        if (review.getAuthor().equals(userAccount.getName())) {
+                            reviewMade = true;
+                        }
                     }
 
-                    Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
+                    if (!reviewMade) {
 
-                    //TODO: eventually call Gamebrowser add review (which would add the review to the game and save review in the db)
-                    gameToReview.addReview(reviewToAdd);
 
-                    System.out.println("Thank you! Your response has been recorded.");
-                    //back to user menu
-                    commercialUserTakeAction(userAccount, devAccount, dual);
+                        System.out.println("Please write a review for " + gameToReview.getTitle());
+
+                        String reviewDescriptionToAdd = in.nextLine();
+
+                        System.out.println("Please rate " + gameToReview.getTitle() + " on a scale from 1 star to 5 stars.");
+
+                        String reviewStarRating = in.nextLine();
+
+                        while (!isInt(reviewStarRating) || parseInt(reviewStarRating) < 0 || parseInt(reviewStarRating) > 5) {
+                            System.out.println("ERROR: Invalid rating");
+                            System.out.println("Please try again.");
+                            System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
+
+                            reviewStarRating = in.nextLine();
+
+                        }
+
+                        Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
+
+                        //TODO: eventually call Gamebrowser add review (which would add the review to the game and save review in the db)
+                        gameToReview.addReview(reviewToAdd);
+
+                        System.out.println("Thank you! Your response has been recorded.");
+                        //back to user menu
+                        commercialUserTakeAction(userAccount, devAccount, dual);
+                    } else {
+                        System.out.println("Review already made, you may not make multiple reviews");
+                        commercialUserTakeAction(userAccount, devAccount, dual);
+                    }
                 }
                 else{
-                    System.out.println("Review already made, you may not make multiple reviews");
                     commercialUserTakeAction(userAccount, devAccount, dual);
                 }
             }
 
         }
-
+//-----Add Game to Owned Games List-----
         else if (parseInt(userChoice) == 2) {
             gameBrowser.pullGameList("Master Game List");
             System.out.println(gameBrowser.displayableNumberedListOfGamesGivenStatus(Status.ACCEPTED));
@@ -596,6 +611,7 @@ public class UICLI {
             }
 
         }
+//-----Remove Game from Owned Games List-----
         else if (parseInt(userChoice) == 3) {
             System.out.println("Owned Games:");
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
@@ -621,19 +637,19 @@ public class UICLI {
             }
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
-
+//----- View Owned Games List-----
         else if (parseInt(userChoice) == 4) {
             gameBrowser.pullGameList(userAccount.getOwnedGames().getName());
             System.out.println(gameBrowser.displayableAllGames());
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
-
+//-----Logout-----
         else if(parseInt(userChoice) == 5){
             System.out.println("Thank you for using the Big Girl Game Browser.");
             System.out.println("Have a good one!");
             init();
         }
-
+//-----switch to dev-----
         else if(dual && parseInt(userChoice) == 6){
             System.out.println("You will now be logged in as a developer.");
             developerTakeAction(devAccount, userAccount, true);
