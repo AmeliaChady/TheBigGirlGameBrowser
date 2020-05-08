@@ -563,6 +563,7 @@ public class UIPluginCLITest {
         gb.addDeveloper(new Developer("snoop dog", 1));
         gb.addGame(g);
         gl.includeGame(g.getTitle());
+
         assertEquals("1. Title: testGame\n" +
                 "Description: This is a test to create a new game object\n" +
                 "Developer(s): None\n" +

@@ -346,6 +346,7 @@ public class GameBrowser {
             uiplug.pullGame(g);
             return g != null;
         }catch (DataSourceException e){
+            System.out.println(e.getMessage());
             uiplug.pullGame(null);
             return false;
         }
