@@ -192,6 +192,10 @@ public class GameBrowser {
         //g.addReview(r);
     }
 
+    public void addReview(Review review) throws DataSourceException{
+        dataSource.saveReview(review);
+    }
+
     // ------HELPERS------
     private void loadAllGames() throws DataSourceException {
         try {

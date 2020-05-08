@@ -81,5 +81,21 @@ public interface DataSource {
 
     public User loadUser(String user) throws DataSourceException;
 
+    /**
+     * Saves a given review object in db and connects all linkages
+     * @param review
+     * @throws DataSourceException
+     * @throws IllegalArgumentException
+     */
+    void saveReview(Review review) throws DataSourceException, IllegalArgumentException;
+
+    /**
+     * Loads review with given I
+     * @param reviewID
+     * @return
+     * @throws DataSourceException
+     */
+    Review loadReview(String reviewID) throws DataSourceException;
+
     void close();
 }
