@@ -596,7 +596,7 @@ public class UICLI {
                             }
 
                             gameBrowser.updateReview(gameToReview, userAccount.getName(), reviewDescriptionToUpdate, parseInt(updatedReviewStarRating));
-
+                            System.out.println("Review updated!");
                         }
 
                         commercialUserTakeAction(userAccount, devAccount, dual);
