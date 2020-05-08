@@ -103,4 +103,6 @@ public interface UIPlugin {
     String displayableReview();
 
     String displayableReviewList();
+
+    String displayableGameandReviews();
 }
