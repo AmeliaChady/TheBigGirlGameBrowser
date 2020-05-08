@@ -523,10 +523,15 @@ public class UICLI {
 
                 //TODO: this won't work yet because reviews aren't being saved in the database
                 List<Review> revs = gameToReview.getReviews();
+                Review oldReview = null;
+                int oldRating;
+
                 boolean reviewMade = false;
                 for (Review review : revs) {
                     if (review.getAuthor().equals(userAccount.getName())) {
                         reviewMade = true;
+                        oldReview = review;
+                        oldRating = oldReview.getRating();
                     }
                 }
 
@@ -585,24 +590,25 @@ public class UICLI {
 
                         }
 
-                        //TODO: hold onto review that's been made so that it can be modified
-                        //setAverageRatingFromUpdatedRating( ,newRating);
 
-                        //System.out.println("Please enter a new review for this game: ");
-                        //String newReview = in.nextLine();
+                        gameToReview.updateReviewRating(oldReview, parseInt(newRating));
 
-                        //TODO: make function to update rating? i can't find one.
+                        System.out.println("Please enter a new review summary for this game: ");
+                        String newSummary = in.nextLine();
 
-                        //System.out.println("Thank you! Your updated review has been recorded.");
-                        //System.out.println("You will now be returned to the main menu.");
+                        gameToReview.updateReviewDescription(oldReview, newSummary);
 
-                        //commercialUserTakeAction(userAccount, devAccount, dual);
+                        //TODO: save this updated review to gamebroswer
 
 
-                        //}
+
+                        System.out.println("Thank you! Your updated review has been recorded.");
+                        System.out.println("You will now be returned to the main menu.");
 
 
-                        //}
+                        //return to menu
+                        commercialUserTakeAction(userAccount, devAccount, dual);
+
 
                     }
                 }

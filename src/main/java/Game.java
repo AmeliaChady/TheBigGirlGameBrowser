@@ -210,6 +210,17 @@ public class Game {
         }
     }
 
+    public void updateReviewDescription(Review review, String newSummary) throws IllegalArgumentException {
+        if (reviews.contains(review)) {
+            String oldReview = review.getSummary();
+            review.setSummary(newSummary);
+        } else {
+            String msg = review == null ? "Please provide a review to update." :
+                    "This review does not exist for this game.";
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
     private void setAverageRatingFromNewRating(int newRating) {
         double totalRatings = reviews.size();
         averageRating = (averageRating * (totalRatings-1) + newRating) / totalRatings;
