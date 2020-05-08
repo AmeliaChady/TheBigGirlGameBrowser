@@ -215,7 +215,7 @@ public class SQLiteSource implements DataSource{
         return s.getResultSet().getString("name");
     }
     private int getUid(Statement s, String author) throws SQLException{
-        String sql = "SELECT uid FROM Users WHERE name="+author+";";
+        String sql = "SELECT uid FROM Users WHERE name='"+author+"';";
         s.execute(sql);
         return s.getResultSet().getInt(1);
     }
