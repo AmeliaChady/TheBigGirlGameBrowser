@@ -662,7 +662,6 @@ public class UICLI {
                 //wanna quit this task
                 if(parseInt(removeOwnedListChoice) == 0){
                     System.out.println("Returning you to the User menu");
-                    commercialUserTakeAction(userAccount, devAccount, dual);
                 }
                 //remove a game
                 else if (parseInt(removeOwnedListChoice) > 0 && parseInt(removeOwnedListChoice) <= userAccount.getOwnedGames().getGameCount()){
@@ -676,7 +675,9 @@ public class UICLI {
                     System.out.println("ERROR: Not a valid input.");
                     System.out.println("You will now be returned to the User Menu.");
                 }
-            } else System.out.println("You have no games to remove");
+            }
+            else
+                System.out.println("You have no games to remove");
             commercialUserTakeAction(userAccount, devAccount, dual);
         }
 //----- View Owned Games List-----
