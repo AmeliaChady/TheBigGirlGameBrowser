@@ -536,17 +536,18 @@ public class UICLI {
 
                     //TODO: this won't work yet because reviews aren't being saved in the database
                     List<Review> revs = gameToReview.getReviews();
-                    boolean reviewMade = false;
+
+                    Review madeReview = null;
                     for (Review review : revs) {
                         if (review.getAuthor().equals(userAccount.getName())) {
-                            reviewMade = true;
+                            madeReview = review;
                         }
                     }
 
-                    if (!reviewMade) {
+                    if (madeReview == null) {
 
 
-                        System.out.println("Please write a review for " + gameToReview.getTitle());
+                        System.out.println("Please write a summary for " + gameToReview.getTitle());
 
                         String reviewDescriptionToAdd = in.nextLine();
 
@@ -569,7 +570,32 @@ public class UICLI {
                         //back to user menu
                         commercialUserTakeAction(userAccount, devAccount, dual);
                     } else {
-                        System.out.println("Review already made, you may not make multiple reviews");
+                        System.out.println("Review already made, press 1 to edit your review or 0 to cancel");
+                        String revChoice = in.nextLine();
+                        while(!isInt(revChoice) || (parseInt(revChoice)!= 0 && parseInt(revChoice)!= 1)){
+                            System.out.println("Press 1 to edit your review or 0 to cancel");
+                            revChoice = in.nextLine();
+                        }
+
+                        if (parseInt(revChoice) == 1){
+                            System.out.println("Please write a new summary for " + gameToReview.getTitle());
+
+                            String reviewDescriptionToUpdate = in.nextLine();
+
+                            System.out.println("Please enter a new rating " + gameToReview.getTitle() + " on a scale from 1 star to 5 stars.");
+
+                            String updatedReviewStarRating = in.nextLine();
+
+                            while (!isInt(updatedReviewStarRating) || parseInt(updatedReviewStarRating) < 0 || parseInt(updatedReviewStarRating) > 5) {
+                                System.out.println("ERROR: Invalid rating, please enter a number between 1 and 5.");
+                                System.out.println("Please rate " + gameToReview.getTitle() + "on a scale from 1 star to 5 stars (integers only).");
+                                updatedReviewStarRating = in.nextLine();
+                            }
+
+                            gameBrowser.updateReview(gameToReview, userAccount.getName(), reviewDescriptionToUpdate, parseInt(updatedReviewStarRating));
+
+                        }
+
                         commercialUserTakeAction(userAccount, devAccount, dual);
                     }
                 }

@@ -211,7 +211,7 @@ public class Game {
     public void updateReviewRating(String author, int newRating) throws IllegalArgumentException {
         Review exists = null;
         for (Review review : reviews){
-            if (review.getAuthor() == author){
+            if (review.getAuthor().equals(author)){
                 exists = review;
             }
         }
@@ -240,7 +240,7 @@ public class Game {
     public void updateReviewComment(String author, String newComment) throws IllegalArgumentException {
         Review exists = null;
         for (Review review : reviews){
-            if (review.getAuthor() == author){
+            if (review.getAuthor().equals(author)){
                 exists = review;
             }
         }
