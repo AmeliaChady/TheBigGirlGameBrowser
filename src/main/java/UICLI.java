@@ -631,11 +631,22 @@ public class UICLI {
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
                 String userGameToAdd = approvedGames.getGames().get(parseInt(userAddChoice) - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
+                String gameTitleFound = null;
+                for (String gt : userAccount.getOwnedGames().getGames()) {
+                    if (gt.equals(gameToAdd.getTitle())) {
+                        gameTitleFound = gt;
+                        break;
+                    }
+                }
+                if (gameTitleFound == null){
+                    gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
+                    gameBrowser.saveGameList(userAccount.getOwnedGames());
 
-                gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
-                gameBrowser.saveGameList(userAccount.getOwnedGames());
-
-                System.out.println("Game has successfully been added to your list.");
+                    System.out.println("Game has successfully been added to your list.");
+                }
+                else{
+                    System.out.println("Already in your list!");
+                }
                 commercialUserTakeAction(userAccount, devAccount, dual);
             }
             else{
@@ -667,6 +678,7 @@ public class UICLI {
                 else if (parseInt(removeOwnedListChoice) > 0 && parseInt(removeOwnedListChoice) <= userAccount.getOwnedGames().getGameCount()){
 
                     Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(parseInt(removeOwnedListChoice) - 1));
+                    gameBrowser.pullGame(updatingGame.getTitle());
                     gameBrowser.removeGameFromUserGameList(userAccount, updatingGame);
                     gameBrowser.saveGameList(userAccount.getOwnedGames());
                 }
