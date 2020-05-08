@@ -993,11 +993,6 @@ public class SQLiteSource implements DataSource{
         }
     }
 
-    @Override
-    public void saveReview(Review review) throws DataSourceException, IllegalArgumentException {
-        // ToDo
-    }
-
     public String getEmail(String username, Statement s) throws SQLException{
         String sql = "SELECT email FROM Accounts WHERE username='"+username+"';";
         s.execute(sql);

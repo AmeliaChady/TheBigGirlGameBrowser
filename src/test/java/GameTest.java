@@ -154,15 +154,15 @@ public class GameTest {
         assertEquals(1.5, game.getAverageRating());
 
         // review is updated
-        game.updateReviewRating(game.getReviews().get(1), 3);
+        game.updateReviewRating(game.getReviews().get(1).getAuthor(), 3);
         assertEquals(2, game.getAverageRating());
 
         // non-existent review update (invalid)
         try {
-            game.updateReviewRating(new Review(1, "c", "a"), 0);
+            game.updateReviewRating("a", 0);
             fail("rating updated from non-existent review'");
         } catch (IllegalArgumentException e) {
-            assertEquals("This review does not exist for this game.", e.getMessage());
+            assertEquals("The author does not have a review for this game.", e.getMessage());
         } assertEquals(2, game.getAverageRating());
 
         // null review update (invalid)
@@ -170,7 +170,47 @@ public class GameTest {
             game.updateReviewRating(null, 0);
             fail("rating 'updated' from null review");
         } catch (IllegalArgumentException e) {
-            assertEquals("Please provide a review to update.", e.getMessage());
+            assertEquals("Please provide an author.", e.getMessage());
         } assertEquals(2, game.getAverageRating());
+    }
+
+    @Test
+    public void changeReviewComment() {
+        // loaded with 1 review
+        LinkedList reviews = new LinkedList<Review>();
+        reviews.add(new Review(1, "comment 1", "author 1"));
+        Game game = new Game("title", "description",
+                reviews, null, Status.PENDING);
+        assertEquals("comment 1", game.getReviews().get(0).getSummary());
+
+        // review is added
+        game.addReview(new Review(2, "comment 2", "author 2"));
+        assertEquals(2, game.getReviews().size());
+
+        // review is updated
+        game.updateReviewComment(game.getReviews().get(1).getAuthor(), "UPDATED COMMENT");
+        assertEquals("UPDATED COMMENT", game.getReviews().get(1).getSummary());
+
+        game.updateReviewComment(game.getReviews().get(0).getAuthor(), "Meow Meow");
+        assertEquals("Meow Meow", game.getReviews().get(0).getSummary());
+
+        game.updateReviewComment(game.getReviews().get(1).getAuthor(), "2 Times over");
+        assertEquals("2 Times over", game.getReviews().get(1).getSummary());
+
+        // non-existent review update (invalid)
+        try {
+            game.updateReviewComment("a", "This gonna Fail");
+            fail("non-existent author");
+        } catch (IllegalArgumentException e) {
+            assertEquals("The author does not have a review for this game.", e.getMessage());
+        }
+
+        // null review update (invalid)
+        try {
+            game.updateReviewComment(null, "Don't know how this could happen but K");
+            fail("No Author Given");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Please provide an author.", e.getMessage());
+        }
     }
 }

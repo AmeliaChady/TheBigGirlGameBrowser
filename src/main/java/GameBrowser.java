@@ -185,15 +185,24 @@ public class GameBrowser {
     }
 
     //TODO Remove a GameList
+    // Todo Below may be redundant!!
+    // -----------
+//    public void gameNewReview(String title, int rating, String comment, String author) throws DataSourceException{
+//        //Game g = loadGame(title);
+//        //Review r = new Review(rating, comment, author);
+//        //g.addReview(r);
+//    }
+    // -----------
 
-    public void gameNewReview(String title, int rating, String comment, String author) throws DataSourceException{
-        //Game g = loadGame(title);
-        //Review r = new Review(rating, comment, author);
-        //g.addReview(r);
+    void addReview(Game game, String author, String comment, int rating) throws DataSourceException{
+        Review newReview  = new Review(rating, comment, author);
+        game.addReview(newReview);
+        dataSource.saveGame(game);
     }
-
-    public void addReview(Review review) throws DataSourceException{
-        dataSource.saveReview(review);
+    void updateReview(Game game, String author, String comment, int rating) throws DataSourceException{
+        game.updateReviewComment(author, comment);
+        game.updateReviewRating(author, rating);
+        dataSource.saveGame(game);
     }
 
     // ------HELPERS------
