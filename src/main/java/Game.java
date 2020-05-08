@@ -21,6 +21,7 @@ public class Game {
         description = "This is a test to create a new game object";
         this.developers = new ArrayList<String>();
         status = Status.PENDING;
+        this.reviews = new LinkedList<Review>();
     }
 
     /**
@@ -117,6 +118,7 @@ public class Game {
         this.description = description;
         this.developers = new ArrayList<String>(developers);
         this.status = Status.PENDING;
+        this.reviews = new LinkedList<Review>();
     }
 
     /**
@@ -129,6 +131,7 @@ public class Game {
         this.developers = new ArrayList<String>(developers);
         this.description = "No Description Given";
         this.status = Status.PENDING;
+        this.reviews = new LinkedList<Review>();
     }
 
     /**
@@ -142,6 +145,7 @@ public class Game {
         this.developers.add(developer);
         this.description = "No Description Given";
         this.status = Status.PENDING;
+        this.reviews = new LinkedList<Review>();
     }
 
     /**

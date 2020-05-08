@@ -317,7 +317,16 @@ public class UIPluginCLI implements UIPlugin {
 
     @Override
     public String displayableGameandReviews() {
-        return null;
+        if (g.getReviews() == null || g.getReviews().size()==0){
+            return displayableGame();
+        }
+        String gameStr = "";
+        gameStr += displayableGame();
+        //pull review list
+        pullReviewList(g.getReviews());
+        gameStr+="Reviews:\n";
+        gameStr += displayableReviewList();
+        return gameStr;
     }
 
     public GameList getGamesGivenStatus(Status status) throws IllegalStateException, DataSourceException{

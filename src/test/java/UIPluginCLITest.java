@@ -209,7 +209,13 @@ public class UIPluginCLITest {
         assertEquals("Title: Best game\n" +
                 "Description: This is the best game ever!\n" +
                 "Developer(s): kerry\n" +
-                "Status: PENDING\nAverage rating: 2\n\n", uiplug.displayableGameandReviews());
+                "Status: PENDING\n" +
+                "Average rating: 2.0\n" +
+                "\n" +
+                "Reviews:\n" +
+                "Rating: 2\n" +
+                "Summary: Not my favorite\n" +
+                "Author: Abby\n\n", uiplug.displayableGameandReviews());
 
         //2 reviews
         List<String> developers = new ArrayList<>();
@@ -222,7 +228,18 @@ public class UIPluginCLITest {
         assertEquals("Title: Cooking Mama\n" +
                 "Description: No Description Given\n" +
                 "Developer(s): kerry anne, kelsey\n" +
-                "Status: PENDING\nAverage rating: 3.5\n\n", uiplug.displayableGameandReviews());
+                "Status: PENDING\n" +
+                "Average rating: 3.5\n" +
+                "\n" +
+                "Reviews:\n" +
+                "Rating: 3\n" +
+                "Summary: Hate it\n" +
+                "Author: Aiko\n" +
+                "\n" +
+                "Rating: 4\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n" +
+                "\n", uiplug.displayableGameandReviews());
 
         //3 reviews
         developers.add("grace t. dury");
@@ -236,7 +253,21 @@ public class UIPluginCLITest {
         assertEquals("Title: Animal Crossing New Horizons\n" +
                 "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
                 "Developer(s): kerry anne, kelsey, grace t. dury\n" +
-                "Status: PENDING\nAverage rating: 5\n\n", uiplug.displayableGameandReviews());
+                "Status: PENDING\n" +
+                "Average rating: 5.0\n" +
+                "\n" +
+                "Reviews:\n" +
+                "Rating: 5\n" +
+                "Summary: I love this game more than my ex-husband, and that says something\n" +
+                "Author: Sonja Morgan\n" +
+                "\n" +
+                "Rating: 5\n" +
+                "Summary: Better than the lower level of Ramona's Hamptons house, that's for sure\n" +
+                "Author: countess luann\n" +
+                "\n" +
+                "Rating: 5\n" +
+                "Summary: I love this more than I love my house in the hamptons\n" +
+                "Author: Ramona Singer\n\n", uiplug.displayableGameandReviews());
     }
 
     @Test
