@@ -80,6 +80,11 @@ public class SQLiteSource implements DataSource{
                 safeUpsertGameDevelopers(gid, did, s);
             }
 
+            // Save Reviews
+            for (Review review : game.getReviews()){
+                int uid = getUid(s, review.getAuthor());
+                safeUpsertReview(gid, uid, review, s);
+            }
 
             // Finalize
 
@@ -124,7 +129,6 @@ public class SQLiteSource implements DataSource{
                     inTransaction = false;
                 }
                 s.close();
-                //System.out.println("uhoh"); //TODO remove
                 return null;
             }
 
@@ -175,6 +179,7 @@ public class SQLiteSource implements DataSource{
             throw new DataSourceException(e.getMessage());
         }
     }
+
     private List<Review> loadReviews(Statement s, int gid) throws SQLException {
         String sql = "SELECT rating, comment, uid FROM Reviews WHERE gid="+gid+";";
         s.execute(sql);
@@ -208,6 +213,11 @@ public class SQLiteSource implements DataSource{
         String sql = "SELECT name FROM Users WHERE uid="+uid+";";
         s.execute(sql);
         return s.getResultSet().getString("name");
+    }
+    private int getUid(Statement s, String author) throws SQLException{
+        String sql = "SELECT uid FROM Users WHERE name='"+author+"';";
+        s.execute(sql);
+        return s.getResultSet().getInt(1);
     }
 
     @Override
@@ -760,7 +770,6 @@ public class SQLiteSource implements DataSource{
             boolean exists = !s.getResultSet().isClosed();
 
             if (exists){
-                //System.out.println("it really do think we exist..."); //TODO remove
                 sql = "UPDATE Games SET " +
                         "title='" + game.getTitle() + "'," +
                         "description='" + game.getDescription() + "', " +
@@ -768,7 +777,6 @@ public class SQLiteSource implements DataSource{
                         " WHERE title='"+ game.getTitle() + "';";
             }
             else {
-                //System.out.println("at some point the game is inserted"); //TODO remove
                 sql = "INSERT INTO Games(title, description, gsid) VALUES(" +
                         "'" + game.getTitle() + "', " +
                         "'" + game.getDescription() + "', " +
@@ -846,6 +854,30 @@ public class SQLiteSource implements DataSource{
                 s.execute(sql);
             }
 
+        }catch (SQLException e){
+            throw new DataSourceException(e.getMessage());
+        }
+    }
+    private void safeUpsertReview(int gid, int uid, Review review, Statement s) throws SQLException, DataSourceException {
+        try{
+            String sql = "SELECT * FROM Reviews WHERE gid=\""+gid+"\" AND uid=\""+uid+"\";";
+            s.execute(sql);
+            boolean exists = !s.getResultSet().isClosed();
+
+            if (exists){
+                sql = "UPDATE Reviews SET " +
+                        "rating='" + review.getRating() + "'," +
+                        "comment='" + review.getSummary() + "', " +
+                        " WHERE gid=\""+gid+"\" AND uid=\""+uid+"\";";
+            }
+            else {
+                sql = "INSERT INTO Reviews(gid, uid, rating, comment) VALUES(" +
+                        "'" + gid + "', " +
+                        "'" + uid + "', " +
+                        "'" + review.getRating() + "', " +
+                        "'" + review.getSummary() + "');";
+            }
+            s.execute(sql);
         }catch (SQLException e){
             throw new DataSourceException(e.getMessage());
         }

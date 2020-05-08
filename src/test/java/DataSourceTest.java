@@ -443,4 +443,34 @@ public class DataSourceTest {
         assertEquals("good test description", r.getSummary());
 
     }
+
+    public static void dataSourceSaveReviewsTest(DataSource ds) throws DataSourceException {
+        System.out.println("Needs:\n" +
+                "A Game named '9pm Coding sucks' with 0 Reviews\n" +
+                "A Game named '10pm Coding sucks' with 1 Review\n" +
+                "A Game named '11pm Coding sucks' with 3 Reviews\n" +
+                "The first review in the game of 3 reviews has a rating of 4 & a description of 'good test description'");
+
+        Game game = ds.loadGame("9pm Coding sucks");
+
+        // author d's stuff (otherwise known as d's nutz)
+        Review review = new Review(3, "Never To be Seen", "d");
+        game.addReview(review);
+        game.updateReviewComment("d", "Super Mediocre game");
+
+        // author c sees d's nutz
+        review = new Review(5, "Full 5s My Dude", "c");
+        game.addReview(review);
+        game.updateReviewRating("c", 2);
+
+        ds.saveGame(game);
+
+        game = null;
+
+        game = ds.loadGame("9pm Coding sucks");
+        assertEquals(2, game.getReviews().size());
+        assertEquals("Super Mediocre game", game.getReviews().get(1).getSummary());
+        assertEquals(2, game.getReviews().get(0).getRating());
+        ds.close();
+    }
 }
