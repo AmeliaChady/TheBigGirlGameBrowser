@@ -659,7 +659,7 @@ public class UICLI {
 
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
-        UICLI myBGGLTest = new UICLI("src/databases/DemoDaySprint2.db");
+        UICLI myBGGLTest = new UICLI("src/databases/DemoDay3.db");
 //        myBGGLTest.login();
         myBGGLTest.init();
 
