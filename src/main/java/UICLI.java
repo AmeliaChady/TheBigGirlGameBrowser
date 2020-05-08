@@ -563,10 +563,7 @@ public class UICLI {
 
                         }
 
-                        Review reviewToAdd = new Review(parseInt(reviewStarRating), reviewDescriptionToAdd, userAccount.getName());
-
-                        //TODO: eventually call Gamebrowser add review (which would add the review to the game and save review in the db)
-                        gameToReview.addReview(reviewToAdd);
+                        gameBrowser.addReview(gameToReview, userAccount.getName(), reviewDescriptionToAdd, parseInt(reviewStarRating));
 
                         System.out.println("Thank you! Your response has been recorded.");
                         //back to user menu
@@ -659,7 +656,7 @@ public class UICLI {
 
 
     public static void main(String[] args) throws IOException, ParseException, DataSourceException {
-        UICLI myBGGLTest = new UICLI("src/databases/DemoDaySprint2.db");
+        UICLI myBGGLTest = new UICLI("src/databases/DemoDay3.db");
 //        myBGGLTest.login();
         myBGGLTest.init();
 
