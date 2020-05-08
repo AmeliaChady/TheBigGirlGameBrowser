@@ -77,12 +77,15 @@ public class UICLI {
             password = in.nextLine();
             if (parseInt(accountType) == 1){
                 gameBrowser.createUserAccount(username, email, password);
+                System.out.println("User account created!");
             }
             else if (parseInt(accountType) == 2){
                 gameBrowser.createDeveloperAccount(username, email, password);
+                System.out.println("Developer account created!");
             }
             else{
                 gameBrowser.createDualAccount(username,email,password);
+                System.out.println("Dual account created!");
             }
         }
     }
