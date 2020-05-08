@@ -1,9 +1,9 @@
 BEGIN TRANSACTION;
 
-INSERT INTO Accounts (aid, username, email, password) VALUES (1, 'Amelia', 'amelia@awesome.com', 'fuckyeahImademyselfadmin');
+INSERT INTO Accounts (aid, username, email, password) VALUES (1, 'Amelia', 'amelia@awesome.com', 'iLoveRobert');
 INSERT INTO Accounts (aid, username, email, password) VALUES (2, 'KerryAnne', 'kerryanne@awesome.com', 'smellypantschady');
 INSERT INTO Accounts (aid, username, email, password) VALUES (3, 'Kelsey', 'kelsey@awesome.com', 'dislikesmyletters');
-INSERT INTO Accounts (aid, username, email, password) VALUES (4, 'Robert', 'robert@awesome.com', 'hisphonemicquietondiscord');
+INSERT INTO Accounts (aid, username, email, password) VALUES (4, 'Robert', 'robert@awesome.com', 'iLoveAmelia');
 INSERT INTO Accounts (aid, username, email, password) VALUES (5, 'Scott', 'scott@awesome.com', 'discordcrashedagain');
 INSERT INTO Accounts (aid, username, email, password) VALUES (6, 'Eugene', 'eugene@client.awesome', 'doiexist');
 INSERT INTO Accounts (aid, username, email, password) VALUES (7, 'Elias', 'elias@client.awesome', 'sorryeliasidontknowyouenough');
