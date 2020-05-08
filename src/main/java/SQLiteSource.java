@@ -718,7 +718,7 @@ public class SQLiteSource implements DataSource{
 
             sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
                     "\"" + aid + "\"," +
-                    "\"" + d.getName() + "'," +
+                    "\"" + d.getName() + "\"," +
                     "\""+glid+"\");";
             s.execute(sql);
             return AccountSavingFlags.PASS;
@@ -868,7 +868,7 @@ public class SQLiteSource implements DataSource{
                 sql = "UPDATE Reviews SET " +
                         "rating=\"" + review.getRating() + "\"," +
                         "comment=\"" + review.getSummary() + "\", " +
-                        " WHERE gid=\""+gid+"\" AND uid=\""+uid+"\";";
+                        "WHERE gid=\""+gid+"\" AND uid=\""+uid+"\";";
             }
             else {
                 sql = "INSERT INTO Reviews(gid, uid, rating, comment) VALUES(" +
