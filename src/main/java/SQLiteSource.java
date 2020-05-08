@@ -867,7 +867,7 @@ public class SQLiteSource implements DataSource{
             if (exists){
                 sql = "UPDATE Reviews SET " +
                         "rating=\"" + review.getRating() + "\"," +
-                        "comment=\"" + review.getSummary() + "\", " +
+                        "comment=\"" + review.getSummary() + "\" " +
                         "WHERE gid=\""+gid+"\" AND uid=\""+uid+"\";";
             }
             else {
