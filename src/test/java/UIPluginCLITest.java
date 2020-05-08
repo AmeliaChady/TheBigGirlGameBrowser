@@ -190,6 +190,87 @@ public class UIPluginCLITest {
     }
 
     @Test
+    public void displayGameAndReviewsTest(){
+        UIPluginCLI uiplug= new UIPluginCLI();
+
+        //no reviews
+        Game g = new Game();
+        uiplug.pullGame(g);
+        assertEquals("Title: testGame\n" +
+                "Description: This is a test to create a new game object\n" +
+                "Developer(s): None\n" +
+                "Status: PENDING\nNo reviews\n\n", uiplug.displayableGameandReviews());
+
+
+        //1 review
+        g = new Game("Best game", "This is the best game ever!", "kerry", Status.PENDING);
+        g.addReview(new Review(2, "Not my favorite", "Abby"));
+        uiplug.pullGame(g);
+        assertEquals("Title: Best game\n" +
+                "Description: This is the best game ever!\n" +
+                "Developer(s): kerry\n" +
+                "Status: PENDING\n" +
+                "Average rating: 2.0\n" +
+                "\n" +
+                "Reviews:\n" +
+                "Rating: 2\n" +
+                "Summary: Not my favorite\n" +
+                "Author: Abby\n\n", uiplug.displayableGameandReviews());
+
+        //2 reviews
+        List<String> developers = new ArrayList<>();
+        developers.add("kerry anne");
+        developers.add("kelsey");
+        g = new Game("Cooking Mama",  developers);
+        g.addReview(new Review(3, "Hate it", "Aiko"));
+        g.addReview(new Review(4, "Pretty cool!", "Kerry Anne"));
+        uiplug.pullGame(g);
+        assertEquals("Title: Cooking Mama\n" +
+                "Description: No Description Given\n" +
+                "Developer(s): kerry anne, kelsey\n" +
+                "Status: PENDING\n" +
+                "Average rating: 3.5\n" +
+                "\n" +
+                "Reviews:\n" +
+                "Rating: 3\n" +
+                "Summary: Hate it\n" +
+                "Author: Aiko\n" +
+                "\n" +
+                "Rating: 4\n" +
+                "Summary: Pretty cool!\n" +
+                "Author: Kerry Anne\n" +
+                "\n", uiplug.displayableGameandReviews());
+
+        //3 reviews
+        developers.add("grace t. dury");
+        g = new Game("Animal Crossing New Horizons",
+                "Live as the only human, sell seashells to survive, and be in constant debt.",
+                developers, Status.PENDING);
+        g.addReview(new Review(5, "I love this game more than my ex-husband, and that says something", "Sonja Morgan"));
+        g.addReview(new Review(5, "Better than the lower level of Ramona's Hamptons house, that's for sure", "countess luann"));
+        g.addReview(new Review(5, "I love this more than I love my house in the hamptons", "Ramona Singer"));
+        uiplug.pullGame(g);
+        assertEquals("Title: Animal Crossing New Horizons\n" +
+                "Description: Live as the only human, sell seashells to survive, and be in constant debt.\n" +
+                "Developer(s): kerry anne, kelsey, grace t. dury\n" +
+                "Status: PENDING\n" +
+                "Average rating: 5.0\n" +
+                "\n" +
+                "Reviews:\n" +
+                "Rating: 5\n" +
+                "Summary: I love this game more than my ex-husband, and that says something\n" +
+                "Author: Sonja Morgan\n" +
+                "\n" +
+                "Rating: 5\n" +
+                "Summary: Better than the lower level of Ramona's Hamptons house, that's for sure\n" +
+                "Author: countess luann\n" +
+                "\n" +
+                "Rating: 5\n" +
+                "Summary: I love this more than I love my house in the hamptons\n" +
+                "Author: Ramona Singer\n\n", uiplug.displayableGameandReviews());
+    }
+
+    @Test
     public void displayDeveloperTest(){
         UIPluginCLI uiplug = new UIPluginCLI();
 

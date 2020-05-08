@@ -425,6 +425,10 @@ public class GameBrowser {
         return uiplug.getGamesGivenStatus(status);
     }
 
+    public String displayableGameAndReviews(){
+        return uiplug.displayableGameandReviews();
+    }
+
 
     // -----DB HELPFUL-----
     public void close(){
