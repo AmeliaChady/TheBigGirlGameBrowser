@@ -9,6 +9,7 @@ DROP VIEW IF EXISTS UsersWithListName;
 DROP TABLE IF EXISTS GameDevelopers;
 DROP TABLE IF EXISTS GameListsGames;
 -- base tables
+DROP TABLE IF EXISTS Reviews;
 DROP TABLE IF EXISTS Games;
 DROP TABLE IF EXISTS GameStatuses;
 DROP TABLE IF EXISTS Developers;
@@ -85,6 +86,16 @@ CREATE TABLE GameListsGames(
     FOREIGN KEY(gid) REFERENCES Games(gid),
     FOREIGN KEY(glid) REFERENCES GameLists(glid),
     PRIMARY KEY(glid, gid)
+    );
+
+CREATE TABLE Reviews(
+    gid INTEGER NOT NULL,
+    uid INTEGER NOT NULL,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    PRIMARY KEY(gid, uid),
+    FOREIGN KEY(gid) REFERENCES Games(gid),
+    FOREIGN KEY(uid) REFERENCES Users(uid)
     );
 
 

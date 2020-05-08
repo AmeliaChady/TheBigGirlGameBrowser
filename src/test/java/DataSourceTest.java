@@ -1,5 +1,4 @@
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DataSourceTest {
@@ -419,5 +418,29 @@ public class DataSourceTest {
 
         // Account is null
         assertThrows(IllegalArgumentException.class, () -> ds.saveAccount(null));
+    }
+
+    public static void dataSourceLoadReviewsTest(DataSource ds) throws DataSourceException {
+        System.out.println("Needs:\n" +
+                "A Game named '9pm Coding sucks' with 0 Reviews\n" +
+                "A Game named '10pm Coding sucks' with 1 Review\n" +
+                "A Game named '11pm Coding sucks' with 3 Reviews\n" +
+                "The first review in the game of 3 reviews has a rating of 4 & a description of 'good test description'");
+
+        // 0 Reviews
+        Game g = ds.loadGame("9pm Coding sucks");
+        assertEquals(0, g.getReviews().size());
+
+        // 1 Review
+        g = ds.loadGame("10pm Coding sucks");
+        assertEquals(1, g.getReviews().size());
+
+        // 3 Reviews
+        g = ds.loadGame("11pm Coding sucks");
+        assertEquals(3, g.getReviews().size());
+        Review r = g.getReviews().get(0);
+        assertEquals(4, r.getRating());
+        assertEquals("good test description", r.getSummary());
+
     }
 }

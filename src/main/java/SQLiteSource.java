@@ -156,12 +156,14 @@ public class SQLiteSource implements DataSource{
                 }
             }
 
+            List<Review> reviews = loadReviews(s, gid);
+
             s.close();
             if(lg != null){
                 conn.commit();
                 inTransaction = false;
             }
-            return new Game(title,description,devs,Status.valueOf(status));
+            return new Game(title, description, reviews, devs, Status.valueOf(status));
         }catch (SQLException e){
             try {
                 if(lg != null) {
@@ -172,6 +174,40 @@ public class SQLiteSource implements DataSource{
             }catch (SQLException ignored){}
             throw new DataSourceException(e.getMessage());
         }
+    }
+    private List<Review> loadReviews(Statement s, int gid) throws SQLException {
+        String sql = "SELECT rating, comment, uid FROM Reviews WHERE gid="+gid+";";
+        s.execute(sql);
+        ResultSet rs = s.getResultSet();
+        List<Integer> ratings = new LinkedList<>();
+        List<String> comments = new LinkedList<>();
+        List<Integer> uids = new LinkedList<>();
+        while (rs.next()){
+            ratings.add(rs.getInt("rating"));
+            comments.add(rs.getString("comment"));
+            uids.add(rs.getInt("uid"));
+        }
+
+        List<Review> reviews = new LinkedList<>();
+        Review r;
+        Iterator<Integer> ratingsI = ratings.iterator();
+        Iterator<String> commentsI = comments.iterator();
+        Iterator<Integer> uidsI = uids.iterator();
+        while (ratingsI.hasNext()){
+            r = new Review(
+                    ratingsI.next(),
+                    commentsI.next(),
+                    getAuthor(s, uidsI.next())
+            );
+            reviews.add(r);
+        }
+
+        return reviews;
+    }
+    private String getAuthor(Statement s, int uid) throws SQLException{
+        String sql = "SELECT name FROM Users WHERE uid="+uid+";";
+        s.execute(sql);
+        return s.getResultSet().getString("name");
     }
 
     @Override

@@ -202,4 +202,19 @@ public class SQLiteSourceTests {
         DataSourceTest.dataSourceSaveAccountTest(s);
         s.close();
     }
+
+    @Test
+    public void SQLiteSourceLoadReviews() throws IOException, DataSourceException {
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadWReviews.db",
+                SCRIPT_BASE_PATH + "DDL.sql"
+        );
+        SQLiteSource.RunSQL(
+                DB_BASE_PATH + "LoadWReviews.db",
+                SCRIPT_BASE_PATH + "Test_SQLiteSource/LoadWReviews.sql"
+        );
+        SQLiteSource s = new SQLiteSource(DB_BASE_PATH + "LoadWReviews.db");
+        DataSourceTest.dataSourceLoadReviewsTest(s);
+        s.close();
+    }
 }
