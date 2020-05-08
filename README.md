@@ -21,3 +21,6 @@ This project will replicate the non-commercial part of a game store, assisting w
 ### [Sprint 2 UI Manual Test Document](https://docs.google.com/document/d/12Ja5TIlJKZHh3wNfBdp1cQQ_J-IU38E-ZI18adSQVgo/edit?usp=sharing)
 ### [Sprint 2 Review Meeting](https://docs.google.com/document/d/1Yue37DsydqqFS4xosLzwpxTLuZUTRxX6fnWNfh4e8K8/edit)
 ### [Sprint 2 Retropective Meeting](https://docs.google.com/document/d/1zKwuW5BU58l-poTNOZLDbyyFOL2hpU-6ra_2l_Jzmt4/edit)
+
+## Sprint 3 - Account Creations, Reviews, and Ratings
+### [Sprint 3 UI Manual Test Document](https://docs.google.com/document/d/1XNKVvnpE41yAIBNTLPlH2aU3AEOKsFRA4KIlzb1xH0Q/edit?usp=sharing)
