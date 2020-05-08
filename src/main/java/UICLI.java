@@ -446,7 +446,7 @@ public class UICLI {
             }
             else{
                 gameBrowser.pullGame(devAccount.getGameList().getGames().get(parseInt(gameNum)-1));
-                System.out.println(gameBrowser.displayableGame());
+                System.out.println(gameBrowser.displayableGameAndReviews());
                 developerTakeAction(devAccount, userAccount, dual);
             }
 
