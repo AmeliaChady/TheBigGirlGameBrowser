@@ -613,17 +613,23 @@ public class UICLI {
             System.out.println("Please enter the number of the game you'd like to add to your owned list");
             System.out.println("Or press 0 to exit.");
 
-            int userAddChoice = in.nextInt();
 
-            if (userAddChoice == 0) {
+            String userAddChoice = in.nextLine();
+            while (!isInt(userAddChoice) || parseInt(userAddChoice)<0 || parseInt(userAddChoice)>gameBrowser.getGameList().getGameCount()){
+                System.out.println("Please enter the number of the game you'd like to add to your owned list");
+                System.out.println("Or press 0 to exit.");
+                userAddChoice = in.nextLine();
+            }
+
+            if (parseInt(userAddChoice) == 0) {
                 //back to user menu
                 commercialUserTakeAction(userAccount, devAccount, dual);
 
-            } else if (userAddChoice > 1 || userAddChoice < userAccount.getOwnedGames().getGameCount()) {
+            } else if (parseInt(userAddChoice) > 1 || parseInt(userAddChoice) < userAccount.getOwnedGames().getGameCount()) {
 
                 //get game based on user input
                 GameList approvedGames = gameBrowser.getGamesGivenStatus(Status.ACCEPTED);
-                String userGameToAdd = approvedGames.getGames().get(userAddChoice - 1);
+                String userGameToAdd = approvedGames.getGames().get(parseInt(userAddChoice) - 1);
                 Game gameToAdd = gameBrowser.loadGame(userGameToAdd);
 
                 gameBrowser.addGameToUserGameList(userAccount, gameToAdd);
@@ -642,15 +648,19 @@ public class UICLI {
 
             if (userAccount.getOwnedGames().getGameCount()  > 0) {
                 System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
-                int removeOwnedListChoice = in.nextInt();
+                String removeOwnedListChoice = in.nextLine();
+                while(!isInt(removeOwnedListChoice) && (parseInt(removeOwnedListChoice) < 0 || parseInt(removeOwnedListChoice) > userAccount.getOwnedGames().getGameCount())){
+                    System.out.println("Please select the game that you'd like to remove, or press 0 to cancel:");
+                    removeOwnedListChoice = in.nextLine();
+                }
 
-                if(removeOwnedListChoice == 0){
+                if(parseInt(removeOwnedListChoice) == 0){
                     System.out.println("Returning you to the User menu");
                     commercialUserTakeAction(userAccount, devAccount, dual);
                 }
-                if (removeOwnedListChoice > 0 || removeOwnedListChoice <= userAccount.getOwnedGames().getGameCount()){
+                else if (parseInt(removeOwnedListChoice) > 0 && parseInt(removeOwnedListChoice) <= userAccount.getOwnedGames().getGameCount()){
 
-                    Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(removeOwnedListChoice - 1));
+                    Game updatingGame = gameBrowser.loadGame(userAccount.getOwnedGames().getGames().get(parseInt(removeOwnedListChoice) - 1));
                     gameBrowser.removeGameFromUserGameList(userAccount, updatingGame);
                     gameBrowser.saveGameList(userAccount.getOwnedGames());
                 }
