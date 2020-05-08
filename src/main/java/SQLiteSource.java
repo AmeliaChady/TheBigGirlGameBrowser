@@ -64,7 +64,7 @@ public class SQLiteSource implements DataSource{
             // Games ID
             String sql;
             // TODO: Hard Coded not accounting closed.
-            int gid = getGid(game.getTitle(), s);
+            int gid = getGid(correctQuotesDB(game.getTitle()), s);
 
             // Developers Set Up
             Iterator<String> devs = game.getDevelopers().iterator();
@@ -73,7 +73,7 @@ public class SQLiteSource implements DataSource{
             // Dev Iterator
             while (devs.hasNext()) {
                 // Developer Set Up
-                String d = devs.next();
+                String d = correctQuotesDB(devs.next());
 
                 did = getDid(d, s);
                 // Connect Game to Dev
@@ -230,7 +230,7 @@ public class SQLiteSource implements DataSource{
             purgeGameListGames(gameList, s);
 
             // GamesList ID
-            String sql = "SELECT glid FROM GameLists WHERE name=\""+gameList.getName()+"\";";
+            String sql = "SELECT glid FROM GameLists WHERE name=\""+correctQuotesDB(gameList.getName())+"\";";
             s.execute(sql);
             int glid = s.getResultSet().getInt(1);
 
@@ -248,7 +248,7 @@ public class SQLiteSource implements DataSource{
                     saveGame(game);
 
                     // Getting Game ID
-                    sql = "SELECT gid FROM Games WHERE title=\"" + game.getTitle() + "\";";
+                    sql = "SELECT gid FROM Games WHERE title=\"" + correctQuotesDB(game.getTitle()) + "\";";
                     s.execute(sql);
                     gid = s.getResultSet().getInt(1);
 
@@ -353,7 +353,7 @@ public class SQLiteSource implements DataSource{
             }
             Statement s = conn.createStatement();
 
-            String sql = "SELECT * FROM Developers WHERE name =\""+ dev.getName() +"\";";
+            String sql = "SELECT * FROM Developers WHERE name =\""+ correctQuotesDB(dev.getName()) +"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
@@ -464,7 +464,7 @@ public class SQLiteSource implements DataSource{
                 inTransaction=  true;
             }
             Statement s = conn.createStatement();
-            String sql = "SELECT * FROM Users WHERE name =\""+account.getUsername() + "\";";
+            String sql = "SELECT * FROM Users WHERE name =\""+correctQuotesDB(account.getUsername()) + "\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
@@ -773,34 +773,34 @@ public class SQLiteSource implements DataSource{
         return dualAccountFlag ? username+",user-dev" : username;
     }*/
     private AccountSavingFlags saveAccount(String username, String email, String password, Statement s) throws SQLException{
-        String sql = "SELECT aid FROM Accounts WHERE username =\""+username+"\";";
+        String sql = "SELECT aid FROM Accounts WHERE username =\""+correctQuotesDB(username)+"\";";
         s.execute(sql);
         boolean exists = !s.getResultSet().isClosed();
 
         if (!exists) {
             sql = "INSERT INTO Accounts(username, email, password) VALUES(" +
-                    "'" + username+ "'," +
-                    "'" + email + "'," +
-                    "'" + password + "');";
+                    "'" + correctQuotesDB(username)+ "'," +
+                    "'" + correctQuotesDB(email) + "'," +
+                    "'" + correctQuotesDB(password) + "');";
             s.execute(sql);
             return AccountSavingFlags.PASS;
         }
         return AccountSavingFlags.DUPLICATE;
     }
     private AccountSavingFlags saveDeveloperAccount(Developer d, int aid, Statement s) throws SQLException{
-        String sql = "SELECT * FROM Developers WHERE name =\""+ d.getName() +"\";";
+        String sql = "SELECT * FROM Developers WHERE name =\""+ correctQuotesDB(d.getName()) +"\";";
         s.execute(sql);
 
         // makes sure new dev is not a duplicate
         boolean exists = !s.getResultSet().isClosed();
         if (!exists) {
-            sql = "INSERT INTO GameLists(name) VALUES('"+d.getGameListName()+"');";
+            sql = "INSERT INTO GameLists(name) VALUES('"+correctQuotesDB(d.getGameListName())+"');";
             s.execute(sql);
             int glid = getGlid(d.getGameListName(), s);
 
             sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
                     "'" + aid + "'," +
-                    "'" + d.getName() + "'," +
+                    "'" + correctQuotesDB(d.getName()) + "'," +
                     "'"+glid+"');";
             s.execute(sql);
             return AccountSavingFlags.PASS;
@@ -808,19 +808,19 @@ public class SQLiteSource implements DataSource{
         return AccountSavingFlags.DUPLICATE;
     }
     private AccountSavingFlags saveUserAccount(User u, int aid, Statement s) throws SQLException {
-        String sql = "SELECT * FROM Users WHERE name =\""+ u.getName() +"\";";
+        String sql = "SELECT * FROM Users WHERE name =\""+ correctQuotesDB(u.getName()) +"\";";
         s.execute(sql);
 
         // makes sure new user is not a duplicate
         boolean exists = !s.getResultSet().isClosed();
         if (!exists) {
-            sql = "INSERT INTO GameLists(name) VALUES('"+u.getOwnedGames().getName()+"');";
+            sql = "INSERT INTO GameLists(name) VALUES('"+correctQuotesDB(u.getOwnedGames().getName())+"');";
             s.execute(sql);
             int glid = getGlid(u.getOwnedGames().getName(), s);
 
             sql = "INSERT INTO USERS(aid, name, glid) VALUES(" +
                     "'" + aid + "'," +
-                    "'" + u.getName() + "'," +
+                    "'" + correctQuotesDB(u.getName()) + "'," +
                     "'"+glid+"');";
             s.execute(sql);
             return AccountSavingFlags.PASS;
@@ -847,23 +847,23 @@ public class SQLiteSource implements DataSource{
 
         // Replace Into Game Table
         try {
-            sql = "SELECT * FROM Games WHERE title=\""+game.getTitle()+"\";";
+            sql = "SELECT * FROM Games WHERE title=\""+correctQuotesDB(game.getTitle())+"\";";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (exists){
                 //System.out.println("it really do think we exist..."); //TODO remove
                 sql = "UPDATE Games SET " +
-                        "title='" + game.getTitle() + "'," +
-                        "description='" + game.getDescription() + "', " +
+                        "title='" + correctQuotesDB(game.getTitle()) + "'," +
+                        "description='" + correctQuotesDB(game.getDescription()) + "', " +
                         "gsid=" + gsid +
-                        " WHERE title='"+ game.getTitle() + "';";
+                        " WHERE title='"+ correctQuotesDB(game.getTitle()) + "';";
             }
             else {
                 //System.out.println("at some point the game is inserted"); //TODO remove
                 sql = "INSERT INTO Games(title, description, gsid) VALUES(" +
-                        "'" + game.getTitle() + "', " +
-                        "'" + game.getDescription() + "', " +
+                        "'" + correctQuotesDB(game.getTitle()) + "', " +
+                        "'" + correctQuotesDB(game.getDescription()) + "', " +
                         gsid + ");";
             }
             s.execute(sql);
@@ -874,14 +874,14 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertDevelopers(Developer d, Statement s) throws DataSourceException{
         safeUpsertGameList(d.getGameListName(), s);
         try {
-            String sql = "SELECT * FROM Developers WHERE name ='"+ d +"';";
+            String sql = "SELECT * FROM Developers WHERE name ='"+ correctQuotesDB(d.getName()) +"';";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO Developers(aid, name, glid) VALUES(" +
-                        "'" + d.getAid() + "', " +
-                        "'" + d.getName() + "', " +
+                        "" + d.getAid() + ", " +
+                        "'" + correctQuotesDB(d.getName()) + "', " +
                         "" + getGlid(d.getGameListName(), s) + ");";
                 s.execute(sql);
             }
@@ -912,13 +912,13 @@ public class SQLiteSource implements DataSource{
     private void safeUpsertGameList(String listName, Statement s) throws DataSourceException{
         // Get gameList Name
         try{
-            String sql = "SELECT * FROM GameLists WHERE name='"+listName+"';";
+            String sql = "SELECT * FROM GameLists WHERE name='"+correctQuotesDB(listName)+"';";
             s.execute(sql);
             boolean exists = !s.getResultSet().isClosed();
 
             if (!exists){
                 sql = "INSERT INTO GameLists(name) VALUES(" +
-                        "'" + listName+ "');";
+                        "'" + correctQuotesDB(listName)+ "');";
                 s.execute(sql);
             }
         }catch (SQLException e){
@@ -957,7 +957,7 @@ public class SQLiteSource implements DataSource{
         return getGlid(list.getName(), s);
     }
     private Integer getGlid(String listName, Statement s) throws SQLException{
-        String sql = "SELECT glid FROM GameLists WHERE name='"+listName+"';";
+        String sql = "SELECT glid FROM GameLists WHERE name='"+correctQuotesDB(listName)+"';";
         s.execute(sql);
         ResultSet rs = s.getResultSet();
         if(rs.next()){
